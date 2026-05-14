@@ -1,71 +1,19 @@
-const STORAGE_KEY = "stalkernet_pda_v1";
+const STORAGE_KEY = "stalkernet_pda_v4";
 
 const defaultMessages = [
-  {
-    id: id(),
-    channel: "Zone Broadcast",
-    sender: "Wolf",
-    faction: "Loner",
-    text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.",
-    time: "07:12"
-  },
-  {
-    id: id(),
-    channel: "Private",
-    sender: "Sidorovich",
-    faction: "Trader",
-    text: "I have work for you. Nothing glorious, but glory doesn't buy sausage.",
-    time: "07:33"
-  },
-  {
-    id: id(),
-    channel: "Unknown Signal",
-    sender: "UNKNOWN",
-    faction: "???",
-    text: "Do not follow the song beneath the concrete. It remembers names.",
-    time: "03:17"
-  },
-  {
-    id: id(),
-    channel: "Faction Channel",
-    sender: "Duty Outpost",
-    faction: "Duty",
-    text: "Mutant movement reported near Garbage. Armed stalkers requested. Payment confirmed on proof of kill.",
-    time: "08:01"
-  }
+  { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
+  { id: id(), channel: "Private", sender: "Sidorovich", faction: "Trader", text: "I have work for you. Nothing glorious, but glory doesn't buy sausage.", time: "07:33" },
+  { id: id(), channel: "Unknown Signal", sender: "UNKNOWN", faction: "???", text: "Do not follow the song beneath the concrete. It remembers names.", time: "03:17" },
+  { id: id(), channel: "Faction Channel", sender: "Duty Outpost", faction: "Duty", text: "Mutant movement reported near Garbage. Armed stalkers requested. Payment confirmed on proof of kill.", time: "08:01" }
 ];
 
 const personaReplies = {
-  Loner: [
-    "Listen, friend. The Zone doesn't hate you. That would mean it cares.",
-    "Check roofs, windows, tree lines. Bandits love lazy eyes.",
-    "A bolt costs nothing. A leg costs more. Throw the bolt."
-  ],
-  Trader: [
-    "I can get it. You can pay for it. Beautiful system, yes?",
-    "Bring me artifacts, documents, odd trinkets. Especially odd trinkets.",
-    "No refunds in the Zone. The Zone doesn't refund me either."
-  ],
-  Duty: [
-    "The Zone must be contained. Curiosity gets men buried in unmarked dirt.",
-    "Report mutant sightings immediately. Heroics are not strategy.",
-    "Your weapon is filthy. Clean it before it jams and writes your obituary."
-  ],
-  Freedom: [
-    "Relax. Breathe. Then shoot whatever is making that noise.",
-    "Duty sees a prison. I see a miracle with teeth.",
-    "If the Zone wanted rules, it wouldn't have invented gravity wells."
-  ],
-  Ecologist: [
-    "Do not lick the artifact. I cannot believe this requires repeating.",
-    "Anomaly readings suggest movement. Which is unfortunate, because anomalies should not move.",
-    "Bring samples sealed, labelled, and preferably not screaming."
-  ],
-  Monolith: [
-    "The light is silent. The stone is patient.",
-    "You walk in circles around the truth.",
-    "Come closer. The centre is warm."
-  ]
+  Loner: ["Listen, friend. The Zone doesn't hate you. That would mean it cares.", "Check roofs, windows, tree lines. Bandits love lazy eyes.", "A bolt costs nothing. A leg costs more. Throw the bolt."],
+  Trader: ["I can get it. You can pay for it. Beautiful system, yes?", "Bring me artifacts, documents, odd trinkets. Especially odd trinkets.", "No refunds in the Zone. The Zone doesn't refund me either."],
+  Duty: ["The Zone must be contained. Curiosity gets men buried in unmarked dirt.", "Report mutant sightings immediately. Heroics are not strategy.", "Your weapon is filthy. Clean it before it jams and writes your obituary."],
+  Freedom: ["Relax. Breathe. Then shoot whatever is making that noise.", "Duty sees a prison. I see a miracle with teeth.", "If the Zone wanted rules, it wouldn't have invented gravity wells."],
+  Ecologist: ["Do not lick the artifact. I cannot believe this requires repeating.", "Anomaly readings suggest movement. Which is unfortunate, because anomalies should not move.", "Bring samples sealed, labelled, and preferably not screaming."],
+  Monolith: ["The light is silent. The stone is patient.", "You walk in circles around the truth.", "Come closer. The centre is warm."]
 };
 
 const loreEntries = [
@@ -82,15 +30,6 @@ const loreEntries = [
   { id: "yantar", category: "Locations", title: "Yantar", threat: "Severe", body: "A research area known for psi danger, laboratories, and scientists who say alarming things in calm voices." }
 ];
 
-const defaultMapLocations = [
-  { id: "cordon", name: "Cordon", type: "Settlement", x: 22, y: 78, note: "Rookie routes, traders, patrols." },
-  { id: "garbage", name: "Garbage", type: "Danger", x: 39, y: 61, note: "Scrapyards, bandits, mutant movement." },
-  { id: "rostok", name: "Rostok", type: "Faction Hub", x: 48, y: 47, note: "Bar, Duty presence, contracts." },
-  { id: "yantar", name: "Yantar", type: "Research", x: 63, y: 51, note: "Ecologists, psi readings, lab rumours." },
-  { id: "redforest", name: "Red Forest", type: "Extreme", x: 71, y: 28, note: "Avoid without preparation." },
-  { id: "pripyat", name: "Pripyat", type: "Urban Ruin", x: 84, y: 18, note: "High-value salvage. Higher-value funerals." }
-];
-
 const defaultTasks = [
   { id: id(), title: "Check the rail bridge", source: "Wolf", status: "Active", reward: "Ammo and local reputation" },
   { id: id(), title: "Recover sealed documents", source: "Sidorovich", status: "Active", reward: "Rubles, maybe a discount" },
@@ -105,6 +44,37 @@ const defaultProfile = {
   weapon: "Whatever still fires"
 };
 
+// Pixel-space template for a 3840 x 9788 vertical map.
+// Replace these coordinates if your chosen map uses a different layout.
+const MAP_CONFIG = {
+  imageUrl: "assets/anomaly-zone-map.jpg",
+  fallbackWidth: 3840,
+  fallbackHeight: 9788
+};
+
+const defaultMapPoints = [
+  { id: "cordon", name: "Cordon", type: "Location", x: 810, y: 8700, note: "Rookie routes, traders, patrols." },
+  { id: "garbage", name: "Garbage", type: "Danger", x: 1320, y: 7600, note: "Scrapyards, bandits, mutant movement." },
+  { id: "agroprom", name: "Agroprom", type: "Location", x: 1680, y: 6900, note: "Military activity, underground approaches, and old research infrastructure." },
+  { id: "darkvalley", name: "Dark Valley", type: "Danger", x: 950, y: 7100, note: "Bandit presence and dangerous industrial ruins." },
+  { id: "rostok", name: "Rostok", type: "Hub", x: 1580, y: 6100, note: "Bar, Duty presence, technicians, contracts." },
+  { id: "wildterritory", name: "Wild Territory", type: "Danger", x: 1930, y: 5750, note: "Hostile movement, salvage opportunities, unstable ground." },
+  { id: "yantar", name: "Yantar", type: "Lab", x: 2160, y: 6250, note: "Ecologists, psi readings, lab rumours." },
+  { id: "armywarehouses", name: "Army Warehouses", type: "Hub", x: 1190, y: 5050, note: "Faction routes, patrols, and staging areas." },
+  { id: "redforest", name: "Red Forest", type: "Danger", x: 2030, y: 4680, note: "Avoid without serious preparation." },
+  { id: "radar", name: "Radar", type: "Danger", x: 1760, y: 4050, note: "High-risk territory and emissions of a different kind." },
+  { id: "limansk", name: "Limansk", type: "Location", x: 2660, y: 4100, note: "Urban ruins and fragmented access routes." },
+  { id: "deadcity", name: "Dead City", type: "Location", x: 900, y: 4300, note: "Mercenary activity and eerie urban decay." },
+  { id: "jupiter", name: "Jupiter", type: "Location", x: 2150, y: 2720, note: "Factory structures, tunnels, and rich scavenging grounds." },
+  { id: "zaton", name: "Zaton", type: "Location", x: 1300, y: 2450, note: "Swamps, wrecks, and scattered survivor routes." },
+  { id: "outskirts", name: "Outskirts", type: "Location", x: 2450, y: 1920, note: "Late-zone urban sector with high danger." },
+  { id: "pripyat", name: "Pripyat", type: "Location", x: 2150, y: 1560, note: "High-value salvage. Higher-value funerals." },
+  { id: "cnpp", name: "CNPP", type: "Danger", x: 2020, y: 650, note: "The heart of the Zone. You know what that means." }
+];
+
+let leafletMap = null;
+let leafletMarkers = [];
+let mapBounds = null;
 let state = loadState() || {
   messages: defaultMessages,
   tasks: defaultTasks,
@@ -112,21 +82,19 @@ let state = loadState() || {
   customPins: [],
   activeMessageFilter: "All",
   activeLoreFilter: "All",
+  activeMapFilter: "All",
   selectedMapId: "cordon"
 };
 
 function id() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
-
 function nowTime() {
   return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
-
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
-
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -135,31 +103,29 @@ function loadState() {
     return null;
   }
 }
-
 function updateClock() {
   const date = new Date();
   document.getElementById("dateText").textContent = date.toLocaleDateString();
   document.getElementById("timeText").textContent = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
-
 function updateHeaderProfile() {
   document.getElementById("headerCallsign").textContent = (state.profile.callsign || "UNKNOWN").toUpperCase();
   document.getElementById("headerLocation").textContent = (state.profile.location || "UNKNOWN").toUpperCase();
   document.getElementById("headerFaction").textContent = (state.profile.faction || "UNKNOWN").toUpperCase();
 }
-
 function switchTab(tabId) {
   document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
   document.getElementById(tabId).classList.add("active");
   document.querySelector(`[data-tab="${tabId}"]`).classList.add("active");
+  if (tabId === "mapTab" && leafletMap) {
+    setTimeout(() => leafletMap.invalidateSize(), 80);
+  }
 }
-
 function renderMessageFilters() {
   const box = document.getElementById("messageFilters");
   const channels = ["All", ...new Set(state.messages.map(message => message.channel))];
   box.innerHTML = "";
-
   channels.forEach(channel => {
     const btn = document.createElement("button");
     btn.textContent = channel;
@@ -173,18 +139,15 @@ function renderMessageFilters() {
     box.appendChild(btn);
   });
 }
-
 function renderMessages() {
   const list = document.getElementById("messageList");
   const visible = state.activeMessageFilter === "All"
     ? state.messages
     : state.messages.filter(message => message.channel === state.activeMessageFilter);
-
   list.innerHTML = "";
-
   visible.forEach(message => {
     const card = document.createElement("article");
-    card.className = "message-card";
+    card.className = "message-card module-panel";
     card.innerHTML = `
       <div class="message-head">
         <div>
@@ -197,10 +160,8 @@ function renderMessages() {
     `;
     list.appendChild(card);
   });
-
   list.scrollTop = list.scrollHeight;
 }
-
 function sendMessage() {
   const input = document.getElementById("messageInput");
   const text = input.value.trim();
@@ -209,15 +170,7 @@ function sendMessage() {
   const persona = document.getElementById("personaSelect").value;
   const replies = personaReplies[persona] || personaReplies.Loner;
 
-  state.messages.push({
-    id: id(),
-    channel: "Private",
-    sender: "You",
-    faction: "Stalker",
-    text,
-    time: nowTime()
-  });
-
+  state.messages.push({ id: id(), channel: "Private", sender: "You", faction: "Stalker", text, time: nowTime() });
   state.messages.push({
     id: id(),
     channel: persona === "Monolith" ? "Unknown Signal" : "Private",
@@ -233,7 +186,6 @@ function sendMessage() {
   renderMessageFilters();
   renderMessages();
 }
-
 function addBroadcast() {
   const broadcasts = [
     ["Garbage Watch", "Bandits seen dragging crates toward the old hangar. Could be loot. Could be bait."],
@@ -243,84 +195,159 @@ function addBroadcast() {
     ["Freedom Scout", "Anyone near Army Warehouses got eyes on that convoy? It vanished off the road like a bad thought."],
     ["Duty Patrol", "Mutant contact north of the checkpoint. Civilians and rookies keep clear."]
   ];
-
   const pick = broadcasts[Math.floor(Math.random() * broadcasts.length)];
-  state.messages.push({
-    id: id(),
-    channel: "Zone Broadcast",
-    sender: pick[0],
-    faction: "Broadcast",
-    text: pick[1],
-    time: nowTime()
-  });
-
+  state.messages.push({ id: id(), channel: "Zone Broadcast", sender: pick[0], faction: "Broadcast", text: pick[1], time: nowTime() });
   state.activeMessageFilter = "All";
   saveState();
   renderMessageFilters();
   renderMessages();
 }
 
-function renderMap() {
-  const map = document.getElementById("zoneMap");
-  map.querySelectorAll(".map-pin").forEach(pin => pin.remove());
-
-  const allPins = [...defaultMapLocations, ...state.customPins];
-
-  allPins.forEach(location => {
-    const btn = document.createElement("button");
-    btn.className = `map-pin ${location.type === "Extreme" ? "extreme" : ""} ${state.selectedMapId === location.id ? "selected" : ""}`;
-    btn.style.left = `${location.x}%`;
-    btn.style.top = `${location.y}%`;
-    btn.title = location.name;
-    btn.onclick = () => {
-      state.selectedMapId = location.id;
-      saveState();
-      renderMap();
-      renderMapInfo();
-    };
-    map.appendChild(btn);
-  });
-
-  renderMapInfo();
+// Map system
+function getAllMapPoints() {
+  return [...defaultMapPoints, ...(state.customPins || [])];
 }
-
-function renderMapInfo() {
-  const allPins = [...defaultMapLocations, ...state.customPins];
-  const location = allPins.find(item => item.id === state.selectedMapId) || allPins[0];
+function mapTypeClass(type) {
+  switch ((type || "").toLowerCase()) {
+    case "hub": return "poi-hub";
+    case "lab": return "poi-lab";
+    case "danger": return "poi-danger";
+    case "custom": return "poi-custom";
+    default: return "poi-location";
+  }
+}
+function renderMapFilters() {
+  const box = document.getElementById("mapFilters");
+  const types = ["All", ...new Set(getAllMapPoints().map(point => point.type))];
+  box.innerHTML = "";
+  types.forEach(type => {
+    const btn = document.createElement("button");
+    btn.textContent = type;
+    btn.className = state.activeMapFilter === type ? "active" : "";
+    btn.onclick = () => {
+      state.activeMapFilter = type;
+      saveState();
+      renderMapFilters();
+      rebuildLeafletMarkers();
+    };
+    box.appendChild(btn);
+  });
+}
+function renderMapInfo(selectedId = state.selectedMapId) {
+  const all = getAllMapPoints();
+  const point = all.find(item => item.id === selectedId) || all[0];
+  if (!point) return;
+  state.selectedMapId = point.id;
+  saveState();
   const card = document.getElementById("mapInfo");
   card.innerHTML = `
-    <h3>${escapeHtml(location.name)}</h3>
-    <p class="muted">${escapeHtml(location.type)}</p>
-    <p>${escapeHtml(location.note)}</p>
+    <div class="module-label">LOCATION DATA</div>
+    <h3>${escapeHtml(point.name)}</h3>
+    <p class="muted">${escapeHtml(point.type)}</p>
+    <p>${escapeHtml(point.note)}</p>
   `;
 }
+function buildMarker(point) {
+  const iconHtml = `<div class="poi-icon ${mapTypeClass(point.type)}"></div>`;
+  const icon = L.divIcon({ html: iconHtml, className: "", iconSize: [14, 14], iconAnchor: [7, 7] });
+  const marker = L.marker([point.y, point.x], { icon });
+  marker.bindPopup(`
+    <div class="map-popup-title">${escapeHtml(point.name)}</div>
+    <div class="map-popup-type">${escapeHtml(point.type)}</div>
+    <div>${escapeHtml(point.note)}</div>
+  `);
+  marker.on("click", () => renderMapInfo(point.id));
+  return marker;
+}
+function rebuildLeafletMarkers() {
+  if (!leafletMap) return;
+  leafletMarkers.forEach(marker => leafletMap.removeLayer(marker));
+  leafletMarkers = [];
 
+  const visiblePoints = state.activeMapFilter === "All"
+    ? getAllMapPoints()
+    : getAllMapPoints().filter(point => point.type === state.activeMapFilter);
+
+  visiblePoints.forEach(point => {
+    const marker = buildMarker(point);
+    marker.addTo(leafletMap);
+    leafletMarkers.push(marker);
+  });
+}
 function addCustomPin() {
+  if (!leafletMap) {
+    alert("Map is not ready yet.");
+    return;
+  }
   const name = prompt("Pin name?");
   if (!name) return;
 
-  const type = prompt("Pin type? Example: Stash, Danger, Camp, Note") || "Note";
+  const typeInput = prompt("Pin type? Example: Custom, Stash, Danger, Camp") || "Custom";
   const note = prompt("Pin note?") || "No note recorded.";
+  const center = leafletMap.getCenter();
 
+  state.customPins = state.customPins || [];
   state.customPins.push({
     id: id(),
     name,
-    type,
+    type: typeInput,
     note,
-    x: 20 + Math.random() * 60,
-    y: 20 + Math.random() * 60
+    x: Math.round(center.lng),
+    y: Math.round(center.lat)
   });
-
   state.selectedMapId = state.customPins[state.customPins.length - 1].id;
   saveState();
-  renderMap();
+  renderMapFilters();
+  rebuildLeafletMarkers();
+  renderMapInfo(state.selectedMapId);
+}
+function imageExists(url) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve({ ok: true, width: img.naturalWidth, height: img.naturalHeight });
+    img.onerror = () => resolve({ ok: false, width: MAP_CONFIG.fallbackWidth, height: MAP_CONFIG.fallbackHeight });
+    img.src = url + "?v=" + Date.now();
+  });
+}
+async function initLeafletMap() {
+  if (!window.L) return;
+  const result = await imageExists(MAP_CONFIG.imageUrl);
+  const mapNotice = document.getElementById("mapMissingNotice");
+  const mapEl = document.getElementById("leafletMap");
+
+  if (!result.ok) {
+    mapNotice.classList.remove("hidden");
+  } else {
+    mapNotice.classList.add("hidden");
+  }
+
+  const width = result.width || MAP_CONFIG.fallbackWidth;
+  const height = result.height || MAP_CONFIG.fallbackHeight;
+  mapBounds = [[0, 0], [height, width]];
+
+  leafletMap = L.map("leafletMap", {
+    crs: L.CRS.Simple,
+    minZoom: -2,
+    maxZoom: 2,
+    zoomSnap: 0.25,
+    attributionControl: false
+  });
+
+  const imageOverlay = L.imageOverlay(MAP_CONFIG.imageUrl, mapBounds, { opacity: result.ok ? 1 : 0 });
+  imageOverlay.addTo(leafletMap);
+  leafletMap.fitBounds(mapBounds);
+
+  rebuildLeafletMarkers();
+  renderMapInfo();
+
+  leafletMap.on("click", () => {});
+  setTimeout(() => leafletMap.invalidateSize(), 150);
 }
 
 function renderLoreFilters() {
   const box = document.getElementById("loreFilters");
   const categories = ["All", ...new Set(loreEntries.map(entry => entry.category))];
   box.innerHTML = "";
-
   categories.forEach(category => {
     const btn = document.createElement("button");
     btn.textContent = category;
@@ -334,7 +361,6 @@ function renderLoreFilters() {
     box.appendChild(btn);
   });
 }
-
 function renderLore() {
   const list = document.getElementById("loreList");
   const query = document.getElementById("loreSearch").value.toLowerCase();
@@ -346,10 +372,9 @@ function renderLore() {
   });
 
   list.innerHTML = "";
-
   filtered.forEach(entry => {
     const card = document.createElement("article");
-    card.className = "lore-card";
+    card.className = "lore-card module-panel";
     card.innerHTML = `
       <div class="lore-top">
         <div>
@@ -363,14 +388,12 @@ function renderLore() {
     list.appendChild(card);
   });
 }
-
 function renderTasks() {
   const list = document.getElementById("taskList");
   list.innerHTML = "";
-
   state.tasks.forEach(task => {
     const card = document.createElement("article");
-    card.className = "task-card";
+    card.className = "task-card module-panel";
     card.innerHTML = `
       <div class="task-head">
         <div>
@@ -404,25 +427,15 @@ function renderTasks() {
     };
   });
 }
-
 function addTask() {
   const input = document.getElementById("taskInput");
   const title = input.value.trim();
   if (!title) return;
-
-  state.tasks.push({
-    id: id(),
-    title,
-    source: "Personal Note",
-    status: "Active",
-    reward: "Unknown"
-  });
-
+  state.tasks.push({ id: id(), title, source: "Personal Note", status: "Active", reward: "Unknown" });
   input.value = "";
   saveState();
   renderTasks();
 }
-
 function loadProfileInputs() {
   document.getElementById("profileCallsign").value = state.profile.callsign || "";
   document.getElementById("profileFaction").value = state.profile.faction || "";
@@ -431,7 +444,6 @@ function loadProfileInputs() {
   document.getElementById("profileWeapon").value = state.profile.weapon || "";
   updateHeaderProfile();
 }
-
 function bindProfileInputs() {
   const fields = [
     ["profileCallsign", "callsign"],
@@ -440,7 +452,6 @@ function bindProfileInputs() {
     ["profileLocation", "location"],
     ["profileWeapon", "weapon"]
   ];
-
   fields.forEach(([inputId, key]) => {
     document.getElementById(inputId).addEventListener("input", event => {
       state.profile[key] = event.target.value;
@@ -449,23 +460,19 @@ function bindProfileInputs() {
     });
   });
 }
-
 function showEmission() {
   const alert = document.getElementById("emissionAlert");
   alert.classList.remove("hidden");
   setTimeout(() => alert.classList.add("hidden"), 4500);
 }
-
 function runBootSequence() {
   const bootScreen = document.getElementById("bootScreen");
   const bootBar = document.getElementById("bootBar");
   let progress = 0;
-
   const timer = setInterval(() => {
     progress += 9 + Math.random() * 15;
     if (progress > 100) progress = 100;
     bootBar.style.width = `${progress}%`;
-
     if (progress >= 100) {
       clearInterval(timer);
       setTimeout(() => {
@@ -476,7 +483,6 @@ function runBootSequence() {
     }
   }, 120);
 }
-
 function escapeHtml(text) {
   return String(text)
     .replaceAll("&", "&amp;")
@@ -485,7 +491,6 @@ function escapeHtml(text) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-
 function bindEvents() {
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", () => switchTab(btn.dataset.tab));
@@ -495,45 +500,35 @@ function bindEvents() {
   document.getElementById("messageInput").addEventListener("keydown", event => {
     if (event.key === "Enter") sendMessage();
   });
-
   document.getElementById("broadcastBtn").addEventListener("click", addBroadcast);
   document.getElementById("addPinBtn").addEventListener("click", addCustomPin);
-
   document.getElementById("loreSearch").addEventListener("input", renderLore);
-
   document.getElementById("taskAddBtn").addEventListener("click", addTask);
   document.getElementById("taskInput").addEventListener("keydown", event => {
     if (event.key === "Enter") addTask();
   });
-
   bindProfileInputs();
 }
-
 function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js").catch(() => {
-      console.log("Service worker could not be registered.");
-    });
+    navigator.serviceWorker.register("service-worker.js").catch(() => console.log("Service worker could not be registered."));
   }
 }
-
-function init() {
+async function init() {
   updateClock();
   setInterval(updateClock, 1000);
 
   bindEvents();
-
   renderMessageFilters();
   renderMessages();
-  renderMap();
+  renderMapFilters();
+  await initLeafletMap();
   renderLoreFilters();
   renderLore();
   renderTasks();
   loadProfileInputs();
 
-  setInterval(() => {
-    if (Math.random() > 0.78) showEmission();
-  }, 16000);
+  setInterval(() => { if (Math.random() > 0.78) showEmission(); }, 16000);
 
   runBootSequence();
   registerServiceWorker();

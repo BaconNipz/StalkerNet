@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#171711" />
   <title>StalkerNet PDA</title>
   <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -18,9 +19,7 @@
       <div class="boot-line">Loading map overlays...</div>
       <div class="boot-line">Checking comms channels...</div>
       <div class="boot-line">Authentication accepted...</div>
-      <div class="boot-progress">
-        <div id="bootBar" class="boot-progress-fill"></div>
-      </div>
+      <div class="boot-progress"><div id="bootBar" class="boot-progress-fill"></div></div>
       <div class="boot-sub">warning: unsecured zone frequencies detected</div>
     </div>
   </div>
@@ -46,7 +45,6 @@
 
       <header class="pda-header module-panel">
         <div class="module-label">STALKERNET TERMINAL</div>
-
         <div class="status-row">
           <span>PDA-09 / UPLINK ACTIVE</span>
           <div class="status-right">
@@ -54,7 +52,6 @@
             <span id="batteryStatus">PWR ▰▰▰▱</span>
           </div>
         </div>
-
         <div class="title-row">
           <div class="title-block">
             <div class="title-main">ZONE FIELD PDA</div>
@@ -65,7 +62,6 @@
             <span id="timeText"></span>
           </div>
         </div>
-
         <div class="status-strip">
           <span>CALLSIGN <b id="headerCallsign">MARKED ROOKIE</b></span>
           <span>AREA <b id="headerLocation">CORDON</b></span>
@@ -78,24 +74,16 @@
           <h2>Communications</h2>
           <button id="broadcastBtn" class="small-btn accent-btn">Broadcast</button>
         </div>
-
         <div class="filter-row" id="messageFilters"></div>
-
         <div class="persona-box module-panel">
           <div class="module-label">ACTIVE CONTACT</div>
           <label for="personaSelect">Channel Persona</label>
           <select id="personaSelect">
-            <option>Loner</option>
-            <option>Trader</option>
-            <option>Duty</option>
-            <option>Freedom</option>
-            <option>Ecologist</option>
-            <option>Monolith</option>
+            <option>Loner</option><option>Trader</option><option>Duty</option>
+            <option>Freedom</option><option>Ecologist</option><option>Monolith</option>
           </select>
         </div>
-
         <div id="messageList" class="message-list"></div>
-
         <div class="input-row">
           <input id="messageInput" type="text" placeholder="Transmit PDA message..." />
           <button id="sendBtn" class="accent-btn">Send</button>
@@ -108,13 +96,14 @@
           <button id="addPinBtn" class="small-btn">Add Pin</button>
         </div>
 
+        <div class="filter-row" id="mapFilters"></div>
+
         <div class="map-card module-panel">
           <div class="module-label">ZONE OVERLAY</div>
-          <div class="zone-map" id="zoneMap">
-            <div class="map-label">TOPOGRAPHIC COMPOSITE // FIELD MODE</div>
-            <div class="map-grid-labels">
-              <span>A-01</span><span>B-03</span><span>C-07</span><span>D-11</span>
-            </div>
+          <div id="leafletMap" class="leaflet-map"></div>
+          <div id="mapMissingNotice" class="map-missing hidden">
+            <strong>Map image not found.</strong>
+            <p>Place a high-resolution Anomaly map image in <code>assets/anomaly-zone-map.jpg</code> and reload the app.</p>
           </div>
         </div>
 
@@ -124,36 +113,31 @@
           <p class="muted">Settlement</p>
           <p>Rookie routes, traders, patrols.</p>
         </article>
+
+        <article class="info-card module-panel">
+          <div class="module-label">MAP NOTES</div>
+          <p class="message-text">This map system supports zoom, pan, clickable points, custom pins, and category filtering. It is designed for a high-resolution local Anomaly map image.</p>
+        </article>
       </section>
 
       <section id="loreTab" class="tab-panel">
-        <div class="section-top">
-          <h2>Archive</h2>
-        </div>
-
+        <div class="section-top"><h2>Archive</h2></div>
         <input id="loreSearch" class="full-input" type="text" placeholder="Search archive..." />
         <div class="filter-row" id="loreFilters"></div>
         <div id="loreList" class="lore-list"></div>
       </section>
 
       <section id="tasksTab" class="tab-panel">
-        <div class="section-top">
-          <h2>Tasks</h2>
-        </div>
-
+        <div class="section-top"><h2>Tasks</h2></div>
         <div class="input-row">
           <input id="taskInput" type="text" placeholder="Add task, contract, or field note..." />
           <button id="taskAddBtn" class="accent-btn">Add</button>
         </div>
-
         <div id="taskList" class="task-list"></div>
       </section>
 
       <section id="profileTab" class="tab-panel">
-        <div class="section-top">
-          <h2>Identity</h2>
-        </div>
-
+        <div class="section-top"><h2>Identity</h2></div>
         <div class="profile-card module-panel">
           <div class="module-label">FIELD PROFILE</div>
           <div class="profile-head">
@@ -163,26 +147,11 @@
               <p class="muted">Stored locally on this device.</p>
             </div>
           </div>
-
-          <label>Callsign
-            <input id="profileCallsign" type="text" />
-          </label>
-
-          <label>Faction
-            <input id="profileFaction" type="text" />
-          </label>
-
-          <label>Rank
-            <input id="profileRank" type="text" />
-          </label>
-
-          <label>Current Location
-            <input id="profileLocation" type="text" />
-          </label>
-
-          <label>Preferred Weapon
-            <input id="profileWeapon" type="text" />
-          </label>
+          <label>Callsign<input id="profileCallsign" type="text" /></label>
+          <label>Faction<input id="profileFaction" type="text" /></label>
+          <label>Rank<input id="profileRank" type="text" /></label>
+          <label>Current Location<input id="profileLocation" type="text" /></label>
+          <label>Preferred Weapon<input id="profileWeapon" type="text" /></label>
         </div>
       </section>
 
@@ -196,6 +165,7 @@
     </section>
   </main>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
