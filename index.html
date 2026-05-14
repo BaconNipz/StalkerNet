@@ -1,1 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#071007" />
+  <title>StalkerNet PDA</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="emissionAlert" class="emission-alert hidden">
+    <div class="alert-icon">⚠</div>
+    <div>
+      <strong>EMISSION WARNING</strong>
+      <p>Atmospheric pressure collapse detected. Find shelter immediately.</p>
+    </div>
+  </div>
 
+  <main class="phone-frame">
+    <section class="pda-shell scanlines">
+      <header class="pda-header">
+        <div class="status-row">
+          <span>📡 PDA-09 / STALKERNET</span>
+          <span id="batteryStatus">▰▰▰▱</span>
+        </div>
+        <div class="title-row">
+          <div>
+            <h1>STALKERNET</h1>
+            <p>signal unstable // archive recovered</p>
+          </div>
+          <div class="date-box">
+            <span id="dateText"></span>
+            <span id="timeText"></span>
+          </div>
+        </div>
+      </header>
+
+      <section id="messagesTab" class="tab-panel active">
+        <div class="section-top">
+          <h2>Messages</h2>
+          <button id="broadcastBtn" class="small-btn">Zone Broadcast</button>
+        </div>
+
+        <div class="filter-row" id="messageFilters"></div>
+
+        <div class="persona-box">
+          <label for="personaSelect">Contact</label>
+          <select id="personaSelect">
+            <option>Loner</option>
+            <option>Trader</option>
+            <option>Duty</option>
+            <option>Freedom</option>
+            <option>Ecologist</option>
+            <option>Monolith</option>
+          </select>
+        </div>
+
+        <div id="messageList" class="message-list"></div>
+
+        <div class="input-row">
+          <input id="messageInput" type="text" placeholder="Send PDA message..." />
+          <button id="sendBtn">Send</button>
+        </div>
+      </section>
+
+      <section id="mapTab" class="tab-panel">
+        <div class="section-top">
+          <h2>Zone Map</h2>
+          <button id="addPinBtn" class="small-btn">Add Pin</button>
+        </div>
+
+        <div class="map-card">
+          <div class="zone-map" id="zoneMap">
+            <div class="map-label">COHESIVE ZONE MAP / PLACEHOLDER</div>
+          </div>
+        </div>
+
+        <article class="info-card" id="mapInfo">
+          <h3>Cordon</h3>
+          <p class="muted">Settlement</p>
+          <p>Rookie routes, traders, patrols.</p>
+        </article>
+      </section>
+
+      <section id="loreTab" class="tab-panel">
+        <div class="section-top">
+          <h2>Lore Archive</h2>
+        </div>
+
+        <input id="loreSearch" class="full-input" type="text" placeholder="Search archive..." />
+        <div class="filter-row" id="loreFilters"></div>
+        <div id="loreList" class="lore-list"></div>
+      </section>
+
+      <section id="tasksTab" class="tab-panel">
+        <div class="section-top">
+          <h2>Tasks</h2>
+        </div>
+
+        <div class="input-row">
+          <input id="taskInput" type="text" placeholder="Add job or note..." />
+          <button id="taskAddBtn">Add</button>
+        </div>
+
+        <div id="taskList" class="task-list"></div>
+      </section>
+
+      <section id="profileTab" class="tab-panel">
+        <div class="section-top">
+          <h2>Stalker Profile</h2>
+        </div>
+
+        <div class="profile-card">
+          <div class="avatar">☢</div>
+          <p class="muted">Stored locally on this device.</p>
+
+          <label>Callsign
+            <input id="profileCallsign" type="text" />
+          </label>
+
+          <label>Faction
+            <input id="profileFaction" type="text" />
+          </label>
+
+          <label>Rank
+            <input id="profileRank" type="text" />
+          </label>
+
+          <label>Current Location
+            <input id="profileLocation" type="text" />
+          </label>
+
+          <label>Preferred Weapon
+            <input id="profileWeapon" type="text" />
+          </label>
+        </div>
+      </section>
+
+      <nav class="bottom-nav">
+        <button class="nav-btn active" data-tab="messagesTab">💬<span>Messages</span></button>
+        <button class="nav-btn" data-tab="mapTab">🗺️<span>Map</span></button>
+        <button class="nav-btn" data-tab="loreTab">📚<span>Lore</span></button>
+        <button class="nav-btn" data-tab="tasksTab">📋<span>Tasks</span></button>
+        <button class="nav-btn" data-tab="profileTab">👤<span>Profile</span></button>
+      </nav>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
