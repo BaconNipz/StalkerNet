@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#11150e" />
+  <meta name="theme-color" content="#171711" />
   <title>StalkerNet PDA</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="bootScreen" class="boot-screen">
-    <div class="boot-panel">
-      <div class="boot-title">STALKERNET // PDA LINK</div>
-      <div class="boot-line">Initializing receiver...</div>
-      <div class="boot-line">Loading Zone archive...</div>
-      <div class="boot-line">Synchronizing contacts...</div>
-      <div class="boot-line">Authenticating stalker profile...</div>
+    <div class="boot-panel module-panel">
+      <div class="module-label">BOOT SEQUENCE</div>
+      <div class="boot-title">STALKERNET / FIELD PDA</div>
+      <div class="boot-line">Linking handheld terminal...</div>
+      <div class="boot-line">Mounting local archive...</div>
+      <div class="boot-line">Loading map overlays...</div>
+      <div class="boot-line">Checking comms channels...</div>
+      <div class="boot-line">Authentication accepted...</div>
       <div class="boot-progress">
         <div id="bootBar" class="boot-progress-fill"></div>
       </div>
-      <div class="boot-sub">establishing uplink to anomaly network</div>
+      <div class="boot-sub">warning: unsecured zone frequencies detected</div>
     </div>
   </div>
 
@@ -27,29 +29,36 @@
     <div class="alert-icon">⚠</div>
     <div>
       <strong>EMISSION WARNING</strong>
-      <p>Atmospheric pressure collapse detected. Find shelter immediately.</p>
+      <p>Rapid atmospheric instability detected. Seek enclosed shelter immediately.</p>
     </div>
   </div>
 
   <main class="phone-frame">
     <section class="pda-shell">
+      <div class="bezel-detail"></div>
       <div class="surface-noise"></div>
       <div class="scanlines"></div>
-      <div class="vignette"></div>
+      <div class="screen-glow"></div>
+      <div class="frame-screw screw-a"></div>
+      <div class="frame-screw screw-b"></div>
+      <div class="frame-screw screw-c"></div>
+      <div class="frame-screw screw-d"></div>
 
-      <header class="pda-header">
+      <header class="pda-header module-panel">
+        <div class="module-label">STALKERNET TERMINAL</div>
+
         <div class="status-row">
-          <span>STALKERNET // PDA-09</span>
+          <span>PDA-09 / UPLINK ACTIVE</span>
           <div class="status-right">
-            <span>LINK: STABLE</span>
+            <span>SIG 84%</span>
             <span id="batteryStatus">PWR ▰▰▰▱</span>
           </div>
         </div>
 
         <div class="title-row">
           <div class="title-block">
-            <div class="title-main">ZONE PDA</div>
-            <div class="title-sub">anomaly field terminal // unsecured channel</div>
+            <div class="title-main">ZONE FIELD PDA</div>
+            <div class="title-sub">anomaly network // mobile operating terminal</div>
           </div>
           <div class="date-box">
             <span id="dateText"></span>
@@ -58,22 +67,23 @@
         </div>
 
         <div class="status-strip">
-          <span>USER: <b id="headerCallsign">MARKED ROOKIE</b></span>
-          <span>AREA: <b id="headerLocation">CORDON</b></span>
-          <span>FACTION: <b id="headerFaction">LONER</b></span>
+          <span>CALLSIGN <b id="headerCallsign">MARKED ROOKIE</b></span>
+          <span>AREA <b id="headerLocation">CORDON</b></span>
+          <span>FACTION <b id="headerFaction">LONER</b></span>
         </div>
       </header>
 
       <section id="messagesTab" class="tab-panel active">
         <div class="section-top">
-          <h2>Messages</h2>
+          <h2>Communications</h2>
           <button id="broadcastBtn" class="small-btn accent-btn">Broadcast</button>
         </div>
 
         <div class="filter-row" id="messageFilters"></div>
 
-        <div class="persona-box terminal-box">
-          <label for="personaSelect">Active Channel Contact</label>
+        <div class="persona-box module-panel">
+          <div class="module-label">ACTIVE CONTACT</div>
+          <label for="personaSelect">Channel Persona</label>
           <select id="personaSelect">
             <option>Loner</option>
             <option>Trader</option>
@@ -94,20 +104,22 @@
 
       <section id="mapTab" class="tab-panel">
         <div class="section-top">
-          <h2>Zone Map</h2>
+          <h2>Tactical Map</h2>
           <button id="addPinBtn" class="small-btn">Add Pin</button>
         </div>
 
-        <div class="map-card">
+        <div class="map-card module-panel">
+          <div class="module-label">ZONE OVERLAY</div>
           <div class="zone-map" id="zoneMap">
-            <div class="map-label">TACTICAL OVERLAY // ZONE COMPOSITE</div>
+            <div class="map-label">TOPOGRAPHIC COMPOSITE // FIELD MODE</div>
             <div class="map-grid-labels">
-              <span>A1</span><span>B2</span><span>C3</span><span>D4</span>
+              <span>A-01</span><span>B-03</span><span>C-07</span><span>D-11</span>
             </div>
           </div>
         </div>
 
-        <article class="info-card" id="mapInfo">
+        <article class="info-card module-panel" id="mapInfo">
+          <div class="module-label">LOCATION DATA</div>
           <h3>Cordon</h3>
           <p class="muted">Settlement</p>
           <p>Rookie routes, traders, patrols.</p>
@@ -116,7 +128,7 @@
 
       <section id="loreTab" class="tab-panel">
         <div class="section-top">
-          <h2>Lore Archive</h2>
+          <h2>Archive</h2>
         </div>
 
         <input id="loreSearch" class="full-input" type="text" placeholder="Search archive..." />
@@ -139,14 +151,15 @@
 
       <section id="profileTab" class="tab-panel">
         <div class="section-top">
-          <h2>Stalker Profile</h2>
+          <h2>Identity</h2>
         </div>
 
-        <div class="profile-card">
+        <div class="profile-card module-panel">
+          <div class="module-label">FIELD PROFILE</div>
           <div class="profile-head">
             <div class="avatar">☢</div>
             <div>
-              <div class="profile-head-title">Field Identity</div>
+              <div class="profile-head-title">Operational Identity</div>
               <p class="muted">Stored locally on this device.</p>
             </div>
           </div>
@@ -174,11 +187,11 @@
       </section>
 
       <nav class="bottom-nav">
-        <button class="nav-btn active" data-tab="messagesTab"><span class="nav-ico">COM</span><span>Messages</span></button>
+        <button class="nav-btn active" data-tab="messagesTab"><span class="nav-ico">COM</span><span>Comms</span></button>
         <button class="nav-btn" data-tab="mapTab"><span class="nav-ico">MAP</span><span>Map</span></button>
-        <button class="nav-btn" data-tab="loreTab"><span class="nav-ico">LOG</span><span>Lore</span></button>
+        <button class="nav-btn" data-tab="loreTab"><span class="nav-ico">ARC</span><span>Archive</span></button>
         <button class="nav-btn" data-tab="tasksTab"><span class="nav-ico">TSK</span><span>Tasks</span></button>
-        <button class="nav-btn" data-tab="profileTab"><span class="nav-ico">ID</span><span>Profile</span></button>
+        <button class="nav-btn" data-tab="profileTab"><span class="nav-ico">ID</span><span>ID</span></button>
       </nav>
     </section>
   </main>
