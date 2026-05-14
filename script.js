@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v5";
+const STORAGE_KEY = "stalkernet_pda_v6";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -47,10 +47,69 @@ const defaultProfile = {
 // Pixel-space template for a 3840 x 9788 vertical map.
 // Replace these coordinates if your chosen map uses a different layout.
 const MAP_CONFIG = {
-  imageUrl: "assets/anomaly-zone-map.jpg",
+  imageUrl: "assets/maps/southern.jpg",
   fallbackWidth: 603,
-  fallbackHeight: 1536
+  fallbackHeight: 356
 };
+
+const MAP_SECTIONS = [
+  {
+    "id": "north",
+    "name": "Northern Zone / CNPP",
+    "file": "assets/maps/north.jpg",
+    "width": 603,
+    "height": 300,
+    "sourceY0": 0,
+    "sourceY1": 300
+  },
+  {
+    "id": "pripyat",
+    "name": "Pripyat / Outskirts",
+    "file": "assets/maps/pripyat.jpg",
+    "width": 603,
+    "height": 320,
+    "sourceY0": 240,
+    "sourceY1": 560
+  },
+  {
+    "id": "jupiter",
+    "name": "Jupiter / Zaton",
+    "file": "assets/maps/jupiter.jpg",
+    "width": 603,
+    "height": 320,
+    "sourceY0": 500,
+    "sourceY1": 820
+  },
+  {
+    "id": "central",
+    "name": "Central Zone",
+    "file": "assets/maps/central.jpg",
+    "width": 603,
+    "height": 320,
+    "sourceY0": 760,
+    "sourceY1": 1080
+  },
+  {
+    "id": "rostok",
+    "name": "Rostok / Yantar",
+    "file": "assets/maps/rostok.jpg",
+    "width": 603,
+    "height": 320,
+    "sourceY0": 980,
+    "sourceY1": 1300
+  },
+  {
+    "id": "southern",
+    "name": "Southern Zone / Cordon",
+    "file": "assets/maps/southern.jpg",
+    "width": 603,
+    "height": 356,
+    "sourceY0": 1180,
+    "sourceY1": 1536
+  }
+];
+
+let currentSectionId = "southern";
 
 const defaultMapPoints = [
   { id: "cordon", name: "Cordon", type: "Location", x: 127, y: 1365, note: "Rookie routes, traders, patrols." },
@@ -83,7 +142,8 @@ let state = loadState() || {
   activeMessageFilter: "All",
   activeLoreFilter: "All",
   activeMapFilter: "All",
-  selectedMapId: "cordon"
+  selectedMapId: "cordon",
+  activeMapSection: "southern"
 };
 
 function id() {
@@ -204,6 +264,40 @@ function addBroadcast() {
 }
 
 // Map system
+
+function getActiveSection() {
+  const id = state.activeMapSection || currentSectionId || "southern";
+  return MAP_SECTIONS.find(section => section.id === id) || MAP_SECTIONS[0];
+}
+
+function pointInSection(point, section) {
+  return point.y >= section.sourceY0 && point.y <= section.sourceY1;
+}
+
+function pointToSectionPoint(point, section) {
+  return { ...point, sectionY: point.y - section.sourceY0 };
+}
+
+function renderMapSectionSelect() {
+  const select = document.getElementById("mapSectionSelect");
+  if (!select) return;
+  select.innerHTML = "";
+  MAP_SECTIONS.forEach(section => {
+    const option = document.createElement("option");
+    option.value = section.id;
+    option.textContent = section.name;
+    if ((state.activeMapSection || "southern") === section.id) option.selected = true;
+    select.appendChild(option);
+  });
+}
+
+function setMapSection(sectionId) {
+  state.activeMapSection = sectionId;
+  currentSectionId = sectionId;
+  saveState();
+  initLeafletMap(true);
+}
+
 function getAllMapPoints() {
   return [...defaultMapPoints, ...(state.customPins || [])];
 }
@@ -218,7 +312,9 @@ function mapTypeClass(type) {
 }
 function renderMapFilters() {
   const box = document.getElementById("mapFilters");
-  const types = ["All", ...new Set(getAllMapPoints().map(point => point.type))];
+  const section = getActiveSection();
+  const sectionPoints = getAllMapPoints().filter(point => pointInSection(point, section));
+  const types = ["All", ...new Set(sectionPoints.map(point => point.type))];
   box.innerHTML = "";
   types.forEach(type => {
     const btn = document.createElement("button");
@@ -264,12 +360,17 @@ function rebuildLeafletMarkers() {
   leafletMarkers.forEach(marker => leafletMap.removeLayer(marker));
   leafletMarkers = [];
 
+  const section = getActiveSection();
+  const sectionPoints = getAllMapPoints()
+    .filter(point => pointInSection(point, section))
+    .map(point => pointToSectionPoint(point, section));
+
   const visiblePoints = state.activeMapFilter === "All"
-    ? getAllMapPoints()
-    : getAllMapPoints().filter(point => point.type === state.activeMapFilter);
+    ? sectionPoints
+    : sectionPoints.filter(point => point.type === state.activeMapFilter);
 
   visiblePoints.forEach(point => {
-    const marker = buildMarker(point);
+    const marker = buildMarker({ ...point, y: point.sectionY });
     marker.addTo(leafletMap);
     leafletMarkers.push(marker);
   });
@@ -293,7 +394,7 @@ function addCustomPin() {
     type: typeInput,
     note,
     x: Math.round(center.lng),
-    y: Math.round(center.lat)
+    y: Math.round(center.lat + getActiveSection().sourceY0)
   });
   state.selectedMapId = state.customPins[state.customPins.length - 1].id;
   saveState();
@@ -309,11 +410,15 @@ function imageExists(url) {
     img.src = url + "?v=" + Date.now();
   });
 }
-async function initLeafletMap() {
+async function initLeafletMap(reset = false) {
   if (!window.L) return;
-  const result = await imageExists(MAP_CONFIG.imageUrl);
+
+  const section = getActiveSection();
+  currentSectionId = section.id;
+
   const mapNotice = document.getElementById("mapMissingNotice");
-  const mapEl = document.getElementById("leafletMap");
+  const imageUrl = section.file;
+  const result = await imageExists(imageUrl);
 
   if (!result.ok) {
     mapNotice.classList.remove("hidden");
@@ -321,26 +426,35 @@ async function initLeafletMap() {
     mapNotice.classList.add("hidden");
   }
 
-  const width = result.width || MAP_CONFIG.fallbackWidth;
-  const height = result.height || MAP_CONFIG.fallbackHeight;
+  const width = result.width || section.width || MAP_CONFIG.fallbackWidth;
+  const height = result.height || section.height || MAP_CONFIG.fallbackHeight;
   mapBounds = [[0, 0], [height, width]];
+
+  if (leafletMap) {
+    leafletMap.remove();
+    leafletMap = null;
+    leafletMarkers = [];
+  }
 
   leafletMap = L.map("leafletMap", {
     crs: L.CRS.Simple,
-    minZoom: -2,
-    maxZoom: 2,
+    minZoom: -1.5,
+    maxZoom: 3,
     zoomSnap: 0.25,
     attributionControl: false
   });
 
-  const imageOverlay = L.imageOverlay(MAP_CONFIG.imageUrl, mapBounds, { opacity: result.ok ? 1 : 0 });
+  const imageOverlay = L.imageOverlay(imageUrl, mapBounds, { opacity: result.ok ? 1 : 0 });
   imageOverlay.addTo(leafletMap);
   leafletMap.fitBounds(mapBounds);
 
+  renderMapFilters();
   rebuildLeafletMarkers();
-  renderMapInfo();
 
-  leafletMap.on("click", () => {});
+  const sectionPoint = getAllMapPoints().find(point => pointInSection(point, section));
+  if (sectionPoint) renderMapInfo(sectionPoint.id);
+  else renderMapInfo();
+
   setTimeout(() => leafletMap.invalidateSize(), 150);
 }
 
@@ -502,6 +616,7 @@ function bindEvents() {
   });
   document.getElementById("broadcastBtn").addEventListener("click", addBroadcast);
   document.getElementById("addPinBtn").addEventListener("click", addCustomPin);
+  document.getElementById("mapSectionSelect").addEventListener("change", event => setMapSection(event.target.value));
   document.getElementById("loreSearch").addEventListener("input", renderLore);
   document.getElementById("taskAddBtn").addEventListener("click", addTask);
   document.getElementById("taskInput").addEventListener("keydown", event => {
@@ -521,6 +636,7 @@ async function init() {
   bindEvents();
   renderMessageFilters();
   renderMessages();
+  renderMapSectionSelect();
   renderMapFilters();
   await initLeafletMap();
   renderLoreFilters();

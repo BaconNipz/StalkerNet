@@ -269,3 +269,17 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   .message-list { max-height:42dvh; }
   .status-strip { gap:6px; }
 }
+
+
+.map-section-row {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding: 12px;
+}
+
+.map-section-row label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}

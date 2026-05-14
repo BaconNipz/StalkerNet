@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v5";
+const CACHE_NAME = "stalkernet-cache-v6";
 
 const FILES_TO_CACHE = [
   "./",
@@ -8,7 +8,12 @@ const FILES_TO_CACHE = [
   "./manifest.json",
   "./icon-192.png",
   "./icon-512.png",
-  "./assets/anomaly-zone-map.jpg"
+  "./assets/maps/north.jpg",
+  "./assets/maps/pripyat.jpg",
+  "./assets/maps/jupiter.jpg",
+  "./assets/maps/central.jpg",
+  "./assets/maps/rostok.jpg",
+  "./assets/maps/southern.jpg"
 ];
 
 self.addEventListener("install", event => {
