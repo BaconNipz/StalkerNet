@@ -69,83 +69,17 @@ const personaReplies = {
 };
 
 const loreEntries = [
-  {
-    id: "bloodsucker",
-    category: "Mutants",
-    title: "Bloodsucker",
-    threat: "Extreme",
-    body: "A near-invisible predator usually found around abandoned villages, swamps, tunnels, and underground labs. Listen for heavy breathing and wet footfalls. Seeing nothing does not mean nothing is there."
-  },
-  {
-    id: "snork",
-    category: "Mutants",
-    title: "Snork",
-    threat: "High",
-    body: "Twisted, leaping humanoid mutants. They attack in brutal lunges and often appear in places where the air tastes of old rubber, rust, and bad decisions."
-  },
-  {
-    id: "controller",
-    category: "Mutants",
-    title: "Controller",
-    threat: "Extreme",
-    body: "A psychic mutant capable of disorienting or dominating the mind. Distance is survival. If your thoughts stop sounding like your own, run."
-  },
-  {
-    id: "electro",
-    category: "Anomalies",
-    title: "Electro",
-    threat: "High",
-    body: "A crackling electrical anomaly often found near metal wreckage, tunnels, industrial yards, and damp ground. Throw bolts before crossing. Sparks are warnings, not decoration."
-  },
-  {
-    id: "burner",
-    category: "Anomalies",
-    title: "Burner",
-    threat: "High",
-    body: "A thermal anomaly that can ignite the careless in a blink. Heat shimmer, ash, and scorched grass are your polite invitations to go elsewhere."
-  },
-  {
-    id: "loners",
-    category: "Factions",
-    title: "Loners",
-    threat: "Variable",
-    body: "Independent stalkers trying to survive, trade, scavenge, and sometimes become legends. Trust is possible, but never free. Most know more than they say."
-  },
-  {
-    id: "duty",
-    category: "Factions",
-    title: "Duty",
-    threat: "Organised",
-    body: "A militarised faction that believes the Zone is a plague to be contained or destroyed. Disciplined, armed, and not famous for their sense of humour."
-  },
-  {
-    id: "freedom",
-    category: "Factions",
-    title: "Freedom",
-    threat: "Organised",
-    body: "A loose faction that believes the Zone should be studied, explored, or allowed to exist. Their camps often smell of gun oil, smoke, and argument."
-  },
-  {
-    id: "moonlight",
-    category: "Artifacts",
-    title: "Moonlight",
-    threat: "Useful",
-    body: "An artifact associated with electrical anomalies. Valued by traders and stalkers who enjoy walking away from bad decisions with functioning organs."
-  },
-  {
-    id: "cordon",
-    category: "Locations",
-    title: "Cordon",
-    threat: "Moderate",
-    body: "The southern fringe of the Zone. Rookies arrive here with cheap jackets, loud questions, and an impressive talent for dying near roads."
-  },
-  {
-    id: "yantar",
-    category: "Locations",
-    title: "Yantar",
-    threat: "Severe",
-    body: "A research area known for psi danger, laboratories, and scientists who say alarming things in calm voices."
-  }
+  { id: "bloodsucker", category: "Mutants", title: "Bloodsucker", threat: "Extreme", body: "A near-invisible predator usually found around abandoned villages, swamps, tunnels, and underground labs. Listen for heavy breathing and wet footfalls. Seeing nothing does not mean nothing is there." },
+  { id: "snork", category: "Mutants", title: "Snork", threat: "High", body: "Twisted, leaping humanoid mutants. They attack in brutal lunges and often appear in places where the air tastes of old rubber, rust, and bad decisions." },
+  { id: "controller", category: "Mutants", title: "Controller", threat: "Extreme", body: "A psychic mutant capable of disorienting or dominating the mind. Distance is survival. If your thoughts stop sounding like your own, run." },
+  { id: "electro", category: "Anomalies", title: "Electro", threat: "High", body: "A crackling electrical anomaly often found near metal wreckage, tunnels, industrial yards, and damp ground. Throw bolts before crossing. Sparks are warnings, not decoration." },
+  { id: "burner", category: "Anomalies", title: "Burner", threat: "High", body: "A thermal anomaly that can ignite the careless in a blink. Heat shimmer, ash, and scorched grass are your polite invitations to go elsewhere." },
+  { id: "loners", category: "Factions", title: "Loners", threat: "Variable", body: "Independent stalkers trying to survive, trade, scavenge, and sometimes become legends. Trust is possible, but never free. Most know more than they say." },
+  { id: "duty", category: "Factions", title: "Duty", threat: "Organised", body: "A militarised faction that believes the Zone is a plague to be contained or destroyed. Disciplined, armed, and not famous for their sense of humour." },
+  { id: "freedom", category: "Factions", title: "Freedom", threat: "Organised", body: "A loose faction that believes the Zone should be studied, explored, or allowed to exist. Their camps often smell of gun oil, smoke, and argument." },
+  { id: "moonlight", category: "Artifacts", title: "Moonlight", threat: "Useful", body: "An artifact associated with electrical anomalies. Valued by traders and stalkers who enjoy walking away from bad decisions with functioning organs." },
+  { id: "cordon", category: "Locations", title: "Cordon", threat: "Moderate", body: "The southern fringe of the Zone. Rookies arrive here with cheap jackets, loud questions, and an impressive talent for dying near roads." },
+  { id: "yantar", category: "Locations", title: "Yantar", threat: "Severe", body: "A research area known for psi danger, laboratories, and scientists who say alarming things in calm voices." }
 ];
 
 const defaultMapLocations = [
@@ -206,6 +140,12 @@ function updateClock() {
   const date = new Date();
   document.getElementById("dateText").textContent = date.toLocaleDateString();
   document.getElementById("timeText").textContent = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function updateHeaderProfile() {
+  document.getElementById("headerCallsign").textContent = (state.profile.callsign || "UNKNOWN").toUpperCase();
+  document.getElementById("headerLocation").textContent = (state.profile.location || "UNKNOWN").toUpperCase();
+  document.getElementById("headerFaction").textContent = (state.profile.faction || "UNKNOWN").toUpperCase();
 }
 
 function switchTab(tabId) {
@@ -489,6 +429,7 @@ function loadProfileInputs() {
   document.getElementById("profileRank").value = state.profile.rank || "";
   document.getElementById("profileLocation").value = state.profile.location || "";
   document.getElementById("profileWeapon").value = state.profile.weapon || "";
+  updateHeaderProfile();
 }
 
 function bindProfileInputs() {
@@ -504,6 +445,7 @@ function bindProfileInputs() {
     document.getElementById(inputId).addEventListener("input", event => {
       state.profile[key] = event.target.value;
       saveState();
+      updateHeaderProfile();
     });
   });
 }
@@ -512,6 +454,27 @@ function showEmission() {
   const alert = document.getElementById("emissionAlert");
   alert.classList.remove("hidden");
   setTimeout(() => alert.classList.add("hidden"), 4500);
+}
+
+function runBootSequence() {
+  const bootScreen = document.getElementById("bootScreen");
+  const bootBar = document.getElementById("bootBar");
+  let progress = 0;
+
+  const timer = setInterval(() => {
+    progress += 9 + Math.random() * 15;
+    if (progress > 100) progress = 100;
+    bootBar.style.width = `${progress}%`;
+
+    if (progress >= 100) {
+      clearInterval(timer);
+      setTimeout(() => {
+        bootScreen.style.opacity = "0";
+        bootScreen.style.transition = "opacity 350ms ease";
+        setTimeout(() => bootScreen.remove(), 360);
+      }, 350);
+    }
+  }, 120);
 }
 
 function escapeHtml(text) {
@@ -572,6 +535,7 @@ function init() {
     if (Math.random() > 0.78) showEmission();
   }, 16000);
 
+  runBootSequence();
   registerServiceWorker();
 }
 

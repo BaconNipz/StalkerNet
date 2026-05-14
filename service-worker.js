@@ -1,11 +1,13 @@
-const CACHE_NAME = "stalkernet-cache-v1";
+const CACHE_NAME = "stalkernet-cache-v2";
 
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
   "./style.css",
   "./script.js",
-  "./manifest.json"
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
 self.addEventListener("install", event => {
@@ -24,8 +26,6 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      return cached || fetch(event.request);
-    })
+    caches.match(event.request).then(cached => cached || fetch(event.request))
   );
 });
