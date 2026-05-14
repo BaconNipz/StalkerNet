@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v4";
+const STORAGE_KEY = "stalkernet_pda_v5";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -48,28 +48,28 @@ const defaultProfile = {
 // Replace these coordinates if your chosen map uses a different layout.
 const MAP_CONFIG = {
   imageUrl: "assets/anomaly-zone-map.jpg",
-  fallbackWidth: 3840,
-  fallbackHeight: 9788
+  fallbackWidth: 603,
+  fallbackHeight: 1536
 };
 
 const defaultMapPoints = [
-  { id: "cordon", name: "Cordon", type: "Location", x: 810, y: 8700, note: "Rookie routes, traders, patrols." },
-  { id: "garbage", name: "Garbage", type: "Danger", x: 1320, y: 7600, note: "Scrapyards, bandits, mutant movement." },
-  { id: "agroprom", name: "Agroprom", type: "Location", x: 1680, y: 6900, note: "Military activity, underground approaches, and old research infrastructure." },
-  { id: "darkvalley", name: "Dark Valley", type: "Danger", x: 950, y: 7100, note: "Bandit presence and dangerous industrial ruins." },
-  { id: "rostok", name: "Rostok", type: "Hub", x: 1580, y: 6100, note: "Bar, Duty presence, technicians, contracts." },
-  { id: "wildterritory", name: "Wild Territory", type: "Danger", x: 1930, y: 5750, note: "Hostile movement, salvage opportunities, unstable ground." },
-  { id: "yantar", name: "Yantar", type: "Lab", x: 2160, y: 6250, note: "Ecologists, psi readings, lab rumours." },
-  { id: "armywarehouses", name: "Army Warehouses", type: "Hub", x: 1190, y: 5050, note: "Faction routes, patrols, and staging areas." },
-  { id: "redforest", name: "Red Forest", type: "Danger", x: 2030, y: 4680, note: "Avoid without serious preparation." },
-  { id: "radar", name: "Radar", type: "Danger", x: 1760, y: 4050, note: "High-risk territory and emissions of a different kind." },
-  { id: "limansk", name: "Limansk", type: "Location", x: 2660, y: 4100, note: "Urban ruins and fragmented access routes." },
-  { id: "deadcity", name: "Dead City", type: "Location", x: 900, y: 4300, note: "Mercenary activity and eerie urban decay." },
-  { id: "jupiter", name: "Jupiter", type: "Location", x: 2150, y: 2720, note: "Factory structures, tunnels, and rich scavenging grounds." },
-  { id: "zaton", name: "Zaton", type: "Location", x: 1300, y: 2450, note: "Swamps, wrecks, and scattered survivor routes." },
-  { id: "outskirts", name: "Outskirts", type: "Location", x: 2450, y: 1920, note: "Late-zone urban sector with high danger." },
-  { id: "pripyat", name: "Pripyat", type: "Location", x: 2150, y: 1560, note: "High-value salvage. Higher-value funerals." },
-  { id: "cnpp", name: "CNPP", type: "Danger", x: 2020, y: 650, note: "The heart of the Zone. You know what that means." }
+  { id: "cordon", name: "Cordon", type: "Location", x: 127, y: 1365, note: "Rookie routes, traders, patrols." },
+  { id: "garbage", name: "Garbage", type: "Danger", x: 207, y: 1193, note: "Scrapyards, bandits, mutant movement." },
+  { id: "agroprom", name: "Agroprom", type: "Location", x: 264, y: 1083, note: "Military activity, underground approaches, and old research infrastructure." },
+  { id: "darkvalley", name: "Dark Valley", type: "Danger", x: 149, y: 1114, note: "Bandit presence and dangerous industrial ruins." },
+  { id: "rostok", name: "Rostok", type: "Hub", x: 248, y: 957, note: "Bar, Duty presence, technicians, contracts." },
+  { id: "wildterritory", name: "Wild Territory", type: "Danger", x: 303, y: 902, note: "Hostile movement, salvage opportunities, unstable ground." },
+  { id: "yantar", name: "Yantar", type: "Lab", x: 339, y: 981, note: "Ecologists, psi readings, lab rumours." },
+  { id: "armywarehouses", name: "Army Warehouses", type: "Hub", x: 187, y: 792, note: "Faction routes, patrols, and staging areas." },
+  { id: "redforest", name: "Red Forest", type: "Danger", x: 319, y: 734, note: "Avoid without serious preparation." },
+  { id: "radar", name: "Radar", type: "Danger", x: 276, y: 636, note: "High-risk territory and emissions of a different kind." },
+  { id: "limansk", name: "Limansk", type: "Location", x: 418, y: 643, note: "Urban ruins and fragmented access routes." },
+  { id: "deadcity", name: "Dead City", type: "Location", x: 141, y: 675, note: "Mercenary activity and eerie urban decay." },
+  { id: "jupiter", name: "Jupiter", type: "Location", x: 338, y: 427, note: "Factory structures, tunnels, and rich scavenging grounds." },
+  { id: "zaton", name: "Zaton", type: "Location", x: 204, y: 384, note: "Swamps, wrecks, and scattered survivor routes." },
+  { id: "outskirts", name: "Outskirts", type: "Location", x: 385, y: 301, note: "Late-zone urban sector with high danger." },
+  { id: "pripyat", name: "Pripyat", type: "Location", x: 338, y: 245, note: "High-value salvage. Higher-value funerals." },
+  { id: "cnpp", name: "CNPP", type: "Danger", x: 317, y: 102, note: "The heart of the Zone. You know what that means." }
 ];
 
 let leafletMap = null;
