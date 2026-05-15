@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v7";
+const STORAGE_KEY = "stalkernet_pda_v8";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -104,10 +104,10 @@ let currentSectionId = "world";
 
 const defaultMapPoints = [
   // World map starter points. These are placeholders until we align your final world map.
-  { id: "world_swamp", mapId: "world", name: "Swamp", type: "Location", x: 350, y: 1900, note: "Southern-west wetland region." },
-  { id: "world_meadow", mapId: "world", name: "Meadow", type: "Location", x: 800, y: 1900, note: "Open southern travel route." },
-  { id: "world_cordon", mapId: "world", name: "Cordon", type: "Location", x: 900, y: 2100, note: "Southern entry routes and rookie territory." },
-  { id: "world_darkscape", mapId: "world", name: "Darkscape", type: "Danger", x: 1250, y: 2050, note: "Remote southern-east zone." },
+  { id: "world_swamp", mapId: "world", name: "Swamp", type: "Location", x: 111, y: 1318, note: "Southern-west wetland region." },
+  { id: "world_meadow", mapId: "world", name: "Meadow", type: "Location", x: 355, y: 1208, note: "Open southern travel route." },
+  { id: "world_cordon", mapId: "world", name: "Cordon", type: "Location", x: 267, y: 1207, note: "Southern entry routes and rookie territory." },
+  { id: "world_darkscape", mapId: "world", name: "Darkscape", type: "Danger", x: 495, y: 1245, note: "Remote southern-east zone." },
 
   // Individual zone starter points.
   { id: "meadow_main", mapId: "meadow", name: "Meadow", type: "Location", x: 800, y: 1200, note: "Open terrain, road approaches, and scattered structures." },
