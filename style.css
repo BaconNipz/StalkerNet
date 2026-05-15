@@ -312,3 +312,92 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 .poi-underground {
   background: #8d6bb8;
 }
+
+
+.pin-form-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.pin-form-grid label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.pin-form-grid textarea {
+  width: 100%;
+  min-height: 84px;
+  padding: 11px 12px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  outline: none;
+  color: var(--text);
+  background: rgba(7, 8, 6, 0.92);
+  font-family: inherit;
+}
+
+.pin-form-actions,
+.pin-manager-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.pin-manager-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.pin-manager-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.pin-manager-main {
+  display: grid;
+  gap: 3px;
+}
+
+.pin-manager-main strong {
+  color: var(--olive);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.pin-manager-main span {
+  color: var(--text-dim);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.pin-manager-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.pin-manager-controls button[disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+@media (max-width: 390px) {
+  .pin-manager-row {
+    grid-template-columns: 1fr;
+  }
+
+  .pin-manager-controls {
+    justify-content: flex-start;
+  }
+}

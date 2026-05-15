@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v14";
+const STORAGE_KEY = "stalkernet_pda_v15";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -157,7 +157,9 @@ let state = loadState() || {
   activeMapFilter: "All",
   selectedMapId: "world_cordon",
   activeMapSection: "world",
-  pinOverrides: {}
+  pinOverrides: {},
+  hiddenPins: {},
+  allPinsHidden: false
 };
 
 // v14 migration: clear locally saved world-pin overrides so baked public defaults appear.
@@ -322,6 +324,159 @@ function savePinOverride(pointId, latlng) {
   saveState();
 }
 
+function isPinHidden(point) {
+  if (!state.hiddenPins) state.hiddenPins = {};
+  return Boolean(state.allPinsHidden || state.hiddenPins[point.id]);
+}
+
+function togglePinHidden(pointId) {
+  if (!state.hiddenPins) state.hiddenPins = {};
+  state.hiddenPins[pointId] = !state.hiddenPins[pointId];
+  saveState();
+  rebuildLeafletMarkers();
+  renderPinManagerList();
+}
+
+function setAllPinsHidden(hidden) {
+  state.allPinsHidden = hidden;
+  saveState();
+  rebuildLeafletMarkers();
+  renderPinManagerList();
+  updateToggleAllPinsButton();
+}
+
+function updateToggleAllPinsButton() {
+  const btn = document.getElementById("toggleAllPinsBtn");
+  if (!btn) return;
+  btn.textContent = state.allPinsHidden ? "Show All" : "Hide All";
+}
+
+function toggleAllPinsQuick() {
+  setAllPinsHidden(!state.allPinsHidden);
+}
+
+function openPinManager() {
+  const panel = document.getElementById("pinManagerPanel");
+  panel.classList.toggle("hidden");
+  renderPinManagerList();
+}
+
+function openPinCreator() {
+  document.getElementById("pinCreatePanel").classList.remove("hidden");
+  document.getElementById("newPinName").focus();
+}
+
+function closePinCreator() {
+  document.getElementById("pinCreatePanel").classList.add("hidden");
+  document.getElementById("newPinName").value = "";
+  document.getElementById("newPinType").value = "Custom";
+  document.getElementById("newPinNote").value = "";
+}
+
+function createPinFromForm() {
+  if (!leafletMap) {
+    alert("Map is not ready yet.");
+    return;
+  }
+
+  const name = document.getElementById("newPinName").value.trim();
+  const type = document.getElementById("newPinType").value.trim() || "Custom";
+  const note = document.getElementById("newPinNote").value.trim() || "No note recorded.";
+
+  if (!name) {
+    alert("Give the pin a name first.");
+    return;
+  }
+
+  const center = leafletMap.getCenter();
+
+  state.customPins = state.customPins || [];
+  const newPin = {
+    id: id(),
+    mapId: getActiveSection().id,
+    name,
+    type,
+    note,
+    x: Math.round(center.lng),
+    y: Math.round(center.lat)
+  };
+
+  state.customPins.push(newPin);
+  state.selectedMapId = newPin.id;
+  saveState();
+
+  closePinCreator();
+  rebuildLeafletMarkers();
+  renderMapInfo(newPin.id);
+  renderPinManagerList();
+}
+
+function deleteCustomPin(pointId) {
+  const point = getAllMapPoints().find(pin => pin.id === pointId);
+  if (!point) return;
+
+  if (!pointId.startsWith("world_") && !pointId.includes("_main")) {
+    // likely custom, but still confirm
+  }
+
+  const isDefaultPin = defaultMapPoints.some(pin => pin.id === pointId);
+  if (isDefaultPin) {
+    alert("Default map pins cannot be deleted. You can hide them instead.");
+    return;
+  }
+
+  if (!confirm(`Delete custom pin "${point.name}"?`)) return;
+
+  state.customPins = (state.customPins || []).filter(pin => pin.id !== pointId);
+  if (state.hiddenPins) delete state.hiddenPins[pointId];
+  if (state.pinOverrides) delete state.pinOverrides[pointId];
+
+  saveState();
+  rebuildLeafletMarkers();
+  renderPinManagerList();
+  renderMapInfo();
+}
+
+function renderPinManagerList() {
+  const list = document.getElementById("pinManagerList");
+  if (!list) return;
+
+  const section = getActiveSection();
+  const pins = getAllMapPoints().filter(point => pointInSection(point, section));
+
+  if (!pins.length) {
+    list.innerHTML = `<p class="message-text">No pins in this map section.</p>`;
+    return;
+  }
+
+  list.innerHTML = "";
+
+  pins.forEach(point => {
+    const isDefaultPin = defaultMapPoints.some(pin => pin.id === point.id);
+    const row = document.createElement("div");
+    row.className = "pin-manager-row";
+    row.innerHTML = `
+      <div class="pin-manager-main">
+        <strong>${escapeHtml(point.name)}</strong>
+        <span>${escapeHtml(point.type)} // x:${Math.round(point.x)} y:${Math.round(point.y)}</span>
+      </div>
+      <div class="pin-manager-controls">
+        <button class="small-btn" data-toggle-pin="${point.id}">${isPinHidden(point) ? "Show" : "Hide"}</button>
+        <button class="small-btn delete-btn" data-delete-pin="${point.id}" ${isDefaultPin ? "disabled" : ""}>Delete</button>
+      </div>
+    `;
+    list.appendChild(row);
+  });
+
+  document.querySelectorAll("[data-toggle-pin]").forEach(btn => {
+    btn.onclick = () => togglePinHidden(btn.dataset.togglePin);
+  });
+
+  document.querySelectorAll("[data-delete-pin]").forEach(btn => {
+    btn.onclick = () => deleteCustomPin(btn.dataset.deletePin);
+  });
+}
+
 function resetWorldPins() {
   if (!confirm("Reset saved world map pin positions on this device?")) return;
   state.pinOverrides = {};
@@ -388,6 +543,8 @@ function setMapSection(sectionId) {
   state.activeMapFilter = "All";
   saveState();
   initLeafletMap(true);
+  renderPinManagerList();
+  updateToggleAllPinsButton();
 }
 
 function getAllMapPoints() {
@@ -472,9 +629,11 @@ function rebuildLeafletMarkers() {
     .filter(point => pointInSection(point, section))
     .map(point => pointToSectionPoint(point, section));
 
-  const visiblePoints = state.activeMapFilter === "All"
+  const filteredByType = state.activeMapFilter === "All"
     ? sectionPoints
     : sectionPoints.filter(point => point.type === state.activeMapFilter);
+
+  const visiblePoints = filteredByType.filter(point => !isPinHidden(point));
 
   visiblePoints.forEach(point => {
     const marker = buildMarker({ ...point, y: point.sectionY });
@@ -483,32 +642,7 @@ function rebuildLeafletMarkers() {
   });
 }
 function addCustomPin() {
-  if (!leafletMap) {
-    alert("Map is not ready yet.");
-    return;
-  }
-  const name = prompt("Pin name?");
-  if (!name) return;
-
-  const typeInput = prompt("Pin type? Example: Custom, Stash, Danger, Camp") || "Custom";
-  const note = prompt("Pin note?") || "No note recorded.";
-  const center = leafletMap.getCenter();
-
-  state.customPins = state.customPins || [];
-  state.customPins.push({
-    id: id(),
-    name,
-    type: typeInput,
-    note,
-    mapId: getActiveSection().id,
-    x: Math.round(center.lng),
-    y: Math.round(center.lat)
-  });
-  state.selectedMapId = state.customPins[state.customPins.length - 1].id;
-  saveState();
-  renderMapFilters();
-  rebuildLeafletMarkers();
-  renderMapInfo(state.selectedMapId);
+  openPinCreator();
 }
 function imageExists(url) {
   return new Promise(resolve => {
@@ -723,10 +857,16 @@ function bindEvents() {
     if (event.key === "Enter") sendMessage();
   });
   document.getElementById("broadcastBtn").addEventListener("click", addBroadcast);
-  document.getElementById("addPinBtn").addEventListener("click", addCustomPin);
+  document.getElementById("newPinBtn").addEventListener("click", addCustomPin);
+  document.getElementById("pinManagerBtn").addEventListener("click", openPinManager);
+  document.getElementById("toggleAllPinsBtn").addEventListener("click", toggleAllPinsQuick);
+  document.getElementById("showAllPinsBtn").addEventListener("click", () => setAllPinsHidden(false));
+  document.getElementById("hideAllPinsBtn").addEventListener("click", () => setAllPinsHidden(true));
   document.getElementById("resetPinsBtn").addEventListener("click", resetWorldPins);
   document.getElementById("exportPinsBtn").addEventListener("click", exportWorldPinCoordinates);
   document.getElementById("copyPinsBtn").addEventListener("click", copyExportedPins);
+  document.getElementById("saveNewPinBtn").addEventListener("click", createPinFromForm);
+  document.getElementById("cancelNewPinBtn").addEventListener("click", closePinCreator);
   document.getElementById("mapSectionSelect").addEventListener("change", event => setMapSection(event.target.value));
   document.getElementById("loreSearch").addEventListener("input", renderLore);
   document.getElementById("taskAddBtn").addEventListener("click", addTask);
@@ -749,6 +889,7 @@ async function init() {
   renderMessages();
   renderMapSectionSelect();
   renderMapFilters();
+  updateToggleAllPinsButton();
   await initLeafletMap();
   renderLoreFilters();
   renderLore();
