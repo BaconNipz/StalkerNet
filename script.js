@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v15";
+const STORAGE_KEY = "stalkernet_pda_v16";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -596,26 +596,32 @@ function renderMapInfo(selectedId = state.selectedMapId) {
 function buildMarker(point) {
   const iconHtml = `<div class="poi-icon ${mapTypeClass(point.type)}"></div>`;
   const icon = L.divIcon({ html: iconHtml, className: "", iconSize: [14, 14], iconAnchor: [7, 7] });
+  const isDefaultPin = defaultMapPoints.some(pin => pin.id === point.id);
+  const canDrag = !isDefaultPin;
+
   const marker = L.marker([point.y, point.x], {
     icon,
-    draggable: point.mapId === "world" || point.type === "Custom"
+    draggable: canDrag
   });
 
   marker.bindPopup(`
     <div class="map-popup-title">${escapeHtml(point.name)}</div>
     <div class="map-popup-type">${escapeHtml(point.type)}</div>
     <div>${escapeHtml(point.note)}</div>
-    <div class="map-popup-type">Drag this pin to adjust its saved position.</div>
+    <div class="map-popup-type">${canDrag ? "Drag this pin to adjust its saved position." : "Default pin position is locked."}</div>
   `);
 
   marker.on("click", () => renderMapInfo(point.id));
 
-  marker.on("dragend", event => {
-    const newPos = event.target.getLatLng();
-    savePinOverride(point.id, newPos);
-    renderMapInfo(point.id);
-    event.target.openPopup();
-  });
+  if (canDrag) {
+    marker.on("dragend", event => {
+      const newPos = event.target.getLatLng();
+      savePinOverride(point.id, newPos);
+      renderMapInfo(point.id);
+      renderPinManagerList();
+      event.target.openPopup();
+    });
+  }
 
   return marker;
 }
