@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v16";
+const STORAGE_KEY = "stalkernet_pda_v17";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -159,7 +159,8 @@ let state = loadState() || {
   activeMapSection: "world",
   pinOverrides: {},
   hiddenPins: {},
-  allPinsHidden: false
+  allPinsHidden: false,
+  soundEnabled: true
 };
 
 // v14 migration: clear locally saved world-pin overrides so baked public defaults appear.
@@ -170,6 +171,79 @@ if (!state.schemaVersion || state.schemaVersion < 14) {
   }
   state.schemaVersion = 14;
   saveState();
+}
+
+const SOUND_FILES = {
+  boot: "assets/audio/boot.wav",
+  click: "assets/audio/click.wav",
+  alert: "assets/audio/alert.wav"
+};
+
+const sounds = {};
+let soundUnlocked = false;
+let bootSoundPlayed = false;
+
+function initSoundBank() {
+  Object.entries(SOUND_FILES).forEach(([key, src]) => {
+    const audio = new Audio(src);
+    audio.preload = "auto";
+    audio.volume = key === "click" ? 0.18 : 0.32;
+    sounds[key] = audio;
+  });
+}
+
+function soundEnabled() {
+  return state.soundEnabled !== false;
+}
+
+function updateSoundButton() {
+  const btn = document.getElementById("soundToggleBtn");
+  if (!btn) return;
+  btn.textContent = soundEnabled() ? "Sound: On" : "Sound: Off";
+}
+
+function playSound(name) {
+  if (!soundEnabled()) return;
+  const base = sounds[name];
+  if (!base) return;
+
+  try {
+    const audio = base.cloneNode();
+    audio.volume = base.volume;
+    const promise = audio.play();
+    if (promise && typeof promise.catch === "function") {
+      promise.catch(() => {});
+    }
+  } catch {}
+}
+
+function tryBootSound() {
+  if (bootSoundPlayed || !soundEnabled()) return;
+  bootSoundPlayed = true;
+  playSound("boot");
+}
+
+function unlockSoundOnce() {
+  if (soundUnlocked) return;
+  soundUnlocked = true;
+  tryBootSound();
+}
+
+function toggleSoundSetting() {
+  state.soundEnabled = !soundEnabled();
+  saveState();
+  updateSoundButton();
+  if (soundEnabled()) playSound("click");
+}
+
+function bindGlobalSoundCues() {
+  document.addEventListener("pointerdown", unlockSoundOnce, { once: true });
+
+  document.addEventListener("click", event => {
+    if (event.target.closest("button")) {
+      playSound("click");
+    }
+  });
 }
 
 function id() {
@@ -824,6 +898,7 @@ function bindProfileInputs() {
 }
 function showEmission() {
   const alert = document.getElementById("emissionAlert");
+  playSound("alert");
   alert.classList.remove("hidden");
   setTimeout(() => alert.classList.add("hidden"), 4500);
 }
@@ -841,6 +916,7 @@ function runBootSequence() {
         bootScreen.style.opacity = "0";
         bootScreen.style.transition = "opacity 350ms ease";
         setTimeout(() => bootScreen.remove(), 360);
+        tryBootSound();
       }, 350);
     }
   }, 120);
@@ -880,6 +956,11 @@ function bindEvents() {
     if (event.key === "Enter") addTask();
   });
   bindProfileInputs();
+
+  const soundToggleBtn = document.getElementById("soundToggleBtn");
+  const testSoundBtn = document.getElementById("testSoundBtn");
+  if (soundToggleBtn) soundToggleBtn.addEventListener("click", toggleSoundSetting);
+  if (testSoundBtn) testSoundBtn.addEventListener("click", () => playSound("boot"));
 }
 function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
@@ -889,6 +970,9 @@ function registerServiceWorker() {
 async function init() {
   updateClock();
   setInterval(updateClock, 1000);
+  initSoundBank();
+  bindGlobalSoundCues();
+  updateSoundButton();
 
   bindEvents();
   renderMessageFilters();

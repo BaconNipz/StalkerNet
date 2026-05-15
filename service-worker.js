@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v16";
+const CACHE_NAME = "stalkernet-cache-v17";
 
 const FILES_TO_CACHE = [
   "./",
@@ -12,7 +12,10 @@ const FILES_TO_CACHE = [
   "./assets/maps/Meadow.jpg",
   "./assets/maps/Swamp.jpg",
   "./assets/maps/Cordon.jpg",
-  "./assets/maps/Darkscape.jpg"
+  "./assets/maps/Darkscape.jpg",
+  "./assets/audio/alert.wav",
+  "./assets/audio/click.wav",
+  "./assets/audio/boot.wav"
 ];
 
 self.addEventListener("install", event => {

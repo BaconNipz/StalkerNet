@@ -401,3 +401,14 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
     justify-content: flex-start;
   }
 }
+
+
+.sound-controls {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.sound-controls button {
+  width: fit-content;
+}
