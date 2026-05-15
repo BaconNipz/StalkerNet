@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v6";
+const CACHE_NAME = "stalkernet-cache-v7";
 
 const FILES_TO_CACHE = [
   "./",
@@ -8,16 +8,23 @@ const FILES_TO_CACHE = [
   "./manifest.json",
   "./icon-192.png",
   "./icon-512.png",
-  "./assets/maps/north.jpg",
-  "./assets/maps/pripyat.jpg",
-  "./assets/maps/jupiter.jpg",
-  "./assets/maps/central.jpg",
-  "./assets/maps/rostok.jpg",
-  "./assets/maps/southern.jpg"
+  "./assets/maps/WorldMap.jpg",
+  "./assets/maps/Meadow.jpg",
+  "./assets/maps/Swamp.jpg",
+  "./assets/maps/Cordon.jpg",
+  "./assets/maps/Darkscape.jpg"
 ];
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE)));
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache =>
+      Promise.all(
+        FILES_TO_CACHE.map(file =>
+          cache.add(file).catch(() => console.log("Could not cache:", file))
+        )
+      )
+    )
+  );
 });
 
 self.addEventListener("activate", event => {
@@ -29,5 +36,7 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
-  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request)));
+  event.respondWith(
+    caches.match(event.request).then(cached => cached || fetch(event.request))
+  );
 });

@@ -97,8 +97,8 @@
         </div>
 
         <div class="map-section-row module-panel">
-          <div class="module-label">MAP SECTOR</div>
-          <label for="mapSectionSelect">Selected Region</label>
+          <div class="module-label">MAP DATABASE</div>
+          <label for="mapSectionSelect">Selected Map</label>
           <select id="mapSectionSelect"></select>
         </div>
 
@@ -109,7 +109,7 @@
           <div id="leafletMap" class="leaflet-map"></div>
           <div id="mapMissingNotice" class="map-missing hidden">
             <strong>Map image not found.</strong>
-            <p>Place a high-resolution Anomaly map image in <code>assets/anomaly-zone-map.jpg</code> and reload the app.</p>
+            <p>Check that your map files are in <code>assets/maps/</code> and named exactly: <code>WorldMap.jpg</code>, <code>Meadow.jpg</code>, <code>Swamp.jpg</code>, <code>Cordon.jpg</code>, and <code>Darkscape.jpg</code>.</p>
           </div>
         </div>
 
@@ -122,7 +122,7 @@
 
         <article class="info-card module-panel">
           <div class="module-label">MAP NOTES</div>
-          <p class="message-text">This map system now uses regional map sections for clearer phone viewing. You can replace each sector image later with higher-quality crops.</p>
+          <p class="message-text">This map system now loads individual high-quality zone images. Use the selector to switch between the world map and each zone.</p>
         </article>
       </section>
 

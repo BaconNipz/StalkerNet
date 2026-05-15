@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v6";
+const STORAGE_KEY = "stalkernet_pda_v7";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -47,88 +47,73 @@ const defaultProfile = {
 // Pixel-space template for a 3840 x 9788 vertical map.
 // Replace these coordinates if your chosen map uses a different layout.
 const MAP_CONFIG = {
-  imageUrl: "assets/maps/southern.jpg",
-  fallbackWidth: 603,
-  fallbackHeight: 356
+  imageUrl: "assets/maps/WorldMap.jpg",
+  fallbackWidth: 1600,
+  fallbackHeight: 2400
 };
 
 const MAP_SECTIONS = [
   {
-    "id": "north",
-    "name": "Northern Zone / CNPP",
-    "file": "assets/maps/north.jpg",
-    "width": 603,
-    "height": 300,
+    "id": "world",
+    "name": "World Map",
+    "file": "assets/maps/WorldMap.jpg",
+    "width": 1600,
+    "height": 2400,
     "sourceY0": 0,
-    "sourceY1": 300
+    "sourceY1": 2400
   },
   {
-    "id": "pripyat",
-    "name": "Pripyat / Outskirts",
-    "file": "assets/maps/pripyat.jpg",
-    "width": 603,
-    "height": 320,
-    "sourceY0": 240,
-    "sourceY1": 560
+    "id": "meadow",
+    "name": "Meadow",
+    "file": "assets/maps/Meadow.jpg",
+    "width": 1600,
+    "height": 2400,
+    "sourceY0": 0,
+    "sourceY1": 2400
   },
   {
-    "id": "jupiter",
-    "name": "Jupiter / Zaton",
-    "file": "assets/maps/jupiter.jpg",
-    "width": 603,
-    "height": 320,
-    "sourceY0": 500,
-    "sourceY1": 820
+    "id": "swamp",
+    "name": "Swamp",
+    "file": "assets/maps/Swamp.jpg",
+    "width": 1600,
+    "height": 2400,
+    "sourceY0": 0,
+    "sourceY1": 2400
   },
   {
-    "id": "central",
-    "name": "Central Zone",
-    "file": "assets/maps/central.jpg",
-    "width": 603,
-    "height": 320,
-    "sourceY0": 760,
-    "sourceY1": 1080
+    "id": "cordon",
+    "name": "Cordon",
+    "file": "assets/maps/Cordon.jpg",
+    "width": 1600,
+    "height": 2400,
+    "sourceY0": 0,
+    "sourceY1": 2400
   },
   {
-    "id": "rostok",
-    "name": "Rostok / Yantar",
-    "file": "assets/maps/rostok.jpg",
-    "width": 603,
-    "height": 320,
-    "sourceY0": 980,
-    "sourceY1": 1300
-  },
-  {
-    "id": "southern",
-    "name": "Southern Zone / Cordon",
-    "file": "assets/maps/southern.jpg",
-    "width": 603,
-    "height": 356,
-    "sourceY0": 1180,
-    "sourceY1": 1536
+    "id": "darkscape",
+    "name": "Darkscape",
+    "file": "assets/maps/Darkscape.jpg",
+    "width": 1600,
+    "height": 2400,
+    "sourceY0": 0,
+    "sourceY1": 2400
   }
 ];
 
-let currentSectionId = "southern";
+let currentSectionId = "world";
 
 const defaultMapPoints = [
-  { id: "cordon", name: "Cordon", type: "Location", x: 127, y: 1365, note: "Rookie routes, traders, patrols." },
-  { id: "garbage", name: "Garbage", type: "Danger", x: 207, y: 1193, note: "Scrapyards, bandits, mutant movement." },
-  { id: "agroprom", name: "Agroprom", type: "Location", x: 264, y: 1083, note: "Military activity, underground approaches, and old research infrastructure." },
-  { id: "darkvalley", name: "Dark Valley", type: "Danger", x: 149, y: 1114, note: "Bandit presence and dangerous industrial ruins." },
-  { id: "rostok", name: "Rostok", type: "Hub", x: 248, y: 957, note: "Bar, Duty presence, technicians, contracts." },
-  { id: "wildterritory", name: "Wild Territory", type: "Danger", x: 303, y: 902, note: "Hostile movement, salvage opportunities, unstable ground." },
-  { id: "yantar", name: "Yantar", type: "Lab", x: 339, y: 981, note: "Ecologists, psi readings, lab rumours." },
-  { id: "armywarehouses", name: "Army Warehouses", type: "Hub", x: 187, y: 792, note: "Faction routes, patrols, and staging areas." },
-  { id: "redforest", name: "Red Forest", type: "Danger", x: 319, y: 734, note: "Avoid without serious preparation." },
-  { id: "radar", name: "Radar", type: "Danger", x: 276, y: 636, note: "High-risk territory and emissions of a different kind." },
-  { id: "limansk", name: "Limansk", type: "Location", x: 418, y: 643, note: "Urban ruins and fragmented access routes." },
-  { id: "deadcity", name: "Dead City", type: "Location", x: 141, y: 675, note: "Mercenary activity and eerie urban decay." },
-  { id: "jupiter", name: "Jupiter", type: "Location", x: 338, y: 427, note: "Factory structures, tunnels, and rich scavenging grounds." },
-  { id: "zaton", name: "Zaton", type: "Location", x: 204, y: 384, note: "Swamps, wrecks, and scattered survivor routes." },
-  { id: "outskirts", name: "Outskirts", type: "Location", x: 385, y: 301, note: "Late-zone urban sector with high danger." },
-  { id: "pripyat", name: "Pripyat", type: "Location", x: 338, y: 245, note: "High-value salvage. Higher-value funerals." },
-  { id: "cnpp", name: "CNPP", type: "Danger", x: 317, y: 102, note: "The heart of the Zone. You know what that means." }
+  // World map starter points. These are placeholders until we align your final world map.
+  { id: "world_swamp", mapId: "world", name: "Swamp", type: "Location", x: 350, y: 1900, note: "Southern-west wetland region." },
+  { id: "world_meadow", mapId: "world", name: "Meadow", type: "Location", x: 800, y: 1900, note: "Open southern travel route." },
+  { id: "world_cordon", mapId: "world", name: "Cordon", type: "Location", x: 900, y: 2100, note: "Southern entry routes and rookie territory." },
+  { id: "world_darkscape", mapId: "world", name: "Darkscape", type: "Danger", x: 1250, y: 2050, note: "Remote southern-east zone." },
+
+  // Individual zone starter points.
+  { id: "meadow_main", mapId: "meadow", name: "Meadow", type: "Location", x: 800, y: 1200, note: "Open terrain, road approaches, and scattered structures." },
+  { id: "swamp_main", mapId: "swamp", name: "Swamp", type: "Location", x: 800, y: 1200, note: "Wetlands, bridges, reeds, and hidden paths." },
+  { id: "cordon_main", mapId: "cordon", name: "Cordon", type: "Location", x: 800, y: 1200, note: "Rookie territory, roadways, and patrol routes." },
+  { id: "darkscape_main", mapId: "darkscape", name: "Darkscape", type: "Danger", x: 800, y: 1200, note: "Remote road networks, river bends, and hostile isolation." }
 ];
 
 let leafletMap = null;
@@ -142,8 +127,8 @@ let state = loadState() || {
   activeMessageFilter: "All",
   activeLoreFilter: "All",
   activeMapFilter: "All",
-  selectedMapId: "cordon",
-  activeMapSection: "southern"
+  selectedMapId: "world_cordon",
+  activeMapSection: "world"
 };
 
 function id() {
@@ -266,16 +251,16 @@ function addBroadcast() {
 // Map system
 
 function getActiveSection() {
-  const id = state.activeMapSection || currentSectionId || "southern";
+  const id = state.activeMapSection || currentSectionId || "world";
   return MAP_SECTIONS.find(section => section.id === id) || MAP_SECTIONS[0];
 }
 
 function pointInSection(point, section) {
-  return point.y >= section.sourceY0 && point.y <= section.sourceY1;
+  return !point.mapId || point.mapId === section.id;
 }
 
 function pointToSectionPoint(point, section) {
-  return { ...point, sectionY: point.y - section.sourceY0 };
+  return { ...point, sectionY: point.y };
 }
 
 function renderMapSectionSelect() {
@@ -286,7 +271,7 @@ function renderMapSectionSelect() {
     const option = document.createElement("option");
     option.value = section.id;
     option.textContent = section.name;
-    if ((state.activeMapSection || "southern") === section.id) option.selected = true;
+    if ((state.activeMapSection || "world") === section.id) option.selected = true;
     select.appendChild(option);
   });
 }
@@ -294,6 +279,7 @@ function renderMapSectionSelect() {
 function setMapSection(sectionId) {
   state.activeMapSection = sectionId;
   currentSectionId = sectionId;
+  state.activeMapFilter = "All";
   saveState();
   initLeafletMap(true);
 }
@@ -393,8 +379,9 @@ function addCustomPin() {
     name,
     type: typeInput,
     note,
+    mapId: getActiveSection().id,
     x: Math.round(center.lng),
-    y: Math.round(center.lat + getActiveSection().sourceY0)
+    y: Math.round(center.lat)
   });
   state.selectedMapId = state.customPins[state.customPins.length - 1].id;
   saveState();
