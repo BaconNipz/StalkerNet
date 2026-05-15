@@ -283,3 +283,27 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   text-transform: uppercase;
   color: var(--text-dim);
 }
+
+
+.map-action-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+
+#pinExportText {
+  width: 100%;
+  min-height: 190px;
+  margin: 10px 0;
+  padding: 10px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(7, 8, 6, 0.92);
+  color: var(--olive);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: pre;
+}

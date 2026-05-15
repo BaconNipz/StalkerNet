@@ -93,7 +93,11 @@
       <section id="mapTab" class="tab-panel">
         <div class="section-top">
           <h2>Tactical Map</h2>
-          <button id="addPinBtn" class="small-btn">Add Pin</button>
+          <div class="map-action-buttons">
+            <button id="exportPinsBtn" class="small-btn accent-btn">Export Pins</button>
+            <button id="resetPinsBtn" class="small-btn">Reset Pins</button>
+            <button id="addPinBtn" class="small-btn">Add Pin</button>
+          </div>
         </div>
 
         <div class="map-section-row module-panel">
@@ -120,9 +124,16 @@
           <p>Rookie routes, traders, patrols.</p>
         </article>
 
+        <article id="pinExportPanel" class="info-card module-panel hidden">
+          <div class="module-label">PIN COORDINATE EXPORT</div>
+          <p class="message-text">Copy this text and send it back so these can be baked into the public app.</p>
+          <textarea id="pinExportText" readonly></textarea>
+          <button id="copyPinsBtn" class="small-btn accent-btn">Copy Coordinates</button>
+        </article>
+
         <article class="info-card module-panel">
           <div class="module-label">MAP NOTES</div>
-          <p class="message-text">This map system now loads individual high-quality zone images. Use the selector to switch between the world map and each zone.</p>
+          <p class="message-text">This map system loads individual high-quality zone images. World map pins are draggable: hold and drag a pin to move it, then release to save its position on this device. Use Export Pins when everything is lined up.</p>
         </article>
       </section>
 

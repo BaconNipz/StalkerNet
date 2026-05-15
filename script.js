@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v9";
+const STORAGE_KEY = "stalkernet_pda_v11";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -128,7 +128,8 @@ let state = loadState() || {
   activeLoreFilter: "All",
   activeMapFilter: "All",
   selectedMapId: "world_cordon",
-  activeMapSection: "world"
+  activeMapSection: "world",
+  pinOverrides: {}
 };
 
 function id() {
@@ -263,6 +264,73 @@ function pointToSectionPoint(point, section) {
   return { ...point, sectionY: point.y };
 }
 
+function getPointWithOverride(point) {
+  if (!state.pinOverrides) state.pinOverrides = {};
+  const override = state.pinOverrides[point.id];
+  if (!override) return point;
+  return {
+    ...point,
+    x: override.x,
+    y: override.y
+  };
+}
+
+function savePinOverride(pointId, latlng) {
+  if (!state.pinOverrides) state.pinOverrides = {};
+  state.pinOverrides[pointId] = {
+    x: Math.round(latlng.lng),
+    y: Math.round(latlng.lat)
+  };
+  saveState();
+}
+
+function resetWorldPins() {
+  if (!confirm("Reset saved world map pin positions on this device?")) return;
+  state.pinOverrides = {};
+  saveState();
+  rebuildLeafletMarkers();
+  renderMapInfo();
+}
+
+function exportWorldPinCoordinates() {
+  if (!state.pinOverrides) state.pinOverrides = {};
+
+  const worldPins = defaultMapPoints
+    .filter(point => point.mapId === "world")
+    .map(point => {
+      const override = state.pinOverrides[point.id];
+      return {
+        ...point,
+        x: override ? override.x : point.x,
+        y: override ? override.y : point.y
+      };
+    });
+
+  const output = `const defaultWorldMapPoints = ${JSON.stringify(worldPins, null, 2)};`;
+
+  const panel = document.getElementById("pinExportPanel");
+  const textArea = document.getElementById("pinExportText");
+
+  textArea.value = output;
+  panel.classList.remove("hidden");
+  textArea.focus();
+  textArea.select();
+}
+
+async function copyExportedPins() {
+  const textArea = document.getElementById("pinExportText");
+  if (!textArea.value.trim()) exportWorldPinCoordinates();
+
+  try {
+    await navigator.clipboard.writeText(textArea.value);
+    alert("Pin coordinates copied.");
+  } catch {
+    textArea.focus();
+    textArea.select();
+    alert("Copy failed. Long-press the text box and copy manually.");
+  }
+}
+
 function renderMapSectionSelect() {
   const select = document.getElementById("mapSectionSelect");
   if (!select) return;
@@ -285,7 +353,7 @@ function setMapSection(sectionId) {
 }
 
 function getAllMapPoints() {
-  return [...defaultMapPoints, ...(state.customPins || [])];
+  return [...defaultMapPoints, ...(state.customPins || [])].map(getPointWithOverride);
 }
 function mapTypeClass(type) {
   switch ((type || "").toLowerCase()) {
@@ -332,13 +400,27 @@ function renderMapInfo(selectedId = state.selectedMapId) {
 function buildMarker(point) {
   const iconHtml = `<div class="poi-icon ${mapTypeClass(point.type)}"></div>`;
   const icon = L.divIcon({ html: iconHtml, className: "", iconSize: [14, 14], iconAnchor: [7, 7] });
-  const marker = L.marker([point.y, point.x], { icon });
+  const marker = L.marker([point.y, point.x], {
+    icon,
+    draggable: point.mapId === "world" || point.type === "Custom"
+  });
+
   marker.bindPopup(`
     <div class="map-popup-title">${escapeHtml(point.name)}</div>
     <div class="map-popup-type">${escapeHtml(point.type)}</div>
     <div>${escapeHtml(point.note)}</div>
+    <div class="map-popup-type">Drag this pin to adjust its saved position.</div>
   `);
+
   marker.on("click", () => renderMapInfo(point.id));
+
+  marker.on("dragend", event => {
+    const newPos = event.target.getLatLng();
+    savePinOverride(point.id, newPos);
+    renderMapInfo(point.id);
+    event.target.openPopup();
+  });
+
   return marker;
 }
 function rebuildLeafletMarkers() {
@@ -603,6 +685,9 @@ function bindEvents() {
   });
   document.getElementById("broadcastBtn").addEventListener("click", addBroadcast);
   document.getElementById("addPinBtn").addEventListener("click", addCustomPin);
+  document.getElementById("resetPinsBtn").addEventListener("click", resetWorldPins);
+  document.getElementById("exportPinsBtn").addEventListener("click", exportWorldPinCoordinates);
+  document.getElementById("copyPinsBtn").addEventListener("click", copyExportedPins);
   document.getElementById("mapSectionSelect").addEventListener("change", event => setMapSection(event.target.value));
   document.getElementById("loreSearch").addEventListener("input", renderLore);
   document.getElementById("taskAddBtn").addEventListener("click", addTask);
