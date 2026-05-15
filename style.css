@@ -307,3 +307,8 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   line-height: 1.45;
   white-space: pre;
 }
+
+
+.poi-underground {
+  background: #8d6bb8;
+}

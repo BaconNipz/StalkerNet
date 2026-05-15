@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v11";
+const STORAGE_KEY = "stalkernet_pda_v13";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -103,11 +103,39 @@ const MAP_SECTIONS = [
 let currentSectionId = "world";
 
 const defaultMapPoints = [
-  // World map starter points. These are placeholders until we align your final world map.
-  { id: "world_swamp", mapId: "world", name: "Swamp", type: "Location", x: 132, y: 1333, note: "Southern-west wetland region." },
-  { id: "world_meadow", mapId: "world", name: "Meadow", type: "Location", x: 373, y: 1277, note: "Open southern travel route." },
-  { id: "world_cordon", mapId: "world", name: "Cordon", type: "Location", x: 275, y: 1306, note: "Southern entry routes and rookie territory." },
-  { id: "world_darkscape", mapId: "world", name: "Darkscape", type: "Danger", x: 500, y: 1285, note: "Remote southern-east zone." },
+  // World map starter points. These can be dragged, exported, and baked into the app.
+  { id: "world_swamp", mapId: "world", name: "Great Swamps", type: "Location", x: 265, y: 268, note: "Wetland maze of reeds, bridges, hidden paths, and half-drowned ruins." },
+  { id: "world_meadow", mapId: "world", name: "Meadows", type: "Location", x: 605, y: 499, note: "Open southern travel route with scattered cover and lonely roads." },
+  { id: "world_cordon", mapId: "world", name: "Cordon", type: "Location", x: 455, y: 295, note: "Rookie territory, southern roads, patrol routes, and early contracts." },
+  { id: "world_darkscape", mapId: "world", name: "Darkscape", type: "Danger", x: 902, y: 360, note: "Remote southern-east territory with long roads and little comfort." },
+  { id: "world_garbage", mapId: "world", name: "Garbage", type: "Danger", x: 300, y: 575, note: "Scrapyards, ambush lanes, mutant movement, and scavenger traffic." },
+  { id: "world_agroprom", mapId: "world", name: "Agroprom", type: "Location", x: 455, y: 665, note: "Old research grounds, military activity, and underground approaches." },
+  { id: "world_dark_valley", mapId: "world", name: "Dark Valley", type: "Danger", x: 165, y: 675, note: "Industrial ruins, bandit pressure, and dangerous road approaches." },
+  { id: "world_rostok", mapId: "world", name: "Rostok", type: "Hub", x: 325, y: 780, note: "Major stalker hub with traders, technicians, jobs, and heavy traffic." },
+  { id: "world_wild_territory", mapId: "world", name: "Wild Territory", type: "Danger", x: 430, y: 790, note: "Ruined industrial ground where cover is thin and movement is risky." },
+  { id: "world_yantar", mapId: "world", name: "Yantar", type: "Lab", x: 505, y: 850, note: "Ecologist field zone, psi danger, and laboratory rumours." },
+  { id: "world_truck_cemetery", mapId: "world", name: "Truck Cemetery", type: "Danger", x: 200, y: 850, note: "A graveyard of vehicles, wreckage, anomalies, and bad sightlines." },
+  { id: "world_army_warehouses", mapId: "world", name: "Army Warehouses", type: "Hub", x: 275, y: 965, note: "Faction routes, patrol pressure, and valuable staging ground." },
+  { id: "world_dead_city", mapId: "world", name: "Dead City", type: "Location", x: 135, y: 1035, note: "Abandoned urban blocks, mercenary movement, and silent windows." },
+  { id: "world_red_forest", mapId: "world", name: "Red Forest", type: "Danger", x: 420, y: 1050, note: "Dense, hostile woodland with high anomaly and mutant risk." },
+  { id: "world_radar", mapId: "world", name: "Radar", type: "Danger", x: 380, y: 1155, note: "High-risk northern route dominated by old military and psi threats." },
+  { id: "world_limansk", mapId: "world", name: "Limansk", type: "Location", x: 520, y: 1130, note: "Broken city routes, contested streets, and hard urban movement." },
+  { id: "world_deserted_hospital", mapId: "world", name: "Deserted Hospital", type: "Danger", x: 560, y: 1185, note: "Ruined medical complex with tight corridors and grim echoes." },
+  { id: "world_jupiter", mapId: "world", name: "Jupiter", type: "Location", x: 405, y: 1285, note: "Factory zone with tunnels, salvage routes, and northern contracts." },
+  { id: "world_zaton", mapId: "world", name: "Zaton", type: "Location", x: 245, y: 1305, note: "Swamps, wrecks, stalker routes, and scattered survivor camps." },
+  { id: "world_outskirts", mapId: "world", name: "Outskirts", type: "Location", x: 500, y: 1375, note: "Late-zone urban fringe with heavy danger and valuable approaches." },
+  { id: "world_pripyat", mapId: "world", name: "Pripyat", type: "Danger", x: 405, y: 1420, note: "Urban ruin of high-value salvage, heavy resistance, and bad omens." },
+  { id: "world_cnpp", mapId: "world", name: "Chernobyl NPP", type: "Danger", x: 335, y: 1510, note: "The heart of the Zone, where every road feels watched." },
+  { id: "world_generators", mapId: "world", name: "Generators", type: "Danger", x: 455, y: 1510, note: "Northern extreme zone with severe threats and endgame-grade danger." },
+  { id: "world_agroprom_underground", mapId: "world", name: "Agroprom Underground", type: "Underground", x: 475, y: 695, note: "Subterranean passages beneath Agroprom with tight, lethal routes." },
+  { id: "world_lab_x18", mapId: "world", name: "Lab X-18", type: "Lab", x: 185, y: 705, note: "Underground laboratory complex beneath Dark Valley." },
+  { id: "world_lab_x16", mapId: "world", name: "Lab X-16", type: "Lab", x: 525, y: 875, note: "Yantar laboratory site linked to psi danger and old experiments." },
+  { id: "world_lab_x19", mapId: "world", name: "Lab X-19", type: "Lab", x: 395, y: 1165, note: "Radar-associated underground complex tied to northern psi threats." },
+  { id: "world_jupiter_underground", mapId: "world", name: "Jupiter Underground", type: "Underground", x: 425, y: 1305, note: "Underground passage network beneath the Jupiter region." },
+  { id: "world_lab_x8", mapId: "world", name: "Lab X-8", type: "Lab", x: 510, y: 1390, note: "Hidden laboratory complex beneath the Outskirts sector." },
+  { id: "world_sarcophagus", mapId: "world", name: "Sarcophagus", type: "Underground", x: 340, y: 1500, note: "Interior approach into the buried heart of the NPP." },
+  { id: "world_monolith_control", mapId: "world", name: "Monolith Control Center", type: "Underground", x: 360, y: 1485, note: "Deep control complex bound to the Zone’s strangest signal." },
+  { id: "world_monolith_war_lab", mapId: "world", name: "Monolith War Lab", type: "Lab", x: 470, y: 1495, note: "Northern laboratory complex tied to Monolith operations and war doctrine." },
 
   // Individual zone starter points.
   { id: "meadow_main", mapId: "meadow", name: "Meadow", type: "Location", x: 800, y: 1200, note: "Open terrain, road approaches, and scattered structures." },
@@ -360,6 +388,7 @@ function mapTypeClass(type) {
     case "hub": return "poi-hub";
     case "lab": return "poi-lab";
     case "danger": return "poi-danger";
+    case "underground": return "poi-underground";
     case "custom": return "poi-custom";
     default: return "poi-location";
   }
