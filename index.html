@@ -74,6 +74,55 @@
           <h2>Communications</h2>
           <button id="broadcastBtn" class="small-btn accent-btn">Broadcast</button>
         </div>
+        <div id="authPanel" class="auth-panel module-panel">
+          <div class="module-label">NETWORK ACCESS</div>
+          <div id="authLoggedOut">
+            <p class="message-text">Sign in to access live Zone Broadcast messages.</p>
+            <div class="auth-grid">
+              <input id="authEmail" type="email" placeholder="Email" autocomplete="email" />
+              <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" />
+              <button id="loginBtn" class="small-btn accent-btn">Login</button>
+              <button id="registerBtn" class="small-btn">Register</button>
+            </div>
+          </div>
+
+          <div id="authLoggedIn" class="hidden">
+            <div class="auth-status-row">
+              <div>
+                <strong id="authCallsignText">Unknown Stalker</strong>
+                <p class="muted" id="authFactionText">Faction unknown</p>
+              </div>
+              <button id="logoutBtn" class="small-btn">Logout</button>
+            </div>
+
+            <div id="profileSetupPanel" class="profile-setup-box">
+              <div class="module-label">CALLSIGN SETUP</div>
+              <div class="auth-grid">
+                <input id="callsignInput" type="text" placeholder="Callsign" maxlength="32" />
+                <select id="factionSelect">
+                  <option>Loner</option>
+                  <option>Duty</option>
+                  <option>Freedom</option>
+                  <option>Ecologist</option>
+                  <option>Clear Sky</option>
+                  <option>Mercenary</option>
+                  <option>Monolith</option>
+                  <option>Bandit</option>
+                </select>
+                <button id="saveProfileBtn" class="small-btn accent-btn">Save Profile</button>
+              </div>
+            </div>
+          </div>
+
+          <p id="authStatus" class="auth-status"></p>
+        </div>
+
+        <div class="online-chat-header module-panel">
+          <div class="module-label">LIVE CHANNEL</div>
+          <div class="chat-channel-title">Zone Broadcast</div>
+          <p class="muted">Messages are shared with logged-in StalkerNet users.</p>
+        </div>
+
         <div class="filter-row" id="messageFilters"></div>
         <div class="persona-box module-panel">
           <div class="module-label">ACTIVE CONTACT</div>
@@ -85,7 +134,7 @@
         </div>
         <div id="messageList" class="message-list"></div>
         <div class="input-row">
-          <input id="messageInput" type="text" placeholder="Transmit PDA message..." />
+          <input id="messageInput" type="text" placeholder="Transmit to Zone Broadcast..." />
           <button id="sendBtn" class="accent-btn">Send</button>
         </div>
       </section>
@@ -223,6 +272,9 @@
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

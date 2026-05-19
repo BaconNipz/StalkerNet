@@ -412,3 +412,55 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 .sound-controls button {
   width: fit-content;
 }
+
+
+.auth-panel,
+.online-chat-header {
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.auth-grid {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.auth-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.auth-status-row strong {
+  color: var(--amber-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.profile-setup-box {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.auth-status {
+  margin-top: 10px;
+  color: var(--text-dim);
+  font-size: 11px;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.auth-error {
+  color: #ffd0ca;
+}
+
+.chat-channel-title {
+  color: var(--olive);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}

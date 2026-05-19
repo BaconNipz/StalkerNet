@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v17";
+const STORAGE_KEY = "stalkernet_pda_v18";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -989,7 +989,290 @@ async function init() {
   setInterval(() => { if (Math.random() > 0.78) showEmission(); }, 16000);
 
   runBootSequence();
+  bindFirebaseAuthUI();
+  initFirebaseNetwork();
+
   registerServiceWorker();
+}
+
+
+// Firebase online auth + Zone Broadcast chat
+const firebaseConfig = {
+  apiKey: "AIzaSyCakMUYMPR0OUxhYolHox3wp-c3lOoqYJs",
+  authDomain: "stalkernet-82ec6.firebaseapp.com",
+  projectId: "stalkernet-82ec6",
+  storageBucket: "stalkernet-82ec6.firebasestorage.app",
+  messagingSenderId: "1030971092561",
+  appId: "1:1030971092561:web:0c6c1b937e64ef7a2fd270"
+};
+
+let firebaseReady = false;
+let auth = null;
+let db = null;
+let currentUser = null;
+let currentProfile = null;
+let unsubscribeZoneMessages = null;
+
+function initFirebaseNetwork() {
+  if (!window.firebase) {
+    setAuthStatus("Firebase scripts did not load. Check your connection.", true);
+    return;
+  }
+
+  try {
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+    firebaseReady = true;
+
+    auth.onAuthStateChanged(async user => {
+      currentUser = user || null;
+      currentProfile = null;
+
+      if (unsubscribeZoneMessages) {
+        unsubscribeZoneMessages();
+        unsubscribeZoneMessages = null;
+      }
+
+      updateAuthUI();
+
+      if (user) {
+        setAuthStatus("Connected to StalkerNet.");
+        await loadUserProfile(user);
+        listenToZoneBroadcast();
+      } else {
+        renderMessages();
+        setAuthStatus("Offline. Sign in to access live broadcast.");
+      }
+    });
+  } catch (error) {
+    setAuthStatus(`Firebase error: ${error.message}`, true);
+  }
+}
+
+function setAuthStatus(text, isError = false) {
+  const status = document.getElementById("authStatus");
+  if (!status) return;
+  status.textContent = text || "";
+  status.classList.toggle("auth-error", Boolean(isError));
+}
+
+function updateAuthUI() {
+  const loggedOut = document.getElementById("authLoggedOut");
+  const loggedIn = document.getElementById("authLoggedIn");
+  if (!loggedOut || !loggedIn) return;
+
+  loggedOut.classList.toggle("hidden", Boolean(currentUser));
+  loggedIn.classList.toggle("hidden", !currentUser);
+
+  const callsignText = document.getElementById("authCallsignText");
+  const factionText = document.getElementById("authFactionText");
+  if (callsignText) callsignText.textContent = currentProfile?.callsign || currentUser?.email || "Unknown Stalker";
+  if (factionText) factionText.textContent = currentProfile?.faction || "Faction unknown";
+
+  const callsignInput = document.getElementById("callsignInput");
+  const factionSelect = document.getElementById("factionSelect");
+  if (callsignInput && currentProfile?.callsign) callsignInput.value = currentProfile.callsign;
+  if (factionSelect && currentProfile?.faction) factionSelect.value = currentProfile.faction;
+}
+
+async function registerAccount() {
+  if (!firebaseReady) return setAuthStatus("Firebase is not ready yet.", true);
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+  if (!email || !password) return setAuthStatus("Enter email and password first.", true);
+  if (password.length < 6) return setAuthStatus("Password must be at least 6 characters.", true);
+
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    await ensureUserProfile(cred.user);
+    setAuthStatus("Account created. Set your callsign.");
+  } catch (error) {
+    setAuthStatus(error.message, true);
+  }
+}
+
+async function loginAccount() {
+  if (!firebaseReady) return setAuthStatus("Firebase is not ready yet.", true);
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+  if (!email || !password) return setAuthStatus("Enter email and password first.", true);
+
+  try {
+    await auth.signInWithEmailAndPassword(email, password);
+    setAuthStatus("Logged in.");
+  } catch (error) {
+    setAuthStatus(error.message, true);
+  }
+}
+
+async function logoutAccount() {
+  if (!auth) return;
+  try {
+    await auth.signOut();
+    setAuthStatus("Logged out.");
+  } catch (error) {
+    setAuthStatus(error.message, true);
+  }
+}
+
+async function ensureUserProfile(user) {
+  const ref = db.collection("users").doc(user.uid);
+  const doc = await ref.get();
+
+  if (!doc.exists) {
+    await ref.set({
+      uid: user.uid,
+      email: user.email || "",
+      callsign: "",
+      faction: "Loner",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      lastOnline: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+  } else {
+    await ref.set({ lastOnline: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+  }
+}
+
+async function loadUserProfile(user) {
+  try {
+    await ensureUserProfile(user);
+    const ref = db.collection("users").doc(user.uid);
+    const doc = await ref.get();
+    currentProfile = doc.exists ? doc.data() : null;
+    updateAuthUI();
+
+    if (!currentProfile?.callsign) {
+      setAuthStatus("Choose a callsign before sending messages.");
+    }
+  } catch (error) {
+    setAuthStatus(error.message, true);
+  }
+}
+
+async function saveOnlineProfile() {
+  if (!currentUser) return setAuthStatus("Login first.", true);
+
+  const callsign = document.getElementById("callsignInput").value.trim();
+  const faction = document.getElementById("factionSelect").value;
+
+  if (!callsign) return setAuthStatus("Enter a callsign first.", true);
+  if (callsign.length > 32) return setAuthStatus("Callsign is too long.", true);
+
+  try {
+    const profile = {
+      uid: currentUser.uid,
+      email: currentUser.email || "",
+      callsign,
+      faction,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      lastOnline: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    await db.collection("users").doc(currentUser.uid).set(profile, { merge: true });
+    currentProfile = { ...(currentProfile || {}), ...profile };
+
+    state.profile.callsign = callsign;
+    state.profile.faction = faction;
+    saveState();
+    loadProfileInputs();
+
+    updateAuthUI();
+    setAuthStatus("Profile saved.");
+  } catch (error) {
+    setAuthStatus(error.message, true);
+  }
+}
+
+function listenToZoneBroadcast() {
+  if (!db || !currentUser) return;
+
+  unsubscribeZoneMessages = db
+    .collection("channels")
+    .doc("zone_broadcast")
+    .collection("messages")
+    .orderBy("createdAt", "desc")
+    .limit(60)
+    .onSnapshot(snapshot => {
+      const onlineMessages = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const created = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+
+        onlineMessages.push({
+          id: doc.id,
+          channel: "Zone Broadcast",
+          sender: data.callsign || "Unknown Stalker",
+          faction: data.faction || "Unknown",
+          text: data.text || "",
+          time: created.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        });
+      });
+
+      state.messages = onlineMessages.reverse();
+      state.activeMessageFilter = "All";
+      saveState();
+      renderMessageFilters();
+      renderMessages();
+    }, error => {
+      setAuthStatus(error.message, true);
+    });
+}
+
+async function sendOnlineZoneMessage(text) {
+  if (!currentUser) return setAuthStatus("Login before sending live messages.", true);
+  if (!currentProfile?.callsign) return setAuthStatus("Save your callsign before sending messages.", true);
+
+  const cleanText = text.trim();
+  if (!cleanText) return;
+  if (cleanText.length > 800) return setAuthStatus("Message is too long. Keep it under 800 characters.", true);
+
+  try {
+    await db.collection("channels").doc("zone_broadcast").collection("messages").add({
+      senderId: currentUser.uid,
+      callsign: currentProfile.callsign,
+      faction: currentProfile.faction || "Loner",
+      text: cleanText,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    setAuthStatus("Message transmitted.");
+  } catch (error) {
+    setAuthStatus(error.message, true);
+  }
+}
+
+const originalSendMessage = sendMessage;
+sendMessage = async function() {
+  const input = document.getElementById("messageInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  if (firebaseReady && currentUser) {
+    input.value = "";
+    await sendOnlineZoneMessage(text);
+    return;
+  }
+
+  setAuthStatus("Login to send live Zone Broadcast messages.", true);
+};
+
+function bindFirebaseAuthUI() {
+  const loginBtn = document.getElementById("loginBtn");
+  const registerBtn = document.getElementById("registerBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const saveProfileBtn = document.getElementById("saveProfileBtn");
+
+  if (loginBtn) loginBtn.addEventListener("click", loginAccount);
+  if (registerBtn) registerBtn.addEventListener("click", registerAccount);
+  if (logoutBtn) logoutBtn.addEventListener("click", logoutAccount);
+  if (saveProfileBtn) saveProfileBtn.addEventListener("click", saveOnlineProfile);
+
+  const authPassword = document.getElementById("authPassword");
+  if (authPassword) {
+    authPassword.addEventListener("keydown", event => {
+      if (event.key === "Enter") loginAccount();
+    });
+  }
 }
 
 init();
