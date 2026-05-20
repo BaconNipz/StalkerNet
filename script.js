@@ -1,4 +1,18 @@
-const STORAGE_KEY = "stalkernet_pda_v21";
+
+// bootFailsafe: never let a non-critical script issue trap the user on the boot screen forever.
+window.addEventListener("error", event => {
+  console.error("StalkerNet runtime error:", event.error || event.message);
+  const bootScreen = document.getElementById("bootScreen");
+  if (bootScreen) {
+    setTimeout(() => bootScreen.remove(), 400);
+  }
+});
+setTimeout(() => {
+  const bootScreen = document.getElementById("bootScreen");
+  if (bootScreen) bootScreen.remove();
+}, 4200);
+
+const STORAGE_KEY = "stalkernet_pda_v211";
 
 const defaultMessages = [
   { id: id(), channel: getActiveChannel().name, sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
