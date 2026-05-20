@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v232";
+const STORAGE_KEY = "stalkernet_pda_v24";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -1357,6 +1357,7 @@ async function saveOnlineProfile() {
     loadProfileInputs();
 
     updateAuthUI();
+    updateIdPreview();
     setAuthStatus("Stalker card saved.");
   } catch (error) {
     setAuthStatus(error.message, true);
@@ -1445,6 +1446,12 @@ sendMessage = async function() {
 
 
 
+
+function openIdTab() {
+  const profileTab = document.querySelector('[data-tab="profile"]') ? "profile" : "id";
+  switchTab(profileTab);
+}
+
 // Online stalker profile cards
 
 const AVATAR_SYMBOLS = {
@@ -1505,6 +1512,45 @@ function firebaseDateToText(value) {
   return date.toLocaleDateString() + " " + date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
+
+function updateIdPreview() {
+  const profile = currentProfile || {
+    callsign: state.profile?.callsign,
+    faction: state.profile?.faction,
+    rank: state.profile?.rank,
+    reputation: "Neutral",
+    avatar: "mask",
+    bio: ""
+  };
+
+  const avatar = profile.avatar || "mask";
+  const faction = profile.faction || "Unknown";
+  const callsign = profile.callsign || "Unknown Stalker";
+  const rank = profile.rank || "Unknown";
+  const reputation = profile.reputation || "Neutral";
+
+  const avatarEl = document.getElementById("idPreviewAvatar");
+  if (avatarEl) {
+    avatarEl.className = `stalker-avatar avatar-${avatar}`;
+    avatarEl.textContent = (typeof AVATAR_SYMBOLS !== "undefined" && AVATAR_SYMBOLS[avatar]) ? AVATAR_SYMBOLS[avatar] : "☢";
+  }
+
+  const nameEl = document.getElementById("idPreviewName");
+  if (nameEl) nameEl.textContent = callsign;
+
+  const metaEl = document.getElementById("idPreviewMeta");
+  if (metaEl) metaEl.textContent = `${faction} // ${rank}`;
+
+  const repEl = document.getElementById("idPreviewRep");
+  if (repEl) {
+    repEl.className = `faction-pill ${typeof factionClassName === "function" ? factionClassName(faction) : ""}`;
+    repEl.textContent = reputation;
+  }
+
+  const bioEl = document.getElementById("idPreviewBio");
+  if (bioEl) bioEl.textContent = profile.bio || "No PDA note recorded.";
+}
+
 function fillOnlineProfileForm() {
   if (!currentProfile) return;
   setProfileField("callsignInput", currentProfile.callsign || "");
@@ -1517,6 +1563,7 @@ function fillOnlineProfileForm() {
   setProfileField("onlineAreaInput", currentProfile.area || "");
   setProfileField("onlineWeaponInput", currentProfile.weapon || "");
   setProfileField("onlineBioInput", currentProfile.bio || "");
+  updateIdPreview();
 }
 
 async function openStalkerCardByUserId(userId, fallback = {}) {
@@ -1749,6 +1796,9 @@ function bindFirebaseAuthUI() {
   if (closeStalkerCardBtn) closeStalkerCardBtn.addEventListener("click", closeStalkerCard);
   if (stalkerCardBackdrop) stalkerCardBackdrop.addEventListener("click", closeStalkerCard);
   if (messageListForCards) messageListForCards.addEventListener("click", handleStalkerCardClick);
+
+  const goToIdBtn = document.getElementById("goToIdBtn");
+  if (goToIdBtn) goToIdBtn.addEventListener("click", () => openIdTab());
 
   const authPassword = document.getElementById("authPassword");
   if (authPassword) {
