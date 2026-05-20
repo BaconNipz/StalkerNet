@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v19";
+const STORAGE_KEY = "stalkernet_pda_v20";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -162,6 +162,7 @@ let state = loadState() || {
   allPinsHidden: false,
   showAiMessages: false,
   aiMessages: [],
+  blockedSenders: {},
   soundEnabled: true,
   showAiMessages: false,
   aiMessages: []
@@ -323,6 +324,11 @@ function renderMessages() {
   visible.forEach(message => {
     const card = document.createElement("article");
     card.className = `message-card module-panel ${message.isAi ? "ai-message-card" : ""}`;
+    const isOwnMessage = Boolean(currentUser && message.senderId === currentUser.uid);
+    const canControl = Boolean(message.isOnline && !message.isAi);
+    const encodedText = escapeHtml(message.text).replaceAll('"', "&quot;");
+    const encodedSender = escapeHtml(message.sender).replaceAll('"', "&quot;");
+
     card.innerHTML = `
       <div class="message-head">
         <div>
@@ -332,6 +338,16 @@ function renderMessages() {
         <div class="meta">${escapeHtml(message.time)}</div>
       </div>
       <p class="message-text">${escapeHtml(message.text)}</p>
+      ${canControl ? `
+        <div class="message-actions">
+          ${isOwnMessage ? `
+            <button class="tiny-btn delete-btn" data-message-action="delete" data-message-id="${message.messageId}">Delete</button>
+          ` : `
+            <button class="tiny-btn" data-message-action="report" data-message-id="${message.messageId}" data-sender-id="${message.senderId || ""}" data-callsign="${encodedSender}" data-text="${encodedText}">Report</button>
+            <button class="tiny-btn" data-message-action="block" data-sender-id="${message.senderId || ""}" data-callsign="${encodedSender}">Block</button>
+          `}
+        </div>
+      ` : ""}
     `;
     list.appendChild(card);
   });
@@ -976,7 +992,11 @@ function bindEvents() {
 
   const toggleAiBtn = document.getElementById("toggleAiMessagesBtn");
   const injectAiBtn = document.getElementById("injectAiMessageBtn");
+  const toggleBlockedUsersBtn = document.getElementById("toggleBlockedUsersBtn");
+  const messageList = document.getElementById("messageList");
   if (toggleAiBtn) toggleAiBtn.addEventListener("click", toggleAiMessages);
+  if (toggleBlockedUsersBtn) toggleBlockedUsersBtn.addEventListener("click", toggleBlockedUsersPanel);
+  if (messageList) messageList.addEventListener("click", handleMessageAction);
   if (injectAiBtn) injectAiBtn.addEventListener("click", () => {
     state.showAiMessages = true;
     updateAiToggleButton();
@@ -1110,7 +1130,8 @@ function updateAiToggleButton() {
 
 function getDisplayMessages() {
   ensureAiState();
-  const humanMessages = state.messages || [];
+  ensureControlState();
+  const humanMessages = (state.messages || []).filter(message => !isSenderBlocked(message));
   if (!state.showAiMessages) return humanMessages;
   return [...humanMessages, ...state.aiMessages].slice(-85);
 }
@@ -1328,11 +1349,15 @@ function listenToZoneBroadcast() {
 
         onlineMessages.push({
           id: doc.id,
+          messageId: doc.id,
+          senderId: data.senderId || "",
           channel: "Zone Broadcast",
           sender: data.callsign || "Unknown Stalker",
           faction: data.faction || "Unknown",
           text: data.text || "",
-          time: created.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+          time: created.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          createdAtMs: created.getTime(),
+          isOnline: true
         });
       });
 
@@ -1382,6 +1407,124 @@ sendMessage = async function() {
 
   setAuthStatus("Login to send live Zone Broadcast messages.", true);
 };
+
+
+function ensureControlState() {
+  if (!state.blockedSenders || typeof state.blockedSenders !== "object") {
+    state.blockedSenders = {};
+  }
+}
+
+function isSenderBlocked(message) {
+  ensureControlState();
+  return Boolean(message.senderId && state.blockedSenders[message.senderId]);
+}
+
+function toggleBlockSender(senderId, callsign = "this stalker") {
+  if (!senderId) return;
+  ensureControlState();
+  if (state.blockedSenders[senderId]) {
+    delete state.blockedSenders[senderId];
+  } else {
+    if (!confirm(`Block messages from ${callsign}? This only hides them on your device.`)) return;
+    state.blockedSenders[senderId] = { callsign, blockedAt: Date.now() };
+  }
+  saveState();
+  renderBlockedUsersList();
+  renderMessages();
+}
+
+async function deleteOwnMessage(messageId) {
+  if (!currentUser || !db) return setAuthStatus("Login before deleting messages.", true);
+  if (!messageId) return;
+  if (!confirm("Delete this transmission from Zone Broadcast?")) return;
+
+  try {
+    await db.collection("channels").doc("zone_broadcast").collection("messages").doc(messageId).delete();
+    setAuthStatus("Message deleted.");
+  } catch (error) {
+    setAuthStatus(error.message, true);
+  }
+}
+
+async function reportMessage(messageId, senderId, callsign, text) {
+  if (!currentUser || !db) return setAuthStatus("Login before reporting messages.", true);
+  if (!messageId) return;
+
+  const reason = prompt("Report reason? Example: spam, abuse, harassment, spoilers");
+  if (!reason || !reason.trim()) return;
+
+  try {
+    await db.collection("reports").add({
+      messageId,
+      channelId: "zone_broadcast",
+      senderId: senderId || "",
+      callsign: callsign || "Unknown",
+      textPreview: (text || "").slice(0, 220),
+      reason: reason.trim().slice(0, 220),
+      reporterId: currentUser.uid,
+      reporterEmail: currentUser.email || "",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      status: "open"
+    });
+    setAuthStatus("Message reported.");
+  } catch (error) {
+    setAuthStatus(error.message, true);
+  }
+}
+
+function handleMessageAction(event) {
+  const button = event.target.closest("[data-message-action]");
+  if (!button) return;
+  const action = button.dataset.messageAction;
+  const messageId = button.dataset.messageId;
+  const senderId = button.dataset.senderId;
+  const callsign = button.dataset.callsign || "Unknown";
+  const text = button.dataset.text || "";
+
+  if (action === "delete") deleteOwnMessage(messageId);
+  if (action === "report") reportMessage(messageId, senderId, callsign, text);
+  if (action === "block") toggleBlockSender(senderId, callsign);
+}
+
+function renderBlockedUsersList() {
+  ensureControlState();
+  const list = document.getElementById("blockedUsersList");
+  if (!list) return;
+
+  const entries = Object.entries(state.blockedSenders || {});
+  if (!entries.length) {
+    list.innerHTML = `<p class="muted">No blocked users.</p>`;
+    return;
+  }
+
+  list.innerHTML = "";
+  entries.forEach(([senderId, info]) => {
+    const row = document.createElement("div");
+    row.className = "blocked-user-row";
+    row.innerHTML = `
+      <span>${escapeHtml(info.callsign || "Unknown Stalker")}</span>
+      <button class="tiny-btn" data-unblock-user="${senderId}">Unblock</button>
+    `;
+    list.appendChild(row);
+  });
+
+  document.querySelectorAll("[data-unblock-user]").forEach(btn => {
+    btn.onclick = () => {
+      delete state.blockedSenders[btn.dataset.unblockUser];
+      saveState();
+      renderBlockedUsersList();
+      renderMessages();
+    };
+  });
+}
+
+function toggleBlockedUsersPanel() {
+  const list = document.getElementById("blockedUsersList");
+  if (!list) return;
+  list.classList.toggle("hidden");
+  renderBlockedUsersList();
+}
 
 function bindFirebaseAuthUI() {
   const loginBtn = document.getElementById("loginBtn");
