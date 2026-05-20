@@ -16,7 +16,7 @@ setTimeout(() => {
   }
 }, 4200);
 
-const STORAGE_KEY = "stalkernet_pda_v213";
+const STORAGE_KEY = "stalkernet_pda_v214";
 
 const defaultMessages = [
   { id: id(), channel: getActiveChannel().name, sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -317,9 +317,13 @@ function switchTab(tabId) {
 }
 function renderMessageFilters() {
   const box = document.getElementById("messageFilters");
+  if (!box) return;
+
   const allMessages = typeof getDisplayMessages === "function" ? getDisplayMessages() : state.messages;
   const channels = ["All", ...new Set(allMessages.map(message => message.channel))];
+
   box.innerHTML = "";
+
   channels.forEach(channel => {
     const btn = document.createElement("button");
     btn.textContent = channel;
@@ -334,7 +338,9 @@ function renderMessageFilters() {
   });
 }
 function renderMessages() {
-  const list = document.getElementById("messageList");
+  const listCheck = document.getElementById("messageList");
+  if (!listCheck) return;
+  const list = listCheck;
   const allMessages = typeof getDisplayMessages === "function" ? getDisplayMessages() : state.messages;
   const visible = state.activeMessageFilter === "All"
     ? allMessages
@@ -925,11 +931,19 @@ function addTask() {
   renderTasks();
 }
 function loadProfileInputs() {
-  document.getElementById("profileCallsign").value = state.profile.callsign || "";
-  document.getElementById("profileFaction").value = state.profile.faction || "";
-  document.getElementById("profileRank").value = state.profile.rank || "";
-  document.getElementById("profileLocation").value = state.profile.location || "";
-  document.getElementById("profileWeapon").value = state.profile.weapon || "";
+  const fields = [
+    ["profileCallsign", "callsign"],
+    ["profileFaction", "faction"],
+    ["profileRank", "rank"],
+    ["profileLocation", "location"],
+    ["profileWeapon", "weapon"]
+  ];
+
+  fields.forEach(([inputId, key]) => {
+    const input = document.getElementById(inputId);
+    if (input) input.value = state.profile[key] || "";
+  });
+
   updateHeaderProfile();
 }
 function bindProfileInputs() {
@@ -940,8 +954,15 @@ function bindProfileInputs() {
     ["profileLocation", "location"],
     ["profileWeapon", "weapon"]
   ];
+
   fields.forEach(([inputId, key]) => {
-    document.getElementById(inputId).addEventListener("input", event => {
+    const input = document.getElementById(inputId);
+    if (!input) {
+      console.warn("Missing profile field:", inputId);
+      return;
+    }
+
+    input.addEventListener("input", event => {
       state.profile[key] = event.target.value;
       saveState();
       updateHeaderProfile();
@@ -1048,33 +1069,82 @@ function registerServiceWorker() {
   }
 }
 async function init() {
-  updateClock();
-  setInterval(updateClock, 1000);
-  initSoundBank();
-  bindGlobalSoundCues();
-  updateSoundButton();
+  try {
+    updateClock();
+    setInterval(updateClock, 1000);
+  } catch (error) {
+    console.error("Clock startup failed:", error);
+  }
 
-  bindEvents();
-  renderMessageFilters();
-  renderMessages();
-  renderMapSectionSelect();
-  renderMapFilters();
-  updateToggleAllPinsButton();
-  await initLeafletMap();
-  renderLoreFilters();
-  renderLore();
-  renderTasks();
-  loadProfileInputs();
+  try {
+    initSoundBank();
+    bindGlobalSoundCues();
+    updateSoundButton();
+  } catch (error) {
+    console.error("Audio startup failed:", error);
+  }
 
-  setInterval(() => { if (Math.random() > 0.78) showEmission(); }, 16000);
+  try {
+    bindEvents();
+  } catch (error) {
+    console.error("General button binding failed:", error);
+  }
 
-  runBootSequence();
-  bindFirebaseAuthUI();
-  initFirebaseNetwork();
+  try {
+    bindFirebaseAuthUI();
+    initFirebaseNetwork();
+  } catch (error) {
+    console.error("Firebase/login startup failed:", error);
+    const status = document.getElementById("authStatus");
+    if (status) {
+      status.textContent = "Startup error. Refresh or clear site data.";
+      status.classList.add("auth-error");
+    }
+  }
 
-  startAiChatterTimer();
+  try {
+    ensureAiState();
+    updateAiToggleButton();
+    updateChannelUI();
+    renderMessageFilters();
+    renderMessages();
+  } catch (error) {
+    console.error("Comms startup failed:", error);
+  }
 
-  registerServiceWorker();
+  try {
+    renderMapSectionSelect();
+    renderMapFilters();
+    updateToggleAllPinsButton();
+    await initLeafletMap();
+  } catch (error) {
+    console.error("Map startup failed:", error);
+  }
+
+  try {
+    renderLoreFilters();
+    renderLore();
+    renderTasks();
+    loadProfileInputs();
+  } catch (error) {
+    console.error("Archive/task/profile startup failed:", error);
+  }
+
+  try {
+    setInterval(() => { if (Math.random() > 0.78) showEmission(); }, 16000);
+    runBootSequence();
+  } catch (error) {
+    console.error("Boot/emission startup failed:", error);
+    const bootScreen = document.getElementById("bootScreen");
+    if (bootScreen) bootScreen.remove();
+  }
+
+  try {
+    startAiChatterTimer();
+    registerServiceWorker();
+  } catch (error) {
+    console.error("Final startup failed:", error);
+  }
 }
 
 
@@ -1644,3 +1714,39 @@ function bindFirebaseAuthUI() {
 }
 
 init();
+
+
+// Last-resort direct login bindings. This keeps auth usable even if another module fails.
+window.addEventListener("load", () => {
+  try {
+    const loginBtn = document.getElementById("loginBtn");
+    const registerBtn = document.getElementById("registerBtn");
+    const saveProfileBtn = document.getElementById("saveProfileBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (loginBtn && !loginBtn.dataset.safeBound) {
+      loginBtn.dataset.safeBound = "true";
+      loginBtn.addEventListener("click", loginAccount);
+    }
+
+    if (registerBtn && !registerBtn.dataset.safeBound) {
+      registerBtn.dataset.safeBound = "true";
+      registerBtn.addEventListener("click", registerAccount);
+    }
+
+    if (saveProfileBtn && !saveProfileBtn.dataset.safeBound) {
+      saveProfileBtn.dataset.safeBound = "true";
+      saveProfileBtn.addEventListener("click", saveOnlineProfile);
+    }
+
+    if (logoutBtn && !logoutBtn.dataset.safeBound) {
+      logoutBtn.dataset.safeBound = "true";
+      logoutBtn.addEventListener("click", logoutAccount);
+    }
+
+    const bootScreen = document.getElementById("bootScreen");
+    if (bootScreen) setTimeout(() => bootScreen.remove(), 500);
+  } catch (error) {
+    console.error("Fallback login binding failed:", error);
+  }
+});
