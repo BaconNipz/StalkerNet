@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v18";
+const STORAGE_KEY = "stalkernet_pda_v19";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -160,7 +160,11 @@ let state = loadState() || {
   pinOverrides: {},
   hiddenPins: {},
   allPinsHidden: false,
-  soundEnabled: true
+  showAiMessages: false,
+  aiMessages: [],
+  soundEnabled: true,
+  showAiMessages: false,
+  aiMessages: []
 };
 
 // v14 migration: clear locally saved world-pin overrides so baked public defaults appear.
@@ -246,6 +250,15 @@ function bindGlobalSoundCues() {
   });
 }
 
+// v19 migration: remove old local demo chatter from live feed.
+if (!state.schemaVersion || state.schemaVersion < 19) {
+  state.messages = (state.messages || []).filter(message => {
+    return !["Wolf", "Sidorovich", "UNKNOWN", "Duty Outpost"].includes(message.sender);
+  });
+  state.schemaVersion = 19;
+  saveState();
+}
+
 function id() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
@@ -284,7 +297,8 @@ function switchTab(tabId) {
 }
 function renderMessageFilters() {
   const box = document.getElementById("messageFilters");
-  const channels = ["All", ...new Set(state.messages.map(message => message.channel))];
+  const allMessages = typeof getDisplayMessages === "function" ? getDisplayMessages() : state.messages;
+  const channels = ["All", ...new Set(allMessages.map(message => message.channel))];
   box.innerHTML = "";
   channels.forEach(channel => {
     const btn = document.createElement("button");
@@ -301,18 +315,19 @@ function renderMessageFilters() {
 }
 function renderMessages() {
   const list = document.getElementById("messageList");
+  const allMessages = typeof getDisplayMessages === "function" ? getDisplayMessages() : state.messages;
   const visible = state.activeMessageFilter === "All"
-    ? state.messages
-    : state.messages.filter(message => message.channel === state.activeMessageFilter);
+    ? allMessages
+    : allMessages.filter(message => message.channel === state.activeMessageFilter);
   list.innerHTML = "";
   visible.forEach(message => {
     const card = document.createElement("article");
-    card.className = "message-card module-panel";
+    card.className = `message-card module-panel ${message.isAi ? "ai-message-card" : ""}`;
     card.innerHTML = `
       <div class="message-head">
         <div>
           <div class="sender">${escapeHtml(message.sender)}</div>
-          <div class="meta">${escapeHtml(message.channel)} // ${escapeHtml(message.faction)}</div>
+          <div class="meta">${escapeHtml(message.channel)} // ${escapeHtml(message.faction)}${message.isAi ? " // AI" : ""}</div>
         </div>
         <div class="meta">${escapeHtml(message.time)}</div>
       </div>
@@ -343,6 +358,8 @@ function sendMessage() {
   input.value = "";
   state.activeMessageFilter = "All";
   saveState();
+  ensureAiState();
+  updateAiToggleButton();
   renderMessageFilters();
   renderMessages();
 }
@@ -957,6 +974,16 @@ function bindEvents() {
   });
   bindProfileInputs();
 
+  const toggleAiBtn = document.getElementById("toggleAiMessagesBtn");
+  const injectAiBtn = document.getElementById("injectAiMessageBtn");
+  if (toggleAiBtn) toggleAiBtn.addEventListener("click", toggleAiMessages);
+  if (injectAiBtn) injectAiBtn.addEventListener("click", () => {
+    state.showAiMessages = true;
+    updateAiToggleButton();
+    injectAiZoneMessage();
+  });
+
+
   const soundToggleBtn = document.getElementById("soundToggleBtn");
   const testSoundBtn = document.getElementById("testSoundBtn");
   if (soundToggleBtn) soundToggleBtn.addEventListener("click", toggleSoundSetting);
@@ -992,9 +1019,109 @@ async function init() {
   bindFirebaseAuthUI();
   initFirebaseNetwork();
 
+  startAiChatterTimer();
+
   registerServiceWorker();
 }
 
+
+
+// Local AI / Zone chatter layer
+const aiZoneActors = [
+  { sender: "Sidorovich", faction: "Trader", lines: [
+    "If you are alive enough to read this, you are alive enough to bring me something valuable.",
+    "Artifacts do not sell themselves, stalker.",
+    "A cheap detector and expensive confidence will get you killed."
+  ]},
+  { sender: "Duty Patrol", faction: "Duty", lines: [
+    "Mutant movement reported near the northern road. Keep rifles clean and eyes open.",
+    "The Zone expands when fools treat it like a playground.",
+    "Any stalker entering high-risk territory should report sightings immediately."
+  ]},
+  { sender: "Freedom Scout", faction: "Freedom", lines: [
+    "Heard gunfire by the old road. Either trouble or someone arguing with the scenery.",
+    "Duty checkpoint is twitchy today. Smile less, walk wider.",
+    "The Zone is singing again. Probably best not to hum along."
+  ]},
+  { sender: "Ecologist Field Team", faction: "Ecologist", lines: [
+    "Anomaly readings are drifting. Mark your route and avoid unnecessary heroics.",
+    "Reminder: unknown artifacts are not to be stored in pockets, mouths, or lunch tins.",
+    "Psi interference detected. If your thoughts become someone else's, leave the area."
+  ]},
+  { sender: "Unknown Signal", faction: "Unknown", lines: [
+    "The dogs are not barking. This is worse than barking.",
+    "There is a light beneath the concrete. Do not answer it.",
+    "Your PDA clock is wrong. It has always been wrong."
+  ]},
+  { sender: "Monolith Voice", faction: "Monolith", lines: [
+    "The stone remembers the ones who walked away.",
+    "Come closer. The centre is warm.",
+    "Your path circles the same wound."
+  ]}
+];
+
+function ensureAiState() {
+  if (!Array.isArray(state.aiMessages)) state.aiMessages = [];
+  if (typeof state.showAiMessages !== "boolean") state.showAiMessages = false;
+}
+
+function createAiZoneMessage() {
+  ensureAiState();
+  const actor = aiZoneActors[Math.floor(Math.random() * aiZoneActors.length)];
+  const text = actor.lines[Math.floor(Math.random() * actor.lines.length)];
+  return {
+    id: "ai_" + id(),
+    channel: "AI Chatter",
+    sender: actor.sender,
+    faction: actor.faction,
+    text,
+    time: nowTime(),
+    isAi: true
+  };
+}
+
+function injectAiZoneMessage() {
+  ensureAiState();
+  state.aiMessages.push(createAiZoneMessage());
+  if (state.aiMessages.length > 25) state.aiMessages = state.aiMessages.slice(-25);
+  saveState();
+  renderMessageFilters();
+  renderMessages();
+}
+
+function toggleAiMessages() {
+  ensureAiState();
+  state.showAiMessages = !state.showAiMessages;
+  saveState();
+  updateAiToggleButton();
+  if (state.showAiMessages && state.aiMessages.length === 0) injectAiZoneMessage();
+  else {
+    renderMessageFilters();
+    renderMessages();
+  }
+}
+
+function updateAiToggleButton() {
+  const btn = document.getElementById("toggleAiMessagesBtn");
+  if (!btn) return;
+  btn.textContent = state.showAiMessages ? "AI Chatter: On" : "AI Chatter: Off";
+  btn.classList.toggle("active", state.showAiMessages);
+}
+
+function getDisplayMessages() {
+  ensureAiState();
+  const humanMessages = state.messages || [];
+  if (!state.showAiMessages) return humanMessages;
+  return [...humanMessages, ...state.aiMessages].slice(-85);
+}
+
+function startAiChatterTimer() {
+  setInterval(() => {
+    ensureAiState();
+    if (!state.showAiMessages) return;
+    if (Math.random() > 0.72) injectAiZoneMessage();
+  }, 45000);
+}
 
 // Firebase online auth + Zone Broadcast chat
 const firebaseConfig = {

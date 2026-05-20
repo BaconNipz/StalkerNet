@@ -464,3 +464,28 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+
+
+.chat-options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chat-options-row .active {
+  color: #281705;
+  background: linear-gradient(180deg, var(--amber-bright), var(--amber));
+  border-color: rgba(215, 171, 107, 0.45);
+  font-weight: 700;
+}
+
+.ai-message-card {
+  border-color: rgba(141, 107, 184, 0.36);
+  background:
+    linear-gradient(180deg, rgba(30, 25, 38, 0.94), rgba(15, 17, 13, 0.98));
+}
+
+.ai-message-card .sender {
+  color: #c8a7ff;
+}
