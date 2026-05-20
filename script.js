@@ -1,7 +1,7 @@
-const STORAGE_KEY = "stalkernet_pda_v20";
+const STORAGE_KEY = "stalkernet_pda_v21";
 
 const defaultMessages = [
-  { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
+  { id: id(), channel: getActiveChannel().name, sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
   { id: id(), channel: "Private", sender: "Sidorovich", faction: "Trader", text: "I have work for you. Nothing glorious, but glory doesn't buy sausage.", time: "07:33" },
   { id: id(), channel: "Unknown Signal", sender: "UNKNOWN", faction: "???", text: "Do not follow the song beneath the concrete. It remembers names.", time: "03:17" },
   { id: id(), channel: "Faction Channel", sender: "Duty Outpost", faction: "Duty", text: "Mutant movement reported near Garbage. Armed stalkers requested. Payment confirmed on proof of kill.", time: "08:01" }
@@ -163,6 +163,7 @@ let state = loadState() || {
   showAiMessages: false,
   aiMessages: [],
   blockedSenders: {},
+  activeChannelId: "zone_broadcast",
   soundEnabled: true,
   showAiMessages: false,
   aiMessages: []
@@ -376,6 +377,7 @@ function sendMessage() {
   saveState();
   ensureAiState();
   updateAiToggleButton();
+  updateChannelUI();
   renderMessageFilters();
   renderMessages();
 }
@@ -389,7 +391,7 @@ function addBroadcast() {
     ["Duty Patrol", "Mutant contact north of the checkpoint. Civilians and rookies keep clear."]
   ];
   const pick = broadcasts[Math.floor(Math.random() * broadcasts.length)];
-  state.messages.push({ id: id(), channel: "Zone Broadcast", sender: pick[0], faction: "Broadcast", text: pick[1], time: nowTime() });
+  state.messages.push({ id: id(), channel: getActiveChannel().name, sender: pick[0], faction: "Broadcast", text: pick[1], time: nowTime() });
   state.activeMessageFilter = "All";
   saveState();
   renderMessageFilters();
@@ -1091,7 +1093,7 @@ function createAiZoneMessage() {
   const text = actor.lines[Math.floor(Math.random() * actor.lines.length)];
   return {
     id: "ai_" + id(),
-    channel: "AI Chatter",
+    channel: getActiveChannelId() === "unknown_signal" ? "Unknown Signal" : "AI Chatter",
     sender: actor.sender,
     faction: actor.faction,
     text,
@@ -1142,6 +1144,78 @@ function startAiChatterTimer() {
     if (!state.showAiMessages) return;
     if (Math.random() > 0.72) injectAiZoneMessage();
   }, 45000);
+}
+
+
+const CHAT_CHANNELS = {
+  zone_broadcast: {
+    id: "zone_broadcast",
+    name: "Zone Broadcast",
+    description: "General Zone-wide public broadcast."
+  },
+  trade_channel: {
+    id: "trade_channel",
+    name: "Trade Channel",
+    description: "Buy, sell, barter, and arrange gear trades."
+  },
+  help_requests: {
+    id: "help_requests",
+    name: "Help Requests",
+    description: "Ask for help, warn others, or request backup."
+  },
+  faction_radio: {
+    id: "faction_radio",
+    name: "Faction Radio",
+    description: "Faction talk, roleplay, rumours, and patrol chatter."
+  },
+  unknown_signal: {
+    id: "unknown_signal",
+    name: "Unknown Signal",
+    description: "Strange transmissions, AI chatter, and Zone noise."
+  }
+};
+
+function getActiveChannelId() {
+  return state.activeChannelId || "zone_broadcast";
+}
+
+function getActiveChannel() {
+  return CHAT_CHANNELS[getActiveChannelId()] || CHAT_CHANNELS.zone_broadcast;
+}
+
+function updateChannelUI() {
+  const channel = getActiveChannel();
+  const select = document.getElementById("channelSelect");
+  const title = document.getElementById("activeChannelTitle");
+  const description = document.getElementById("activeChannelDescription");
+  if (select) select.value = channel.id;
+  if (title) title.textContent = channel.name;
+  if (description) description.textContent = channel.description;
+}
+
+function switchChatChannel(channelId) {
+  if (!CHAT_CHANNELS[channelId]) channelId = "zone_broadcast";
+  state.activeChannelId = channelId;
+  state.activeMessageFilter = "All";
+  state.messages = [];
+  saveState();
+
+  updateChannelUI();
+  renderMessageFilters();
+  renderMessages();
+
+  if (unsubscribeZoneMessages) {
+    unsubscribeZoneMessages();
+    unsubscribeZoneMessages = null;
+  }
+
+  if (channelId === "unknown_signal" && typeof injectAiZoneMessage === "function") {
+    state.showAiMessages = true;
+    updateAiToggleButton();
+    if (!state.aiMessages || state.aiMessages.length === 0) injectAiZoneMessage();
+  }
+
+  if (currentUser) listenToZoneBroadcast();
 }
 
 // Firebase online auth + Zone Broadcast chat
@@ -1337,7 +1411,7 @@ function listenToZoneBroadcast() {
 
   unsubscribeZoneMessages = db
     .collection("channels")
-    .doc("zone_broadcast")
+    .doc(getActiveChannelId())
     .collection("messages")
     .orderBy("createdAt", "desc")
     .limit(60)
@@ -1351,7 +1425,7 @@ function listenToZoneBroadcast() {
           id: doc.id,
           messageId: doc.id,
           senderId: data.senderId || "",
-          channel: "Zone Broadcast",
+          channel: getActiveChannel().name,
           sender: data.callsign || "Unknown Stalker",
           faction: data.faction || "Unknown",
           text: data.text || "",
@@ -1380,14 +1454,14 @@ async function sendOnlineZoneMessage(text) {
   if (cleanText.length > 800) return setAuthStatus("Message is too long. Keep it under 800 characters.", true);
 
   try {
-    await db.collection("channels").doc("zone_broadcast").collection("messages").add({
+    await db.collection("channels").doc(getActiveChannelId()).collection("messages").add({
       senderId: currentUser.uid,
       callsign: currentProfile.callsign,
       faction: currentProfile.faction || "Loner",
       text: cleanText,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    setAuthStatus("Message transmitted.");
+    setAuthStatus(`Message transmitted to ${getActiveChannel().name}.`);
   } catch (error) {
     setAuthStatus(error.message, true);
   }
@@ -1437,10 +1511,10 @@ function toggleBlockSender(senderId, callsign = "this stalker") {
 async function deleteOwnMessage(messageId) {
   if (!currentUser || !db) return setAuthStatus("Login before deleting messages.", true);
   if (!messageId) return;
-  if (!confirm("Delete this transmission from Zone Broadcast?")) return;
+  if (!confirm(`Delete this transmission from ${getActiveChannel().name}?`)) return;
 
   try {
-    await db.collection("channels").doc("zone_broadcast").collection("messages").doc(messageId).delete();
+    await db.collection("channels").doc(getActiveChannelId()).collection("messages").doc(messageId).delete();
     setAuthStatus("Message deleted.");
   } catch (error) {
     setAuthStatus(error.message, true);
@@ -1457,7 +1531,7 @@ async function reportMessage(messageId, senderId, callsign, text) {
   try {
     await db.collection("reports").add({
       messageId,
-      channelId: "zone_broadcast",
+      channelId: getActiveChannelId(),
       senderId: senderId || "",
       callsign: callsign || "Unknown",
       textPreview: (text || "").slice(0, 220),
@@ -1536,6 +1610,9 @@ function bindFirebaseAuthUI() {
   if (registerBtn) registerBtn.addEventListener("click", registerAccount);
   if (logoutBtn) logoutBtn.addEventListener("click", logoutAccount);
   if (saveProfileBtn) saveProfileBtn.addEventListener("click", saveOnlineProfile);
+
+  const channelSelect = document.getElementById("channelSelect");
+  if (channelSelect) channelSelect.addEventListener("change", event => switchChatChannel(event.target.value));
 
   const authPassword = document.getElementById("authPassword");
   if (authPassword) {
