@@ -734,3 +734,51 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   color: var(--text-soft);
   line-height: 1.45;
 }
+
+
+.labelled-profile-form {
+  gap: 12px;
+}
+
+.field-label {
+  display: grid;
+  gap: 6px;
+  color: var(--text-dim);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.field-label input,
+.field-label select,
+.field-label textarea {
+  margin-top: 2px;
+}
+
+.field-label textarea {
+  width: 100%;
+  min-height: 96px;
+  padding: 11px 12px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  outline: none;
+  color: var(--text);
+  background: rgba(7, 8, 6, 0.92);
+  font-family: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.field-label input,
+.field-label select {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.profile-card-form .field-label::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: rgba(215, 171, 107, 0.35);
+}

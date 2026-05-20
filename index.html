@@ -97,45 +97,75 @@
 
             <div id="profileSetupPanel" class="profile-setup-box">
               <div class="module-label">STALKER CARD SETUP</div>
-              <div class="auth-grid profile-card-form">
-                <input id="callsignInput" type="text" placeholder="Callsign" maxlength="32" />
-                <select id="factionSelect">
-                  <option>Loner</option>
-                  <option>Duty</option>
-                  <option>Freedom</option>
-                  <option>Ecologist</option>
-                  <option>Clear Sky</option>
-                  <option>Mercenary</option>
-                  <option>Monolith</option>
-                  <option>Bandit</option>
-                </select>
-                <select id="avatarSelect">
-                  <option value="mask">Gas Mask</option>
-                  <option value="rookie">Rookie</option>
-                  <option value="veteran">Veteran</option>
-                  <option value="trader">Trader</option>
-                  <option value="scientist">Scientist</option>
-                  <option value="monolith">Monolith</option>
-                </select>
-                <input id="onlineRankInput" type="text" placeholder="Rank, e.g. Rookie, Veteran" maxlength="32" />
-                <select id="onlineStatusSelect">
-                  <option>Available</option>
-                  <option>In the Zone</option>
-                  <option>Trading</option>
-                  <option>Looking for squad</option>
-                  <option>Offline</option>
-                </select>
-                <select id="reputationSelect">
-                  <option>Neutral</option>
-                  <option>Trusted</option>
-                  <option>Respected</option>
-                  <option>Infamous</option>
-                  <option>Legend</option>
-                </select>
-                <input id="badgesInput" type="text" placeholder="Badges, e.g. Guide, Trader, Artifact Hunter" maxlength="80" />
-                <input id="onlineAreaInput" type="text" placeholder="Home area, e.g. Cordon" maxlength="40" />
-                <input id="onlineWeaponInput" type="text" placeholder="Preferred weapon" maxlength="40" />
-                <textarea id="onlineBioInput" placeholder="Short bio / PDA note..." maxlength="240"></textarea>
+              <div class="auth-grid profile-card-form labelled-profile-form">
+                <label class="field-label">Callsign
+                  <input id="callsignInput" type="text" placeholder="Example: David 'The Bear' Romanov" maxlength="32" />
+                </label>
+
+                <label class="field-label">Faction
+                  <select id="factionSelect">
+                    <option>Loner</option>
+                    <option>Duty</option>
+                    <option>Freedom</option>
+                    <option>Ecologist</option>
+                    <option>Clear Sky</option>
+                    <option>Mercenary</option>
+                    <option>Monolith</option>
+                    <option>Bandit</option>
+                  </select>
+                </label>
+
+                <label class="field-label">Avatar / Icon
+                  <select id="avatarSelect">
+                    <option value="mask">Gas Mask</option>
+                    <option value="rookie">Rookie</option>
+                    <option value="veteran">Veteran</option>
+                    <option value="trader">Trader</option>
+                    <option value="scientist">Scientist</option>
+                    <option value="monolith">Monolith</option>
+                  </select>
+                </label>
+
+                <label class="field-label">Rank
+                  <input id="onlineRankInput" type="text" placeholder="Example: Rookie, Veteran, Master" maxlength="32" />
+                </label>
+
+                <label class="field-label">Status
+                  <select id="onlineStatusSelect">
+                    <option>Available</option>
+                    <option>In the Zone</option>
+                    <option>Trading</option>
+                    <option>Looking for squad</option>
+                    <option>Offline</option>
+                  </select>
+                </label>
+
+                <label class="field-label">Reputation
+                  <select id="reputationSelect">
+                    <option>Terrible</option>
+                    <option>Bad</option>
+                    <option selected>Neutral</option>
+                    <option>Good</option>
+                    <option>Excellent</option>
+                  </select>
+                </label>
+
+                <label class="field-label">Badges
+                  <input id="badgesInput" type="text" placeholder="Example: Guide, Trader, Artifact Hunter" maxlength="80" />
+                </label>
+
+                <label class="field-label">Home Area
+                  <input id="onlineAreaInput" type="text" placeholder="Example: Cordon, Rostok, Dead City" maxlength="40" />
+                </label>
+
+                <label class="field-label">Preferred Weapon
+                  <input id="onlineWeaponInput" type="text" placeholder="Example: AK-74, M4 Rifle, Vintar BC" maxlength="40" />
+                </label>
+
+                <label class="field-label">Bio / PDA Note
+                  <textarea id="onlineBioInput" placeholder="Short bio, quote, warning, or stalker note..." maxlength="240"></textarea>
+                </label>
+
                 <button id="saveProfileBtn" class="small-btn accent-btn">Save Stalker Card</button>
               </div>
             </div>
