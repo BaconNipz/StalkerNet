@@ -3,14 +3,20 @@
 window.addEventListener("error", event => {
   console.error("StalkerNet runtime error:", event.error || event.message);
   const bootScreen = document.getElementById("bootScreen");
-  if (bootScreen) setTimeout(() => bootScreen.remove(), 400);
+  if (bootScreen) {
+    bootScreen.classList.add("boot-released");
+    setTimeout(() => bootScreen.remove(), 400);
+  }
 });
 setTimeout(() => {
   const bootScreen = document.getElementById("bootScreen");
-  if (bootScreen) bootScreen.remove();
+  if (bootScreen) {
+    bootScreen.classList.add("boot-released");
+    bootScreen.remove();
+  }
 }, 4200);
 
-const STORAGE_KEY = "stalkernet_pda_v212";
+const STORAGE_KEY = "stalkernet_pda_v213";
 
 const defaultMessages = [
   { id: id(), channel: getActiveChannel().name, sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -975,52 +981,66 @@ function escapeHtml(text) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+function bindIfExists(selectorOrId, eventName, handler) {
+  const element = selectorOrId.startsWith("#")
+    ? document.querySelector(selectorOrId)
+    : document.getElementById(selectorOrId);
+
+  if (!element) {
+    console.warn("Missing optional UI control:", selectorOrId);
+    return;
+  }
+
+  element.addEventListener(eventName, handler);
+}
+
 function bindEvents() {
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", () => switchTab(btn.dataset.tab));
   });
 
-  document.getElementById("sendBtn").addEventListener("click", sendMessage);
-  document.getElementById("messageInput").addEventListener("keydown", event => {
+  bindIfExists("sendBtn", "click", sendMessage);
+  bindIfExists("messageInput", "keydown", event => {
     if (event.key === "Enter") sendMessage();
   });
-  document.getElementById("broadcastBtn").addEventListener("click", addBroadcast);
-  document.getElementById("newPinBtn").addEventListener("click", addCustomPin);
-  document.getElementById("pinManagerBtn").addEventListener("click", openPinManager);
-  document.getElementById("toggleAllPinsBtn").addEventListener("click", toggleAllPinsQuick);
-  document.getElementById("showAllPinsBtn").addEventListener("click", () => setAllPinsHidden(false));
-  document.getElementById("hideAllPinsBtn").addEventListener("click", () => setAllPinsHidden(true));
-  document.getElementById("resetPinsBtn").addEventListener("click", resetWorldPins);
-  document.getElementById("exportPinsBtn").addEventListener("click", exportWorldPinCoordinates);
-  document.getElementById("copyPinsBtn").addEventListener("click", copyExportedPins);
-  document.getElementById("saveNewPinBtn").addEventListener("click", createPinFromForm);
-  document.getElementById("cancelNewPinBtn").addEventListener("click", closePinCreator);
-  document.getElementById("mapSectionSelect").addEventListener("change", event => setMapSection(event.target.value));
-  document.getElementById("loreSearch").addEventListener("input", renderLore);
-  document.getElementById("taskAddBtn").addEventListener("click", addTask);
-  document.getElementById("taskInput").addEventListener("keydown", event => {
+
+  bindIfExists("broadcastBtn", "click", addBroadcast);
+
+  bindIfExists("newPinBtn", "click", addCustomPin);
+  bindIfExists("pinManagerBtn", "click", openPinManager);
+  bindIfExists("toggleAllPinsBtn", "click", toggleAllPinsQuick);
+  bindIfExists("showAllPinsBtn", "click", () => setAllPinsHidden(false));
+  bindIfExists("hideAllPinsBtn", "click", () => setAllPinsHidden(true));
+  bindIfExists("resetPinsBtn", "click", resetWorldPins);
+  bindIfExists("exportPinsBtn", "click", exportWorldPinCoordinates);
+  bindIfExists("copyPinsBtn", "click", copyExportedPins);
+  bindIfExists("saveNewPinBtn", "click", createPinFromForm);
+  bindIfExists("cancelNewPinBtn", "click", closePinCreator);
+  bindIfExists("mapSectionSelect", "change", event => setMapSection(event.target.value));
+
+  bindIfExists("loreSearch", "input", renderLore);
+  bindIfExists("taskAddBtn", "click", addTask);
+  bindIfExists("taskInput", "keydown", event => {
     if (event.key === "Enter") addTask();
   });
+
   bindProfileInputs();
 
-  const toggleAiBtn = document.getElementById("toggleAiMessagesBtn");
-  const injectAiBtn = document.getElementById("injectAiMessageBtn");
-  const toggleBlockedUsersBtn = document.getElementById("toggleBlockedUsersBtn");
+  bindIfExists("toggleAiMessagesBtn", "click", toggleAiMessages);
+  bindIfExists("toggleBlockedUsersBtn", "click", toggleBlockedUsersPanel);
+
   const messageList = document.getElementById("messageList");
-  if (toggleAiBtn) toggleAiBtn.addEventListener("click", toggleAiMessages);
-  if (toggleBlockedUsersBtn) toggleBlockedUsersBtn.addEventListener("click", toggleBlockedUsersPanel);
   if (messageList) messageList.addEventListener("click", handleMessageAction);
-  if (injectAiBtn) injectAiBtn.addEventListener("click", () => {
+
+  bindIfExists("injectAiMessageBtn", "click", () => {
     state.showAiMessages = true;
     updateAiToggleButton();
     injectAiZoneMessage();
   });
 
-
-  const soundToggleBtn = document.getElementById("soundToggleBtn");
-  const testSoundBtn = document.getElementById("testSoundBtn");
-  if (soundToggleBtn) soundToggleBtn.addEventListener("click", toggleSoundSetting);
-  if (testSoundBtn) testSoundBtn.addEventListener("click", () => playSound("boot"));
+  bindIfExists("soundToggleBtn", "click", toggleSoundSetting);
+  bindIfExists("testSoundBtn", "click", () => playSound("boot"));
 }
 function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
@@ -1611,25 +1631,16 @@ function toggleBlockedUsersPanel() {
 }
 
 function bindFirebaseAuthUI() {
-  const loginBtn = document.getElementById("loginBtn");
-  const registerBtn = document.getElementById("registerBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const saveProfileBtn = document.getElementById("saveProfileBtn");
+  bindIfExists("loginBtn", "click", loginAccount);
+  bindIfExists("registerBtn", "click", registerAccount);
+  bindIfExists("logoutBtn", "click", logoutAccount);
+  bindIfExists("saveProfileBtn", "click", saveOnlineProfile);
 
-  if (loginBtn) loginBtn.addEventListener("click", loginAccount);
-  if (registerBtn) registerBtn.addEventListener("click", registerAccount);
-  if (logoutBtn) logoutBtn.addEventListener("click", logoutAccount);
-  if (saveProfileBtn) saveProfileBtn.addEventListener("click", saveOnlineProfile);
+  bindIfExists("channelSelect", "change", event => switchChatChannel(event.target.value));
 
-  const channelSelect = document.getElementById("channelSelect");
-  if (channelSelect) channelSelect.addEventListener("change", event => switchChatChannel(event.target.value));
-
-  const authPassword = document.getElementById("authPassword");
-  if (authPassword) {
-    authPassword.addEventListener("keydown", event => {
-      if (event.key === "Enter") loginAccount();
-    });
-  }
+  bindIfExists("authPassword", "keydown", event => {
+    if (event.key === "Enter") loginAccount();
+  });
 }
 
 init();

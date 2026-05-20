@@ -549,3 +549,8 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 #channelSelect {
   border-color: rgba(215, 171, 107, 0.28);
 }
+
+
+#bootScreen.boot-released {
+  pointer-events: none;
+}
