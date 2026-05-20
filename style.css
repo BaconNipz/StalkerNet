@@ -637,3 +637,100 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
     grid-template-columns: 1fr;
   }
 }
+
+
+.stalker-card-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+  margin-bottom: 12px;
+}
+
+.stalker-card-identity h2 {
+  margin: 0 0 8px;
+}
+
+.stalker-avatar {
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(215, 171, 107, 0.45);
+  border-radius: 12px;
+  color: var(--amber-bright);
+  background:
+    radial-gradient(circle at 35% 30%, rgba(215, 171, 107, 0.22), transparent 42%),
+    linear-gradient(180deg, rgba(38, 44, 34, 0.96), rgba(8, 10, 7, 0.98));
+  font-size: 30px;
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.55);
+}
+
+.avatar-scientist { color: #aee6ff; }
+.avatar-monolith { color: #c8a7ff; }
+.avatar-trader { color: #ffd18b; }
+
+.faction-pill {
+  display: inline-flex;
+  width: fit-content;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(212,221,195,0.16);
+  color: var(--text-soft);
+  background: rgba(0,0,0,0.25);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.faction-duty { border-color: rgba(230, 76, 76, 0.45); color: #ffaaa5; }
+.faction-freedom { border-color: rgba(112, 202, 103, 0.45); color: #bdf5b7; }
+.faction-ecologist, .faction-clear-sky { border-color: rgba(101, 179, 230, 0.45); color: #bce5ff; }
+.faction-monolith { border-color: rgba(185, 141, 255, 0.45); color: #d6c1ff; }
+.faction-bandit, .faction-mercenary { border-color: rgba(220, 220, 220, 0.32); color: #dedede; }
+
+.stalker-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 8px 0 13px;
+}
+
+.stalker-badges span {
+  padding: 5px 8px;
+  border: 1px solid rgba(215, 171, 107, 0.24);
+  border-radius: 999px;
+  color: var(--olive);
+  background: rgba(0,0,0,0.22);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.stalker-badges .muted-badge {
+  color: var(--text-dim);
+  border-color: rgba(212,221,195,0.12);
+}
+
+.last-message-box {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.last-message-box span {
+  display: block;
+  color: var(--text-dim);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.last-message-box p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.45;
+}

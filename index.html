@@ -109,6 +109,14 @@
                   <option>Monolith</option>
                   <option>Bandit</option>
                 </select>
+                <select id="avatarSelect">
+                  <option value="mask">Gas Mask</option>
+                  <option value="rookie">Rookie</option>
+                  <option value="veteran">Veteran</option>
+                  <option value="trader">Trader</option>
+                  <option value="scientist">Scientist</option>
+                  <option value="monolith">Monolith</option>
+                </select>
                 <input id="onlineRankInput" type="text" placeholder="Rank, e.g. Rookie, Veteran" maxlength="32" />
                 <select id="onlineStatusSelect">
                   <option>Available</option>
@@ -117,6 +125,14 @@
                   <option>Looking for squad</option>
                   <option>Offline</option>
                 </select>
+                <select id="reputationSelect">
+                  <option>Neutral</option>
+                  <option>Trusted</option>
+                  <option>Respected</option>
+                  <option>Infamous</option>
+                  <option>Legend</option>
+                </select>
+                <input id="badgesInput" type="text" placeholder="Badges, e.g. Guide, Trader, Artifact Hunter" maxlength="80" />
                 <input id="onlineAreaInput" type="text" placeholder="Home area, e.g. Cordon" maxlength="40" />
                 <input id="onlineWeaponInput" type="text" placeholder="Preferred weapon" maxlength="40" />
                 <textarea id="onlineBioInput" placeholder="Short bio / PDA note..." maxlength="240"></textarea>
@@ -297,16 +313,29 @@
     <article class="stalker-card-panel module-panel">
       <div class="module-label">STALKER CARD</div>
       <button id="closeStalkerCardBtn" class="small-btn stalker-card-close">Close</button>
-      <h2 id="cardCallsign">Unknown Stalker</h2>
+      <div class="stalker-card-identity">
+        <div id="cardAvatar" class="stalker-avatar avatar-mask">☢</div>
+        <div>
+          <h2 id="cardCallsign">Unknown Stalker</h2>
+          <div id="cardFactionBadge" class="faction-pill faction-loner">Unknown</div>
+        </div>
+      </div>
+      <div id="cardBadges" class="stalker-badges"></div>
       <div class="stalker-card-grid">
         <div><span>Faction</span><strong id="cardFaction">Unknown</strong></div>
         <div><span>Rank</span><strong id="cardRank">Unknown</strong></div>
         <div><span>Status</span><strong id="cardStatus">Unknown</strong></div>
+        <div><span>Reputation</span><strong id="cardReputation">Neutral</strong></div>
         <div><span>Home Area</span><strong id="cardArea">Unknown</strong></div>
         <div><span>Weapon</span><strong id="cardWeapon">Unknown</strong></div>
-        <div><span>Last Online</span><strong id="cardLastOnline">Unknown</strong></div>
+        <div><span>Joined</span><strong id="cardJoined">Unknown</strong></div>
+        <div><span>Last Seen</span><strong id="cardLastOnline">Unknown</strong></div>
       </div>
       <p id="cardBio" class="stalker-card-bio">No PDA note recorded.</p>
+      <div class="last-message-box">
+        <span>Last Transmission</span>
+        <p id="cardLastMessage">No recent broadcast found.</p>
+      </div>
     </article>
   </div>
 

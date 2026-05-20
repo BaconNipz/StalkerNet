@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v22";
+const STORAGE_KEY = "stalkernet_pda_v23";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -1277,6 +1277,9 @@ async function ensureUserProfile(user) {
       faction: "Loner",
       rank: "Rookie",
       status: "Available",
+      reputation: "Neutral",
+      avatar: "mask",
+      badges: "",
       area: "",
       weapon: "",
       bio: "",
@@ -1309,8 +1312,11 @@ async function saveOnlineProfile() {
 
   const callsign = getProfileField("callsignInput");
   const faction = getProfileField("factionSelect") || "Loner";
+  const avatar = getProfileField("avatarSelect") || "mask";
   const rank = getProfileField("onlineRankInput") || "Rookie";
   const status = getProfileField("onlineStatusSelect") || "Available";
+  const reputation = getProfileField("reputationSelect") || "Neutral";
+  const badges = getProfileField("badgesInput");
   const area = getProfileField("onlineAreaInput");
   const weapon = getProfileField("onlineWeaponInput");
   const bio = getProfileField("onlineBioInput");
@@ -1326,8 +1332,11 @@ async function saveOnlineProfile() {
       email: currentUser.email || "",
       callsign,
       faction,
+      avatar,
       rank,
       status,
+      reputation,
+      badges,
       area,
       weapon,
       bio,
@@ -1408,6 +1417,8 @@ async function sendOnlineZoneMessage(text) {
       faction: currentProfile.faction || "Loner",
       rank: currentProfile.rank || "Rookie",
       status: currentProfile.status || "Available",
+      reputation: currentProfile.reputation || "Neutral",
+      avatar: currentProfile.avatar || "mask",
       text: cleanText,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -1435,6 +1446,48 @@ sendMessage = async function() {
 
 
 // Online stalker profile cards
+
+const AVATAR_SYMBOLS = {
+  mask: "☢",
+  rookie: "●",
+  veteran: "◆",
+  trader: "₽",
+  scientist: "⌬",
+  monolith: "◆"
+};
+
+function factionClassName(faction = "Loner") {
+  return "faction-" + String(faction).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+}
+
+function getBadgeList(rawBadges = "") {
+  return String(rawBadges || "")
+    .split(",")
+    .map(badge => badge.trim())
+    .filter(Boolean)
+    .slice(0, 5);
+}
+
+async function getLastMessageForUser(userId) {
+  if (!db || !userId) return null;
+  try {
+    const snapshot = await db.collection("channels")
+      .doc("zone_broadcast")
+      .collection("messages")
+      .where("senderId", "==", userId)
+      .orderBy("createdAt", "desc")
+      .limit(1)
+      .get();
+
+    if (snapshot.empty) return null;
+    const data = snapshot.docs[0].data();
+    return { text: data.text || "", createdAt: data.createdAt || null };
+  } catch (error) {
+    console.warn("Could not load last message:", error);
+    return null;
+  }
+}
+
 function getProfileField(id) {
   const element = document.getElementById(id);
   return element ? element.value.trim() : "";
@@ -1456,8 +1509,11 @@ function fillOnlineProfileForm() {
   if (!currentProfile) return;
   setProfileField("callsignInput", currentProfile.callsign || "");
   setProfileField("factionSelect", currentProfile.faction || "Loner");
+  setProfileField("avatarSelect", currentProfile.avatar || "mask");
   setProfileField("onlineRankInput", currentProfile.rank || "Rookie");
   setProfileField("onlineStatusSelect", currentProfile.status || "Available");
+  setProfileField("reputationSelect", currentProfile.reputation || "Neutral");
+  setProfileField("badgesInput", currentProfile.badges || "");
   setProfileField("onlineAreaInput", currentProfile.area || "");
   setProfileField("onlineWeaponInput", currentProfile.weapon || "");
   setProfileField("onlineBioInput", currentProfile.bio || "");
@@ -1468,25 +1524,77 @@ async function openStalkerCardByUserId(userId, fallback = {}) {
   try {
     const doc = await db.collection("users").doc(userId).get();
     const profile = doc.exists ? doc.data() : fallback;
-    renderStalkerCard(profile, fallback);
+    const lastMessage = await getLastMessageForUser(userId);
+    renderStalkerCard(profile, fallback, lastMessage);
   } catch (error) {
     setAuthStatus(error.message, true);
   }
 }
 
-function renderStalkerCard(profile = {}, fallback = {}) {
+function renderStalkerCard(profile = {}, fallback = {}, lastMessage = null) {
   const modal = document.getElementById("stalkerCardModal");
   if (!modal) return;
+
   const callsign = profile.callsign || fallback.callsign || "Unknown Stalker";
   const faction = profile.faction || fallback.faction || "Unknown";
+  const avatar = profile.avatar || "mask";
+  const badges = getBadgeList(profile.badges);
+
   document.getElementById("cardCallsign").textContent = callsign;
   document.getElementById("cardFaction").textContent = faction;
   document.getElementById("cardRank").textContent = profile.rank || "Unknown";
   document.getElementById("cardStatus").textContent = profile.status || "Unknown";
+
+  const reputationEl = document.getElementById("cardReputation");
+  if (reputationEl) reputationEl.textContent = profile.reputation || "Neutral";
+
   document.getElementById("cardArea").textContent = profile.area || "Unknown";
   document.getElementById("cardWeapon").textContent = profile.weapon || "Unknown";
+
+  const joinedEl = document.getElementById("cardJoined");
+  if (joinedEl) joinedEl.textContent = firebaseDateToText(profile.createdAt);
+
   document.getElementById("cardLastOnline").textContent = firebaseDateToText(profile.lastOnline || profile.updatedAt || profile.createdAt);
   document.getElementById("cardBio").textContent = profile.bio || "No PDA note recorded.";
+
+  const avatarBox = document.getElementById("cardAvatar");
+  if (avatarBox) {
+    avatarBox.className = `stalker-avatar avatar-${avatar}`;
+    avatarBox.textContent = AVATAR_SYMBOLS[avatar] || "☢";
+  }
+
+  const factionBadge = document.getElementById("cardFactionBadge");
+  if (factionBadge) {
+    factionBadge.className = `faction-pill ${factionClassName(faction)}`;
+    factionBadge.textContent = faction;
+  }
+
+  const badgeBox = document.getElementById("cardBadges");
+  if (badgeBox) {
+    badgeBox.innerHTML = "";
+    if (badges.length) {
+      badges.forEach(badge => {
+        const chip = document.createElement("span");
+        chip.textContent = badge;
+        badgeBox.appendChild(chip);
+      });
+    } else {
+      const chip = document.createElement("span");
+      chip.textContent = "No badges recorded";
+      chip.className = "muted-badge";
+      badgeBox.appendChild(chip);
+    }
+  }
+
+  const lastMessageBox = document.getElementById("cardLastMessage");
+  if (lastMessageBox) {
+    if (lastMessage?.text) {
+      lastMessageBox.textContent = `"${lastMessage.text}" // ${firebaseDateToText(lastMessage.createdAt)}`;
+    } else {
+      lastMessageBox.textContent = "No recent broadcast found.";
+    }
+  }
+
   modal.classList.remove("hidden");
 }
 
