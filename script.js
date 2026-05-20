@@ -1,25 +1,7 @@
-
-// bootFailsafe: remove boot overlay even if a non-critical module stumbles.
-window.addEventListener("error", event => {
-  console.error("StalkerNet runtime error:", event.error || event.message);
-  const bootScreen = document.getElementById("bootScreen");
-  if (bootScreen) {
-    bootScreen.classList.add("boot-released");
-    setTimeout(() => bootScreen.remove(), 400);
-  }
-});
-setTimeout(() => {
-  const bootScreen = document.getElementById("bootScreen");
-  if (bootScreen) {
-    bootScreen.classList.add("boot-released");
-    bootScreen.remove();
-  }
-}, 4200);
-
-const STORAGE_KEY = "stalkernet_pda_v214";
+const STORAGE_KEY = "stalkernet_pda_v20_rollback";
 
 const defaultMessages = [
-  { id: id(), channel: getActiveChannel().name, sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
+  { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
   { id: id(), channel: "Private", sender: "Sidorovich", faction: "Trader", text: "I have work for you. Nothing glorious, but glory doesn't buy sausage.", time: "07:33" },
   { id: id(), channel: "Unknown Signal", sender: "UNKNOWN", faction: "???", text: "Do not follow the song beneath the concrete. It remembers names.", time: "03:17" },
   { id: id(), channel: "Faction Channel", sender: "Duty Outpost", faction: "Duty", text: "Mutant movement reported near Garbage. Armed stalkers requested. Payment confirmed on proof of kill.", time: "08:01" }
@@ -181,7 +163,6 @@ let state = loadState() || {
   showAiMessages: false,
   aiMessages: [],
   blockedSenders: {},
-  activeChannelId: "zone_broadcast",
   soundEnabled: true,
   showAiMessages: false,
   aiMessages: []
@@ -317,13 +298,9 @@ function switchTab(tabId) {
 }
 function renderMessageFilters() {
   const box = document.getElementById("messageFilters");
-  if (!box) return;
-
   const allMessages = typeof getDisplayMessages === "function" ? getDisplayMessages() : state.messages;
   const channels = ["All", ...new Set(allMessages.map(message => message.channel))];
-
   box.innerHTML = "";
-
   channels.forEach(channel => {
     const btn = document.createElement("button");
     btn.textContent = channel;
@@ -338,9 +315,7 @@ function renderMessageFilters() {
   });
 }
 function renderMessages() {
-  const listCheck = document.getElementById("messageList");
-  if (!listCheck) return;
-  const list = listCheck;
+  const list = document.getElementById("messageList");
   const allMessages = typeof getDisplayMessages === "function" ? getDisplayMessages() : state.messages;
   const visible = state.activeMessageFilter === "All"
     ? allMessages
@@ -414,7 +389,7 @@ function addBroadcast() {
     ["Duty Patrol", "Mutant contact north of the checkpoint. Civilians and rookies keep clear."]
   ];
   const pick = broadcasts[Math.floor(Math.random() * broadcasts.length)];
-  state.messages.push({ id: id(), channel: getActiveChannel().name, sender: pick[0], faction: "Broadcast", text: pick[1], time: nowTime() });
+  state.messages.push({ id: id(), channel: "Zone Broadcast", sender: pick[0], faction: "Broadcast", text: pick[1], time: nowTime() });
   state.activeMessageFilter = "All";
   saveState();
   renderMessageFilters();
@@ -931,19 +906,11 @@ function addTask() {
   renderTasks();
 }
 function loadProfileInputs() {
-  const fields = [
-    ["profileCallsign", "callsign"],
-    ["profileFaction", "faction"],
-    ["profileRank", "rank"],
-    ["profileLocation", "location"],
-    ["profileWeapon", "weapon"]
-  ];
-
-  fields.forEach(([inputId, key]) => {
-    const input = document.getElementById(inputId);
-    if (input) input.value = state.profile[key] || "";
-  });
-
+  document.getElementById("profileCallsign").value = state.profile.callsign || "";
+  document.getElementById("profileFaction").value = state.profile.faction || "";
+  document.getElementById("profileRank").value = state.profile.rank || "";
+  document.getElementById("profileLocation").value = state.profile.location || "";
+  document.getElementById("profileWeapon").value = state.profile.weapon || "";
   updateHeaderProfile();
 }
 function bindProfileInputs() {
@@ -954,15 +921,8 @@ function bindProfileInputs() {
     ["profileLocation", "location"],
     ["profileWeapon", "weapon"]
   ];
-
   fields.forEach(([inputId, key]) => {
-    const input = document.getElementById(inputId);
-    if (!input) {
-      console.warn("Missing profile field:", inputId);
-      return;
-    }
-
-    input.addEventListener("input", event => {
+    document.getElementById(inputId).addEventListener("input", event => {
       state.profile[key] = event.target.value;
       saveState();
       updateHeaderProfile();
@@ -1002,66 +962,52 @@ function escapeHtml(text) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-
-function bindIfExists(selectorOrId, eventName, handler) {
-  const element = selectorOrId.startsWith("#")
-    ? document.querySelector(selectorOrId)
-    : document.getElementById(selectorOrId);
-
-  if (!element) {
-    console.warn("Missing optional UI control:", selectorOrId);
-    return;
-  }
-
-  element.addEventListener(eventName, handler);
-}
-
 function bindEvents() {
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", () => switchTab(btn.dataset.tab));
   });
 
-  bindIfExists("sendBtn", "click", sendMessage);
-  bindIfExists("messageInput", "keydown", event => {
+  document.getElementById("sendBtn").addEventListener("click", sendMessage);
+  document.getElementById("messageInput").addEventListener("keydown", event => {
     if (event.key === "Enter") sendMessage();
   });
-
-  bindIfExists("broadcastBtn", "click", addBroadcast);
-
-  bindIfExists("newPinBtn", "click", addCustomPin);
-  bindIfExists("pinManagerBtn", "click", openPinManager);
-  bindIfExists("toggleAllPinsBtn", "click", toggleAllPinsQuick);
-  bindIfExists("showAllPinsBtn", "click", () => setAllPinsHidden(false));
-  bindIfExists("hideAllPinsBtn", "click", () => setAllPinsHidden(true));
-  bindIfExists("resetPinsBtn", "click", resetWorldPins);
-  bindIfExists("exportPinsBtn", "click", exportWorldPinCoordinates);
-  bindIfExists("copyPinsBtn", "click", copyExportedPins);
-  bindIfExists("saveNewPinBtn", "click", createPinFromForm);
-  bindIfExists("cancelNewPinBtn", "click", closePinCreator);
-  bindIfExists("mapSectionSelect", "change", event => setMapSection(event.target.value));
-
-  bindIfExists("loreSearch", "input", renderLore);
-  bindIfExists("taskAddBtn", "click", addTask);
-  bindIfExists("taskInput", "keydown", event => {
+  document.getElementById("broadcastBtn").addEventListener("click", addBroadcast);
+  document.getElementById("newPinBtn").addEventListener("click", addCustomPin);
+  document.getElementById("pinManagerBtn").addEventListener("click", openPinManager);
+  document.getElementById("toggleAllPinsBtn").addEventListener("click", toggleAllPinsQuick);
+  document.getElementById("showAllPinsBtn").addEventListener("click", () => setAllPinsHidden(false));
+  document.getElementById("hideAllPinsBtn").addEventListener("click", () => setAllPinsHidden(true));
+  document.getElementById("resetPinsBtn").addEventListener("click", resetWorldPins);
+  document.getElementById("exportPinsBtn").addEventListener("click", exportWorldPinCoordinates);
+  document.getElementById("copyPinsBtn").addEventListener("click", copyExportedPins);
+  document.getElementById("saveNewPinBtn").addEventListener("click", createPinFromForm);
+  document.getElementById("cancelNewPinBtn").addEventListener("click", closePinCreator);
+  document.getElementById("mapSectionSelect").addEventListener("change", event => setMapSection(event.target.value));
+  document.getElementById("loreSearch").addEventListener("input", renderLore);
+  document.getElementById("taskAddBtn").addEventListener("click", addTask);
+  document.getElementById("taskInput").addEventListener("keydown", event => {
     if (event.key === "Enter") addTask();
   });
-
   bindProfileInputs();
 
-  bindIfExists("toggleAiMessagesBtn", "click", toggleAiMessages);
-  bindIfExists("toggleBlockedUsersBtn", "click", toggleBlockedUsersPanel);
-
+  const toggleAiBtn = document.getElementById("toggleAiMessagesBtn");
+  const injectAiBtn = document.getElementById("injectAiMessageBtn");
+  const toggleBlockedUsersBtn = document.getElementById("toggleBlockedUsersBtn");
   const messageList = document.getElementById("messageList");
+  if (toggleAiBtn) toggleAiBtn.addEventListener("click", toggleAiMessages);
+  if (toggleBlockedUsersBtn) toggleBlockedUsersBtn.addEventListener("click", toggleBlockedUsersPanel);
   if (messageList) messageList.addEventListener("click", handleMessageAction);
-
-  bindIfExists("injectAiMessageBtn", "click", () => {
+  if (injectAiBtn) injectAiBtn.addEventListener("click", () => {
     state.showAiMessages = true;
     updateAiToggleButton();
     injectAiZoneMessage();
   });
 
-  bindIfExists("soundToggleBtn", "click", toggleSoundSetting);
-  bindIfExists("testSoundBtn", "click", () => playSound("boot"));
+
+  const soundToggleBtn = document.getElementById("soundToggleBtn");
+  const testSoundBtn = document.getElementById("testSoundBtn");
+  if (soundToggleBtn) soundToggleBtn.addEventListener("click", toggleSoundSetting);
+  if (testSoundBtn) testSoundBtn.addEventListener("click", () => playSound("boot"));
 }
 function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
@@ -1069,82 +1015,33 @@ function registerServiceWorker() {
   }
 }
 async function init() {
-  try {
-    updateClock();
-    setInterval(updateClock, 1000);
-  } catch (error) {
-    console.error("Clock startup failed:", error);
-  }
+  updateClock();
+  setInterval(updateClock, 1000);
+  initSoundBank();
+  bindGlobalSoundCues();
+  updateSoundButton();
 
-  try {
-    initSoundBank();
-    bindGlobalSoundCues();
-    updateSoundButton();
-  } catch (error) {
-    console.error("Audio startup failed:", error);
-  }
+  bindEvents();
+  renderMessageFilters();
+  renderMessages();
+  renderMapSectionSelect();
+  renderMapFilters();
+  updateToggleAllPinsButton();
+  await initLeafletMap();
+  renderLoreFilters();
+  renderLore();
+  renderTasks();
+  loadProfileInputs();
 
-  try {
-    bindEvents();
-  } catch (error) {
-    console.error("General button binding failed:", error);
-  }
+  setInterval(() => { if (Math.random() > 0.78) showEmission(); }, 16000);
 
-  try {
-    bindFirebaseAuthUI();
-    initFirebaseNetwork();
-  } catch (error) {
-    console.error("Firebase/login startup failed:", error);
-    const status = document.getElementById("authStatus");
-    if (status) {
-      status.textContent = "Startup error. Refresh or clear site data.";
-      status.classList.add("auth-error");
-    }
-  }
+  runBootSequence();
+  bindFirebaseAuthUI();
+  initFirebaseNetwork();
 
-  try {
-    ensureAiState();
-    updateAiToggleButton();
-    updateChannelUI();
-    renderMessageFilters();
-    renderMessages();
-  } catch (error) {
-    console.error("Comms startup failed:", error);
-  }
+  startAiChatterTimer();
 
-  try {
-    renderMapSectionSelect();
-    renderMapFilters();
-    updateToggleAllPinsButton();
-    await initLeafletMap();
-  } catch (error) {
-    console.error("Map startup failed:", error);
-  }
-
-  try {
-    renderLoreFilters();
-    renderLore();
-    renderTasks();
-    loadProfileInputs();
-  } catch (error) {
-    console.error("Archive/task/profile startup failed:", error);
-  }
-
-  try {
-    setInterval(() => { if (Math.random() > 0.78) showEmission(); }, 16000);
-    runBootSequence();
-  } catch (error) {
-    console.error("Boot/emission startup failed:", error);
-    const bootScreen = document.getElementById("bootScreen");
-    if (bootScreen) bootScreen.remove();
-  }
-
-  try {
-    startAiChatterTimer();
-    registerServiceWorker();
-  } catch (error) {
-    console.error("Final startup failed:", error);
-  }
+  registerServiceWorker();
 }
 
 
@@ -1194,7 +1091,7 @@ function createAiZoneMessage() {
   const text = actor.lines[Math.floor(Math.random() * actor.lines.length)];
   return {
     id: "ai_" + id(),
-    channel: getActiveChannelId() === "unknown_signal" ? "Unknown Signal" : "AI Chatter",
+    channel: "AI Chatter",
     sender: actor.sender,
     faction: actor.faction,
     text,
@@ -1245,80 +1142,6 @@ function startAiChatterTimer() {
     if (!state.showAiMessages) return;
     if (Math.random() > 0.72) injectAiZoneMessage();
   }, 45000);
-}
-
-
-const CHAT_CHANNELS = {
-  zone_broadcast: {
-    id: "zone_broadcast",
-    name: "Zone Broadcast",
-    description: "General Zone-wide public broadcast."
-  },
-  trade_channel: {
-    id: "trade_channel",
-    name: "Trade Channel",
-    description: "Buy, sell, barter, and arrange gear trades."
-  },
-  help_requests: {
-    id: "help_requests",
-    name: "Help Requests",
-    description: "Ask for help, warn others, or request backup."
-  },
-  faction_radio: {
-    id: "faction_radio",
-    name: "Faction Radio",
-    description: "Faction talk, roleplay, rumours, and patrol chatter."
-  },
-  unknown_signal: {
-    id: "unknown_signal",
-    name: "Unknown Signal",
-    description: "Strange transmissions, AI chatter, and Zone noise."
-  }
-};
-
-function getActiveChannelId() {
-  return state.activeChannelId || "zone_broadcast";
-}
-
-function getActiveChannel() {
-  return CHAT_CHANNELS[getActiveChannelId()] || CHAT_CHANNELS.zone_broadcast;
-}
-
-function updateChannelUI() {
-  const channel = getActiveChannel();
-  const select = document.getElementById("channelSelect");
-  const title = document.getElementById("activeChannelTitle");
-  const description = document.getElementById("activeChannelDescription");
-
-  if (select) select.value = channel.id;
-  if (title) title.textContent = channel.name;
-  if (description) description.textContent = channel.description;
-}
-
-function switchChatChannel(channelId) {
-  if (!CHAT_CHANNELS[channelId]) channelId = "zone_broadcast";
-
-  state.activeChannelId = channelId;
-  state.activeMessageFilter = "All";
-  state.messages = [];
-  saveState();
-
-  updateChannelUI();
-  renderMessageFilters();
-  renderMessages();
-
-  if (unsubscribeZoneMessages) {
-    unsubscribeZoneMessages();
-    unsubscribeZoneMessages = null;
-  }
-
-  if (channelId === "unknown_signal" && typeof injectAiZoneMessage === "function") {
-    state.showAiMessages = true;
-    updateAiToggleButton();
-    if (!state.aiMessages || state.aiMessages.length === 0) injectAiZoneMessage();
-  }
-
-  if (currentUser) listenToZoneBroadcast();
 }
 
 // Firebase online auth + Zone Broadcast chat
@@ -1512,7 +1335,10 @@ async function saveOnlineProfile() {
 function listenToZoneBroadcast() {
   if (!db || !currentUser) return;
 
-  unsubscribeZoneMessages = db.collection("channels").doc(getActiveChannelId()).collection("messages")
+  unsubscribeZoneMessages = db
+    .collection("channels")
+    .doc("zone_broadcast")
+    .collection("messages")
     .orderBy("createdAt", "desc")
     .limit(60)
     .onSnapshot(snapshot => {
@@ -1525,7 +1351,7 @@ function listenToZoneBroadcast() {
           id: doc.id,
           messageId: doc.id,
           senderId: data.senderId || "",
-          channel: getActiveChannel().name,
+          channel: "Zone Broadcast",
           sender: data.callsign || "Unknown Stalker",
           faction: data.faction || "Unknown",
           text: data.text || "",
@@ -1554,14 +1380,14 @@ async function sendOnlineZoneMessage(text) {
   if (cleanText.length > 800) return setAuthStatus("Message is too long. Keep it under 800 characters.", true);
 
   try {
-    await db.collection("channels").doc(getActiveChannelId()).collection("messages").add({
+    await db.collection("channels").doc("zone_broadcast").collection("messages").add({
       senderId: currentUser.uid,
       callsign: currentProfile.callsign,
       faction: currentProfile.faction || "Loner",
       text: cleanText,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    setAuthStatus(`Message transmitted to ${getActiveChannel().name}.`);
+    setAuthStatus("Message transmitted.");
   } catch (error) {
     setAuthStatus(error.message, true);
   }
@@ -1611,10 +1437,10 @@ function toggleBlockSender(senderId, callsign = "this stalker") {
 async function deleteOwnMessage(messageId) {
   if (!currentUser || !db) return setAuthStatus("Login before deleting messages.", true);
   if (!messageId) return;
-  if (!confirm(`Delete this transmission from ${getActiveChannel().name}?`)) return;
+  if (!confirm("Delete this transmission from Zone Broadcast?")) return;
 
   try {
-    await db.collection("channels").doc(getActiveChannelId()).collection("messages").doc(messageId).delete();
+    await db.collection("channels").doc("zone_broadcast").collection("messages").doc(messageId).delete();
     setAuthStatus("Message deleted.");
   } catch (error) {
     setAuthStatus(error.message, true);
@@ -1631,7 +1457,7 @@ async function reportMessage(messageId, senderId, callsign, text) {
   try {
     await db.collection("reports").add({
       messageId,
-      channelId: getActiveChannelId(),
+      channelId: "zone_broadcast",
       senderId: senderId || "",
       callsign: callsign || "Unknown",
       textPreview: (text || "").slice(0, 220),
@@ -1701,52 +1527,22 @@ function toggleBlockedUsersPanel() {
 }
 
 function bindFirebaseAuthUI() {
-  bindIfExists("loginBtn", "click", loginAccount);
-  bindIfExists("registerBtn", "click", registerAccount);
-  bindIfExists("logoutBtn", "click", logoutAccount);
-  bindIfExists("saveProfileBtn", "click", saveOnlineProfile);
+  const loginBtn = document.getElementById("loginBtn");
+  const registerBtn = document.getElementById("registerBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const saveProfileBtn = document.getElementById("saveProfileBtn");
 
-  bindIfExists("channelSelect", "change", event => switchChatChannel(event.target.value));
+  if (loginBtn) loginBtn.addEventListener("click", loginAccount);
+  if (registerBtn) registerBtn.addEventListener("click", registerAccount);
+  if (logoutBtn) logoutBtn.addEventListener("click", logoutAccount);
+  if (saveProfileBtn) saveProfileBtn.addEventListener("click", saveOnlineProfile);
 
-  bindIfExists("authPassword", "keydown", event => {
-    if (event.key === "Enter") loginAccount();
-  });
+  const authPassword = document.getElementById("authPassword");
+  if (authPassword) {
+    authPassword.addEventListener("keydown", event => {
+      if (event.key === "Enter") loginAccount();
+    });
+  }
 }
 
 init();
-
-
-// Last-resort direct login bindings. This keeps auth usable even if another module fails.
-window.addEventListener("load", () => {
-  try {
-    const loginBtn = document.getElementById("loginBtn");
-    const registerBtn = document.getElementById("registerBtn");
-    const saveProfileBtn = document.getElementById("saveProfileBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    if (loginBtn && !loginBtn.dataset.safeBound) {
-      loginBtn.dataset.safeBound = "true";
-      loginBtn.addEventListener("click", loginAccount);
-    }
-
-    if (registerBtn && !registerBtn.dataset.safeBound) {
-      registerBtn.dataset.safeBound = "true";
-      registerBtn.addEventListener("click", registerAccount);
-    }
-
-    if (saveProfileBtn && !saveProfileBtn.dataset.safeBound) {
-      saveProfileBtn.dataset.safeBound = "true";
-      saveProfileBtn.addEventListener("click", saveOnlineProfile);
-    }
-
-    if (logoutBtn && !logoutBtn.dataset.safeBound) {
-      logoutBtn.dataset.safeBound = "true";
-      logoutBtn.addEventListener("click", logoutAccount);
-    }
-
-    const bootScreen = document.getElementById("bootScreen");
-    if (bootScreen) setTimeout(() => bootScreen.remove(), 500);
-  } catch (error) {
-    console.error("Fallback login binding failed:", error);
-  }
-});

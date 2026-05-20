@@ -119,19 +119,8 @@
 
         <div class="online-chat-header module-panel">
           <div class="module-label">LIVE CHANNEL</div>
-          <div class="chat-channel-title" id="activeChannelTitle">Zone Broadcast</div>
-          <p class="muted" id="activeChannelDescription">General Zone-wide public broadcast.</p>
-
-          <div class="channel-selector-box">
-            <label for="channelSelect">Radio Channel</label>
-            <select id="channelSelect">
-              <option value="zone_broadcast">Zone Broadcast</option>
-              <option value="trade_channel">Trade Channel</option>
-              <option value="help_requests">Help Requests</option>
-              <option value="faction_radio">Faction Radio</option>
-              <option value="unknown_signal">Unknown Signal</option>
-            </select>
-          </div>
+          <div class="chat-channel-title">Zone Broadcast</div>
+          <p class="muted">Messages are shared with logged-in StalkerNet users.</p>
           <div class="chat-options-row">
             <button id="toggleAiMessagesBtn" class="small-btn">AI Chatter: Off</button>
             <button id="injectAiMessageBtn" class="small-btn">Ping Zone</button>
@@ -154,7 +143,7 @@
         </div>
         <div id="messageList" class="message-list"></div>
         <div class="input-row">
-          <input id="messageInput" type="text" placeholder="Transmit to selected channel..." />
+          <input id="messageInput" type="text" placeholder="Transmit to Zone Broadcast..." />
           <button id="sendBtn" class="accent-btn">Send</button>
         </div>
       </section>
