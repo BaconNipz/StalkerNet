@@ -1,18 +1,16 @@
 
-// bootFailsafe: never let a non-critical script issue trap the user on the boot screen forever.
+// bootFailsafe: remove boot overlay even if a non-critical module stumbles.
 window.addEventListener("error", event => {
   console.error("StalkerNet runtime error:", event.error || event.message);
   const bootScreen = document.getElementById("bootScreen");
-  if (bootScreen) {
-    setTimeout(() => bootScreen.remove(), 400);
-  }
+  if (bootScreen) setTimeout(() => bootScreen.remove(), 400);
 });
 setTimeout(() => {
   const bootScreen = document.getElementById("bootScreen");
   if (bootScreen) bootScreen.remove();
 }, 4200);
 
-const STORAGE_KEY = "stalkernet_pda_v211";
+const STORAGE_KEY = "stalkernet_pda_v212";
 
 const defaultMessages = [
   { id: id(), channel: getActiveChannel().name, sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -391,7 +389,6 @@ function sendMessage() {
   saveState();
   ensureAiState();
   updateAiToggleButton();
-  updateChannelUI();
   renderMessageFilters();
   renderMessages();
 }
@@ -1202,6 +1199,7 @@ function updateChannelUI() {
   const select = document.getElementById("channelSelect");
   const title = document.getElementById("activeChannelTitle");
   const description = document.getElementById("activeChannelDescription");
+
   if (select) select.value = channel.id;
   if (title) title.textContent = channel.name;
   if (description) description.textContent = channel.description;
@@ -1209,6 +1207,7 @@ function updateChannelUI() {
 
 function switchChatChannel(channelId) {
   if (!CHAT_CHANNELS[channelId]) channelId = "zone_broadcast";
+
   state.activeChannelId = channelId;
   state.activeMessageFilter = "All";
   state.messages = [];
@@ -1423,10 +1422,7 @@ async function saveOnlineProfile() {
 function listenToZoneBroadcast() {
   if (!db || !currentUser) return;
 
-  unsubscribeZoneMessages = db
-    .collection("channels")
-    .doc(getActiveChannelId())
-    .collection("messages")
+  unsubscribeZoneMessages = db.collection("channels").doc(getActiveChannelId()).collection("messages")
     .orderBy("createdAt", "desc")
     .limit(60)
     .onSnapshot(snapshot => {
