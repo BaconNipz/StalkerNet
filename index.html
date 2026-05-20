@@ -96,8 +96,8 @@
             </div>
 
             <div id="profileSetupPanel" class="profile-setup-box">
-              <div class="module-label">CALLSIGN SETUP</div>
-              <div class="auth-grid">
+              <div class="module-label">STALKER CARD SETUP</div>
+              <div class="auth-grid profile-card-form">
                 <input id="callsignInput" type="text" placeholder="Callsign" maxlength="32" />
                 <select id="factionSelect">
                   <option>Loner</option>
@@ -109,7 +109,18 @@
                   <option>Monolith</option>
                   <option>Bandit</option>
                 </select>
-                <button id="saveProfileBtn" class="small-btn accent-btn">Save Profile</button>
+                <input id="onlineRankInput" type="text" placeholder="Rank, e.g. Rookie, Veteran" maxlength="32" />
+                <select id="onlineStatusSelect">
+                  <option>Available</option>
+                  <option>In the Zone</option>
+                  <option>Trading</option>
+                  <option>Looking for squad</option>
+                  <option>Offline</option>
+                </select>
+                <input id="onlineAreaInput" type="text" placeholder="Home area, e.g. Cordon" maxlength="40" />
+                <input id="onlineWeaponInput" type="text" placeholder="Preferred weapon" maxlength="40" />
+                <textarea id="onlineBioInput" placeholder="Short bio / PDA note..." maxlength="240"></textarea>
+                <button id="saveProfileBtn" class="small-btn accent-btn">Save Stalker Card</button>
               </div>
             </div>
           </div>
@@ -281,6 +292,25 @@
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<div id="stalkerCardModal" class="stalker-card-modal hidden">
+    <div class="stalker-card-backdrop" id="stalkerCardBackdrop"></div>
+    <article class="stalker-card-panel module-panel">
+      <div class="module-label">STALKER CARD</div>
+      <button id="closeStalkerCardBtn" class="small-btn stalker-card-close">Close</button>
+      <h2 id="cardCallsign">Unknown Stalker</h2>
+      <div class="stalker-card-grid">
+        <div><span>Faction</span><strong id="cardFaction">Unknown</strong></div>
+        <div><span>Rank</span><strong id="cardRank">Unknown</strong></div>
+        <div><span>Status</span><strong id="cardStatus">Unknown</strong></div>
+        <div><span>Home Area</span><strong id="cardArea">Unknown</strong></div>
+        <div><span>Weapon</span><strong id="cardWeapon">Unknown</strong></div>
+        <div><span>Last Online</span><strong id="cardLastOnline">Unknown</strong></div>
+      </div>
+      <p id="cardBio" class="stalker-card-bio">No PDA note recorded.</p>
+    </article>
+  </div>
+
+
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>

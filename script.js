@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v20_rollback";
+const STORAGE_KEY = "stalkernet_pda_v22";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -332,7 +332,7 @@ function renderMessages() {
     card.innerHTML = `
       <div class="message-head">
         <div>
-          <div class="sender">${escapeHtml(message.sender)}</div>
+          <div class="sender sender-clickable" data-stalker-card-user="${message.senderId || ""}" data-callsign="${escapeHtml(message.sender).replaceAll('"', "&quot;")}" data-faction="${escapeHtml(message.faction).replaceAll('"', "&quot;")}">${escapeHtml(message.sender)}</div>
           <div class="meta">${escapeHtml(message.channel)} // ${escapeHtml(message.faction)}${message.isAi ? " // AI" : ""}</div>
         </div>
         <div class="meta">${escapeHtml(message.time)}</div>
@@ -1222,6 +1222,7 @@ function updateAuthUI() {
   const factionSelect = document.getElementById("factionSelect");
   if (callsignInput && currentProfile?.callsign) callsignInput.value = currentProfile.callsign;
   if (factionSelect && currentProfile?.faction) factionSelect.value = currentProfile.faction;
+  fillOnlineProfileForm();
 }
 
 async function registerAccount() {
@@ -1274,6 +1275,11 @@ async function ensureUserProfile(user) {
       email: user.email || "",
       callsign: "",
       faction: "Loner",
+      rank: "Rookie",
+      status: "Available",
+      area: "",
+      weapon: "",
+      bio: "",
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       lastOnline: firebase.firestore.FieldValue.serverTimestamp()
     }, { merge: true });
@@ -1301,32 +1307,48 @@ async function loadUserProfile(user) {
 async function saveOnlineProfile() {
   if (!currentUser) return setAuthStatus("Login first.", true);
 
-  const callsign = document.getElementById("callsignInput").value.trim();
-  const faction = document.getElementById("factionSelect").value;
+  const callsign = getProfileField("callsignInput");
+  const faction = getProfileField("factionSelect") || "Loner";
+  const rank = getProfileField("onlineRankInput") || "Rookie";
+  const status = getProfileField("onlineStatusSelect") || "Available";
+  const area = getProfileField("onlineAreaInput");
+  const weapon = getProfileField("onlineWeaponInput");
+  const bio = getProfileField("onlineBioInput");
 
   if (!callsign) return setAuthStatus("Enter a callsign first.", true);
   if (callsign.length > 32) return setAuthStatus("Callsign is too long.", true);
+  if (bio.length > 240) return setAuthStatus("Bio is too long.", true);
 
   try {
+    const existing = currentProfile || {};
     const profile = {
       uid: currentUser.uid,
       email: currentUser.email || "",
       callsign,
       faction,
+      rank,
+      status,
+      area,
+      weapon,
+      bio,
+      createdAt: existing.createdAt || firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       lastOnline: firebase.firestore.FieldValue.serverTimestamp()
     };
 
     await db.collection("users").doc(currentUser.uid).set(profile, { merge: true });
-    currentProfile = { ...(currentProfile || {}), ...profile };
+    currentProfile = { ...existing, ...profile };
 
     state.profile.callsign = callsign;
     state.profile.faction = faction;
+    state.profile.rank = rank;
+    state.profile.location = area || state.profile.location;
+    state.profile.weapon = weapon || state.profile.weapon;
     saveState();
     loadProfileInputs();
 
     updateAuthUI();
-    setAuthStatus("Profile saved.");
+    setAuthStatus("Stalker card saved.");
   } catch (error) {
     setAuthStatus(error.message, true);
   }
@@ -1384,6 +1406,8 @@ async function sendOnlineZoneMessage(text) {
       senderId: currentUser.uid,
       callsign: currentProfile.callsign,
       faction: currentProfile.faction || "Loner",
+      rank: currentProfile.rank || "Rookie",
+      status: currentProfile.status || "Available",
       text: cleanText,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -1408,6 +1432,79 @@ sendMessage = async function() {
   setAuthStatus("Login to send live Zone Broadcast messages.", true);
 };
 
+
+
+// Online stalker profile cards
+function getProfileField(id) {
+  const element = document.getElementById(id);
+  return element ? element.value.trim() : "";
+}
+
+function setProfileField(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.value = value || "";
+}
+
+function firebaseDateToText(value) {
+  if (!value) return "Unknown";
+  const date = value.toDate ? value.toDate() : new Date(value);
+  if (Number.isNaN(date.getTime())) return "Unknown";
+  return date.toLocaleDateString() + " " + date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function fillOnlineProfileForm() {
+  if (!currentProfile) return;
+  setProfileField("callsignInput", currentProfile.callsign || "");
+  setProfileField("factionSelect", currentProfile.faction || "Loner");
+  setProfileField("onlineRankInput", currentProfile.rank || "Rookie");
+  setProfileField("onlineStatusSelect", currentProfile.status || "Available");
+  setProfileField("onlineAreaInput", currentProfile.area || "");
+  setProfileField("onlineWeaponInput", currentProfile.weapon || "");
+  setProfileField("onlineBioInput", currentProfile.bio || "");
+}
+
+async function openStalkerCardByUserId(userId, fallback = {}) {
+  if (!db || !userId) return;
+  try {
+    const doc = await db.collection("users").doc(userId).get();
+    const profile = doc.exists ? doc.data() : fallback;
+    renderStalkerCard(profile, fallback);
+  } catch (error) {
+    setAuthStatus(error.message, true);
+  }
+}
+
+function renderStalkerCard(profile = {}, fallback = {}) {
+  const modal = document.getElementById("stalkerCardModal");
+  if (!modal) return;
+  const callsign = profile.callsign || fallback.callsign || "Unknown Stalker";
+  const faction = profile.faction || fallback.faction || "Unknown";
+  document.getElementById("cardCallsign").textContent = callsign;
+  document.getElementById("cardFaction").textContent = faction;
+  document.getElementById("cardRank").textContent = profile.rank || "Unknown";
+  document.getElementById("cardStatus").textContent = profile.status || "Unknown";
+  document.getElementById("cardArea").textContent = profile.area || "Unknown";
+  document.getElementById("cardWeapon").textContent = profile.weapon || "Unknown";
+  document.getElementById("cardLastOnline").textContent = firebaseDateToText(profile.lastOnline || profile.updatedAt || profile.createdAt);
+  document.getElementById("cardBio").textContent = profile.bio || "No PDA note recorded.";
+  modal.classList.remove("hidden");
+}
+
+function closeStalkerCard() {
+  const modal = document.getElementById("stalkerCardModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+function handleStalkerCardClick(event) {
+  const sender = event.target.closest("[data-stalker-card-user]");
+  if (!sender) return;
+  const userId = sender.dataset.stalkerCardUser;
+  if (!userId) return;
+  openStalkerCardByUserId(userId, {
+    callsign: sender.dataset.callsign || "Unknown Stalker",
+    faction: sender.dataset.faction || "Unknown"
+  });
+}
 
 function ensureControlState() {
   if (!state.blockedSenders || typeof state.blockedSenders !== "object") {
@@ -1536,6 +1633,14 @@ function bindFirebaseAuthUI() {
   if (registerBtn) registerBtn.addEventListener("click", registerAccount);
   if (logoutBtn) logoutBtn.addEventListener("click", logoutAccount);
   if (saveProfileBtn) saveProfileBtn.addEventListener("click", saveOnlineProfile);
+
+  const closeStalkerCardBtn = document.getElementById("closeStalkerCardBtn");
+  const stalkerCardBackdrop = document.getElementById("stalkerCardBackdrop");
+  const messageListForCards = document.getElementById("messageList");
+
+  if (closeStalkerCardBtn) closeStalkerCardBtn.addEventListener("click", closeStalkerCard);
+  if (stalkerCardBackdrop) stalkerCardBackdrop.addEventListener("click", closeStalkerCard);
+  if (messageListForCards) messageListForCards.addEventListener("click", handleStalkerCardClick);
 
   const authPassword = document.getElementById("authPassword");
   if (authPassword) {
