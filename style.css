@@ -1008,3 +1008,39 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
     height: 80px;
   }
 }
+
+
+/* v2.6: faction patch auto-selected from faction dropdown */
+.patch-picker {
+  display: none !important;
+}
+
+.auto-patch-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 10px;
+  border: 1px solid rgba(212,221,195,0.14);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(22, 27, 18, 0.98), rgba(7, 8, 6, 0.98));
+}
+
+.auto-patch-preview strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.auto-patch-preview .muted {
+  margin: 4px 0 0;
+  font-size: 11px;
+}
+
+.auto-patch-preview .stalker-avatar {
+  flex: 0 0 auto;
+  width: 72px;
+  height: 72px;
+}

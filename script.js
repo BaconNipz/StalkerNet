@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v252";
+const STORAGE_KEY = "stalkernet_pda_v26";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -1325,7 +1325,7 @@ async function saveOnlineProfile() {
 
   const callsign = getProfileField("callsignInput");
   const faction = getProfileField("factionSelect") || "Loner";
-  const avatar = getProfileField("avatarSelect") || "loners";
+  const avatar = applyPatchFromFaction();
   const rank = getProfileField("onlineRankInput") || "Rookie";
   const status = getProfileField("onlineStatusSelect") || "Available";
   const reputation = getProfileField("reputationSelect") || "Neutral";
@@ -1482,6 +1482,53 @@ const PATCH_OPTIONS = {
   sin: { name: "Sin", src: "assets/faction-patches/sin.png" }
 };
 
+
+function patchKeyFromFaction(faction = "Loner") {
+  const cleaned = String(faction || "Loner").toLowerCase().replace(/[^a-z0-9]+/g, "_");
+  const map = {
+    loner: "loners",
+    loners: "loners",
+    free_stalkers: "loners",
+    duty: "duty",
+    freedom: "freedom",
+    ecologist: "ecologists",
+    ecologists: "ecologists",
+    clear_sky: "clear_sky",
+    mercenary: "mercenaries",
+    mercenaries: "mercenaries",
+    monolith: "monolith",
+    bandit: "bandits",
+    bandits: "bandits",
+    renegade: "renegades",
+    renegades: "renegades",
+    isg: "isg",
+    military: "military",
+    sin: "sin"
+  };
+  return map[cleaned] || "loners";
+}
+
+function applyPatchFromFaction() {
+  const faction = getProfileField("factionSelect") || "Loner";
+  const key = patchKeyFromFaction(faction);
+  setSelectedPatch(key);
+  return key;
+}
+
+function updateSelectedPatchPreview(patchKey = "loners") {
+  const key = normalizePatchKey(patchKey);
+  const patch = PATCH_OPTIONS[key] || PATCH_OPTIONS.loners;
+  const preview = document.getElementById("selectedPatchPreview");
+  const name = document.getElementById("selectedPatchName");
+
+  if (preview) {
+    preview.className = `stalker-avatar patch-avatar avatar-${key}`;
+    preview.innerHTML = patchImageHtml(key, `${patch.name} patch`);
+  }
+
+  if (name) name.textContent = patch.name;
+}
+
 function normalizePatchKey(value = "loners") {
   const map = {
     mask: "loners",
@@ -1524,6 +1571,8 @@ function setSelectedPatch(patchKey) {
   document.querySelectorAll(".patch-option").forEach(btn => {
     btn.classList.toggle("selected", btn.dataset.patch === key);
   });
+
+  updateSelectedPatchPreview(key);
 }
 
 function bindPatchPicker() {
@@ -1532,6 +1581,13 @@ function bindPatchPicker() {
       setSelectedPatch(btn.dataset.patch);
     });
   });
+
+  const factionSelect = document.getElementById("factionSelect");
+  if (factionSelect) {
+    factionSelect.addEventListener("change", () => {
+      applyPatchFromFaction();
+    });
+  }
 }
 
 
@@ -1595,7 +1651,7 @@ function updateIdPreview() {
     bio: ""
   };
 
-  const avatar = profile.avatar || "loners";
+  const avatar = profile.avatar || patchKeyFromFaction(profile.faction || "Loner");
   const faction = profile.faction || "Unknown";
   const callsign = profile.callsign || "Unknown Stalker";
   const rank = profile.rank || "Unknown";
@@ -1628,8 +1684,8 @@ function fillOnlineProfileForm() {
   if (!currentProfile) return;
   setProfileField("callsignInput", currentProfile.callsign || "");
   setProfileField("factionSelect", currentProfile.faction || "Loner");
-  setProfileField("avatarSelect", normalizePatchKey(currentProfile.avatar || "loners"));
-  setSelectedPatch(currentProfile.avatar || "loners");
+  setProfileField("avatarSelect", patchKeyFromFaction(currentProfile.faction || "Loner"));
+  setSelectedPatch(patchKeyFromFaction(currentProfile.faction || "Loner"));
   setProfileField("onlineRankInput", currentProfile.rank || "Rookie");
   setProfileField("onlineStatusSelect", currentProfile.status || "Available");
   setProfileField("reputationSelect", currentProfile.reputation || "Neutral");
@@ -1658,7 +1714,7 @@ function renderStalkerCard(profile = {}, fallback = {}, lastMessage = null) {
 
   const callsign = profile.callsign || fallback.callsign || "Unknown Stalker";
   const faction = profile.faction || fallback.faction || "Unknown";
-  const avatar = profile.avatar || "loners";
+  const avatar = profile.avatar || patchKeyFromFaction(profile.faction || "Loner");
   const badges = getBadgeList(profile.badges);
 
   document.getElementById("cardCallsign").textContent = callsign;
