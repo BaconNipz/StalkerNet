@@ -1047,3 +1047,25 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 
 
 /* v2.6.1: saved Stalker Card data now feeds the top PDA header */
+
+
+/* v2.7: live device battery/network status */
+#batteryValue,
+#signalValue {
+  color: var(--text-soft);
+  letter-spacing: 0.08em;
+}
+
+#batteryValue[data-state="low"] {
+  color: #ff9f7a;
+}
+
+#batteryValue[data-state="unsupported"],
+#batteryValue[data-state="unavailable"],
+#signalValue[data-state="unknown"] {
+  color: var(--text-dim);
+}
+
+#signalValue[data-state="offline"] {
+  color: #ff9f7a;
+}

@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v261";
+const STORAGE_KEY = "stalkernet_pda_v27";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -799,6 +799,100 @@ function imageExists(url) {
     img.src = url + "?v=" + Date.now();
   });
 }
+
+// Live device status: battery and network connection
+function formatBatteryLevel(level) {
+  if (typeof level !== "number") return "--";
+  return `${Math.round(level * 100)}%`;
+}
+
+function updateBatteryDisplay(level, charging = false) {
+  const el = document.getElementById("batteryValue");
+  if (!el) return;
+
+  if (typeof level !== "number") {
+    el.textContent = "PWR --";
+    el.dataset.state = "unknown";
+    return;
+  }
+
+  const pct = Math.round(level * 100);
+  const bars = pct >= 90 ? "▰▰▰▰" :
+               pct >= 65 ? "▰▰▰▱" :
+               pct >= 40 ? "▰▰▱▱" :
+               pct >= 20 ? "▰▱▱▱" :
+                            "▱▱▱▱";
+
+  el.textContent = `${pct}% ${charging ? "CHG" : bars}`;
+  el.dataset.state = pct <= 20 ? "low" : "ok";
+}
+
+async function initBatteryStatus() {
+  const el = document.getElementById("batteryValue");
+  if (!el) return;
+
+  if (!("getBattery" in navigator)) {
+    el.textContent = "PWR N/A";
+    el.dataset.state = "unsupported";
+    return;
+  }
+
+  try {
+    const battery = await navigator.getBattery();
+
+    const refresh = () => {
+      updateBatteryDisplay(battery.level, battery.charging);
+    };
+
+    refresh();
+    battery.addEventListener("levelchange", refresh);
+    battery.addEventListener("chargingchange", refresh);
+  } catch (error) {
+    console.warn("Battery status unavailable:", error);
+    el.textContent = "PWR N/A";
+    el.dataset.state = "unavailable";
+  }
+}
+
+function updateNetworkDisplay() {
+  const el = document.getElementById("signalValue");
+  if (!el) return;
+
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+  if (!navigator.onLine) {
+    el.textContent = "OFFLINE";
+    el.dataset.state = "offline";
+    return;
+  }
+
+  if (!connection) {
+    el.textContent = "ONLINE";
+    el.dataset.state = "unknown";
+    return;
+  }
+
+  const type = connection.type && connection.type !== "unknown" ? connection.type : "";
+  const effective = connection.effectiveType ? connection.effectiveType.toUpperCase() : "";
+  const downlink = typeof connection.downlink === "number" ? `${connection.downlink.toFixed(1)}MB` : "";
+  const label = [type.toUpperCase(), effective || downlink].filter(Boolean).join(" ");
+
+  el.textContent = label || "ONLINE";
+  el.dataset.state = "online";
+}
+
+function initNetworkStatus() {
+  updateNetworkDisplay();
+
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (connection && connection.addEventListener) {
+    connection.addEventListener("change", updateNetworkDisplay);
+  }
+
+  window.addEventListener("online", updateNetworkDisplay);
+  window.addEventListener("offline", updateNetworkDisplay);
+}
+
 async function initLeafletMap(reset = false) {
   if (!window.L) return;
 
@@ -1063,6 +1157,8 @@ function registerServiceWorker() {
 }
 async function init() {
   updateClock();
+  initBatteryStatus();
+  initNetworkStatus();
   setInterval(updateClock, 1000);
   initSoundBank();
   bindGlobalSoundCues();
