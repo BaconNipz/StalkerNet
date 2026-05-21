@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v24";
+const STORAGE_KEY = "stalkernet_pda_v241";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -906,11 +906,19 @@ function addTask() {
   renderTasks();
 }
 function loadProfileInputs() {
-  document.getElementById("profileCallsign").value = state.profile.callsign || "";
-  document.getElementById("profileFaction").value = state.profile.faction || "";
-  document.getElementById("profileRank").value = state.profile.rank || "";
-  document.getElementById("profileLocation").value = state.profile.location || "";
-  document.getElementById("profileWeapon").value = state.profile.weapon || "";
+  const fields = [
+    ["profileCallsign", "callsign"],
+    ["profileFaction", "faction"],
+    ["profileRank", "rank"],
+    ["profileLocation", "location"],
+    ["profileWeapon", "weapon"]
+  ];
+
+  fields.forEach(([inputId, key]) => {
+    const input = document.getElementById(inputId);
+    if (input) input.value = state.profile[key] || "";
+  });
+
   updateHeaderProfile();
 }
 function bindProfileInputs() {
@@ -921,8 +929,12 @@ function bindProfileInputs() {
     ["profileLocation", "location"],
     ["profileWeapon", "weapon"]
   ];
+
   fields.forEach(([inputId, key]) => {
-    document.getElementById(inputId).addEventListener("input", event => {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+
+    input.addEventListener("input", event => {
       state.profile[key] = event.target.value;
       saveState();
       updateHeaderProfile();

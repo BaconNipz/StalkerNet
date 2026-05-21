@@ -845,3 +845,25 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
     align-items: flex-start;
   }
 }
+
+
+/* v2.4.1: ID section now replaces the old operational identity form */
+.local-id-label {
+  display: none;
+}
+
+.id-card-preview {
+  border-color: rgba(215, 171, 107, 0.28);
+  background:
+    linear-gradient(180deg, rgba(19, 24, 15, 0.96), rgba(8, 10, 7, 0.98));
+}
+
+.id-profile-editor {
+  margin-top: 12px;
+}
+
+.id-login-note {
+  color: var(--text-dim);
+  border-left: 2px solid rgba(215, 171, 107, 0.32);
+  padding-left: 10px;
+}
