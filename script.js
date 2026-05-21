@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v27";
+const STORAGE_KEY = "stalkernet_pda_v271";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -800,6 +800,15 @@ function imageExists(url) {
   });
 }
 
+
+async function isBraveBrowser() {
+  try {
+    return Boolean(navigator.brave && await navigator.brave.isBrave());
+  } catch (error) {
+    return false;
+  }
+}
+
 // Live device status: battery and network connection
 function formatBatteryLevel(level) {
   if (typeof level !== "number") return "--";
@@ -811,7 +820,7 @@ function updateBatteryDisplay(level, charging = false) {
   if (!el) return;
 
   if (typeof level !== "number") {
-    el.textContent = "PWR --";
+    el.textContent = "--";
     el.dataset.state = "unknown";
     return;
   }
@@ -831,9 +840,21 @@ async function initBatteryStatus() {
   const el = document.getElementById("batteryValue");
   if (!el) return;
 
+  const brave = await isBraveBrowser();
+
+  // Brave often blocks or spoofs Battery API results for privacy.
+  // Showing "100% CHG" when it is not real is worse than showing unavailable.
+  if (brave) {
+    el.textContent = "LOCKED";
+    el.dataset.state = "privacy";
+    el.title = "Battery percentage is blocked or spoofed by Brave privacy protections.";
+    return;
+  }
+
   if (!("getBattery" in navigator)) {
-    el.textContent = "PWR N/A";
+    el.textContent = "N/A";
     el.dataset.state = "unsupported";
+    el.title = "Battery percentage is not available in this browser.";
     return;
   }
 
@@ -849,8 +870,9 @@ async function initBatteryStatus() {
     battery.addEventListener("chargingchange", refresh);
   } catch (error) {
     console.warn("Battery status unavailable:", error);
-    el.textContent = "PWR N/A";
+    el.textContent = "N/A";
     el.dataset.state = "unavailable";
+    el.title = "Battery percentage could not be read.";
   }
 }
 
@@ -863,22 +885,25 @@ function updateNetworkDisplay() {
   if (!navigator.onLine) {
     el.textContent = "OFFLINE";
     el.dataset.state = "offline";
+    el.title = "Device appears to be offline.";
     return;
   }
 
   if (!connection) {
     el.textContent = "ONLINE";
     el.dataset.state = "unknown";
+    el.title = "Network type is hidden by this browser.";
     return;
   }
 
-  const type = connection.type && connection.type !== "unknown" ? connection.type : "";
+  const type = connection.type && connection.type !== "unknown" ? connection.type.toUpperCase() : "";
   const effective = connection.effectiveType ? connection.effectiveType.toUpperCase() : "";
-  const downlink = typeof connection.downlink === "number" ? `${connection.downlink.toFixed(1)}MB` : "";
-  const label = [type.toUpperCase(), effective || downlink].filter(Boolean).join(" ");
+  const saveData = connection.saveData ? "SAVE" : "";
+  const label = [type, effective, saveData].filter(Boolean).join(" ");
 
   el.textContent = label || "ONLINE";
   el.dataset.state = "online";
+  el.title = "Browsers cannot read true phone signal bars, only broad connection info.";
 }
 
 function initNetworkStatus() {

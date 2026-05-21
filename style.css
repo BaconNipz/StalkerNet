@@ -1069,3 +1069,13 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 #signalValue[data-state="offline"] {
   color: #ff9f7a;
 }
+
+
+/* v2.7.1: privacy-safe battery/network display */
+#batteryValue[data-state="privacy"] {
+  color: #d7ab6b;
+}
+
+#batteryValue[data-state="privacy"]::after {
+  content: "";
+}
