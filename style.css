@@ -1044,3 +1044,6 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   width: 72px;
   height: 72px;
 }
+
+
+/* v2.6.1: saved Stalker Card data now feeds the top PDA header */

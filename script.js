@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v26";
+const STORAGE_KEY = "stalkernet_pda_v261";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -282,10 +282,44 @@ function updateClock() {
   document.getElementById("dateText").textContent = date.toLocaleDateString();
   document.getElementById("timeText").textContent = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
+
+function syncLocalProfileFromOnline() {
+  if (!currentProfile) return;
+
+  state.profile.callsign = currentProfile.callsign || state.profile.callsign || "Marked Rookie";
+  state.profile.faction = currentProfile.faction || state.profile.faction || "Loner";
+  state.profile.rank = currentProfile.rank || state.profile.rank || "Rookie";
+  state.profile.location = currentProfile.area || state.profile.location || "Cordon";
+  state.profile.weapon = currentProfile.weapon || state.profile.weapon || "";
+  saveState();
+}
+
 function updateHeaderProfile() {
-  document.getElementById("headerCallsign").textContent = (state.profile.callsign || "UNKNOWN").toUpperCase();
-  document.getElementById("headerLocation").textContent = (state.profile.location || "UNKNOWN").toUpperCase();
-  document.getElementById("headerFaction").textContent = (state.profile.faction || "UNKNOWN").toUpperCase();
+  const online = currentProfile || {};
+  const local = state.profile || {};
+
+  const callsign = online.callsign || local.callsign || "Marked Rookie";
+  const faction = online.faction || local.faction || "Loner";
+  const rank = online.rank || local.rank || "Rookie";
+  const area = online.area || local.location || "Cordon";
+
+  const callsignEl = document.getElementById("headerCallsign");
+  const factionEl = document.getElementById("headerFaction");
+  const areaEl = document.getElementById("headerArea");
+
+  if (callsignEl) callsignEl.textContent = callsign;
+  if (factionEl) factionEl.textContent = faction;
+  if (areaEl) areaEl.textContent = area;
+
+  const titleCallsign = document.querySelector("[data-profile-callsign]");
+  const titleFaction = document.querySelector("[data-profile-faction]");
+  const titleRank = document.querySelector("[data-profile-rank]");
+  const titleArea = document.querySelector("[data-profile-area]");
+
+  if (titleCallsign) titleCallsign.textContent = callsign;
+  if (titleFaction) titleFaction.textContent = faction;
+  if (titleRank) titleRank.textContent = rank;
+  if (titleArea) titleArea.textContent = area;
 }
 function switchTab(tabId) {
   document.querySelectorAll(".tab-panel").forEach(panel => panel.classList.remove("active"));
@@ -1219,6 +1253,7 @@ function setAuthStatus(text, isError = false) {
 }
 
 function updateAuthUI() {
+  updateHeaderProfile();
   const loggedOut = document.getElementById("authLoggedOut");
   const loggedIn = document.getElementById("authLoggedIn");
   if (!loggedOut || !loggedIn) return;
@@ -1236,6 +1271,7 @@ function updateAuthUI() {
   if (callsignInput && currentProfile?.callsign) callsignInput.value = currentProfile.callsign;
   if (factionSelect && currentProfile?.faction) factionSelect.value = currentProfile.faction;
   fillOnlineProfileForm();
+  updateHeaderProfile();
 }
 
 async function registerAccount() {
@@ -1360,6 +1396,8 @@ async function saveOnlineProfile() {
 
     await db.collection("users").doc(currentUser.uid).set(profile, { merge: true });
     currentProfile = { ...existing, ...profile };
+    syncLocalProfileFromOnline();
+    updateHeaderProfile();
 
     state.profile.callsign = callsign;
     state.profile.faction = faction;
