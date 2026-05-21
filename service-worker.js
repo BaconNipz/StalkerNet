@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v2412";
+const CACHE_NAME = "stalkernet-cache-v25";
 
 const FILES_TO_CACHE = [
   "./",
@@ -16,6 +16,18 @@ const FILES_TO_CACHE = [
   "./assets/audio/alert.wav",
   "./assets/audio/click.wav",
   "./assets/audio/boot.wav"
+  "./assets/faction-patches/ecologists.png",
+  "./assets/faction-patches/clear_sky.png",
+  "./assets/faction-patches/freedom.png",
+  "./assets/faction-patches/renegades.png",
+  "./assets/faction-patches/duty.png",
+  "./assets/faction-patches/loners.png",
+  "./assets/faction-patches/mercenaries.png",
+  "./assets/faction-patches/isg.png",
+  "./assets/faction-patches/monolith.png",
+  "./assets/faction-patches/military.png",
+  "./assets/faction-patches/bandits.png",
+  "./assets/faction-patches/sin.png",
 ];
 
 self.addEventListener("install", event => {

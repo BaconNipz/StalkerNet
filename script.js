@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v2412";
+const STORAGE_KEY = "stalkernet_pda_v25";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -1001,6 +1001,7 @@ function bindEvents() {
     if (event.key === "Enter") addTask();
   });
   bindProfileInputs();
+  bindPatchPicker();
 
   const toggleAiBtn = document.getElementById("toggleAiMessagesBtn");
   const injectAiBtn = document.getElementById("injectAiMessageBtn");
@@ -1290,7 +1291,7 @@ async function ensureUserProfile(user) {
       rank: "Rookie",
       status: "Available",
       reputation: "Neutral",
-      avatar: "mask",
+      avatar: "loners",
       badges: "",
       area: "",
       weapon: "",
@@ -1324,7 +1325,7 @@ async function saveOnlineProfile() {
 
   const callsign = getProfileField("callsignInput");
   const faction = getProfileField("factionSelect") || "Loner";
-  const avatar = getProfileField("avatarSelect") || "mask";
+  const avatar = getProfileField("avatarSelect") || "loners";
   const rank = getProfileField("onlineRankInput") || "Rookie";
   const status = getProfileField("onlineStatusSelect") || "Available";
   const reputation = getProfileField("reputationSelect") || "Neutral";
@@ -1431,7 +1432,7 @@ async function sendOnlineZoneMessage(text) {
       rank: currentProfile.rank || "Rookie",
       status: currentProfile.status || "Available",
       reputation: currentProfile.reputation || "Neutral",
-      avatar: currentProfile.avatar || "mask",
+      avatar: currentProfile.avatar || "loners",
       text: cleanText,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -1466,14 +1467,73 @@ function openIdTab() {
 
 // Online stalker profile cards
 
-const AVATAR_SYMBOLS = {
-  mask: "☢",
-  rookie: "●",
-  veteran: "◆",
-  trader: "₽",
-  scientist: "⌬",
-  monolith: "◆"
+const PATCH_OPTIONS = {
+  ecologists: { name: "Ecologists", src: "assets/faction-patches/ecologists.png" },
+  clear_sky: { name: "Clear Sky", src: "assets/faction-patches/clear_sky.png" },
+  freedom: { name: "Freedom", src: "assets/faction-patches/freedom.png" },
+  renegades: { name: "Renegades", src: "assets/faction-patches/renegades.png" },
+  duty: { name: "Duty", src: "assets/faction-patches/duty.png" },
+  loners: { name: "Loners", src: "assets/faction-patches/loners.png" },
+  mercenaries: { name: "Mercenaries", src: "assets/faction-patches/mercenaries.png" },
+  isg: { name: "ISG", src: "assets/faction-patches/isg.png" },
+  monolith: { name: "Monolith", src: "assets/faction-patches/monolith.png" },
+  military: { name: "Military", src: "assets/faction-patches/military.png" },
+  bandits: { name: "Bandits", src: "assets/faction-patches/bandits.png" },
+  sin: { name: "Sin", src: "assets/faction-patches/sin.png" }
 };
+
+function normalizePatchKey(value = "loners") {
+  const map = {
+    mask: "loners",
+    rookie: "loners",
+    veteran: "loners",
+    trader: "loners",
+    scientist: "ecologists",
+    monolith: "monolith",
+    mercenary: "mercenaries",
+    mercenaries: "mercenaries",
+    bandit: "bandits",
+    clearsky: "clear_sky",
+    "clear sky": "clear_sky",
+    free_stalkers: "loners",
+    loner: "loners",
+    duty: "duty",
+    freedom: "freedom",
+    military: "military",
+    isg: "isg",
+    sin: "sin",
+    renegades: "renegades",
+    ecologist: "ecologists",
+    ecologists: "ecologists"
+  };
+  const cleaned = String(value || "loners").toLowerCase().replace(/[^a-z0-9]+/g, "_");
+  return PATCH_OPTIONS[cleaned] ? cleaned : (map[cleaned] || map[String(value || "").toLowerCase()] || "loners");
+}
+
+function patchImageHtml(patchKey, altText = "Faction patch") {
+  const key = normalizePatchKey(patchKey);
+  const patch = PATCH_OPTIONS[key] || PATCH_OPTIONS.loners;
+  return `<img src="${patch.src}" alt="${escapeHtml(altText)}" />`;
+}
+
+function setSelectedPatch(patchKey) {
+  const key = normalizePatchKey(patchKey);
+  const input = document.getElementById("avatarSelect");
+  if (input) input.value = key;
+
+  document.querySelectorAll(".patch-option").forEach(btn => {
+    btn.classList.toggle("selected", btn.dataset.patch === key);
+  });
+}
+
+function bindPatchPicker() {
+  document.querySelectorAll(".patch-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setSelectedPatch(btn.dataset.patch);
+    });
+  });
+}
+
 
 function factionClassName(faction = "Loner") {
   return "faction-" + String(faction).toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -1531,11 +1591,11 @@ function updateIdPreview() {
     faction: state.profile?.faction,
     rank: state.profile?.rank,
     reputation: "Neutral",
-    avatar: "mask",
+    avatar: "loners",
     bio: ""
   };
 
-  const avatar = profile.avatar || "mask";
+  const avatar = profile.avatar || "loners";
   const faction = profile.faction || "Unknown";
   const callsign = profile.callsign || "Unknown Stalker";
   const rank = profile.rank || "Unknown";
@@ -1543,8 +1603,9 @@ function updateIdPreview() {
 
   const avatarEl = document.getElementById("idPreviewAvatar");
   if (avatarEl) {
-    avatarEl.className = `stalker-avatar avatar-${avatar}`;
-    avatarEl.textContent = (typeof AVATAR_SYMBOLS !== "undefined" && AVATAR_SYMBOLS[avatar]) ? AVATAR_SYMBOLS[avatar] : "☢";
+    const key = normalizePatchKey(avatar);
+    avatarEl.className = `stalker-avatar patch-avatar avatar-${key}`;
+    avatarEl.innerHTML = patchImageHtml(key, `${callsign} patch`);
   }
 
   const nameEl = document.getElementById("idPreviewName");
@@ -1567,7 +1628,8 @@ function fillOnlineProfileForm() {
   if (!currentProfile) return;
   setProfileField("callsignInput", currentProfile.callsign || "");
   setProfileField("factionSelect", currentProfile.faction || "Loner");
-  setProfileField("avatarSelect", currentProfile.avatar || "mask");
+  setProfileField("avatarSelect", normalizePatchKey(currentProfile.avatar || "loners"));
+  setSelectedPatch(currentProfile.avatar || "loners");
   setProfileField("onlineRankInput", currentProfile.rank || "Rookie");
   setProfileField("onlineStatusSelect", currentProfile.status || "Available");
   setProfileField("reputationSelect", currentProfile.reputation || "Neutral");
@@ -1596,7 +1658,7 @@ function renderStalkerCard(profile = {}, fallback = {}, lastMessage = null) {
 
   const callsign = profile.callsign || fallback.callsign || "Unknown Stalker";
   const faction = profile.faction || fallback.faction || "Unknown";
-  const avatar = profile.avatar || "mask";
+  const avatar = profile.avatar || "loners";
   const badges = getBadgeList(profile.badges);
 
   document.getElementById("cardCallsign").textContent = callsign;
@@ -1618,8 +1680,9 @@ function renderStalkerCard(profile = {}, fallback = {}, lastMessage = null) {
 
   const avatarBox = document.getElementById("cardAvatar");
   if (avatarBox) {
-    avatarBox.className = `stalker-avatar avatar-${avatar}`;
-    avatarBox.textContent = AVATAR_SYMBOLS[avatar] || "☢";
+    const key = normalizePatchKey(avatar);
+    avatarBox.className = `stalker-avatar patch-avatar avatar-${key}`;
+    avatarBox.innerHTML = patchImageHtml(key, `${callsign} patch`);
   }
 
   const factionBadge = document.getElementById("cardFactionBadge");

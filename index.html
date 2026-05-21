@@ -249,7 +249,7 @@
         <article class="id-card-preview module-panel">
           <div class="module-label">STALKERNET ID</div>
           <div class="id-preview-row">
-            <div id="idPreviewAvatar" class="stalker-avatar avatar-mask">☢</div>
+            <div id="idPreviewAvatar" class="stalker-avatar patch-avatar avatar-loners"><img src="assets/faction-patches/loners.png" alt="Loners patch" /></div>
             <div>
               <h3 id="idPreviewName">Unknown Stalker</h3>
               <p id="idPreviewMeta" class="muted">Faction unknown // Rank unknown</p>
@@ -278,18 +278,29 @@
                     <option>Mercenary</option>
                     <option>Monolith</option>
                     <option>Bandit</option>
+                    <option>Renegades</option>
+                    <option>ISG</option>
+                    <option>Military</option>
+                    <option>Sin</option>
                   </select>
                 </label>
 
-                <label class="field-label">Avatar / Icon
-                  <select id="avatarSelect">
-                    <option value="mask">Gas Mask</option>
-                    <option value="rookie">Rookie</option>
-                    <option value="veteran">Veteran</option>
-                    <option value="trader">Trader</option>
-                    <option value="scientist">Scientist</option>
-                    <option value="monolith">Monolith</option>
-                  </select>
+                <label class="field-label">Avatar / Faction Patch
+                  <input id="avatarSelect" type="hidden" value="loners" />
+                  <div id="patchPicker" class="patch-picker">
+                    <button type="button" class="patch-option" data-patch="ecologists"><img src="assets/faction-patches/ecologists.png" alt="Ecologists patch" /><span>Ecologists</span></button>
+                    <button type="button" class="patch-option" data-patch="clear_sky"><img src="assets/faction-patches/clear_sky.png" alt="Clear Sky patch" /><span>Clear Sky</span></button>
+                    <button type="button" class="patch-option" data-patch="freedom"><img src="assets/faction-patches/freedom.png" alt="Freedom patch" /><span>Freedom</span></button>
+                    <button type="button" class="patch-option" data-patch="renegades"><img src="assets/faction-patches/renegades.png" alt="Renegades patch" /><span>Renegades</span></button>
+                    <button type="button" class="patch-option" data-patch="duty"><img src="assets/faction-patches/duty.png" alt="Duty patch" /><span>Duty</span></button>
+                    <button type="button" class="patch-option" data-patch="loners"><img src="assets/faction-patches/loners.png" alt="Loners patch" /><span>Loners</span></button>
+                    <button type="button" class="patch-option" data-patch="mercenaries"><img src="assets/faction-patches/mercenaries.png" alt="Mercenaries patch" /><span>Mercenaries</span></button>
+                    <button type="button" class="patch-option" data-patch="isg"><img src="assets/faction-patches/isg.png" alt="ISG patch" /><span>ISG</span></button>
+                    <button type="button" class="patch-option" data-patch="monolith"><img src="assets/faction-patches/monolith.png" alt="Monolith patch" /><span>Monolith</span></button>
+                    <button type="button" class="patch-option" data-patch="military"><img src="assets/faction-patches/military.png" alt="Military patch" /><span>Military</span></button>
+                    <button type="button" class="patch-option" data-patch="bandits"><img src="assets/faction-patches/bandits.png" alt="Bandits patch" /><span>Bandits</span></button>
+                    <button type="button" class="patch-option" data-patch="sin"><img src="assets/faction-patches/sin.png" alt="Sin patch" /><span>Sin</span></button>
+                  </div>
                 </label>
 
                 <label class="field-label">Rank
@@ -357,7 +368,7 @@
       <div class="module-label">STALKER CARD</div>
       <button id="closeStalkerCardBtn" class="small-btn stalker-card-close">Close</button>
       <div class="stalker-card-identity">
-        <div id="cardAvatar" class="stalker-avatar avatar-mask">☢</div>
+        <div id="cardAvatar" class="stalker-avatar patch-avatar avatar-loners"><img src="assets/faction-patches/loners.png" alt="Loners patch" /></div>
         <div>
           <h2 id="cardCallsign">Unknown Stalker</h2>
           <div id="cardFactionBadge" class="faction-pill faction-loner">Unknown</div>
