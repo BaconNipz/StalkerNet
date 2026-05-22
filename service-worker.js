@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v30-archive-anomalies";
+const CACHE_NAME = "stalkernet-cache-v301-archive-repair";
 
 const FILES_TO_CACHE = [
   "./",
