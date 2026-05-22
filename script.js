@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v28_factions";
+const STORAGE_KEY = "stalkernet_pda_v281_factions_archive";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -17,17 +17,110 @@ const personaReplies = {
 };
 
 const loreEntries = [
-  { id: "bloodsucker", category: "Mutants", title: "Bloodsucker", threat: "Extreme", body: "A near-invisible predator usually found around abandoned villages, swamps, tunnels, and underground labs. Listen for heavy breathing and wet footfalls. Seeing nothing does not mean nothing is there." },
-  { id: "snork", category: "Mutants", title: "Snork", threat: "High", body: "Twisted, leaping humanoid mutants. They attack in brutal lunges and often appear in places where the air tastes of old rubber, rust, and bad decisions." },
-  { id: "controller", category: "Mutants", title: "Controller", threat: "Extreme", body: "A psychic mutant capable of disorienting or dominating the mind. Distance is survival. If your thoughts stop sounding like your own, run." },
-  { id: "electro", category: "Anomalies", title: "Electro", threat: "High", body: "A crackling electrical anomaly often found near metal wreckage, tunnels, industrial yards, and damp ground. Throw bolts before crossing. Sparks are warnings, not decoration." },
-  { id: "burner", category: "Anomalies", title: "Burner", threat: "High", body: "A thermal anomaly that can ignite the careless in a blink. Heat shimmer, ash, and scorched grass are your polite invitations to go elsewhere." },
-  { id: "loners", category: "Factions", title: "Loners", threat: "Variable", body: "Independent stalkers trying to survive, trade, scavenge, and sometimes become legends. Trust is possible, but never free. Most know more than they say." },
-  { id: "duty", category: "Factions", title: "Duty", threat: "Organised", body: "A militarised faction that believes the Zone is a plague to be contained or destroyed. Disciplined, armed, and not famous for their sense of humour." },
-  { id: "freedom", category: "Factions", title: "Freedom", threat: "Organised", body: "A loose faction that believes the Zone should be studied, explored, or allowed to exist. Their camps often smell of gun oil, smoke, and argument." },
-  { id: "moonlight", category: "Artifacts", title: "Moonlight", threat: "Useful", body: "An artifact associated with electrical anomalies. Valued by traders and stalkers who enjoy walking away from bad decisions with functioning organs." },
-  { id: "cordon", category: "Locations", title: "Cordon", threat: "Moderate", body: "The southern fringe of the Zone. Rookies arrive here with cheap jackets, loud questions, and an impressive talent for dying near roads." },
-  { id: "yantar", category: "Locations", title: "Yantar", threat: "Severe", body: "A research area known for psi danger, laboratories, and scientists who say alarming things in calm voices." }
+  {
+    title: "Loners / Free Stalkers",
+    category: "Factions",
+    value: "Major faction",
+    text: "Independent stalkers who do not belong to a faction. In Anomaly, their main base is Rookie Village in Cordon. They are neutral to most factions, but hostile to Bandits, Military, Mercenaries, Monolith, Renegades, Sin and UNISG.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "loners"
+  },
+  {
+    title: "Bandits",
+    category: "Factions",
+    value: "Major faction",
+    text: "Raiders, thieves and outlaws who prey on other stalkers through robbery, kidnapping and extortion. In Anomaly, their main base is the Northern Factory in Dark Valley. They are tolerated by Freedom, Mercenaries and Renegades, but opposed by most others.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "bandits"
+  },
+  {
+    title: "Clear Sky",
+    category: "Factions",
+    value: "Major faction",
+    text: "An independent militaristic-scientific faction based in the Hidden Base in the Great Swamps. They focus on researching the Zone and are not primarily motivated by money or artifact hunting.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "clear_sky"
+  },
+  {
+    title: "Duty",
+    category: "Factions",
+    value: "Major faction",
+    text: "A paramilitary faction based at the Barracks in Rostok. Duty is disciplined, heavily armed and focused on containing or destroying the Zone. They are enemies with Freedom, Bandits, Mercenaries, Monolith, Renegades, Sin and UNISG.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "duty"
+  },
+  {
+    title: "Freedom",
+    category: "Factions",
+    value: "Major faction",
+    text: "A faction based at the Military Base in Army Warehouses. Freedom wants the Zone free from outside control and opposes Duty, Military, Monolith, Renegades, Sin and UNISG.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "freedom"
+  },
+  {
+    title: "Mercenary",
+    category: "Factions",
+    value: "Major faction",
+    text: "Professional soldiers of fortune based at the Sports Centre in Dead City. They take contracts for profit and are the only faction neutral with UNISG. They are hostile to Loners, Duty, Military, Monolith, Renegades and Sin.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "mercenaries"
+  },
+  {
+    title: "Military",
+    category: "Factions",
+    value: "Major faction",
+    text: "Ukrainian Military forces operating from the Research Institute in Agroprom. They are sent into the Zone to maintain order and prevent illegal entry or escape. They are neutral with Duty and Ecologists, but hostile to the rest.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "military"
+  },
+  {
+    title: "Ecologists",
+    category: "Factions",
+    value: "Major faction",
+    text: "Scientists based at the Mobile Science Lab in Yantar. They study the Zone, anomalies and artifacts. They are neutral with most factions but oppose Bandits, Monolith, Renegades, Sin and UNISG.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "ecologists"
+  },
+  {
+    title: "Monolith",
+    category: "Factions",
+    value: "Major faction",
+    text: "Fanatical, brainwashed defenders of the Zone based at the Palace of Culture in Pripyat. Monolith are neutral only with Sin and hostile to all other factions.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "monolith"
+  },
+  {
+    title: "Renegades",
+    category: "Factions",
+    value: "Unlockable faction",
+    text: "Outcasts and outlaws from other factions, likely former Bandits. They are associated with the Great Swamps and are neutral only with Bandits while hostile to all other factions.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "renegades"
+  },
+  {
+    title: "Sin",
+    category: "Factions",
+    value: "Unlockable faction",
+    text: "Religious, zombie-like fanatics based at the Mine Barracks in Red Forest. They believe in the divine essence of the Zone and are neutral only with Monolith.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "sin"
+  },
+  {
+    title: "UNISG / ISG",
+    category: "Factions",
+    value: "Unlockable faction",
+    text: "United Nations International Scientific Group. In Anomaly, UNISG is a UN-sponsored special forces and research organisation focused on studying anomalies and artifacts. They are neutral only with Mercenaries.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: "isg"
+  },
+  {
+    title: "Zombies",
+    category: "Factions",
+    value: "Special / unlockable",
+    text: "Zombified stalkers are listed as a playable faction in Anomaly. They are neutral with Monolith and Sin, and hostile to all other factions.",
+    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
+    patch: ""
+  }
 ];
 
 const defaultTasks = [
@@ -836,251 +929,6 @@ function updateBatteryDisplay(level, charging = false) {
   el.dataset.state = pct <= 20 ? "low" : "ok";
 }
 
-
-const ARCHIVE_ENTRIES = [
-  {
-    id: "faction_loners",
-    category: "Factions",
-    title: "Loners / Free Stalkers",
-    status: "Major faction",
-    base: "Rookie Village, Cordon",
-    relations: "Neutral to all factions except Bandits, Military, Mercenaries, Monolith, Renegades, Sin and UNISG.",
-    summary: "Independent stalkers who do not belong to a faction. They operate freely and pursue their own goals without faction obligations.",
-    tags: ["independent", "cordon", "rookie village"]
-  },
-  {
-    id: "faction_bandits",
-    category: "Factions",
-    title: "Bandits",
-    status: "Major faction",
-    base: "Northern Factory, Dark Valley",
-    relations: "Viewed as a threat by all factions except Freedom, Mercenaries and Renegades.",
-    summary: "Raiders and thieves who prey on weaker factions and travellers through robbery, kidnapping and extortion.",
-    tags: ["raiders", "dark valley", "outlaws"]
-  },
-  {
-    id: "faction_clear_sky",
-    category: "Factions",
-    title: "Clear Sky",
-    status: "Major faction",
-    base: "Hidden Base, Great Swamps",
-    relations: "Neutral with all factions except Bandits, Military, Monolith, Renegades, Sin and UNISG.",
-    summary: "An independent militaristic-scientific group researching the Zone. They are not motivated by money or artifact collection and do not seek conflict with other groups.",
-    tags: ["research", "great swamps", "scientific"]
-  },
-  {
-    id: "faction_duty",
-    category: "Factions",
-    title: "Duty",
-    status: "Major faction",
-    base: "Barracks, Rostok",
-    relations: "Neutral with all factions except Bandits, Freedom, Mercenaries, Monolith, Renegades, Sin and UNISG.",
-    summary: "A paramilitary faction focused on protecting the Zone from external threats and maintaining order. Known for discipline, training and heavy equipment.",
-    tags: ["paramilitary", "rostok", "order"]
-  },
-  {
-    id: "faction_freedom",
-    category: "Factions",
-    title: "Freedom",
-    status: "Major faction",
-    base: "Military Base, Army Warehouses",
-    relations: "Neutral with all factions except Duty, Military, Monolith, Renegades, Sin and UNISG.",
-    summary: "A faction built around freedom and independence. Their objective is a Zone free from outside powers such as the military and government.",
-    tags: ["army warehouses", "independence", "anti-authority"]
-  },
-  {
-    id: "faction_mercenary",
-    category: "Factions",
-    title: "Mercenary",
-    status: "Major faction",
-    base: "Sports Centre, Dead City",
-    relations: "Hostile towards Loners, Duty, Military, Monolith, Renegades and Sin. Neutral to the rest, and the only faction neutral with UNISG.",
-    summary: "Experienced soldiers of fortune who operate for profit, taking contracts from clients and performing work such as assassinations and sabotage.",
-    tags: ["dead city", "contracts", "soldiers of fortune"]
-  },
-  {
-    id: "faction_military",
-    category: "Factions",
-    title: "Military",
-    status: "Major faction",
-    base: "Research Institute, Agroprom",
-    relations: "Neutral with Duty and Ecologists, hostile to the rest.",
-    summary: "Ukrainian Military forces sent into the Zone to maintain order and stop people entering or leaving. Known for heavy firepower including Mi-24 Hind attack helicopters.",
-    tags: ["agroprom", "ukrainian military", "heavy firepower"]
-  },
-  {
-    id: "faction_ecologists",
-    category: "Factions",
-    title: "Ecologists",
-    status: "Major faction",
-    base: "Mobile Science Lab, Yantar",
-    relations: "Neutral with most factions, opposing Bandits, Monolith, Renegades, Sin and UNISG.",
-    summary: "Scientists and researchers dedicated to studying the Zone and its anomalies. They are pacifistic and focus on scientific research rather than combat.",
-    tags: ["yantar", "scientists", "anomalies"]
-  },
-  {
-    id: "faction_monolith",
-    category: "Factions",
-    title: "Monolith",
-    status: "Major faction",
-    base: "Palace of Culture, Pripyat",
-    relations: "Neutral towards Sin and hostile to all other factions.",
-    summary: "Brainwashed fanatical worshippers who believe in the power of the Zone and seek to protect it. They are highly trained and equipped with high-tier gear such as exoskeletons and Gauss rifles.",
-    tags: ["pripyat", "fanatics", "high-tier equipment"]
-  },
-  {
-    id: "faction_renegades",
-    category: "Factions",
-    title: "Renegades",
-    status: "Unlockable faction",
-    base: "Possibly a village near the Tuzla Tunnel, Great Swamps",
-    relations: "Only neutral with Bandits and hostile to all other factions.",
-    summary: "Outcasts and outlaws from other factions, likely former Bandits. They raid territory and use equipment similar to Bandits.",
-    tags: ["great swamps", "outcasts", "unlockable"]
-  },
-  {
-    id: "faction_sin",
-    category: "Factions",
-    title: "Sin",
-    status: "Unlockable faction",
-    base: "Mine Barracks, Red Forest",
-    relations: "Only neutral towards Monolith and hostile to all other factions.",
-    summary: "Religious, zombie-like fanatics who believe in the divine essence of the Zone and seek to expand it across the world. Their combat ability is comparable to veteran stalkers.",
-    tags: ["red forest", "fanatics", "unlockable"]
-  },
-  {
-    id: "faction_unisg",
-    category: "Factions",
-    title: "UNISG / ISG",
-    status: "Unlockable faction",
-    base: "Possible Sawmill base in Darkscape during UNISG plotline; spawn locations in Jupiter and Outskirts.",
-    relations: "Only neutral with Mercenaries and hostile to all other factions.",
-    summary: "United Nations International Scientific Group, a UN-sponsored special forces and research organisation focused on studying anomalies and artifacts. Their wider goals are unknown.",
-    tags: ["darkscape", "jupiter", "outskirts", "unlockable"]
-  },
-  {
-    id: "faction_zombies",
-    category: "Factions",
-    title: "Zombies",
-    status: "Unlockable / special",
-    base: "Not listed",
-    relations: "Only neutral to Monolith and Sin, hostile to all others.",
-    summary: "Zombified stalkers are playable zombies in Anomaly.",
-    tags: ["zombified stalkers", "special", "unlockable"]
-  }
-];
-
-function archiveCategories() {
-  return ["Factions"];
-}
-
-function archiveFilters() {
-  return {
-    search: (document.getElementById("archiveSearch")?.value || "").trim().toLowerCase(),
-    category: "Factions"
-  };
-}
-
-function archiveMatches(entry, filters) {
-  const haystack = [
-    entry.category,
-    entry.title,
-    entry.status,
-    entry.base,
-    entry.relations,
-    entry.summary,
-    ...(entry.tags || [])
-  ].join(" ").toLowerCase();
-  return !filters.search || haystack.includes(filters.search);
-}
-
-function renderArchiveChips() {
-  const box = document.getElementById("archiveCategoryChips");
-  if (!box) return;
-  box.innerHTML = "";
-  const chip = document.createElement("button");
-  chip.type = "button";
-  chip.textContent = "Factions";
-  chip.className = "active";
-  box.appendChild(chip);
-}
-
-function archivePatchKey(title) {
-  const lower = title.toLowerCase();
-  if (lower.includes("loner")) return "loners";
-  if (lower.includes("bandit")) return "bandits";
-  if (lower.includes("clear sky")) return "clear_sky";
-  if (lower.includes("duty")) return "duty";
-  if (lower.includes("freedom")) return "freedom";
-  if (lower.includes("mercenary")) return "mercenaries";
-  if (lower.includes("military")) return "military";
-  if (lower.includes("ecologist")) return "ecologists";
-  if (lower.includes("monolith")) return "monolith";
-  if (lower.includes("renegade")) return "renegades";
-  if (lower.includes("sin")) return "sin";
-  if (lower.includes("unisg") || lower.includes("isg")) return "isg";
-  return "loners";
-}
-
-function archivePatchHtml(entry) {
-  const key = archivePatchKey(entry.title);
-  if (entry.title === "Zombies") return "";
-  const src = `assets/faction-patches/${key}.png`;
-  return `<img class="archive-faction-patch" src="${src}" alt="${escapeHtml(entry.title)} patch" />`;
-}
-
-function renderArchive() {
-  const list = document.getElementById("archiveList");
-  if (!list) return;
-
-  const filters = archiveFilters();
-  const entries = ARCHIVE_ENTRIES.filter(entry => archiveMatches(entry, filters));
-  renderArchiveChips();
-
-  if (!entries.length) {
-    list.innerHTML = `<article class="archive-entry module-panel"><div class="module-label">NO SIGNAL</div><p class="message-text">No faction entries found.</p></article>`;
-    return;
-  }
-
-  list.innerHTML = entries.map(entry => `
-    <article class="archive-entry module-panel">
-      <div class="archive-entry-top">
-        <div class="archive-title-row">
-          ${archivePatchHtml(entry)}
-          <div>
-            <div class="module-label">${escapeHtml(entry.category)}</div>
-            <h3>${escapeHtml(entry.title)}</h3>
-          </div>
-        </div>
-        <span class="archive-danger">${escapeHtml(entry.status)}</span>
-      </div>
-      <div class="archive-fact-grid">
-        <div><span>Base</span><strong>${escapeHtml(entry.base)}</strong></div>
-        <div><span>Relations</span><strong>${escapeHtml(entry.relations)}</strong></div>
-      </div>
-      <p>${escapeHtml(entry.summary)}</p>
-      <div class="archive-tags">
-        ${(entry.tags || []).map(tag => `<span>${escapeHtml(tag)}</span>`).join("")}
-      </div>
-    </article>
-  `).join("");
-}
-
-function bindArchiveControls() {
-  const search = document.getElementById("archiveSearch");
-  const category = document.getElementById("archiveCategorySelect");
-
-  if (search && !search.dataset.bound) {
-    search.dataset.bound = "true";
-    search.addEventListener("input", renderArchive);
-  }
-
-  if (category && !category.dataset.bound) {
-    category.dataset.bound = "true";
-    category.addEventListener("change", renderArchive);
-  }
-}
-
 async function initBatteryStatus() {
   const el = document.getElementById("batteryValue");
   if (!el) return;
@@ -1224,7 +1072,6 @@ function renderLoreFilters() {
       saveState();
       renderLoreFilters();
       renderLore();
-  renderArchive();
     };
     box.appendChild(btn);
   });
@@ -1436,7 +1283,6 @@ async function init() {
   updateSoundButton();
 
   bindEvents();
-  bindArchiveControls();
   renderMessageFilters();
   renderMessages();
   renderMapSectionSelect();
@@ -2346,3 +2192,81 @@ function bindFirebaseAuthUI() {
 }
 
 init();
+
+
+
+// v2.8.1 Factions-only Archive override
+function archivePatchForEntry(entry) {
+  if (!entry.patch) return "";
+  return `<img class="archive-faction-patch" src="assets/faction-patches/${entry.patch}.png" alt="${escapeHtml(entry.title)} patch" />`;
+}
+
+function getFactionArchiveEntries() {
+  if (typeof ARCHIVE_ENTRIES !== "undefined") return ARCHIVE_ENTRIES;
+  if (typeof loreEntries !== "undefined") return loreEntries;
+  if (typeof archiveEntries !== "undefined") return archiveEntries;
+  if (typeof LORE_ENTRIES !== "undefined") return LORE_ENTRIES;
+  return [];
+}
+
+function renderLoreFilters() {
+  const chips = document.getElementById("loreFilters") || document.getElementById("archiveCategoryChips");
+  if (!chips) return;
+  chips.innerHTML = "";
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.textContent = "Factions";
+  btn.className = "active";
+  chips.appendChild(btn);
+}
+
+function renderLore() {
+  const list = document.getElementById("loreList") || document.getElementById("archiveList");
+  if (!list) return;
+
+  const searchInput = document.getElementById("loreSearch") || document.getElementById("archiveSearch");
+  const query = (searchInput?.value || "").trim().toLowerCase();
+
+  const entries = getFactionArchiveEntries().filter(entry => {
+    const haystack = [entry.title, entry.category, entry.value, entry.text, entry.sourceNote].join(" ").toLowerCase();
+    return !query || haystack.includes(query);
+  });
+
+  renderLoreFilters();
+
+  if (!entries.length) {
+    list.innerHTML = `<article class="archive-entry module-panel"><div class="module-label">NO SIGNAL</div><p class="message-text">No faction entries found.</p></article>`;
+    return;
+  }
+
+  list.innerHTML = entries.map(entry => `
+    <article class="archive-entry module-panel">
+      <div class="archive-entry-top">
+        <div class="archive-title-row">
+          ${archivePatchForEntry(entry)}
+          <div>
+            <h3>${escapeHtml(entry.title)}</h3>
+            <div class="archive-meta">THREAT / VALUE: ${escapeHtml(entry.value || "Unknown")}</div>
+          </div>
+        </div>
+        <span class="archive-danger">${escapeHtml(entry.category || "Factions")}</span>
+      </div>
+      <p>${escapeHtml(entry.text)}</p>
+      <p class="archive-source">${escapeHtml(entry.sourceNote || "S.T.A.L.K.E.R. Anomaly faction data")}</p>
+    </article>
+  `).join("");
+}
+
+function bindFactionArchiveSearch() {
+  const searchInput = document.getElementById("loreSearch") || document.getElementById("archiveSearch");
+  if (searchInput && !searchInput.dataset.factionArchiveBound) {
+    searchInput.dataset.factionArchiveBound = "true";
+    searchInput.addEventListener("input", renderLore);
+  }
+}
+
+window.addEventListener("load", () => {
+  bindFactionArchiveSearch();
+  renderLoreFilters();
+  renderLore();
+});
