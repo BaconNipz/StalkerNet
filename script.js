@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v282_factions_collapsible";
+const STORAGE_KEY = "stalkernet_pda_v29_archive_mutants";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -2108,27 +2108,39 @@ init();
 
 
 
-// v2.8.2 Collapsible Factions Archive override
+
+
+
+
+// v2.9 Archive expansion: Factions + Mutants from S.T.A.L.K.E.R. Anomaly Wiki
+const MUTANT_ARCHIVE_ENTRIES = [{"title": "Blind Dog", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Blind Dog is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Boar", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Boar is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Cat", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Cat is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Chimera", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Chimera is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Crow", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Crow is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Flesh", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Flesh is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Lurker", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Lurker is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Pseudodog", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Pseudodog is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Pseudogiant", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Pseudogiant is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Psydog", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Psydog is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Rat(mod)", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Rat(mod) is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Tushkano", "category": "Mutants", "value": "Animal / Animal-Like Creature", "base": "Listed under Animals / Animal-Like Creatures", "relations": "Mutant classification entry.", "text": "Tushkano is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Animals / Animal-Like Creatures. The wiki describes mutants broadly as animals exposed to anomalies and radiation in the Zone, with some also resulting from genetic experimentation.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Bloodsucker", "category": "Mutants", "value": "Humanoid", "base": "Listed under Humanoids", "relations": "Mutant classification entry.", "text": "Bloodsucker is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Humanoids. The page separates humanoid mutants from animal-like creatures and special or unknown mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Burer", "category": "Mutants", "value": "Humanoid", "base": "Listed under Humanoids", "relations": "Mutant classification entry.", "text": "Burer is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Humanoids. The page separates humanoid mutants from animal-like creatures and special or unknown mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Controller", "category": "Mutants", "value": "Humanoid", "base": "Listed under Humanoids", "relations": "Mutant classification entry.", "text": "Controller is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Humanoids. The page separates humanoid mutants from animal-like creatures and special or unknown mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Fracture", "category": "Mutants", "value": "Humanoid", "base": "Listed under Humanoids", "relations": "Mutant classification entry.", "text": "Fracture is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Humanoids. The page separates humanoid mutants from animal-like creatures and special or unknown mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Karlik", "category": "Mutants", "value": "Humanoid", "base": "Listed under Humanoids", "relations": "Mutant classification entry.", "text": "Karlik is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Humanoids. The page separates humanoid mutants from animal-like creatures and special or unknown mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Psysucker", "category": "Mutants", "value": "Humanoid", "base": "Listed under Humanoids", "relations": "Mutant classification entry.", "text": "Psysucker is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Humanoids. The page separates humanoid mutants from animal-like creatures and special or unknown mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Snork", "category": "Mutants", "value": "Humanoid", "base": "Listed under Humanoids", "relations": "Mutant classification entry.", "text": "Snork is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Humanoids. The page separates humanoid mutants from animal-like creatures and special or unknown mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Zombie", "category": "Mutants", "value": "Humanoid", "base": "Listed under Humanoids", "relations": "Mutant classification entry.", "text": "Zombie is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Humanoids. The page separates humanoid mutants from animal-like creatures and special or unknown mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Chernobog", "category": "Mutants", "value": "Special / Unknown Mutant", "base": "Listed under Special / Unknown Mutants", "relations": "Mutant classification entry.", "text": "Chernobog is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Special / Unknown Mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Poltergeist", "category": "Mutants", "value": "Special / Unknown Mutant", "base": "Listed under Special / Unknown Mutants", "relations": "Mutant classification entry.", "text": "Poltergeist is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Special / Unknown Mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Pseudogeist", "category": "Mutants", "value": "Special / Unknown Mutant", "base": "Listed under Special / Unknown Mutants", "relations": "Mutant classification entry.", "text": "Pseudogeist is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Special / Unknown Mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}, {"title": "Pyrogeist", "category": "Mutants", "value": "Special / Unknown Mutant", "base": "Listed under Special / Unknown Mutants", "relations": "Mutant classification entry.", "text": "Pyrogeist is listed on the S.T.A.L.K.E.R. Anomaly Wiki Mutants page under Special / Unknown Mutants.", "sourceNote": "Based on S.T.A.L.K.E.R. Anomaly Wiki Mutants page."}];
+function getBaseFactionArchiveEntries() {
+  if (typeof ARCHIVE_ENTRIES !== "undefined" && Array.isArray(ARCHIVE_ENTRIES)) return ARCHIVE_ENTRIES.filter(e => e.category === "Factions");
+  if (typeof loreEntries !== "undefined" && Array.isArray(loreEntries)) return loreEntries.filter(e => e.category === "Factions");
+  if (typeof archiveEntries !== "undefined" && Array.isArray(archiveEntries)) return archiveEntries.filter(e => e.category === "Factions");
+  if (typeof LORE_ENTRIES !== "undefined" && Array.isArray(LORE_ENTRIES)) return LORE_ENTRIES.filter(e => e.category === "Factions");
+  return [];
+}
+function getFullArchiveEntries() { return [...getBaseFactionArchiveEntries(), ...MUTANT_ARCHIVE_ENTRIES]; }
+function archiveCategories() { return ["All", "Factions", "Mutants"]; }
+let activeArchiveCategory = "All";
 function archivePatchForEntry(entry) {
+  if (entry.category === "Mutants") return `<div class="archive-mutant-icon">☣</div>`;
   if (!entry.patch) return "";
   return `<img class="archive-faction-patch" src="assets/faction-patches/${entry.patch}.png" alt="${escapeHtml(entry.title)} patch" />`;
-}
-function getFactionArchiveEntries() {
-  if (typeof ARCHIVE_ENTRIES !== "undefined") return ARCHIVE_ENTRIES;
-  if (typeof loreEntries !== "undefined") return loreEntries;
-  if (typeof archiveEntries !== "undefined") return archiveEntries;
-  if (typeof LORE_ENTRIES !== "undefined") return LORE_ENTRIES;
-  return [];
 }
 function renderLoreFilters() {
   const chips = document.getElementById("loreFilters") || document.getElementById("archiveCategoryChips");
   if (!chips) return;
   chips.innerHTML = "";
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.textContent = "Factions";
-  btn.className = "active";
-  chips.appendChild(btn);
+  archiveCategories().forEach(category => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = category;
+    btn.className = category === activeArchiveCategory ? "active" : "";
+    btn.addEventListener("click", () => { activeArchiveCategory = category; renderLore(); });
+    chips.appendChild(btn);
+  });
 }
 function toggleArchiveEntry(index) {
   const card = document.querySelector(`[data-archive-entry="${index}"]`);
@@ -2142,50 +2154,40 @@ function renderLore() {
   if (!list) return;
   const searchInput = document.getElementById("loreSearch") || document.getElementById("archiveSearch");
   const query = (searchInput?.value || "").trim().toLowerCase();
-  const entries = getFactionArchiveEntries().filter(entry => {
+  const entries = getFullArchiveEntries().filter(entry => {
     const haystack = [entry.title, entry.category, entry.value, entry.base, entry.relations, entry.text, entry.sourceNote].join(" ").toLowerCase();
-    return !query || haystack.includes(query);
+    const categoryMatch = activeArchiveCategory === "All" || entry.category === activeArchiveCategory;
+    return categoryMatch && (!query || haystack.includes(query));
   });
   renderLoreFilters();
   if (!entries.length) {
-    list.innerHTML = `<article class="archive-entry module-panel"><div class="module-label">NO SIGNAL</div><p class="message-text">No faction entries found.</p></article>`;
+    list.innerHTML = `<article class="archive-entry module-panel"><div class="module-label">NO SIGNAL</div><p class="message-text">No archive entries found.</p></article>`;
     return;
   }
   list.innerHTML = entries.map((entry, index) => `
     <article class="archive-entry module-panel archive-collapsible" data-archive-entry="${index}">
       <button type="button" class="archive-entry-button" data-archive-toggle="${index}" aria-expanded="false">
-        <div class="archive-title-row">
-          ${archivePatchForEntry(entry)}
-          <div>
-            <h3>${escapeHtml(entry.title)}</h3>
-            <div class="archive-meta">THREAT / VALUE: ${escapeHtml(entry.value || "Unknown")}</div>
-          </div>
-        </div>
+        <div class="archive-title-row">${archivePatchForEntry(entry)}<div><h3>${escapeHtml(entry.title)}</h3><div class="archive-meta">TYPE / VALUE: ${escapeHtml(entry.value || "Unknown")}</div></div></div>
         <span class="archive-expand-mark">OPEN</span>
       </button>
       <div class="archive-hidden-body">
         <div class="archive-fact-grid">
-          <div><span>Base</span><strong>${escapeHtml(entry.base || "Unknown")}</strong></div>
-          <div><span>Relations</span><strong>${escapeHtml(entry.relations || "Unknown")}</strong></div>
+          <div><span>Entry</span><strong>${escapeHtml(entry.base || "Unknown")}</strong></div>
+          <div><span>Notes</span><strong>${escapeHtml(entry.relations || "Unknown")}</strong></div>
         </div>
         <p>${escapeHtml(entry.text)}</p>
-        <p class="archive-source">${escapeHtml(entry.sourceNote || "S.T.A.L.K.E.R. Anomaly faction data")}</p>
+        <p class="archive-source">${escapeHtml(entry.sourceNote || "S.T.A.L.K.E.R. Anomaly archive data")}</p>
       </div>
-    </article>
-  `).join("");
+    </article>`).join("");
   list.querySelectorAll("[data-archive-toggle]").forEach(button => {
     button.addEventListener("click", () => toggleArchiveEntry(button.dataset.archiveToggle));
   });
 }
 function bindFactionArchiveSearch() {
   const searchInput = document.getElementById("loreSearch") || document.getElementById("archiveSearch");
-  if (searchInput && !searchInput.dataset.factionArchiveBound) {
-    searchInput.dataset.factionArchiveBound = "true";
+  if (searchInput && !searchInput.dataset.archiveExpandedBound) {
+    searchInput.dataset.archiveExpandedBound = "true";
     searchInput.addEventListener("input", renderLore);
   }
 }
-window.addEventListener("load", () => {
-  bindFactionArchiveSearch();
-  renderLoreFilters();
-  renderLore();
-});
+window.addEventListener("load", () => { bindFactionArchiveSearch(); renderLoreFilters(); renderLore(); });
