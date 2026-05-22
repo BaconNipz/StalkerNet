@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v281_factions_archive";
+const STORAGE_KEY = "stalkernet_pda_v282_factions_collapsible";
 
 const defaultMessages = [
   { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
@@ -17,110 +17,19 @@ const personaReplies = {
 };
 
 const loreEntries = [
-  {
-    title: "Loners / Free Stalkers",
-    category: "Factions",
-    value: "Major faction",
-    text: "Independent stalkers who do not belong to a faction. In Anomaly, their main base is Rookie Village in Cordon. They are neutral to most factions, but hostile to Bandits, Military, Mercenaries, Monolith, Renegades, Sin and UNISG.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "loners"
-  },
-  {
-    title: "Bandits",
-    category: "Factions",
-    value: "Major faction",
-    text: "Raiders, thieves and outlaws who prey on other stalkers through robbery, kidnapping and extortion. In Anomaly, their main base is the Northern Factory in Dark Valley. They are tolerated by Freedom, Mercenaries and Renegades, but opposed by most others.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "bandits"
-  },
-  {
-    title: "Clear Sky",
-    category: "Factions",
-    value: "Major faction",
-    text: "An independent militaristic-scientific faction based in the Hidden Base in the Great Swamps. They focus on researching the Zone and are not primarily motivated by money or artifact hunting.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "clear_sky"
-  },
-  {
-    title: "Duty",
-    category: "Factions",
-    value: "Major faction",
-    text: "A paramilitary faction based at the Barracks in Rostok. Duty is disciplined, heavily armed and focused on containing or destroying the Zone. They are enemies with Freedom, Bandits, Mercenaries, Monolith, Renegades, Sin and UNISG.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "duty"
-  },
-  {
-    title: "Freedom",
-    category: "Factions",
-    value: "Major faction",
-    text: "A faction based at the Military Base in Army Warehouses. Freedom wants the Zone free from outside control and opposes Duty, Military, Monolith, Renegades, Sin and UNISG.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "freedom"
-  },
-  {
-    title: "Mercenary",
-    category: "Factions",
-    value: "Major faction",
-    text: "Professional soldiers of fortune based at the Sports Centre in Dead City. They take contracts for profit and are the only faction neutral with UNISG. They are hostile to Loners, Duty, Military, Monolith, Renegades and Sin.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "mercenaries"
-  },
-  {
-    title: "Military",
-    category: "Factions",
-    value: "Major faction",
-    text: "Ukrainian Military forces operating from the Research Institute in Agroprom. They are sent into the Zone to maintain order and prevent illegal entry or escape. They are neutral with Duty and Ecologists, but hostile to the rest.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "military"
-  },
-  {
-    title: "Ecologists",
-    category: "Factions",
-    value: "Major faction",
-    text: "Scientists based at the Mobile Science Lab in Yantar. They study the Zone, anomalies and artifacts. They are neutral with most factions but oppose Bandits, Monolith, Renegades, Sin and UNISG.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "ecologists"
-  },
-  {
-    title: "Monolith",
-    category: "Factions",
-    value: "Major faction",
-    text: "Fanatical, brainwashed defenders of the Zone based at the Palace of Culture in Pripyat. Monolith are neutral only with Sin and hostile to all other factions.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "monolith"
-  },
-  {
-    title: "Renegades",
-    category: "Factions",
-    value: "Unlockable faction",
-    text: "Outcasts and outlaws from other factions, likely former Bandits. They are associated with the Great Swamps and are neutral only with Bandits while hostile to all other factions.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "renegades"
-  },
-  {
-    title: "Sin",
-    category: "Factions",
-    value: "Unlockable faction",
-    text: "Religious, zombie-like fanatics based at the Mine Barracks in Red Forest. They believe in the divine essence of the Zone and are neutral only with Monolith.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "sin"
-  },
-  {
-    title: "UNISG / ISG",
-    category: "Factions",
-    value: "Unlockable faction",
-    text: "United Nations International Scientific Group. In Anomaly, UNISG is a UN-sponsored special forces and research organisation focused on studying anomalies and artifacts. They are neutral only with Mercenaries.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: "isg"
-  },
-  {
-    title: "Zombies",
-    category: "Factions",
-    value: "Special / unlockable",
-    text: "Zombified stalkers are listed as a playable faction in Anomaly. They are neutral with Monolith and Sin, and hostile to all other factions.",
-    sourceNote: "S.T.A.L.K.E.R. Anomaly faction data",
-    patch: ""
-  }
+  {title:"Loners / Free Stalkers",category:"Factions",value:"Major faction",base:"Rookie Village, Cordon",relations:"Neutral with most factions. Hostile to Bandits, Military, Mercenaries, Monolith, Renegades, Sin and UNISG.",text:"Loners, also called Free Stalkers, are independent stalkers who operate without formal faction command. They are not bound by a shared ideology beyond survival, profit, curiosity, and personal freedom. In Anomaly, they are the most common kind of stalker and can be encountered throughout the Zone. Their faction identity is loose: some are rookies trying to survive their first contracts, while others are hardened veterans who have learned to live without banners, officers, or oaths.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"loners"},
+  {title:"Bandits",category:"Factions",value:"Major faction",base:"Northern Factory, Dark Valley",relations:"Threatened or opposed by most factions. Tolerated by Freedom, Mercenaries and Renegades.",text:"Bandits are criminals, raiders and thieves operating inside the Zone. They survive through robbery, kidnapping, extortion and attacks on weaker travellers or poorly defended groups. Their presence turns roads, warehouses and old industrial sites into ambush territory. In Anomaly, their headquarters is the Northern Factory in Dark Valley, making the region one of the clearest examples of bandit-controlled space.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"bandits"},
+  {title:"Clear Sky",category:"Factions",value:"Major faction",base:"Hidden Base, Great Swamps",relations:"Neutral with most factions. Hostile to Bandits, Military, Monolith, Renegades, Sin and UNISG.",text:"Clear Sky is an independent militaristic-scientific faction based in the Great Swamps. They study the Zone in an attempt to understand its nature rather than simply exploit it for money or artifacts. Unlike the Ecologists, they maintain an armed structure and can defend their operations directly. In Anomaly, their base is hidden in the Great Swamps, fitting their role as researchers working from the edges of the Zone’s better-known power struggles.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"clear_sky"},
+  {title:"Duty",category:"Factions",value:"Major faction",base:"Barracks, Rostok",relations:"Neutral with many factions. Hostile to Bandits, Freedom, Mercenaries, Monolith, Renegades, Sin and UNISG.",text:"Duty is a disciplined paramilitary faction built around containment, order and armed resistance against the Zone’s dangers. They see the Zone as a threat that must be controlled, fought, and possibly destroyed. Their members are trained, well armed and organised compared with loose stalker groups. In Anomaly, Duty operates from the Barracks in Rostok, a fitting base for a faction that values discipline, command structure and defensive strength.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"duty"},
+  {title:"Freedom",category:"Factions",value:"Major faction",base:"Military Base, Army Warehouses",relations:"Neutral with several factions. Hostile to Duty, Military, Monolith, Renegades, Sin and UNISG.",text:"Freedom is a faction built around independence and resistance to outside control. They oppose the idea that the Zone should be locked down by military or government power and instead want it free from external influence. Their attitude puts them directly at odds with Duty and the Military. In Anomaly, their headquarters is the Military Base in Army Warehouses, giving them a strong northern position and a clear identity as a faction that rejects outside authority.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"freedom"},
+  {title:"Mercenary",category:"Factions",value:"Major faction",base:"Sports Centre, Dead City",relations:"Hostile to Loners, Duty, Military, Monolith, Renegades and Sin. Neutral with the rest, including UNISG.",text:"Mercenaries are professional soldiers of fortune who operate in the Zone for profit. They work independently from the major ideologies of the Zone, taking contracts from clients and carrying out jobs such as sabotage, assassinations and other deniable operations. In Anomaly, their headquarters is the Sports Centre in Dead City. They are also notable as the only faction neutral with UNISG, suggesting a relationship based on contracts, shared interests, or simple professional tolerance.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"mercenaries"},
+  {title:"Military",category:"Factions",value:"Major faction",base:"Research Institute, Agroprom",relations:"Neutral with Duty and Ecologists. Hostile to the rest.",text:"The Military represents Ukrainian armed forces operating inside the Zone. Their mission is to maintain order, prevent unauthorised entry and stop people from leaving. They rely on organised force and heavy firepower, including attack helicopters, to control territory and project authority. In Anomaly, their headquarters is the Research Institute in Agroprom, placing them in a major strategic area with direct access to research infrastructure and contested routes.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"military"},
+  {title:"Ecologists",category:"Factions",value:"Major faction",base:"Mobile Science Lab, Yantar",relations:"Neutral with most factions. Hostile to Bandits, Monolith, Renegades, Sin and UNISG.",text:"Ecologists are scientists and researchers dedicated to studying the Zone, its anomalies and its artifacts. They rely on specialised scientific equipment and protective suits, including SSP-series radiation suits, to work safely in dangerous conditions. They are described as pacifistic and avoid direct combat where possible, focusing instead on research. In Anomaly, their headquarters is the Mobile Science Lab in Yantar, one of the Zone’s strongest scientific footholds.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"ecologists"},
+  {title:"Monolith",category:"Factions",value:"Major faction",base:"Palace of Culture, Pripyat",relations:"Neutral with Sin. Hostile to all other factions.",text:"Monolith is made up of brainwashed fanatics who worship the power of the Zone and defend it at any cost. The faction is tied to the C-Consciousness, whose influence shaped their purpose and loyalty. Even after the C-Consciousness was destroyed, Monolith remained active and reclaimed large areas of the Zone. Their soldiers are highly trained and often carry top-tier equipment, including exoskeletons and Gauss rifles. In Anomaly, their headquarters is the Palace of Culture in Pripyat.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"monolith"},
+  {title:"Renegades",category:"Factions",value:"Unlockable faction",base:"Possible village near Tuzla Tunnel, Great Swamps",relations:"Neutral with Bandits only. Hostile to all other factions.",text:"Renegades are outcasts and criminals cast off from other factions. They are likely former Bandits and still behave like raiders, robbers and territorial scavengers. Their equipment is similar to Bandit gear, reinforcing their shared roots. In Anomaly, their headquarters may be a village near the Tuzla Tunnel in the Great Swamps. They are temporarily unlockable through the character selection screen by entering their unlock code.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"renegades"},
+  {title:"Sin",category:"Factions",value:"Unlockable faction",base:"Mine Barracks, Red Forest",relations:"Neutral with Monolith only. Hostile to all other factions.",text:"Sin is a faction of religious, zombie-like fanatics who believe in the divine nature of the Zone. Their goal is not containment or profit, but expansion: they want the Zone to spread far beyond its current borders. Despite poor health and ragged equipment, their combat ability is comparable to experienced stalkers. They follow their leader Chernobog. In Anomaly, their base is the Mine Barracks in Red Forest, and they can be unlocked temporarily through the character selection screen or permanently by completing Mortal Sin.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"sin"},
+  {title:"UNISG / ISG",category:"Factions",value:"Unlockable faction",base:"Possible Sawmill base in Darkscape during UNISG plotline; spawn locations in Jupiter and Outskirts",relations:"Neutral with Mercenaries only. Hostile to all other factions.",text:"UNISG, also known as ISG, is the United Nations International Scientific Group. In Anomaly, it is a UN-sponsored special forces and research organisation focused on studying anomalies and artifacts inside the Zone. Their deeper goals are unclear, but they are suspected of having a politically motivated interest in the Zone’s origins. They are far from helpless, using high-grade armour and weapons. A possible headquarters appears at the Sawmill in Darkscape during the UNISG plotline, with spawn locations in Jupiter and Outskirts. They can be unlocked through the character selection screen or permanently by completing Operation Afterglow.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:"isg"},
+  {title:"Zombies",category:"Factions",value:"Special / unlockable",base:"Not listed",relations:"Neutral with Monolith and Sin. Hostile to all others.",text:"Zombified Stalkers are listed as playable zombies in Anomaly. They are treated as their own faction entry and have a simple relationship pattern: neutral toward Monolith and Sin, hostile toward everyone else. They can be temporarily unlocked from the character selection screen by pressing the Z key.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:""}
 ];
 
 const defaultTasks = [
@@ -2195,12 +2104,15 @@ init();
 
 
 
-// v2.8.1 Factions-only Archive override
+
+
+
+
+// v2.8.2 Collapsible Factions Archive override
 function archivePatchForEntry(entry) {
   if (!entry.patch) return "";
   return `<img class="archive-faction-patch" src="assets/faction-patches/${entry.patch}.png" alt="${escapeHtml(entry.title)} patch" />`;
 }
-
 function getFactionArchiveEntries() {
   if (typeof ARCHIVE_ENTRIES !== "undefined") return ARCHIVE_ENTRIES;
   if (typeof loreEntries !== "undefined") return loreEntries;
@@ -2208,7 +2120,6 @@ function getFactionArchiveEntries() {
   if (typeof LORE_ENTRIES !== "undefined") return LORE_ENTRIES;
   return [];
 }
-
 function renderLoreFilters() {
   const chips = document.getElementById("loreFilters") || document.getElementById("archiveCategoryChips");
   if (!chips) return;
@@ -2219,29 +2130,30 @@ function renderLoreFilters() {
   btn.className = "active";
   chips.appendChild(btn);
 }
-
+function toggleArchiveEntry(index) {
+  const card = document.querySelector(`[data-archive-entry="${index}"]`);
+  if (!card) return;
+  card.classList.toggle("open");
+  const button = card.querySelector("[data-archive-toggle]");
+  if (button) button.setAttribute("aria-expanded", card.classList.contains("open") ? "true" : "false");
+}
 function renderLore() {
   const list = document.getElementById("loreList") || document.getElementById("archiveList");
   if (!list) return;
-
   const searchInput = document.getElementById("loreSearch") || document.getElementById("archiveSearch");
   const query = (searchInput?.value || "").trim().toLowerCase();
-
   const entries = getFactionArchiveEntries().filter(entry => {
-    const haystack = [entry.title, entry.category, entry.value, entry.text, entry.sourceNote].join(" ").toLowerCase();
+    const haystack = [entry.title, entry.category, entry.value, entry.base, entry.relations, entry.text, entry.sourceNote].join(" ").toLowerCase();
     return !query || haystack.includes(query);
   });
-
   renderLoreFilters();
-
   if (!entries.length) {
     list.innerHTML = `<article class="archive-entry module-panel"><div class="module-label">NO SIGNAL</div><p class="message-text">No faction entries found.</p></article>`;
     return;
   }
-
-  list.innerHTML = entries.map(entry => `
-    <article class="archive-entry module-panel">
-      <div class="archive-entry-top">
+  list.innerHTML = entries.map((entry, index) => `
+    <article class="archive-entry module-panel archive-collapsible" data-archive-entry="${index}">
+      <button type="button" class="archive-entry-button" data-archive-toggle="${index}" aria-expanded="false">
         <div class="archive-title-row">
           ${archivePatchForEntry(entry)}
           <div>
@@ -2249,14 +2161,22 @@ function renderLore() {
             <div class="archive-meta">THREAT / VALUE: ${escapeHtml(entry.value || "Unknown")}</div>
           </div>
         </div>
-        <span class="archive-danger">${escapeHtml(entry.category || "Factions")}</span>
+        <span class="archive-expand-mark">OPEN</span>
+      </button>
+      <div class="archive-hidden-body">
+        <div class="archive-fact-grid">
+          <div><span>Base</span><strong>${escapeHtml(entry.base || "Unknown")}</strong></div>
+          <div><span>Relations</span><strong>${escapeHtml(entry.relations || "Unknown")}</strong></div>
+        </div>
+        <p>${escapeHtml(entry.text)}</p>
+        <p class="archive-source">${escapeHtml(entry.sourceNote || "S.T.A.L.K.E.R. Anomaly faction data")}</p>
       </div>
-      <p>${escapeHtml(entry.text)}</p>
-      <p class="archive-source">${escapeHtml(entry.sourceNote || "S.T.A.L.K.E.R. Anomaly faction data")}</p>
     </article>
   `).join("");
+  list.querySelectorAll("[data-archive-toggle]").forEach(button => {
+    button.addEventListener("click", () => toggleArchiveEntry(button.dataset.archiveToggle));
+  });
 }
-
 function bindFactionArchiveSearch() {
   const searchInput = document.getElementById("loreSearch") || document.getElementById("archiveSearch");
   if (searchInput && !searchInput.dataset.factionArchiveBound) {
@@ -2264,7 +2184,6 @@ function bindFactionArchiveSearch() {
     searchInput.addEventListener("input", renderLore);
   }
 }
-
 window.addEventListener("load", () => {
   bindFactionArchiveSearch();
   renderLoreFilters();

@@ -1128,3 +1128,32 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 #archiveCategoryChips button:not(.active) {
   display: none;
 }
+
+
+/* v2.8.2 Collapsible faction archive */
+.archive-collapsible { padding: 0; overflow: hidden; }
+.archive-entry-button {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 14px; border: 0; background: transparent; color: inherit;
+  font-family: inherit; text-align: left;
+}
+.archive-entry-button:active { transform: scale(0.995); }
+.archive-entry-button h3 { margin: 0 0 6px; }
+.archive-expand-mark {
+  flex: 0 0 auto; border: 1px solid rgba(215, 171, 107, 0.35);
+  border-radius: 999px; padding: 6px 9px; color: var(--amber-bright);
+  background: rgba(0,0,0,0.22); font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase;
+}
+.archive-collapsible.open .archive-expand-mark { font-size: 0; color: var(--text-soft); }
+.archive-collapsible.open .archive-expand-mark::before { content: "CLOSE"; font-size: 10px; }
+.archive-hidden-body { display: none; padding: 0 14px 14px; }
+.archive-collapsible.open .archive-hidden-body { display: block; }
+.archive-fact-grid { display: grid; gap: 8px; margin: 4px 0 12px; }
+.archive-fact-grid div { border: 1px solid rgba(212,221,195,0.12); border-radius: 6px; padding: 9px; background: rgba(0,0,0,0.18); }
+.archive-fact-grid span { display: block; color: var(--text-dim); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+.archive-fact-grid strong { color: var(--text-soft); font-size: 12px; line-height: 1.45; }
+.archive-source { border-left: 2px solid rgba(215, 171, 107, 0.4); padding-left: 10px; color: var(--olive) !important; font-size: 13px; }
+.archive-title-row { display: flex; gap: 12px; align-items: center; }
+.archive-faction-patch { width: 58px; height: 58px; object-fit: contain; border: 1px solid rgba(215, 171, 107, 0.22); border-radius: 8px; padding: 5px; background: rgba(0,0,0,0.24); flex: 0 0 auto; }
+.archive-meta { color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 5px; }
+#loreFilters button:not(.active), #archiveCategoryChips button:not(.active) { display: none; }
