@@ -1372,3 +1372,19 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   font-size: 30px;
   flex: 0 0 auto;
 }
+
+/* v3.4 Survival Notes archive expansion */
+.archive-survival-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(215, 171, 107, 0.22);
+  border-radius: 8px;
+  padding: 5px;
+  background: rgba(0,0,0,0.24);
+  color: var(--amber-bright);
+  font-size: 30px;
+  font-weight: 800;
+  flex: 0 0 auto;
+}
