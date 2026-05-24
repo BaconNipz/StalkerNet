@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v34-survival-notes";
+const CACHE_NAME = "stalkernet-cache-v341-survival-lore";
 
 const FILES_TO_CACHE = [
   "./",

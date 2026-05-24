@@ -1388,3 +1388,6 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   font-weight: 800;
   flex: 0 0 auto;
 }
+
+/* v3.4.1 survival notes lore rewrite */
+.archive-source { font-style: italic; }
