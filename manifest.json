@@ -1,7 +1,7 @@
 {
   "name": "StalkerNet PDA",
   "short_name": "StalkerNet",
-  "description": "A mobile PDA-style companion app inspired by Zone survival terminals.",
+  "description": "A handheld StalkerNet relay for Zone broadcasts, maps, field notes, and archive data.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

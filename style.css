@@ -1391,3 +1391,78 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 
 /* v3.4.1 survival notes lore rewrite */
 .archive-source { font-style: italic; }
+
+
+/* v3.5 lore-friendly polish pass */
+.pda-header {
+  position: relative;
+}
+
+.pda-header::after {
+  content: "relay traffic is not guaranteed safe";
+  display: block;
+  margin-top: 8px;
+  color: var(--text-dim);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.chat-channel-title,
+.title-main {
+  text-shadow: 0 0 10px rgba(215, 171, 107, 0.16);
+}
+
+.module-label {
+  letter-spacing: 0.16em;
+}
+
+.contract-board-note {
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.contract-board-note .message-text {
+  margin: 0;
+}
+
+.boot-title::after {
+  content: " // unofficial field build";
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+.online-chat-header {
+  border-color: rgba(215, 171, 107, 0.24);
+}
+
+.message-list::before {
+  content: "OPEN RELAY TRAFFIC";
+  display: block;
+  color: var(--text-dim);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 8px 2px;
+}
+
+.lore-list::before {
+  content: "CACHED PDA RECORDS";
+  display: block;
+  color: var(--text-dim);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 8px 2px;
+}
+
+.task-list::before {
+  content: "LOCAL JOB SCRATCHPAD";
+  display: block;
+  color: var(--text-dim);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 0 8px 2px;
+}

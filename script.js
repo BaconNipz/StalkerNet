@@ -1,10 +1,10 @@
-const STORAGE_KEY = "stalkernet_pda_v341_survival_lore";
+const STORAGE_KEY = "stalkernet_pda_v35_lore_pass";
 
 const defaultMessages = [
-  { id: id(), channel: "Zone Broadcast", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. That never lasts. Keep your bolts handy.", time: "07:12" },
-  { id: id(), channel: "Private", sender: "Sidorovich", faction: "Trader", text: "I have work for you. Nothing glorious, but glory doesn't buy sausage.", time: "07:33" },
+  { id: id(), channel: "Open Relay", sender: "Wolf", faction: "Loner", text: "Rookie Village is breathing quiet. That usually means the Zone is thinking. Keep your bolts handy.", time: "07:12" },
+  { id: id(), channel: "Trader Packet", sender: "Sidorovich", faction: "Trader", text: "I have work for you. Nothing glorious, but glory doesn't buy sausage or buckshot.", time: "07:33" },
   { id: id(), channel: "Unknown Signal", sender: "UNKNOWN", faction: "???", text: "Do not follow the song beneath the concrete. It remembers names.", time: "03:17" },
-  { id: id(), channel: "Faction Channel", sender: "Duty Outpost", faction: "Duty", text: "Mutant movement reported near Garbage. Armed stalkers requested. Payment confirmed on proof of kill.", time: "08:01" }
+  { id: id(), channel: "Faction Traffic", sender: "Duty Outpost", faction: "Duty", text: "Mutant movement near Garbage. Armed stalkers requested. Payment confirmed on proof of kill.", time: "08:01" }
 ];
 
 const personaReplies = {
@@ -425,7 +425,7 @@ function addBroadcast() {
     ["Duty Patrol", "Mutant contact north of the checkpoint. Civilians and rookies keep clear."]
   ];
   const pick = broadcasts[Math.floor(Math.random() * broadcasts.length)];
-  state.messages.push({ id: id(), channel: "Zone Broadcast", sender: pick[0], faction: "Broadcast", text: pick[1], time: nowTime() });
+  state.messages.push({ id: id(), channel: "Zone Relay", sender: pick[0], faction: "Broadcast", text: pick[1], time: nowTime() });
   state.activeMessageFilter = "All";
   saveState();
   renderMessageFilters();
@@ -1294,7 +1294,7 @@ function toggleAiMessages() {
 function updateAiToggleButton() {
   const btn = document.getElementById("toggleAiMessagesBtn");
   if (!btn) return;
-  btn.textContent = state.showAiMessages ? "AI Chatter: On" : "AI Chatter: Off";
+  btn.textContent = state.showAiMessages ? "Ghost Traffic: On" : "Ghost Traffic: Off";
   btn.classList.toggle("active", state.showAiMessages);
 }
 
@@ -1314,7 +1314,7 @@ function startAiChatterTimer() {
   }, 45000);
 }
 
-// Firebase online auth + Zone Broadcast chat
+// Firebase online auth + Zone Relay chat
 const firebaseConfig = {
   apiKey: "AIzaSyCakMUYMPR0OUxhYolHox3wp-c3lOoqYJs",
   authDomain: "stalkernet-82ec6.firebaseapp.com",
@@ -1532,7 +1532,7 @@ async function saveOnlineProfile() {
 
     updateAuthUI();
     updateIdPreview();
-    setAuthStatus("Stalker card saved.");
+    setAuthStatus("Stalker Card written to relay.");
   } catch (error) {
     setAuthStatus(error.message, true);
   }
@@ -1557,7 +1557,7 @@ function listenToZoneBroadcast() {
           id: doc.id,
           messageId: doc.id,
           senderId: data.senderId || "",
-          channel: "Zone Broadcast",
+          channel: "Zone Relay",
           sender: data.callsign || "Unknown Stalker",
           faction: data.faction || "Unknown",
           text: data.text || "",
@@ -1615,7 +1615,7 @@ sendMessage = async function() {
     return;
   }
 
-  setAuthStatus("Login to send live Zone Broadcast messages.", true);
+  setAuthStatus("Login to send live Zone Relay messages.", true);
 };
 
 
@@ -1981,7 +1981,7 @@ function toggleBlockSender(senderId, callsign = "this stalker") {
 async function deleteOwnMessage(messageId) {
   if (!currentUser || !db) return setAuthStatus("Login before deleting messages.", true);
   if (!messageId) return;
-  if (!confirm("Delete this transmission from Zone Broadcast?")) return;
+  if (!confirm("Delete this transmission from Zone Relay?")) return;
 
   try {
     await db.collection("channels").doc("zone_broadcast").collection("messages").doc(messageId).delete();

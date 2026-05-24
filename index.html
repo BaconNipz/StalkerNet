@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#171711" />
-  <title>StalkerNet PDA</title>
+  <title>StalkerNet Relay PDA</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
@@ -12,13 +12,13 @@
 <body>
   <div id="bootScreen" class="boot-screen">
     <div class="boot-panel module-panel">
-      <div class="module-label">BOOT SEQUENCE</div>
-      <div class="boot-title">STALKERNET / FIELD PDA</div>
-      <div class="boot-line">Linking handheld terminal...</div>
-      <div class="boot-line">Mounting local archive...</div>
-      <div class="boot-line">Loading map overlays...</div>
-      <div class="boot-line">Checking comms channels...</div>
-      <div class="boot-line">Authentication accepted...</div>
+      <div class="module-label">RELAY BOOT</div>
+      <div class="boot-title">STALKERNET / HANDHELD RELAY</div>
+      <div class="boot-line">Waking local PDA core...</div>
+      <div class="boot-line">Indexing cached Zone records...</div>
+      <div class="boot-line">Aligning map overlays and stash marks...</div>
+      <div class="boot-line">Listening for open relay traffic...</div>
+      <div class="boot-line">Relay handshake accepted...</div>
       <div class="boot-progress"><div id="bootBar" class="boot-progress-fill"></div></div>
       <div class="boot-sub">warning: unsecured zone frequencies detected</div>
     </div>
@@ -44,9 +44,9 @@
       <div class="frame-screw screw-d"></div>
 
       <header class="pda-header module-panel">
-        <div class="module-label">STALKERNET TERMINAL</div>
+        <div class="module-label">STALKERNET FIELD RELAY</div>
         <div class="status-row">
-          <span>PDA-09 / UPLINK ACTIVE</span>
+          <span>PDA-09 / MESH LINK ACTIVE</span>
           <div class="status-right">
             <span>SIG <span id="signalValue">--</span></span>
             <span id="batteryStatus">PWR <span id="batteryValue">--</span> </span>
@@ -54,8 +54,8 @@
         </div>
         <div class="title-row">
           <div class="title-block">
-            <div class="title-main">ZONE FIELD PDA</div>
-            <div class="title-sub">anomaly network // mobile operating terminal</div>
+            <div class="title-main">STALKERNET HANDHELD NODE</div>
+            <div class="title-sub">local mesh relay // field archive // open channel</div>
           </div>
           <div class="date-box">
             <span id="dateText"></span>
@@ -71,18 +71,18 @@
 
       <section id="messagesTab" class="tab-panel active">
         <div class="section-top">
-          <h2>Communications</h2>
-          <button id="broadcastBtn" class="small-btn accent-btn">Broadcast</button>
+          <h2>Comms Relay</h2>
+          <button id="broadcastBtn" class="small-btn accent-btn">Open Broadcast</button>
         </div>
         <div id="authPanel" class="auth-panel module-panel">
-          <div class="module-label">NETWORK ACCESS</div>
+          <div class="module-label">RELAY ACCESS</div>
           <div id="authLoggedOut">
-            <p class="message-text">Sign in to access live Zone Broadcast messages.</p>
+            <p class="message-text">Sign in to reach the live StalkerNet relay. No login, no open channel.</p>
             <div class="auth-grid">
-              <input id="authEmail" type="email" placeholder="Email" autocomplete="email" />
-              <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" />
-              <button id="loginBtn" class="small-btn accent-btn">Login</button>
-              <button id="registerBtn" class="small-btn">Register</button>
+              <input id="authEmail" type="email" placeholder="Relay email" autocomplete="email" />
+              <input id="authPassword" type="password" placeholder="Relay password" autocomplete="current-password" />
+              <button id="loginBtn" class="small-btn accent-btn">Link PDA</button>
+              <button id="registerBtn" class="small-btn">Register PDA</button>
             </div>
           </div>
 
@@ -92,38 +92,38 @@
                 <strong id="authCallsignText">Unknown Stalker</strong>
                 <p class="muted" id="authFactionText">Faction unknown</p>
               </div>
-              <button id="logoutBtn" class="small-btn">Logout</button>
+              <button id="logoutBtn" class="small-btn">Cut Link</button>
             </div>
 
             
           </div>
 
             <div class="auth-profile-summary">
-              <p class="muted">Edit your full Stalker Card in the ID tab.</p>
-              <button id="goToIdBtn" class="small-btn">Open ID</button>
+              <p class="muted">Tune your public Stalker Card in the ID tab.</p>
+              <button id="goToIdBtn" class="small-btn">Tune ID</button>
             </div>
           <p id="authStatus" class="auth-status"></p>
         </div>
 
         <div class="online-chat-header module-panel">
-          <div class="module-label">LIVE CHANNEL</div>
-          <div class="chat-channel-title">Zone Broadcast</div>
-          <p class="muted">Messages are shared with logged-in StalkerNet users.</p>
+          <div class="module-label">OPEN RELAY</div>
+          <div class="chat-channel-title">Zone Relay</div>
+          <p class="muted">Packets are shared with logged-in stalkers on the open relay.</p>
           <div class="chat-options-row">
-            <button id="toggleAiMessagesBtn" class="small-btn">AI Chatter: Off</button>
-            <button id="injectAiMessageBtn" class="small-btn">Ping Zone</button>
+            <button id="toggleAiMessagesBtn" class="small-btn">Ghost Traffic: Off</button>
+            <button id="injectAiMessageBtn" class="small-btn">Scan Static</button>
           </div>
-          <p class="muted">AI chatter is local atmosphere only. Human messages remain the default broadcast feed.</p>
+          <p class="muted">Ghost traffic is local static only. Human packets remain the real relay feed.</p>
           <div class="blocked-users-panel">
-            <button id="toggleBlockedUsersBtn" class="small-btn">Blocked Users</button>
+            <button id="toggleBlockedUsersBtn" class="small-btn">Muted Signals</button>
             <div id="blockedUsersList" class="blocked-users-list hidden"></div>
           </div>
         </div>
 
         <div class="filter-row" id="messageFilters"></div>
         <div class="persona-box module-panel">
-          <div class="module-label">ACTIVE CONTACT</div>
-          <label for="personaSelect">Channel Persona</label>
+          <div class="module-label">SIGNAL MASK</div>
+          <label for="personaSelect">Traffic Source</label>
           <select id="personaSelect">
             <option>Loner</option><option>Trader</option><option>Duty</option>
             <option>Freedom</option><option>Ecologist</option><option>Monolith</option>
@@ -131,52 +131,52 @@
         </div>
         <div id="messageList" class="message-list"></div>
         <div class="input-row">
-          <input id="messageInput" type="text" placeholder="Transmit to Zone Broadcast..." />
-          <button id="sendBtn" class="accent-btn">Send</button>
+          <input id="messageInput" type="text" placeholder="Send packet to open relay..." />
+          <button id="sendBtn" class="accent-btn">Transmit</button>
         </div>
       </section>
 
       <section id="mapTab" class="tab-panel">
         <div class="section-top">
-          <h2>Tactical Map</h2>
+          <h2>Zone Map</h2>
           <div class="map-action-buttons">
-            <button id="toggleAllPinsBtn" class="small-btn">Hide All</button>
-            <button id="pinManagerBtn" class="small-btn">Pins</button>
-            <button id="newPinBtn" class="small-btn accent-btn">New Pin</button>
+            <button id="toggleAllPinsBtn" class="small-btn">Hide Marks</button>
+            <button id="pinManagerBtn" class="small-btn">Markers</button>
+            <button id="newPinBtn" class="small-btn accent-btn">New Mark</button>
           </div>
         </div>
 
         <div class="map-section-row module-panel">
-          <div class="module-label">MAP DATABASE</div>
-          <label for="mapSectionSelect">Selected Map</label>
+          <div class="module-label">LOCAL MAP CACHE</div>
+          <label for="mapSectionSelect">Loaded Zone</label>
           <select id="mapSectionSelect"></select>
         </div>
 
         <div class="filter-row" id="mapFilters"></div>
 
         <div class="map-card module-panel">
-          <div class="module-label">ZONE OVERLAY</div>
+          <div class="module-label">ANOMALY OVERLAY</div>
           <div id="leafletMap" class="leaflet-map"></div>
           <div id="mapMissingNotice" class="map-missing hidden">
-            <strong>Map image not found.</strong>
-            <p>Check that your map files are in <code>assets/maps/</code> and named exactly: <code>WorldMap.jpg</code>, <code>Meadow.jpg</code>, <code>Swamp.jpg</code>, <code>Cordon.jpg</code>, and <code>Darkscape.jpg</code>.</p>
+            <strong>Map packet missing.</strong>
+            <p>Check that your map packets are in <code>assets/maps/</code> and named exactly: <code>WorldMap.jpg</code>, <code>Meadow.jpg</code>, <code>Swamp.jpg</code>, <code>Cordon.jpg</code>, and <code>Darkscape.jpg</code>.</p>
           </div>
         </div>
 
         <article class="info-card module-panel" id="mapInfo">
-          <div class="module-label">LOCATION DATA</div>
+          <div class="module-label">FIELD REPORT</div>
           <h3>Cordon</h3>
           <p class="muted">Settlement</p>
           <p>Rookie routes, traders, patrols.</p>
         </article>
 
         <article id="pinCreatePanel" class="info-card module-panel hidden">
-          <div class="module-label">CREATE MAP PIN</div>
+          <div class="module-label">MARK NEW COORDINATE</div>
           <div class="pin-form-grid">
-            <label>Pin Name
+            <label>Marker Name
               <input id="newPinName" type="text" placeholder="Example: Hidden stash" />
             </label>
-            <label>Pin Type
+            <label>Marker Type
               <select id="newPinType">
                 <option>Custom</option>
                 <option>Location</option>
@@ -188,66 +188,70 @@
                 <option>Faction</option>
               </select>
             </label>
-            <label>Short Description
-              <textarea id="newPinNote" placeholder="Short PDA note..."></textarea>
+            <label>PDA Note
+              <textarea id="newPinNote" placeholder="Short field note..."></textarea>
             </label>
           </div>
-          <p class="message-text">New pins are placed at the centre of your current map view. Drag them after creation to fine tune the position.</p>
+          <p class="message-text">New markers are dropped at the centre of your current map view. Drag them after creation to line up the coordinates.</p>
           <div class="pin-form-actions">
-            <button id="saveNewPinBtn" class="small-btn accent-btn">Create Pin</button>
+            <button id="saveNewPinBtn" class="small-btn accent-btn">Place Marker</button>
             <button id="cancelNewPinBtn" class="small-btn">Cancel</button>
           </div>
         </article>
 
         <article id="pinManagerPanel" class="info-card module-panel hidden">
-          <div class="module-label">PIN MANAGER</div>
+          <div class="module-label">MARKER MANAGER</div>
           <div class="pin-manager-actions">
             <button id="showAllPinsBtn" class="small-btn">Show All</button>
             <button id="hideAllPinsBtn" class="small-btn">Hide All</button>
-            <button id="resetPinsBtn" class="small-btn">Reset Positions</button>
-            <button id="exportPinsBtn" class="small-btn accent-btn">Export</button>
+            <button id="resetPinsBtn" class="small-btn">Reset Marks</button>
+            <button id="exportPinsBtn" class="small-btn accent-btn">Export Marks</button>
           </div>
           <div id="pinManagerList" class="pin-manager-list"></div>
         </article>
 
         <article id="pinExportPanel" class="info-card module-panel hidden">
-          <div class="module-label">PIN COORDINATE EXPORT</div>
-          <p class="message-text">Copy this text and send it back so these can be baked into the public app.</p>
+          <div class="module-label">COORDINATE EXPORT</div>
+          <p class="message-text">Copy this coordinate packet and send it back so the marks can be baked into the public build.</p>
           <textarea id="pinExportText" readonly></textarea>
-          <button id="copyPinsBtn" class="small-btn accent-btn">Copy Coordinates</button>
+          <button id="copyPinsBtn" class="small-btn accent-btn">Copy Packet</button>
         </article>
 
         <article class="info-card module-panel">
-          <div class="module-label">MAP NOTES</div>
-          <p class="message-text">This map system loads individual high-quality zone images. Use the pin manager to hide pins, show pins, export positions, or delete your custom pins.</p>
+          <div class="module-label">CARTOGRAPHER NOTES</div>
+          <p class="message-text">This map cache loads individual high-quality Zone images. Use the marker manager to hide marks, show marks, export positions, or delete custom markers.</p>
         </article>
       </section>
 
       <section id="loreTab" class="tab-panel">
-        <div class="section-top"><h2>Archive</h2></div>
-        <input id="loreSearch" class="full-input" type="text" placeholder="Search archive..." />
+        <div class="section-top"><h2>PDA Archive</h2></div>
+        <input id="loreSearch" class="full-input" type="text" placeholder="Search PDA archive..." />
         <div class="filter-row" id="loreFilters"></div>
         <div id="loreList" class="lore-list"></div>
       </section>
 
       <section id="tasksTab" class="tab-panel">
-        <div class="section-top"><h2>Tasks</h2></div>
+        <div class="section-top"><h2>Contracts</h2></div>
+        <article class="module-panel contract-board-note">
+          <div class="module-label">JOB BOARD</div>
+          <p class="message-text">Local notes only. Contracts logged here live on this PDA unless you copy them out.</p>
+        </article>
         <div class="input-row">
-          <input id="taskInput" type="text" placeholder="Add task, contract, or field note..." />
-          <button id="taskAddBtn" class="accent-btn">Add</button>
+          <input id="taskInput" type="text" placeholder="Log contract, stash note, warning, or promise..." />
+          <button id="taskAddBtn" class="accent-btn">Log</button>
         </div>
         <div id="taskList" class="task-list"></div>
       </section>
 
       <section id="profileTab" class="tab-panel">
-        <div class="section-top"><h2>Identity</h2></div>
+        <div class="section-top"><h2>Stalker ID</h2></div>
         <article class="identity-intro module-panel">
-          <div class="module-label">IDENTITY MODULE</div>
-          <p class="message-text">Your public StalkerNet profile is stored online, shown when other users tap your callsign, and loaded into the PDA header after login.</p>
+          <div class="module-label">IDENTITY BEACON</div>
+          <p class="message-text">Your public StalkerNet identity is stored on the relay, shown when another stalker taps your callsign, and loaded into the PDA header after login.</p>
         </article>
 
         <article class="id-card-preview module-panel">
-          <div class="module-label">STALKERNET ID</div>
+          <div class="module-label">PUBLIC STALKER ID</div>
           <div class="id-preview-row">
             <div id="idPreviewAvatar" class="stalker-avatar patch-avatar avatar-loners"><img src="assets/faction-patches/loners.png" alt="Loners patch" /></div>
             <div>
@@ -260,9 +264,9 @@
         </article>
 
         <div id="profileSetupPanel" class="profile-setup-box id-profile-editor">
-              <div class="module-label">STALKER CARD SETUP</div>
-          <p class="message-text id-helper-text">This is your public StalkerNet identity. These details save online and appear when other users tap your callsign.</p>
-          <p class="message-text id-login-note">Login through Comms first, then return here to edit and save your ID card.</p>
+              <div class="module-label">STALKER CARD TUNING</div>
+          <p class="message-text id-helper-text">This is the face your PDA shows the network. Keep it useful, or at least believable.</p>
+          <p class="message-text id-login-note">Link through Comms first, then return here to tune and save your Stalker Card.</p>
               <div class="auth-grid profile-card-form labelled-profile-form">
                 <label class="field-label">Callsign
                   <input id="callsignInput" type="text" placeholder="Example: David 'The Bear' Romanov" maxlength="32" />
@@ -293,7 +297,7 @@
                     </div>
                     <div>
                       <strong id="selectedPatchName">Loners</strong>
-                      <p class="muted">Automatically selected from your faction.</p>
+                      <p class="muted">Auto-issued from selected faction.</p>
                     </div>
                   </div>
                 </label>
@@ -350,7 +354,7 @@
         <button class="nav-btn active" data-tab="messagesTab"><span class="nav-ico">COM</span><span>Comms</span></button>
         <button class="nav-btn" data-tab="mapTab"><span class="nav-ico">MAP</span><span>Map</span></button>
         <button class="nav-btn" data-tab="loreTab"><span class="nav-ico">ARC</span><span>Archive</span></button>
-        <button class="nav-btn" data-tab="tasksTab"><span class="nav-ico">TSK</span><span>Tasks</span></button>
+        <button class="nav-btn" data-tab="tasksTab"><span class="nav-ico">JOB</span><span>Jobs</span></button>
         <button class="nav-btn" data-tab="profileTab"><span class="nav-ico">ID</span><span>ID</span></button>
       </nav>
     </section>
@@ -360,7 +364,7 @@
 <div id="stalkerCardModal" class="stalker-card-modal hidden">
     <div class="stalker-card-backdrop" id="stalkerCardBackdrop"></div>
     <article class="stalker-card-panel module-panel">
-      <div class="module-label">STALKER CARD</div>
+      <div class="module-label">PUBLIC STALKER CARD</div>
       <button id="closeStalkerCardBtn" class="small-btn stalker-card-close">Close</button>
       <div class="stalker-card-identity">
         <div id="cardAvatar" class="stalker-avatar patch-avatar avatar-loners"><img src="assets/faction-patches/loners.png" alt="Loners patch" /></div>

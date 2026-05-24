@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v341-survival-lore";
+const CACHE_NAME = "stalkernet-cache-v35-lore-pass";
 
 const FILES_TO_CACHE = [
   "./",
@@ -15,7 +15,7 @@ const FILES_TO_CACHE = [
   "./assets/maps/Darkscape.jpg",
   "./assets/audio/alert.wav",
   "./assets/audio/click.wav",
-  "./assets/audio/boot.wav"
+  "./assets/audio/boot.wav",
   "./assets/faction-patches/ecologists.png",
   "./assets/faction-patches/clear_sky.png",
   "./assets/faction-patches/freedom.png",
