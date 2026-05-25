@@ -1466,3 +1466,58 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   text-transform: uppercase;
   margin: 0 0 8px 2px;
 }
+
+
+/* v3.6 clear comms polish */
+.comms-help-card {
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.comms-help-grid {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.comms-help-grid div {
+  border: 1px solid rgba(212,221,195,0.12);
+  border-radius: 8px;
+  padding: 9px;
+  background: rgba(0,0,0,0.18);
+}
+
+.comms-help-grid strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.comms-help-grid span {
+  display: block;
+  color: var(--text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.message-list::before {
+  content: "PUBLIC CHAT MESSAGES";
+}
+
+.online-chat-header::after {
+  content: "Real user messages appear here. Bot messages are optional and local.";
+  display: block;
+  color: var(--text-dim);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+}
+
+@media (min-width: 560px) {
+  .comms-help-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

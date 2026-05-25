@@ -71,18 +71,18 @@
 
       <section id="messagesTab" class="tab-panel active">
         <div class="section-top">
-          <h2>Comms Relay</h2>
-          <button id="broadcastBtn" class="small-btn accent-btn">Open Broadcast</button>
+          <h2>Comms</h2>
+          <button id="broadcastBtn" class="small-btn accent-btn">Open Public Chat</button>
         </div>
         <div id="authPanel" class="auth-panel module-panel">
-          <div class="module-label">RELAY ACCESS</div>
+          <div class="module-label">ACCOUNT ACCESS</div>
           <div id="authLoggedOut">
-            <p class="message-text">Sign in to reach the live StalkerNet relay. No login, no open channel.</p>
+            <p class="message-text">Sign in to use live chat, save your identity, and message other users.</p>
             <div class="auth-grid">
-              <input id="authEmail" type="email" placeholder="Relay email" autocomplete="email" />
-              <input id="authPassword" type="password" placeholder="Relay password" autocomplete="current-password" />
-              <button id="loginBtn" class="small-btn accent-btn">Link PDA</button>
-              <button id="registerBtn" class="small-btn">Register PDA</button>
+              <input id="authEmail" type="email" placeholder="Email address" autocomplete="email" />
+              <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" />
+              <button id="loginBtn" class="small-btn accent-btn">Sign In</button>
+              <button id="registerBtn" class="small-btn">Create Account</button>
             </div>
           </div>
 
@@ -92,38 +92,38 @@
                 <strong id="authCallsignText">Unknown Stalker</strong>
                 <p class="muted" id="authFactionText">Faction unknown</p>
               </div>
-              <button id="logoutBtn" class="small-btn">Cut Link</button>
+              <button id="logoutBtn" class="small-btn">Sign Out</button>
             </div>
 
             
           </div>
 
             <div class="auth-profile-summary">
-              <p class="muted">Tune your public Stalker Card in the ID tab.</p>
-              <button id="goToIdBtn" class="small-btn">Tune ID</button>
+              <p class="muted">Edit your public Stalker Card in the ID tab.</p>
+              <button id="goToIdBtn" class="small-btn">Edit ID</button>
             </div>
           <p id="authStatus" class="auth-status"></p>
         </div>
 
         <div class="online-chat-header module-panel">
-          <div class="module-label">OPEN RELAY</div>
-          <div class="chat-channel-title">Zone Relay</div>
-          <p class="muted">Packets are shared with logged-in stalkers on the open relay.</p>
+          <div class="module-label">PUBLIC CHAT</div>
+          <div class="chat-channel-title">Public Chat</div>
+          <p class="muted">Messages are visible to logged-in users.</p>
           <div class="chat-options-row">
-            <button id="toggleAiMessagesBtn" class="small-btn">Ghost Traffic: Off</button>
-            <button id="injectAiMessageBtn" class="small-btn">Scan Static</button>
+            <button id="toggleAiMessagesBtn" class="small-btn">Bot Messages: Off</button>
+            <button id="injectAiMessageBtn" class="small-btn">Generate Bot Message</button>
           </div>
-          <p class="muted">Ghost traffic is local static only. Human packets remain the real relay feed.</p>
+          <p class="muted">Bot messages are local atmosphere only. Real user messages stay separate.</p>
           <div class="blocked-users-panel">
-            <button id="toggleBlockedUsersBtn" class="small-btn">Muted Signals</button>
+            <button id="toggleBlockedUsersBtn" class="small-btn">Blocked Users</button>
             <div id="blockedUsersList" class="blocked-users-list hidden"></div>
           </div>
         </div>
 
         <div class="filter-row" id="messageFilters"></div>
         <div class="persona-box module-panel">
-          <div class="module-label">SIGNAL MASK</div>
-          <label for="personaSelect">Traffic Source</label>
+          <div class="module-label">MESSAGE PROFILE</div>
+          <label for="personaSelect">Message Type</label>
           <select id="personaSelect">
             <option>Loner</option><option>Trader</option><option>Duty</option>
             <option>Freedom</option><option>Ecologist</option><option>Monolith</option>
@@ -131,8 +131,8 @@
         </div>
         <div id="messageList" class="message-list"></div>
         <div class="input-row">
-          <input id="messageInput" type="text" placeholder="Send packet to open relay..." />
-          <button id="sendBtn" class="accent-btn">Transmit</button>
+          <input id="messageInput" type="text" placeholder="Write a public message..." />
+          <button id="sendBtn" class="accent-btn">Send</button>
         </div>
       </section>
 
