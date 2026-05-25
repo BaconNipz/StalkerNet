@@ -1521,3 +1521,48 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+/* v3.6.1 mobile comms layout repair */
+.online-chat-header {
+  display: block !important;
+}
+
+.online-chat-header::after {
+  content: "Real user messages appear here. Bot messages are optional and local.";
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  color: var(--text-dim);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  margin: 8px 0 0 0;
+  text-align: left;
+  white-space: normal;
+}
+
+.logout-wide-btn {
+  min-width: 96px;
+  white-space: nowrap;
+}
+
+.online-chat-card .small-btn {
+  white-space: normal;
+}
+
+@media (max-width: 460px) {
+  .online-chat-card .small-btn {
+    min-height: 46px;
+    line-height: 1.15;
+  }
+
+  #injectAiMessageBtn {
+    max-width: 290px;
+  }
+
+  .logout-wide-btn {
+    min-width: 104px;
+  }
+}
