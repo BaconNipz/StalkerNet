@@ -232,16 +232,39 @@
       </section>
 
       <section id="tasksTab" class="tab-panel">
-        <div class="section-top"><h2>Contracts</h2></div>
-        <article class="module-panel contract-board-note">
-          <div class="module-label">JOB BOARD</div>
-          <p class="message-text">Local notes only. Contracts logged here live on this PDA unless you copy them out.</p>
+        <div class="section-top"><h2>Jobs</h2></div>
+
+        <article class="module-panel job-board-note">
+          <div class="module-label">LOCAL JOB BOARD</div>
+          <p class="message-text">Log contracts, stash reminders, warnings, and field notes. Jobs are saved on this device for now.</p>
         </article>
-        <div class="input-row">
-          <input id="taskInput" type="text" placeholder="Log contract, stash note, warning, or promise..." />
-          <button id="taskAddBtn" class="accent-btn">Log</button>
-        </div>
-        <div id="taskList" class="task-list"></div>
+
+        <article class="module-panel job-form-card">
+          <div class="module-label">NEW JOB</div>
+          <div class="job-form-grid">
+            <label>Job Title<input id="jobTitleInput" type="text" placeholder="e.g. Clear mutant nest" /></label>
+            <label>Job Type<select id="jobTypeSelect"><option>Mutant Hunt</option><option>Artifact Recovery</option><option>Delivery</option><option>Escort</option><option>Scout Area</option><option>Clear Area</option><option>Stash Reminder</option><option>Personal Note</option></select></label>
+            <label>Location<input id="jobLocationInput" type="text" placeholder="e.g. Garbage" /></label>
+            <label>Risk Level<select id="jobRiskSelect"><option>Low</option><option>Medium</option><option>High</option><option>Severe</option><option>Suicidal</option></select></label>
+            <label>Reward / Payment<input id="jobRewardInput" type="text" placeholder="e.g. 12000 RU, ammo, favour" /></label>
+            <label>Status<select id="jobStatusSelect"><option>Open</option><option>Accepted</option><option>Completed</option><option>Failed</option><option>Abandoned</option></select></label>
+            <label class="job-description-field">Description<textarea id="jobDescriptionInput" rows="3" placeholder="Write the details here..."></textarea></label>
+          </div>
+          <div class="job-form-actions">
+            <button id="jobAddBtn" class="accent-btn">Log Job</button>
+            <button id="jobClearBtn" class="small-btn" type="button">Clear Form</button>
+          </div>
+        </article>
+
+        <article class="module-panel job-filter-card">
+          <div class="module-label">JOB FILTERS</div>
+          <div class="job-filter-row">
+            <select id="jobFilterStatus"><option value="All">All Statuses</option><option>Open</option><option>Accepted</option><option>Completed</option><option>Failed</option><option>Abandoned</option></select>
+            <select id="jobFilterRisk"><option value="All">All Risk Levels</option><option>Low</option><option>Medium</option><option>High</option><option>Severe</option><option>Suicidal</option></select>
+          </div>
+        </article>
+
+        <div id="taskList" class="task-list job-list"></div>
       </section>
 
       <section id="profileTab" class="tab-panel">

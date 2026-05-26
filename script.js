@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v362_comms_overlay_fix";
+const STORAGE_KEY = "stalkernet_pda_v37_jobs_board";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -2242,4 +2242,145 @@ window.addEventListener("load", () => {
   bindArchiveSearch();
   renderLoreFilters();
   renderLore();
+});
+
+
+
+// v3.7 Local Jobs Board
+const JOB_STATUSES = ["Open", "Accepted", "Completed", "Failed", "Abandoned"];
+
+function ensureJobsState() {
+  if (!Array.isArray(state.jobs)) state.jobs = [];
+  if (!state.jobsMigratedFromTasks && Array.isArray(state.tasks) && state.tasks.length) {
+    state.tasks.forEach(task => {
+      if (!task || !task.text) return;
+      state.jobs.push({
+        id: task.id || id(),
+        title: task.text,
+        type: "Personal Note",
+        location: "",
+        risk: "Low",
+        reward: "",
+        status: task.done ? "Completed" : "Open",
+        description: "Imported from old task list.",
+        createdAt: nowTime()
+      });
+    });
+    state.jobsMigratedFromTasks = true;
+    saveState();
+  }
+}
+
+function clearJobForm() {
+  ["jobTitleInput","jobLocationInput","jobRewardInput","jobDescriptionInput"].forEach(idName => {
+    const el = document.getElementById(idName);
+    if (el) el.value = "";
+  });
+  const type = document.getElementById("jobTypeSelect");
+  const risk = document.getElementById("jobRiskSelect");
+  const status = document.getElementById("jobStatusSelect");
+  if (type) type.value = "Mutant Hunt";
+  if (risk) risk.value = "Low";
+  if (status) status.value = "Open";
+}
+
+function addJobFromForm() {
+  ensureJobsState();
+  const title = document.getElementById("jobTitleInput")?.value.trim() || "";
+  if (!title) {
+    toast("Job needs a title.");
+    return;
+  }
+  state.jobs.unshift({
+    id: id(),
+    title,
+    type: document.getElementById("jobTypeSelect")?.value || "Personal Note",
+    location: document.getElementById("jobLocationInput")?.value.trim() || "",
+    risk: document.getElementById("jobRiskSelect")?.value || "Low",
+    reward: document.getElementById("jobRewardInput")?.value.trim() || "",
+    status: document.getElementById("jobStatusSelect")?.value || "Open",
+    description: document.getElementById("jobDescriptionInput")?.value.trim() || "",
+    createdAt: nowTime()
+  });
+  saveState();
+  clearJobForm();
+  renderTasks();
+  toast("Job logged.");
+}
+
+function cycleJobStatus(jobId) {
+  ensureJobsState();
+  const job = state.jobs.find(item => item.id === jobId);
+  if (!job) return;
+  const current = JOB_STATUSES.indexOf(job.status);
+  job.status = JOB_STATUSES[(current + 1) % JOB_STATUSES.length];
+  saveState();
+  renderTasks();
+}
+
+function deleteJob(jobId) {
+  ensureJobsState();
+  state.jobs = state.jobs.filter(item => item.id !== jobId);
+  saveState();
+  renderTasks();
+}
+
+function renderTasks() {
+  ensureJobsState();
+  const list = document.getElementById("taskList");
+  if (!list) return;
+
+  const filterStatus = document.getElementById("jobFilterStatus")?.value || "All";
+  const filterRisk = document.getElementById("jobFilterRisk")?.value || "All";
+
+  const jobs = state.jobs.filter(job => {
+    return (filterStatus === "All" || job.status === filterStatus) &&
+           (filterRisk === "All" || job.risk === filterRisk);
+  });
+
+  if (!jobs.length) {
+    list.innerHTML = `<article class="module-panel empty-job-card"><div class="module-label">NO JOBS FOUND</div><p class="message-text">No jobs match the current filters. Log a contract, stash note, warning, or field reminder above.</p></article>`;
+    return;
+  }
+
+  list.innerHTML = jobs.map(job => `
+    <article class="task-card job-card ${job.status === "Completed" ? "done" : ""}">
+      <div class="job-card-top">
+        <div><div class="job-type">${escapeHtml(job.type || "Personal Note")}</div><h3>${escapeHtml(job.title || "Untitled Job")}</h3></div>
+        <span class="job-risk risk-${escapeHtml((job.risk || "Low").toLowerCase())}">${escapeHtml(job.risk || "Low")}</span>
+      </div>
+      <div class="job-facts">
+        <div><span>Location</span><strong>${escapeHtml(job.location || "Unlisted")}</strong></div>
+        <div><span>Reward</span><strong>${escapeHtml(job.reward || "Unlisted")}</strong></div>
+        <div><span>Status</span><strong>${escapeHtml(job.status || "Open")}</strong></div>
+        <div><span>Logged</span><strong>${escapeHtml(job.createdAt || "--")}</strong></div>
+      </div>
+      ${job.description ? `<p class="job-description">${escapeHtml(job.description)}</p>` : ""}
+      <div class="job-actions">
+        <button class="small-btn" data-job-status="${escapeHtml(job.id)}">Change Status</button>
+        <button class="small-btn danger-btn" data-job-delete="${escapeHtml(job.id)}">Delete</button>
+      </div>
+    </article>
+  `).join("");
+
+  list.querySelectorAll("[data-job-status]").forEach(btn => btn.addEventListener("click", () => cycleJobStatus(btn.dataset.jobStatus)));
+  list.querySelectorAll("[data-job-delete]").forEach(btn => btn.addEventListener("click", () => deleteJob(btn.dataset.jobDelete)));
+}
+
+function bindJobsBoard() {
+  ensureJobsState();
+  const addBtn = document.getElementById("jobAddBtn");
+  const clearBtn = document.getElementById("jobClearBtn");
+  const statusFilter = document.getElementById("jobFilterStatus");
+  const riskFilter = document.getElementById("jobFilterRisk");
+
+  if (addBtn && !addBtn.dataset.bound) { addBtn.dataset.bound = "true"; addBtn.addEventListener("click", addJobFromForm); }
+  if (clearBtn && !clearBtn.dataset.bound) { clearBtn.dataset.bound = "true"; clearBtn.addEventListener("click", clearJobForm); }
+  if (statusFilter && !statusFilter.dataset.bound) { statusFilter.dataset.bound = "true"; statusFilter.addEventListener("change", renderTasks); }
+  if (riskFilter && !riskFilter.dataset.bound) { riskFilter.dataset.bound = "true"; riskFilter.addEventListener("change", renderTasks); }
+}
+
+window.addEventListener("load", () => {
+  bindJobsBoard();
+  renderTasks();
 });

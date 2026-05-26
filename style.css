@@ -1622,3 +1622,28 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
     font-size: 11px !important;
   }
 }
+
+/* v3.7 Local Jobs Board */
+.job-board-note,.job-form-card,.job-filter-card{padding:14px;margin-bottom:12px}
+.job-form-grid{display:grid;gap:10px;margin-top:10px}
+.job-form-grid label{display:grid;gap:6px;color:var(--text-dim);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.job-form-grid input,.job-form-grid select,.job-form-grid textarea,.job-filter-row select{width:100%}
+.job-description-field{grid-column:1/-1}
+.job-form-actions,.job-filter-row{display:grid;gap:10px;margin-top:12px}
+.job-list{display:grid;gap:12px}
+.job-card{padding:14px}
+.job-card.done{opacity:.72}
+.job-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.job-type{color:var(--amber-bright);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.job-card h3{margin:0;color:var(--text-soft);font-size:17px;letter-spacing:.08em;text-transform:uppercase}
+.job-risk{flex:0 0 auto;border:1px solid rgba(215,171,107,.34);border-radius:999px;padding:6px 8px;background:rgba(0,0,0,.24);color:var(--amber-bright);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.risk-low{color:#bfd8a5}.risk-medium{color:var(--amber-bright)}.risk-high,.risk-severe,.risk-suicidal{color:#ff9f7a}
+.job-facts{display:grid;gap:8px;margin-top:12px}
+.job-facts div{border:1px solid rgba(212,221,195,.12);border-radius:8px;padding:8px;background:rgba(0,0,0,.18)}
+.job-facts span{display:block;color:var(--text-dim);font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.job-facts strong{color:var(--text-soft);font-size:12px;line-height:1.35}
+.job-description{border-left:2px solid rgba(215,171,107,.42);padding-left:10px;margin:12px 0 0;color:var(--text-soft);line-height:1.5}
+.job-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.danger-btn{border-color:rgba(255,120,92,.36)!important;color:#ff9f7a!important}
+.empty-job-card{padding:14px}
+@media (min-width:620px){.job-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.job-form-actions,.job-filter-row{grid-template-columns:1fr 1fr}.job-facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
