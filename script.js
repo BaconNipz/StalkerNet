@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v361_comms_mobile_fix";
+const STORAGE_KEY = "stalkernet_pda_v362_comms_overlay_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },

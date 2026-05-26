@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v361-comms-mobile-fix";
+const CACHE_NAME = "stalkernet-cache-v362-comms-overlay-fix";
 
 const FILES_TO_CACHE = [
   "./",
