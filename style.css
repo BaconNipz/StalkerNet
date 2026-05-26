@@ -1647,3 +1647,6 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 .danger-btn{border-color:rgba(255,120,92,.36)!important;color:#ff9f7a!important}
 .empty-job-card{padding:14px}
 @media (min-width:620px){.job-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.job-form-actions,.job-filter-row{grid-template-columns:1fr 1fr}.job-facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* v3.7.1 boot fix */
+.legacy-task-compat{display:none!important}

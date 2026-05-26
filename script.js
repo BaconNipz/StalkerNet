@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v37_jobs_board";
+const STORAGE_KEY = "stalkernet_pda_v371_jobs_boot_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -1151,8 +1151,8 @@ function bindEvents() {
   document.getElementById("cancelNewPinBtn").addEventListener("click", closePinCreator);
   document.getElementById("mapSectionSelect").addEventListener("change", event => setMapSection(event.target.value));
   document.getElementById("loreSearch").addEventListener("input", renderLore);
-  document.getElementById("taskAddBtn").addEventListener("click", addTask);
-  document.getElementById("taskInput").addEventListener("keydown", event => {
+  document.getElementById("taskAddBtn")?.addEventListener("click", addTask);
+  document.getElementById("taskInput")?.addEventListener("keydown", event => {
     if (event.key === "Enter") addTask();
   });
   bindProfileInputs();
