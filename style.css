@@ -1779,3 +1779,27 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 #profileTab .muted {
   line-height: 1.45;
 }
+
+
+/* v3.9.1 force Stalker ID preset fields */
+#idTab select,
+#profileTab select,
+#profileRank,
+#profileStatus,
+#profileReputation,
+#profileBadges,
+#profileHomeArea,
+#profileWeapon,
+#profileBio {
+  width: 100%;
+  min-height: 56px;
+}
+
+#idTab input,
+#idTab textarea {
+  min-height: 56px;
+}
+
+.id-preset-note {
+  margin: 6px 0 12px;
+}

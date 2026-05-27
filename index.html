@@ -297,9 +297,7 @@
             </label>
 
             <label>Status
-              <select id="jobStatusSelect">
-                <option>Open</option><option>Accepted</option><option>Completed</option><option>Failed</option><option>Abandoned</option>
-              </select>
+              <select id="profileStatus"><option>Available</option><option>Looking for squad</option><option>On contract</option><option>Injured</option><option>Trading</option><option>Travelling</option><option>Missing</option><option>Do not disturb</option></select>
             </label>
 
             <label class="job-description-field">Description / Objective
@@ -401,7 +399,7 @@
                 </label>
 
                 <label class="field-label">Rank
-                  <input id="onlineRankInput" type="text" placeholder="Example: Rookie, Veteran, Master" maxlength="32" />
+                  <select id="profileRank"><option>Rookie</option><option>Novice</option><option>Experienced</option><option>Professional</option><option>Veteran</option><option>Expert</option><option>Master</option><option>Legend</option></select>
                 </label>
 
                 <label class="field-label">Status
@@ -415,29 +413,23 @@
                 </label>
 
                 <label class="field-label">Reputation
-                  <select id="reputationSelect">
-                    <option>Terrible</option>
-                    <option>Bad</option>
-                    <option selected>Neutral</option>
-                    <option>Good</option>
-                    <option>Excellent</option>
-                  </select>
+                  <select id="profileReputation"><option>Terrible</option><option>Bad</option><option>Neutral</option><option>Good</option><option>Excellent</option></select>
                 </label>
 
                 <label class="field-label">Badges
-                  <input id="badgesInput" type="text" placeholder="Example: Guide, Trader, Artifact Hunter" maxlength="80" />
+                  <select id="profileBadges"><option>None</option><option>Guide</option><option>Trader</option><option>Artifact Hunter</option><option>Mutant Hunter</option><option>Courier</option><option>Scout</option><option>Medic</option><option>Technician</option><option>Sniper</option><option>Bodyguard</option><option>Smuggler</option></select>
                 </label>
 
                 <label class="field-label">Home Area
-                  <input id="onlineAreaInput" type="text" placeholder="Example: Cordon, Rostok, Dead City" maxlength="40" />
+                  <select id="profileHomeArea"><option>Cordon</option><option>Meadows</option><option>Great Swamps</option><option>Darkscape</option><option>Garbage</option><option>Agroprom</option><option>Dark Valley</option><option>Rostok</option><option>Wild Territory</option><option>Yantar</option><option>Truck Cemetery</option><option>Army Warehouses</option><option>Dead City</option><option>Red Forest</option><option>Radar</option><option>Limansk</option><option>Deserted Hospital</option><option>Jupiter</option><option>Zaton</option><option>Outskirts</option><option>Pripyat</option><option>Chernobyl NPP</option><option>Generators</option></select>
                 </label>
 
                 <label class="field-label">Preferred Weapon
-                  <input id="onlineWeaponInput" type="text" placeholder="Example: AK-74, M4 Rifle, Vintar BC" maxlength="40" />
+                  <select id="profileWeapon"><option>Pistol</option><option>Shotgun</option><option>SMG</option><option>Assault Rifle</option><option>Sniper Rifle</option><option>Machine Gun</option><option>Melee / Knife</option><option>Unknown</option></select>
                 </label>
 
                 <label class="field-label">Bio / Marker Note
-                  <textarea id="onlineBioInput" placeholder="Short bio, quote, warning, or stalker note..." maxlength="240"></textarea>
+                  <select id="profileBio"><option>Reliable stalker. Available for work.</option><option>Prefers small squads and clean jobs.</option><option>Artifact runner. Will not work cheap.</option><option>Mutant hunter. Bring ammo.</option><option>Courier work accepted. No questions asked.</option><option>Scout and route marker.</option><option>Trader contact. Looking for supplies.</option><option>New to the Zone. Learning fast.</option><option>Veteran. If I say run, run.</option><option>No public note.</option></select>
                 </label>
 
                 <button id="saveProfileBtn" class="small-btn accent-btn">Save ID Card</button>

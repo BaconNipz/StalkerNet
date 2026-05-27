@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v39_id_presets";
+const STORAGE_KEY = "stalkernet_pda_v391_id_preset_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -2659,3 +2659,41 @@ function normaliseProfilePresetFieldsV39() {
 }
 
 window.addEventListener("load", normaliseProfilePresetFieldsV39);
+
+
+// v3.9.1 stronger Stalker ID preset compatibility
+function readFirstValueV391(ids, fallback = "") {
+  for (const idName of ids) {
+    const el = document.getElementById(idName);
+    if (el && typeof el.value === "string") return el.value.trim();
+  }
+  return fallback;
+}
+
+function patchProfileSaveButtonV391() {
+  const saveBtn = document.getElementById("profileSaveBtn");
+  if (!saveBtn || saveBtn.dataset.v391ProfileBound) return;
+  saveBtn.dataset.v391ProfileBound = "true";
+
+  saveBtn.addEventListener("click", () => {
+    if (!state.profile) state.profile = {};
+
+    state.profile.rank = readFirstValueV391(["profileRank", "cardRank", "idRank"], state.profile.rank || "Rookie");
+    state.profile.status = readFirstValueV391(["profileStatus", "cardStatus", "idStatus"], state.profile.status || "Available");
+    state.profile.reputation = readFirstValueV391(["profileReputation", "cardReputation", "idReputation"], state.profile.reputation || "Neutral");
+    state.profile.badges = readFirstValueV391(["profileBadges", "cardBadges", "idBadges"], state.profile.badges || "None");
+    state.profile.homeArea = readFirstValueV391(["profileHomeArea", "profileHome", "cardHomeArea", "idHomeArea"], state.profile.homeArea || "Cordon");
+    state.profile.weapon = readFirstValueV391(["profileWeapon", "cardWeapon", "idWeapon"], state.profile.weapon || "Unknown");
+    state.profile.bio = readFirstValueV391(["profileBio", "profileQuote", "cardBio", "idBio"], state.profile.bio || "No public note.");
+
+    saveState();
+
+    if (typeof renderProfile === "function") renderProfile();
+    if (typeof renderIdentity === "function") renderIdentity();
+    if (typeof renderHeaderIdentity === "function") renderHeaderIdentity();
+
+    if (typeof toast === "function") toast("Stalker Card saved.");
+  }, true);
+}
+
+window.addEventListener("load", patchProfileSaveButtonV391);
