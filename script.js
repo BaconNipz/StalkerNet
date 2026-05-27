@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v382_marker_save_fix";
+const STORAGE_KEY = "stalkernet_pda_v39_id_presets";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -2632,3 +2632,30 @@ function bindMarkerSaveFix382() {
 }
 
 window.addEventListener("load", bindMarkerSaveFix382);
+
+
+// v3.9 Stalker ID preset compatibility
+function normaliseProfilePresetFieldsV39() {
+  const mappings = [
+    ["profileRank", ["rankInput", "stalkerRank", "idRank"]],
+    ["profileStatus", ["statusInput", "stalkerStatus", "idStatus"]],
+    ["profileReputation", ["reputationInput", "stalkerReputation", "idReputation"]],
+    ["profileHomeArea", ["profileHome", "homeAreaInput", "stalkerHome", "idHomeArea"]],
+    ["profileWeapon", ["profilePrimaryWeapon", "primaryWeaponInput", "stalkerWeapon", "idWeapon"]],
+    ["profileBio", ["profileQuote", "bioInput", "quoteInput", "stalkerBio", "idBio"]]
+  ];
+
+  mappings.forEach(([primary, aliases]) => {
+    const primaryEl = document.getElementById(primary);
+    if (primaryEl) return;
+    for (const alias of aliases) {
+      const aliasEl = document.getElementById(alias);
+      if (aliasEl) {
+        aliasEl.dataset.profileAlias = primary;
+        break;
+      }
+    }
+  });
+}
+
+window.addEventListener("load", normaliseProfilePresetFieldsV39);

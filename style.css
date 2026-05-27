@@ -1753,3 +1753,29 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   display: block;
   margin-top: 14px;
 }
+
+
+/* v3.9 Stalker ID preset polish */
+.id-preset-note {
+  margin: 6px 0 12px;
+}
+
+#idTab select,
+#profileTab select,
+.identity-module select,
+.profile-card select,
+.stalker-card-setup select {
+  width: 100%;
+  min-height: 54px;
+}
+
+#idTab label,
+#profileTab label {
+  display: grid;
+  gap: 6px;
+}
+
+#idTab .muted,
+#profileTab .muted {
+  line-height: 1.45;
+}
