@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v393-force-free-text-notes";
+const CACHE_NAME = "stalkernet-cache-v394-id-save-all";
 
 const FILES_TO_CACHE = [
   "./",

@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v393_force_free_text_notes";
+const STORAGE_KEY = "stalkernet_pda_v394_id_save_all";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -2888,5 +2888,189 @@ document.addEventListener("click", event => {
   if (!target) return;
   if (target.closest && (target.closest("#idTab") || target.closest("#mapTab"))) {
     setTimeout(forceFreeTextFieldsV393, 50);
+  }
+});
+
+
+// v3.9.4 persistent Stalker ID form save/load
+const STALKERNET_ID_FORM_KEY_V394 = "stalkernet_id_form_v394";
+
+function readStoredIdFormV394() {
+  try {
+    const raw = localStorage.getItem(STALKERNET_ID_FORM_KEY_V394);
+    return raw ? JSON.parse(raw) : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function writeStoredIdFormV394(data) {
+  try {
+    localStorage.setItem(STALKERNET_ID_FORM_KEY_V394, JSON.stringify(data || {}));
+  } catch (error) {
+    console.warn("Could not save Stalker ID form", error);
+  }
+}
+
+function idFieldV394(ids) {
+  for (const idName of ids) {
+    const el = document.getElementById(idName);
+    if (el) return el;
+  }
+  return null;
+}
+
+function getIdFormElementsV394() {
+  return {
+    callsign: idFieldV394(["profileCallsign", "callsignInput", "profileName", "cardCallsign", "idCallsign"]),
+    faction: idFieldV394(["profileFaction", "factionSelect", "cardFaction", "idFaction"]),
+    rank: idFieldV394(["profileRank", "cardRank", "idRank", "rankInput"]),
+    status: idFieldV394(["profileStatus", "cardStatus", "idStatus", "statusInput"]),
+    reputation: idFieldV394(["profileReputation", "cardReputation", "idReputation", "reputationInput"]),
+    badges: idFieldV394(["profileBadges", "cardBadges", "idBadges", "badgesInput"]),
+    homeArea: idFieldV394(["profileHomeArea", "profileHome", "cardHomeArea", "idHomeArea", "homeAreaInput"]),
+    weapon: idFieldV394(["profileWeapon", "cardWeapon", "idWeapon", "preferredWeapon", "weaponInput"]),
+    bio: idFieldV394(["profileBio", "profileQuote", "cardBio", "idBio", "bioInput", "quoteInput"])
+  };
+}
+
+function readIdFormV394() {
+  const fields = getIdFormElementsV394();
+  const data = {};
+
+  Object.entries(fields).forEach(([key, el]) => {
+    if (!el || typeof el.value !== "string") return;
+    data[key] = el.value;
+  });
+
+  return data;
+}
+
+function applyIdFormV394(data) {
+  if (!data) return;
+
+  const fields = getIdFormElementsV394();
+
+  Object.entries(fields).forEach(([key, el]) => {
+    if (!el || typeof el.value !== "string") return;
+    if (data[key] === undefined || data[key] === null) return;
+
+    el.value = data[key];
+
+    // If the saved value is no longer in a select, leave the current select alone.
+    if (el.tagName === "SELECT" && el.value !== data[key]) {
+      const option = Array.from(el.options).find(opt => opt.textContent === data[key] || opt.value === data[key]);
+      if (option) el.value = option.value;
+    }
+  });
+}
+
+function syncIdFormIntoProfileV394(data) {
+  if (!state.profile) state.profile = {};
+
+  if (data.callsign !== undefined) state.profile.callsign = data.callsign;
+  if (data.faction !== undefined) state.profile.faction = data.faction;
+  if (data.rank !== undefined) state.profile.rank = data.rank;
+  if (data.status !== undefined) state.profile.status = data.status;
+  if (data.reputation !== undefined) state.profile.reputation = data.reputation;
+  if (data.badges !== undefined) state.profile.badges = data.badges;
+  if (data.homeArea !== undefined) state.profile.homeArea = data.homeArea;
+  if (data.weapon !== undefined) state.profile.weapon = data.weapon;
+  if (data.bio !== undefined) state.profile.bio = data.bio;
+}
+
+function saveIdFormV394(showToast = true) {
+  const data = readIdFormV394();
+  writeStoredIdFormV394(data);
+  syncIdFormIntoProfileV394(data);
+
+  saveState();
+
+  if (typeof renderProfile === "function") renderProfile();
+  if (typeof renderIdentity === "function") renderIdentity();
+  if (typeof renderHeaderIdentity === "function") renderHeaderIdentity();
+
+  // Some renderers recreate the form, so reapply after they finish.
+  setTimeout(() => {
+    if (typeof forceFreeTextFieldsV393 === "function") forceFreeTextFieldsV393();
+    applyIdFormV394(data);
+  }, 80);
+
+  if (showToast && typeof toast === "function") toast("Stalker ID saved.");
+}
+
+function loadIdFormV394() {
+  const stored = readStoredIdFormV394();
+
+  // Fallback to state.profile if no explicit local form save exists yet.
+  const profile = state?.profile || {};
+  const fallback = {
+    callsign: profile.callsign || profile.name || "",
+    faction: profile.faction || "",
+    rank: profile.rank || "",
+    status: profile.status || "",
+    reputation: profile.reputation || "",
+    badges: profile.badges || "",
+    homeArea: profile.homeArea || profile.home || "",
+    weapon: profile.weapon || profile.primaryWeapon || "",
+    bio: profile.bio || profile.quote || ""
+  };
+
+  const data = Object.keys(stored).length ? stored : fallback;
+
+  if (typeof forceFreeTextFieldsV393 === "function") forceFreeTextFieldsV393();
+  applyIdFormV394(data);
+}
+
+function bindIdFormPersistenceV394() {
+  const saveBtn = document.getElementById("profileSaveBtn");
+  if (saveBtn && !saveBtn.dataset.v394SaveBound) {
+    saveBtn.dataset.v394SaveBound = "true";
+    saveBtn.addEventListener("click", event => {
+      // Let older handlers run too, then force complete save after them.
+      setTimeout(() => saveIdFormV394(true), 30);
+    });
+  }
+
+  const fields = getIdFormElementsV394();
+  Object.values(fields).forEach(el => {
+    if (!el || el.dataset.v394AutoSaveBound) return;
+    el.dataset.v394AutoSaveBound = "true";
+    el.addEventListener("change", () => {
+      const data = readIdFormV394();
+      writeStoredIdFormV394(data);
+      syncIdFormIntoProfileV394(data);
+      saveState();
+    });
+    el.addEventListener("input", () => {
+      const data = readIdFormV394();
+      writeStoredIdFormV394(data);
+      syncIdFormIntoProfileV394(data);
+      saveState();
+    });
+  });
+}
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    loadIdFormV394();
+    bindIdFormPersistenceV394();
+  }, 150);
+
+  setTimeout(() => {
+    loadIdFormV394();
+    bindIdFormPersistenceV394();
+  }, 900);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (target.closest("#idTab") || target.closest('[data-tab="idTab"]')) {
+    setTimeout(() => {
+      loadIdFormV394();
+      bindIdFormPersistenceV394();
+    }, 80);
   }
 });

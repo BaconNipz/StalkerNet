@@ -1840,3 +1840,9 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   line-height: 1.45 !important;
   white-space: pre-wrap !important;
 }
+
+
+/* v3.9.4 Stalker ID persistence polish */
+#profileSaveBtn::after {
+  content: "";
+}
