@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v371_jobs_boot_fix";
+const STORAGE_KEY = "stalkernet_pda_v372_jobs_presets";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -2384,3 +2384,51 @@ window.addEventListener("load", () => {
   bindJobsBoard();
   renderTasks();
 });
+
+
+// v3.7.2 preset job form override
+function clearJobForm() {
+  const defaults = {
+    jobTitleInput: 0,
+    jobTypeSelect: "Mutant Hunt",
+    jobLocationInput: "Cordon",
+    jobRiskSelect: "Low",
+    jobRewardInput: "Small RU payment",
+    jobStatusSelect: "Open",
+    jobDescriptionInput: 0
+  };
+
+  Object.entries(defaults).forEach(([idName, value]) => {
+    const el = document.getElementById(idName);
+    if (!el) return;
+    if (typeof value === "number") el.selectedIndex = value;
+    else el.value = value;
+  });
+}
+
+function addJobFromForm() {
+  ensureJobsState();
+
+  const title = document.getElementById("jobTitleInput")?.value || "";
+  if (!title) {
+    toast("Job needs a title.");
+    return;
+  }
+
+  state.jobs.unshift({
+    id: id(),
+    title,
+    type: document.getElementById("jobTypeSelect")?.value || "Personal Note",
+    location: document.getElementById("jobLocationInput")?.value || "Cordon",
+    risk: document.getElementById("jobRiskSelect")?.value || "Low",
+    reward: document.getElementById("jobRewardInput")?.value || "Small RU payment",
+    status: document.getElementById("jobStatusSelect")?.value || "Open",
+    description: document.getElementById("jobDescriptionInput")?.value || "",
+    createdAt: nowTime()
+  });
+
+  saveState();
+  clearJobForm();
+  renderTasks();
+  toast("Job logged.");
+}

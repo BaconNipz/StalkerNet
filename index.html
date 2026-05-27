@@ -236,20 +236,97 @@
 
         <article class="module-panel job-board-note">
           <div class="module-label">LOCAL JOB BOARD</div>
-          <p class="message-text">Log contracts, stash reminders, warnings, and field notes. Jobs are saved on this device for now.</p>
+          <p class="message-text">Log contracts, stash reminders, warnings, and field notes using preset values. This keeps future game-sync clean and predictable.</p>
         </article>
 
         <article class="module-panel job-form-card">
           <div class="module-label">NEW JOB</div>
           <div class="job-form-grid">
-            <label>Job Title<input id="jobTitleInput" type="text" placeholder="e.g. Clear mutant nest" /></label>
-            <label>Job Type<select id="jobTypeSelect"><option>Mutant Hunt</option><option>Artifact Recovery</option><option>Delivery</option><option>Escort</option><option>Scout Area</option><option>Clear Area</option><option>Stash Reminder</option><option>Personal Note</option></select></label>
-            <label>Location<input id="jobLocationInput" type="text" placeholder="e.g. Garbage" /></label>
-            <label>Risk Level<select id="jobRiskSelect"><option>Low</option><option>Medium</option><option>High</option><option>Severe</option><option>Suicidal</option></select></label>
-            <label>Reward / Payment<input id="jobRewardInput" type="text" placeholder="e.g. 12000 RU, ammo, favour" /></label>
-            <label>Status<select id="jobStatusSelect"><option>Open</option><option>Accepted</option><option>Completed</option><option>Failed</option><option>Abandoned</option></select></label>
-            <label class="job-description-field">Description<textarea id="jobDescriptionInput" rows="3" placeholder="Write the details here..."></textarea></label>
+            <label>Job Template
+              <select id="jobTitleInput">
+                <option>Clear mutant nest</option>
+                <option>Recover artifact</option>
+                <option>Deliver package</option>
+                <option>Escort stalker</option>
+                <option>Scout area</option>
+                <option>Clear hostile camp</option>
+                <option>Find missing stalker</option>
+                <option>Mark anomaly field</option>
+                <option>Recover stash</option>
+                <option>Personal reminder</option>
+              </select>
+            </label>
+
+            <label>Job Type
+              <select id="jobTypeSelect">
+                <option>Mutant Hunt</option>
+                <option>Artifact Recovery</option>
+                <option>Delivery</option>
+                <option>Escort</option>
+                <option>Scout Area</option>
+                <option>Clear Area</option>
+                <option>Stash Reminder</option>
+                <option>Personal Note</option>
+              </select>
+            </label>
+
+            <label>Location
+              <select id="jobLocationInput">
+                <option>Cordon</option><option>Meadows</option><option>Great Swamps</option><option>Darkscape</option>
+                <option>Garbage</option><option>Agroprom</option><option>Agroprom Underground</option>
+                <option>Dark Valley</option><option>Lab X-18</option><option>Rostok</option><option>Wild Territory</option>
+                <option>Yantar</option><option>Lab X-16</option><option>Truck Cemetery</option><option>Army Warehouses</option>
+                <option>Dead City</option><option>Red Forest</option><option>Radar</option><option>Lab X-19</option>
+                <option>Limansk</option><option>Deserted Hospital</option><option>Jupiter</option><option>Jupiter Underground</option>
+                <option>Lab X-8</option><option>Zaton</option><option>Outskirts</option><option>Pripyat</option>
+                <option>Chernobyl NPP</option><option>Sarcophagus</option><option>Monolith Control Center</option>
+                <option>Monolith War Lab</option><option>Generators</option>
+              </select>
+            </label>
+
+            <label>Risk Level
+              <select id="jobRiskSelect">
+                <option>Low</option><option>Medium</option><option>High</option><option>Severe</option><option>Suicidal</option>
+              </select>
+            </label>
+
+            <label>Reward / Payment
+              <select id="jobRewardInput">
+                <option>Small RU payment</option>
+                <option>Medium RU payment</option>
+                <option>Large RU payment</option>
+                <option>Ammo supply</option>
+                <option>Medical supplies</option>
+                <option>Food and water</option>
+                <option>Artifact rights</option>
+                <option>Faction favour</option>
+                <option>Trader discount</option>
+                <option>No payment / personal note</option>
+              </select>
+            </label>
+
+            <label>Status
+              <select id="jobStatusSelect">
+                <option>Open</option><option>Accepted</option><option>Completed</option><option>Failed</option><option>Abandoned</option>
+              </select>
+            </label>
+
+            <label class="job-description-field">Description / Objective
+              <select id="jobDescriptionInput">
+                <option>Investigate the area and report anything useful.</option>
+                <option>Eliminate the threat and return when the route is safe.</option>
+                <option>Recover the target item and avoid unnecessary contact.</option>
+                <option>Deliver the package without opening it.</option>
+                <option>Escort the target safely to the marked location.</option>
+                <option>Find the missing stalker or proof of what happened.</option>
+                <option>Mark the anomaly field for other stalkers.</option>
+                <option>Recover the stash and confirm the contents.</option>
+                <option>Hold position until the area settles.</option>
+                <option>Personal reminder logged for later.</option>
+              </select>
+            </label>
           </div>
+
           <div class="job-form-actions">
             <button id="jobAddBtn" class="accent-btn">Log Job</button>
             <button id="jobClearBtn" class="small-btn" type="button">Clear Form</button>
