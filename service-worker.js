@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v395-archive-tidy";
+const CACHE_NAME = "stalkernet-cache-v396-cloud-id";
 
 const FILES_TO_CACHE = [
   "./",
