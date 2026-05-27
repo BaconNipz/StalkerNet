@@ -1803,3 +1803,40 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
 .id-preset-note {
   margin: 6px 0 12px;
 }
+
+
+/* v3.9.2 free text notes */
+#profileBio,
+#profileQuote,
+#cardBio,
+#idBio,
+#bioInput,
+#quoteInput,
+#stalkerBio,
+#newPinNote,
+#newPinDescription {
+  width: 100%;
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+#newPinNote,
+#newPinDescription {
+  min-height: 112px;
+}
+
+
+/* v3.9.3 force free text areas */
+#profileBio,
+#profileQuote,
+#cardBio,
+#idBio,
+#newPinNote,
+#newPinDescription {
+  width: 100% !important;
+  min-height: 112px !important;
+  resize: vertical !important;
+  line-height: 1.45 !important;
+  white-space: pre-wrap !important;
+}

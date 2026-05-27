@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v391_id_preset_fix";
+const STORAGE_KEY = "stalkernet_pda_v393_force_free_text_notes";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -2697,3 +2697,196 @@ function patchProfileSaveButtonV391() {
 }
 
 window.addEventListener("load", patchProfileSaveButtonV391);
+
+
+// v3.9.2 free text bio and marker note support
+function readFreeTextValueV392(idName, fallback = "") {
+  const el = document.getElementById(idName);
+  if (!el || typeof el.value !== "string") return fallback;
+  return el.value.trim();
+}
+
+// Override marker note helper from v3.8.2 so free text notes save correctly.
+function getPresetMarkerNote382() {
+  const markerType = document.getElementById("newPinType")?.value || "Custom Note";
+  const threat = document.getElementById("newPinThreat")?.value || "Unknown";
+  const visibility = document.getElementById("newPinVisibility")?.value || "Private";
+  const note = readFreeTextValueV392("newPinNote", readFreeTextValueV392("newPinDescription", "Personal map note."));
+  return `[${markerType}] [Threat: ${threat}] [${visibility}] ${note}`;
+}
+
+function resetPresetMarkerForm382() {
+  ["newPinName", "newPinType", "newPinThreat", "newPinVisibility"].forEach(idName => {
+    const el = document.getElementById(idName);
+    if (el && "selectedIndex" in el) el.selectedIndex = 0;
+  });
+
+  ["newPinNote", "newPinDescription"].forEach(idName => {
+    const el = document.getElementById(idName);
+    if (el && typeof el.value === "string") el.value = "";
+  });
+}
+
+// Patch profile save to keep free text bio if the stronger v3.9.1 save handler is active.
+function patchFreeBioProfileSaveV392() {
+  const saveBtn = document.getElementById("profileSaveBtn");
+  if (!saveBtn || saveBtn.dataset.v392BioBound) return;
+  saveBtn.dataset.v392BioBound = "true";
+
+  saveBtn.addEventListener("click", () => {
+    if (!state.profile) state.profile = {};
+
+    const bio = readFreeTextValueV392("profileBio",
+      readFreeTextValueV392("profileQuote",
+      readFreeTextValueV392("cardBio",
+      readFreeTextValueV392("idBio", state.profile.bio || ""))));
+
+    if (bio) state.profile.bio = bio;
+
+    saveState();
+
+    if (typeof renderProfile === "function") renderProfile();
+    if (typeof renderIdentity === "function") renderIdentity();
+    if (typeof renderHeaderIdentity === "function") renderHeaderIdentity();
+  }, true);
+}
+
+window.addEventListener("load", patchFreeBioProfileSaveV392);
+
+
+// v3.9.3 force free-text Bio and Marker Note after render
+function replaceElementWithTextareaV393(el, idName, rows, placeholder, savedValue = "") {
+  if (!el || el.tagName === "TEXTAREA") return el;
+
+  const textarea = document.createElement("textarea");
+  textarea.id = idName;
+  textarea.rows = rows;
+  textarea.placeholder = placeholder;
+  textarea.value = savedValue || "";
+
+  // Keep useful classes if present.
+  if (el.className) textarea.className = el.className;
+
+  el.replaceWith(textarea);
+  return textarea;
+}
+
+function findControlAfterLabelTextV393(labelTexts) {
+  const labels = Array.from(document.querySelectorAll("label"));
+  for (const label of labels) {
+    const text = (label.textContent || "").trim().toLowerCase();
+    if (labelTexts.some(item => text.includes(item.toLowerCase()))) {
+      const inner = label.querySelector("select,input,textarea");
+      if (inner) return inner;
+
+      let next = label.nextElementSibling;
+      let steps = 0;
+      while (next && steps < 5) {
+        if (next.matches && next.matches("select,input,textarea")) return next;
+        const nested = next.querySelector && next.querySelector("select,input,textarea");
+        if (nested) return nested;
+        next = next.nextElementSibling;
+        steps++;
+      }
+    }
+  }
+  return null;
+}
+
+function forceFreeTextFieldsV393() {
+  const currentBio = state?.profile?.bio || "";
+  const bioControl =
+    document.getElementById("profileBio") ||
+    document.getElementById("profileQuote") ||
+    document.getElementById("cardBio") ||
+    document.getElementById("idBio") ||
+    findControlAfterLabelTextV393(["Quote / Bio", "Bio / Quote", "Bio", "Quote"]);
+
+  const bioTextarea = replaceElementWithTextareaV393(
+    bioControl,
+    "profileBio",
+    4,
+    "Write your public stalker bio, quote, warning, or rumour...",
+    currentBio
+  );
+
+  const markerControl =
+    document.getElementById("newPinNote") ||
+    document.getElementById("newPinDescription") ||
+    findControlAfterLabelTextV393(["Marker Note", "PDA Note"]);
+
+  replaceElementWithTextareaV393(
+    markerControl,
+    "newPinNote",
+    3,
+    "Write a marker note, warning, stash clue, or field detail...",
+    ""
+  );
+
+  if (bioTextarea && !bioTextarea.dataset.v393Bound) {
+    bioTextarea.dataset.v393Bound = "true";
+    bioTextarea.addEventListener("input", () => {
+      if (!state.profile) state.profile = {};
+      state.profile.bio = bioTextarea.value;
+      saveState();
+    });
+  }
+}
+
+// Override marker note helper again so textarea text saves.
+function getPresetMarkerNote382() {
+  const markerType = document.getElementById("newPinType")?.value || "Custom Note";
+  const threat = document.getElementById("newPinThreat")?.value || "Unknown";
+  const visibility = document.getElementById("newPinVisibility")?.value || "Private";
+  const note = (document.getElementById("newPinNote")?.value || document.getElementById("newPinDescription")?.value || "Personal map note.").trim();
+  return `[${markerType}] [Threat: ${threat}] [${visibility}] ${note || "Personal map note."}`;
+}
+
+// Make sure the marker reset clears textareas instead of trying to selectedIndex everything.
+function resetPresetMarkerForm382() {
+  ["newPinName", "newPinType", "newPinThreat", "newPinVisibility"].forEach(idName => {
+    const el = document.getElementById(idName);
+    if (el && "selectedIndex" in el) el.selectedIndex = 0;
+  });
+
+  ["newPinNote", "newPinDescription"].forEach(idName => {
+    const el = document.getElementById(idName);
+    if (el && typeof el.value === "string") el.value = "";
+  });
+}
+
+// Patch save button so free bio is kept.
+function bindFreeBioSaveV393() {
+  const btn = document.getElementById("profileSaveBtn");
+  if (!btn || btn.dataset.v393BioSaveBound) return;
+  btn.dataset.v393BioSaveBound = "true";
+
+  btn.addEventListener("click", () => {
+    const bio = (document.getElementById("profileBio")?.value || "").trim();
+    if (!state.profile) state.profile = {};
+    state.profile.bio = bio;
+    saveState();
+
+    if (typeof renderProfile === "function") renderProfile();
+    if (typeof renderIdentity === "function") renderIdentity();
+    if (typeof renderHeaderIdentity === "function") renderHeaderIdentity();
+
+    // Render functions may recreate controls, so force textarea again.
+    setTimeout(forceFreeTextFieldsV393, 50);
+  }, true);
+}
+
+window.addEventListener("load", () => {
+  forceFreeTextFieldsV393();
+  bindFreeBioSaveV393();
+  setTimeout(forceFreeTextFieldsV393, 250);
+  setTimeout(forceFreeTextFieldsV393, 900);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target) return;
+  if (target.closest && (target.closest("#idTab") || target.closest("#mapTab"))) {
+    setTimeout(forceFreeTextFieldsV393, 50);
+  }
+});
