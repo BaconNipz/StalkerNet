@@ -175,21 +175,12 @@
           <div class="module-label">MARK NEW COORDINATE</div>
           <div class="pin-form-grid">
             <label>Marker Name
-              <input id="newPinName" type="text" placeholder="Example: Hidden stash" />
+              <select id="newPinName"><option>Stash location</option><option>Anomaly field</option><option>Mutant nest</option><option>Safe route</option><option>Danger zone</option><option>Trader location</option><option>Camp / shelter</option><option>Faction checkpoint</option><option>Quest area</option><option>Custom field note</option></select>
             </label>
             <label>Marker Type
-              <select id="newPinType">
-                <option>Custom</option>
-                <option>Location</option>
-                <option>Hub</option>
-                <option>Danger</option>
-                <option>Lab</option>
-                <option>Underground</option>
-                <option>Trader</option>
-                <option>Faction</option>
-              </select>
+              <select id="newPinType"><option>Stash</option><option>Anomaly Field</option><option>Mutant Nest</option><option>Safe Route</option><option>Danger Zone</option><option>Trader</option><option>Camp</option><option>Faction Checkpoint</option><option>Quest Area</option><option>Custom Note</option></select><label>Threat Level</label><select id="newPinThreat"><option>Safe</option><option>Low</option><option>Medium</option><option>High</option><option>Severe</option><option>Unknown</option></select><label>Visibility</label><select id="newPinVisibility"><option>Private</option><option>Public</option><option>Squad Only</option></select>
             </label>
-            <label>PDA Note
+            <label>Marker Note
               <textarea id="newPinNote" placeholder="Short field note..."></textarea>
             </label>
           </div>
@@ -444,7 +435,7 @@
                   <input id="onlineWeaponInput" type="text" placeholder="Example: AK-74, M4 Rifle, Vintar BC" maxlength="40" />
                 </label>
 
-                <label class="field-label">Bio / PDA Note
+                <label class="field-label">Bio / Marker Note
                   <textarea id="onlineBioInput" placeholder="Short bio, quote, warning, or stalker note..." maxlength="240"></textarea>
                 </label>
 

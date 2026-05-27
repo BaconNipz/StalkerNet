@@ -1730,3 +1730,7 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* v3.8.1 marker preset fix */
+#newPinName,#newPinType,#newPinThreat,#newPinVisibility,#newPinDescription{width:100%;min-height:56px}
+#newPinPanel label,.new-pin-panel label{display:block;margin-top:14px}

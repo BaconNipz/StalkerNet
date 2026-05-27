@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v38-marker-presets";
+const CACHE_NAME = "stalkernet-cache-v381-marker-preset-fix";
 
 const FILES_TO_CACHE = [
   "./",

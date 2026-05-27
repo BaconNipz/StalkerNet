@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v38_marker_presets";
+const STORAGE_KEY = "stalkernet_pda_v381_marker_preset_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -2504,4 +2504,59 @@ function bindStructuredMarkerForm() {
 
 window.addEventListener("load", () => {
   bindStructuredMarkerForm();
+});
+
+
+// v3.8.1 marker preset force-bind
+function markerPresetData381() {
+  const markerType = document.getElementById("newPinType")?.value || "Custom Note";
+  const threat = document.getElementById("newPinThreat")?.value || "Unknown";
+  const visibility = document.getElementById("newPinVisibility")?.value || "Private";
+  const note = document.getElementById("newPinDescription")?.value || "Personal map note.";
+  return {
+    name: document.getElementById("newPinName")?.value || "Custom field note",
+    type: markerType,
+    threat,
+    visibility,
+    description: `[${markerType}] [Threat: ${threat}] [${visibility}] ${note}`
+  };
+}
+
+function placePresetMarker381() {
+  const d = markerPresetData381();
+  if (!state.customPins) state.customPins = [];
+  const currentMap = state.activeMap || state.selectedMap || state.currentMap || document.getElementById("mapSectionSelect")?.value || "Cordon";
+  state.customPins.push({
+    id: id(),
+    name: d.name,
+    type: d.type,
+    threat: d.threat,
+    visibility: d.visibility,
+    description: d.description,
+    map: currentMap,
+    x: 50,
+    y: 50,
+    custom: true,
+    createdAt: nowTime()
+  });
+  saveState();
+  ["newPinName","newPinType","newPinThreat","newPinVisibility","newPinDescription"].forEach(idName => {
+    const el = document.getElementById(idName);
+    if (el && "selectedIndex" in el) el.selectedIndex = 0;
+  });
+  if (typeof renderMapPins === "function") renderMapPins();
+  if (typeof renderPinManager === "function") renderPinManager();
+  if (typeof renderMap === "function") renderMap();
+  toast("Marker placed.");
+}
+
+window.addEventListener("load", () => {
+  const btn = document.getElementById("saveNewPinBtn");
+  if (!btn || btn.dataset.v381Bound) return;
+  btn.dataset.v381Bound = "true";
+  btn.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    placePresetMarker381();
+  }, true);
 });
