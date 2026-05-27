@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v381_marker_preset_fix";
+const STORAGE_KEY = "stalkernet_pda_v382_marker_save_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -2560,3 +2560,75 @@ window.addEventListener("load", () => {
     placePresetMarker381();
   }, true);
 });
+
+
+// v3.8.2 marker save fix: use original map pin shape
+function getPresetMarkerNote382() {
+  const markerType = document.getElementById("newPinType")?.value || "Custom Note";
+  const threat = document.getElementById("newPinThreat")?.value || "Unknown";
+  const visibility = document.getElementById("newPinVisibility")?.value || "Private";
+  const note = document.getElementById("newPinNote")?.value || document.getElementById("newPinDescription")?.value || "Personal map note.";
+  return `[${markerType}] [Threat: ${threat}] [${visibility}] ${note}`;
+}
+
+function resetPresetMarkerForm382() {
+  ["newPinName", "newPinType", "newPinThreat", "newPinVisibility", "newPinNote", "newPinDescription"].forEach(idName => {
+    const el = document.getElementById(idName);
+    if (el && "selectedIndex" in el) el.selectedIndex = 0;
+  });
+}
+
+function createPresetPinFromForm382() {
+  if (!leafletMap) {
+    alert("Map is not ready yet.");
+    return;
+  }
+
+  const name = document.getElementById("newPinName")?.value || "Custom field note";
+  const type = document.getElementById("newPinType")?.value || "Custom Note";
+  const note = getPresetMarkerNote382();
+
+  const center = leafletMap.getCenter();
+
+  state.customPins = state.customPins || [];
+  const newPin = {
+    id: id(),
+    mapId: getActiveSection().id,
+    name,
+    type,
+    note,
+    x: Math.round(center.lng),
+    y: Math.round(center.lat)
+  };
+
+  state.customPins.push(newPin);
+  state.selectedMapId = newPin.id;
+  saveState();
+
+  resetPresetMarkerForm382();
+
+  if (typeof closePinCreator === "function") closePinCreator();
+  if (typeof rebuildLeafletMarkers === "function") rebuildLeafletMarkers();
+  if (typeof renderMapInfo === "function") renderMapInfo(newPin.id);
+  if (typeof renderPinManagerList === "function") renderPinManagerList();
+  if (typeof renderMapFilters === "function") renderMapFilters();
+
+  toast("Marker placed.");
+}
+
+function bindMarkerSaveFix382() {
+  const oldBtn = document.getElementById("saveNewPinBtn");
+  if (!oldBtn || oldBtn.dataset.v382Bound) return;
+
+  const newBtn = oldBtn.cloneNode(true);
+  newBtn.dataset.v382Bound = "true";
+  oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+
+  newBtn.addEventListener("click", event => {
+    event.preventDefault();
+    event.stopPropagation();
+    createPresetPinFromForm382();
+  });
+}
+
+window.addEventListener("load", bindMarkerSaveFix382);
