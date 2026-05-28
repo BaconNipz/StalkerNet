@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v396_cloud_id";
+const STORAGE_KEY = "stalkernet_pda_v397_public_card_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -3336,5 +3336,161 @@ document.addEventListener("click", event => {
 
   if (target.closest(".message-card") || target.closest("[data-public-card]") || target.closest("[data-user-id]")) {
     setTimeout(patchPublicCardValuesV396, 250);
+  }
+});
+
+
+// v3.9.7 Public Stalker Card saved-value fix
+function getSavedIdDataV397() {
+  let localForm = {};
+  try {
+    const key = (typeof STALKERNET_ID_FORM_KEY_V394 !== "undefined") ? STALKERNET_ID_FORM_KEY_V394 : "stalkernet_id_form_v394";
+    localForm = JSON.parse(localStorage.getItem(key) || "{}");
+  } catch (error) {
+    localForm = {};
+  }
+
+  const p = state?.profile || {};
+
+  return {
+    callsign: localForm.callsign || p.callsign || p.name || "",
+    faction: localForm.faction || p.faction || "",
+    rank: localForm.rank || p.rank || "",
+    status: localForm.status || p.status || "",
+    reputation: localForm.reputation || p.reputation || "",
+    badges: localForm.badges || p.badges || "",
+    homeArea: localForm.homeArea || p.homeArea || p.home || "",
+    weapon: localForm.weapon || p.weapon || p.primaryWeapon || "",
+    bio: localForm.bio || p.bio || p.quote || ""
+  };
+}
+
+function valueOrV397(value, fallback) {
+  const clean = String(value || "").trim();
+  return clean || fallback;
+}
+
+function patchFieldByLabelV397(root, labelText, value) {
+  const labels = Array.from(root.querySelectorAll("*")).filter(el => {
+    const text = (el.textContent || "").trim().toUpperCase();
+    return text === labelText.toUpperCase();
+  });
+
+  labels.forEach(labelEl => {
+    const box = labelEl.parentElement;
+    if (!box) return;
+
+    const children = Array.from(box.children).filter(child => child !== labelEl);
+    const valueEl = children.find(child => {
+      const tag = child.tagName;
+      return ["STRONG", "B", "DIV", "P", "SPAN"].includes(tag);
+    }) || box.querySelector("strong,b");
+
+    if (valueEl) {
+      valueEl.textContent = value;
+      return;
+    }
+
+    let fixed = box.querySelector(".public-card-fixed-value");
+    if (!fixed) {
+      fixed = document.createElement("div");
+      fixed.className = "public-card-fixed-value";
+      box.appendChild(fixed);
+    }
+    fixed.textContent = value;
+  });
+}
+
+function patchPublicCardValuesV397() {
+  const modal =
+    document.getElementById("publicCardModal") ||
+    document.getElementById("profileModal") ||
+    document.querySelector(".public-card-modal") ||
+    document.querySelector(".stalker-card-modal") ||
+    Array.from(document.querySelectorAll(".modal,.module-panel,article,section,div")).find(el =>
+      (el.textContent || "").includes("PUBLIC STALKER CARD")
+    );
+
+  if (!modal) return;
+
+  const data = getSavedIdDataV397();
+
+  patchFieldByLabelV397(modal, "FACTION", valueOrV397(data.faction, "Unknown"));
+  patchFieldByLabelV397(modal, "RANK", valueOrV397(data.rank, "Rookie"));
+  patchFieldByLabelV397(modal, "STATUS", valueOrV397(data.status, "Available"));
+  patchFieldByLabelV397(modal, "REPUTATION", valueOrV397(data.reputation, "Neutral"));
+  patchFieldByLabelV397(modal, "HOME AREA", valueOrV397(data.homeArea, "Unknown"));
+  patchFieldByLabelV397(modal, "WEAPON", valueOrV397(data.weapon, "Unknown"));
+
+  const badges = valueOrV397(data.badges, "No badges recorded");
+  patchFieldByLabelV397(modal, "BADGES", badges);
+
+  Array.from(modal.querySelectorAll("*")).forEach(el => {
+    const txt = (el.textContent || "").trim().toUpperCase();
+    if (txt === "NO BADGES RECORDED" && badges && badges !== "None") {
+      el.textContent = badges;
+    }
+  });
+
+  const bio = String(data.bio || "").trim();
+  if (bio) {
+    let bioBox = modal.querySelector(".public-card-bio-v397");
+    if (!bioBox) {
+      bioBox = document.createElement("div");
+      bioBox.className = "public-card-bio-v397";
+      bioBox.innerHTML = "<span>BIO</span><strong></strong>";
+
+      const joinedLabel = Array.from(modal.querySelectorAll("*")).find(el =>
+        (el.textContent || "").trim().toUpperCase() === "JOINED"
+      );
+
+      const joinedBox = joinedLabel?.parentElement;
+      if (joinedBox?.parentElement) {
+        joinedBox.parentElement.insertBefore(bioBox, joinedBox);
+      } else {
+        modal.appendChild(bioBox);
+      }
+    }
+
+    const bioValue = bioBox.querySelector("strong");
+    if (bioValue) bioValue.textContent = bio;
+  }
+}
+
+function forcePatchPublicCardV397() {
+  patchPublicCardValuesV397();
+  setTimeout(patchPublicCardValuesV397, 80);
+  setTimeout(patchPublicCardValuesV397, 250);
+  setTimeout(patchPublicCardValuesV397, 700);
+}
+
+window.addEventListener("load", () => {
+  setTimeout(forcePatchPublicCardV397, 1000);
+
+  const observer = new MutationObserver(() => {
+    patchPublicCardValuesV397();
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest(".message-card") ||
+    target.closest(".chat-message") ||
+    target.closest("[data-user-id]") ||
+    target.closest("[data-public-card]") ||
+    target.closest("#profileSaveBtn") ||
+    target.closest(".public-card-modal") ||
+    target.closest("#publicCardModal")
+  ) {
+    forcePatchPublicCardV397();
   }
 });
