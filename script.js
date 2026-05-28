@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v397_public_card_fix";
+const STORAGE_KEY = "stalkernet_pda_v3971_public_card_safe_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -3340,8 +3340,8 @@ document.addEventListener("click", event => {
 });
 
 
-// v3.9.7 Public Stalker Card saved-value fix
-function getSavedIdDataV397() {
+// v3.9.7.1 SAFE Public Stalker Card saved-value fix
+function getSavedIdDataV3971() {
   let localForm = {};
   try {
     const key = (typeof STALKERNET_ID_FORM_KEY_V394 !== "undefined") ? STALKERNET_ID_FORM_KEY_V394 : "stalkernet_id_form_v394";
@@ -3353,7 +3353,6 @@ function getSavedIdDataV397() {
   const p = state?.profile || {};
 
   return {
-    callsign: localForm.callsign || p.callsign || p.name || "",
     faction: localForm.faction || p.faction || "",
     rank: localForm.rank || p.rank || "",
     status: localForm.status || p.status || "",
@@ -3365,117 +3364,105 @@ function getSavedIdDataV397() {
   };
 }
 
-function valueOrV397(value, fallback) {
+function cleanValueV3971(value, fallback) {
   const clean = String(value || "").trim();
   return clean || fallback;
 }
 
-function patchFieldByLabelV397(root, labelText, value) {
-  const labels = Array.from(root.querySelectorAll("*")).filter(el => {
-    const text = (el.textContent || "").trim().toUpperCase();
-    return text === labelText.toUpperCase();
-  });
-
-  labels.forEach(labelEl => {
-    const box = labelEl.parentElement;
-    if (!box) return;
-
-    const children = Array.from(box.children).filter(child => child !== labelEl);
-    const valueEl = children.find(child => {
-      const tag = child.tagName;
-      return ["STRONG", "B", "DIV", "P", "SPAN"].includes(tag);
-    }) || box.querySelector("strong,b");
-
-    if (valueEl) {
-      valueEl.textContent = value;
-      return;
-    }
-
-    let fixed = box.querySelector(".public-card-fixed-value");
-    if (!fixed) {
-      fixed = document.createElement("div");
-      fixed.className = "public-card-fixed-value";
-      box.appendChild(fixed);
-    }
-    fixed.textContent = value;
-  });
-}
-
-function patchPublicCardValuesV397() {
-  const modal =
+function findPublicCardModalV3971() {
+  return (
     document.getElementById("publicCardModal") ||
     document.getElementById("profileModal") ||
     document.querySelector(".public-card-modal") ||
     document.querySelector(".stalker-card-modal") ||
-    Array.from(document.querySelectorAll(".modal,.module-panel,article,section,div")).find(el =>
+    Array.from(document.querySelectorAll(".modal, .overlay, dialog, article, section")).find(el =>
       (el.textContent || "").includes("PUBLIC STALKER CARD")
-    );
+    )
+  );
+}
 
+function patchPublicCardFieldV3971(root, label, value) {
+  if (!root) return;
+
+  const labelEl = Array.from(root.querySelectorAll("*")).find(el =>
+    (el.textContent || "").trim().toUpperCase() === label.toUpperCase()
+  );
+
+  if (!labelEl || !labelEl.parentElement) return;
+
+  const box = labelEl.parentElement;
+  const strong = box.querySelector("strong, b");
+  if (strong) {
+    strong.textContent = value;
+    return;
+  }
+
+  const children = Array.from(box.children).filter(child => child !== labelEl);
+  const valueEl = children.find(child => child.textContent && child.textContent.trim());
+  if (valueEl) {
+    valueEl.textContent = value;
+    return;
+  }
+
+  let fixed = box.querySelector(".public-card-safe-value-v3971");
+  if (!fixed) {
+    fixed = document.createElement("div");
+    fixed.className = "public-card-safe-value-v3971";
+    box.appendChild(fixed);
+  }
+  fixed.textContent = value;
+}
+
+function patchPublicCardOnceV3971() {
+  const modal = findPublicCardModalV3971();
   if (!modal) return;
 
-  const data = getSavedIdDataV397();
+  const data = getSavedIdDataV3971();
 
-  patchFieldByLabelV397(modal, "FACTION", valueOrV397(data.faction, "Unknown"));
-  patchFieldByLabelV397(modal, "RANK", valueOrV397(data.rank, "Rookie"));
-  patchFieldByLabelV397(modal, "STATUS", valueOrV397(data.status, "Available"));
-  patchFieldByLabelV397(modal, "REPUTATION", valueOrV397(data.reputation, "Neutral"));
-  patchFieldByLabelV397(modal, "HOME AREA", valueOrV397(data.homeArea, "Unknown"));
-  patchFieldByLabelV397(modal, "WEAPON", valueOrV397(data.weapon, "Unknown"));
+  patchPublicCardFieldV3971(modal, "FACTION", cleanValueV3971(data.faction, "Unknown"));
+  patchPublicCardFieldV3971(modal, "RANK", cleanValueV3971(data.rank, "Rookie"));
+  patchPublicCardFieldV3971(modal, "STATUS", cleanValueV3971(data.status, "Available"));
+  patchPublicCardFieldV3971(modal, "REPUTATION", cleanValueV3971(data.reputation, "Neutral"));
+  patchPublicCardFieldV3971(modal, "HOME AREA", cleanValueV3971(data.homeArea, "Unknown"));
+  patchPublicCardFieldV3971(modal, "WEAPON", cleanValueV3971(data.weapon, "Unknown"));
 
-  const badges = valueOrV397(data.badges, "No badges recorded");
-  patchFieldByLabelV397(modal, "BADGES", badges);
-
+  const badges = cleanValueV3971(data.badges, "No badges recorded");
   Array.from(modal.querySelectorAll("*")).forEach(el => {
-    const txt = (el.textContent || "").trim().toUpperCase();
-    if (txt === "NO BADGES RECORDED" && badges && badges !== "None") {
+    const text = (el.textContent || "").trim().toUpperCase();
+    if (text === "NO BADGES RECORDED" && badges !== "None") {
       el.textContent = badges;
     }
   });
 
   const bio = String(data.bio || "").trim();
-  if (bio) {
-    let bioBox = modal.querySelector(".public-card-bio-v397");
-    if (!bioBox) {
-      bioBox = document.createElement("div");
-      bioBox.className = "public-card-bio-v397";
-      bioBox.innerHTML = "<span>BIO</span><strong></strong>";
+  if (bio && !modal.querySelector(".public-card-bio-v3971")) {
+    const bioBox = document.createElement("div");
+    bioBox.className = "public-card-bio-v3971";
+    const label = document.createElement("span");
+    label.textContent = "BIO";
+    const value = document.createElement("strong");
+    value.textContent = bio;
+    bioBox.appendChild(label);
+    bioBox.appendChild(value);
 
-      const joinedLabel = Array.from(modal.querySelectorAll("*")).find(el =>
-        (el.textContent || "").trim().toUpperCase() === "JOINED"
-      );
+    const joinedLabel = Array.from(modal.querySelectorAll("*")).find(el =>
+      (el.textContent || "").trim().toUpperCase() === "JOINED"
+    );
 
-      const joinedBox = joinedLabel?.parentElement;
-      if (joinedBox?.parentElement) {
-        joinedBox.parentElement.insertBefore(bioBox, joinedBox);
-      } else {
-        modal.appendChild(bioBox);
-      }
-    }
-
-    const bioValue = bioBox.querySelector("strong");
-    if (bioValue) bioValue.textContent = bio;
+    const joinedBox = joinedLabel?.parentElement;
+    if (joinedBox?.parentElement) joinedBox.parentElement.insertBefore(bioBox, joinedBox);
+    else modal.appendChild(bioBox);
   }
 }
 
-function forcePatchPublicCardV397() {
-  patchPublicCardValuesV397();
-  setTimeout(patchPublicCardValuesV397, 80);
-  setTimeout(patchPublicCardValuesV397, 250);
-  setTimeout(patchPublicCardValuesV397, 700);
+function patchPublicCardSafelyV3971() {
+  setTimeout(patchPublicCardOnceV3971, 80);
+  setTimeout(patchPublicCardOnceV3971, 250);
+  setTimeout(patchPublicCardOnceV3971, 600);
 }
 
 window.addEventListener("load", () => {
-  setTimeout(forcePatchPublicCardV397, 1000);
-
-  const observer = new MutationObserver(() => {
-    patchPublicCardValuesV397();
-  });
-
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-    characterData: true
-  });
+  setTimeout(patchPublicCardOnceV3971, 1200);
 });
 
 document.addEventListener("click", event => {
@@ -3488,9 +3475,9 @@ document.addEventListener("click", event => {
     target.closest("[data-user-id]") ||
     target.closest("[data-public-card]") ||
     target.closest("#profileSaveBtn") ||
-    target.closest(".public-card-modal") ||
-    target.closest("#publicCardModal")
+    target.closest("#publicCardModal") ||
+    target.closest(".public-card-modal")
   ) {
-    forcePatchPublicCardV397();
+    patchPublicCardSafelyV3971();
   }
 });
