@@ -1884,3 +1884,55 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
   line-height: 1.45;
   white-space: pre-wrap;
 }
+
+
+/* v3.9.7.2 public card modal scroll fix */
+.public-card-scroll-backdrop-v3972 {
+  align-items: flex-start !important;
+  justify-content: center !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-top: max(16px, env(safe-area-inset-top)) !important;
+  padding-bottom: max(28px, env(safe-area-inset-bottom)) !important;
+}
+
+.public-card-scroll-fix-v3972,
+#publicCardModal,
+.public-card-modal,
+.stalker-card-modal {
+  max-height: calc(100dvh - 48px) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  padding-bottom: 34px !important;
+}
+
+.public-card-scroll-fix-v3972 .public-card-bio-v3971,
+.public-card-scroll-fix-v3972 .public-card-bio-v3972 {
+  margin-bottom: 18px;
+}
+
+@supports not (height: 100dvh) {
+  .public-card-scroll-fix-v3972,
+  #publicCardModal,
+  .public-card-modal,
+  .stalker-card-modal {
+    max-height: calc(100vh - 48px) !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .public-card-scroll-backdrop-v3972 {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .public-card-scroll-fix-v3972,
+  #publicCardModal,
+  .public-card-modal,
+  .stalker-card-modal {
+    max-height: calc(100dvh - 32px) !important;
+    margin-top: 8px !important;
+    margin-bottom: 24px !important;
+  }
+}

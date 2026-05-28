@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3971_public_card_safe_fix";
+const STORAGE_KEY = "stalkernet_pda_v3972_public_card_scroll";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -3479,5 +3479,51 @@ document.addEventListener("click", event => {
     target.closest(".public-card-modal")
   ) {
     patchPublicCardSafelyV3971();
+  }
+});
+
+
+// v3.9.7.2 Public Stalker Card scroll fix
+function markPublicCardScrollableV3972() {
+  const modal =
+    document.getElementById("publicCardModal") ||
+    document.getElementById("profileModal") ||
+    document.querySelector(".public-card-modal") ||
+    document.querySelector(".stalker-card-modal") ||
+    Array.from(document.querySelectorAll(".modal, .overlay, dialog, article, section, div")).find(el =>
+      (el.textContent || "").includes("PUBLIC STALKER CARD")
+    );
+
+  if (!modal) return;
+  modal.classList.add("public-card-scroll-fix-v3972");
+
+  const parent = modal.parentElement;
+  if (parent) parent.classList.add("public-card-scroll-backdrop-v3972");
+}
+
+function applyPublicCardScrollFixV3972() {
+  setTimeout(markPublicCardScrollableV3972, 50);
+  setTimeout(markPublicCardScrollableV3972, 180);
+  setTimeout(markPublicCardScrollableV3972, 500);
+}
+
+window.addEventListener("load", () => {
+  setTimeout(markPublicCardScrollableV3972, 1000);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest(".message-card") ||
+    target.closest(".chat-message") ||
+    target.closest("[data-user-id]") ||
+    target.closest("[data-public-card]") ||
+    target.closest("#publicCardModal") ||
+    target.closest(".public-card-modal") ||
+    target.closest(".stalker-card-modal")
+  ) {
+    applyPublicCardScrollFixV3972();
   }
 });
