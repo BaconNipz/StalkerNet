@@ -1936,3 +1936,77 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
     margin-bottom: 24px !important;
   }
 }
+
+
+/* v3.9.7.3 force public card scroll */
+.public-card-force-backdrop-v3973 {
+  position: fixed !important;
+  inset: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding-top: max(12px, env(safe-area-inset-top)) !important;
+  padding-bottom: max(120px, env(safe-area-inset-bottom)) !important;
+  touch-action: pan-y !important;
+}
+
+.public-card-force-scroll-v3973,
+#publicCardModal,
+#profileModal,
+.public-card-modal,
+.stalker-card-modal {
+  max-height: calc(100dvh - 92px) !important;
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  padding-bottom: 110px !important;
+  margin-top: 12px !important;
+  margin-bottom: 110px !important;
+  touch-action: pan-y !important;
+}
+
+.public-card-force-scroll-v3973 > *:last-child,
+#publicCardModal > *:last-child,
+#profileModal > *:last-child,
+.public-card-modal > *:last-child,
+.stalker-card-modal > *:last-child {
+  margin-bottom: 80px !important;
+}
+
+@supports not (height: 100dvh) {
+  .public-card-force-backdrop-v3973 {
+    max-height: 100vh !important;
+  }
+
+  .public-card-force-scroll-v3973,
+  #publicCardModal,
+  #profileModal,
+  .public-card-modal,
+  .stalker-card-modal {
+    max-height: calc(100vh - 92px) !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .public-card-force-backdrop-v3973 {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    padding-bottom: 130px !important;
+  }
+
+  .public-card-force-scroll-v3973,
+  #publicCardModal,
+  #profileModal,
+  .public-card-modal,
+  .stalker-card-modal {
+    max-height: calc(100dvh - 110px) !important;
+    width: calc(100vw - 24px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-bottom: 130px !important;
+  }
+}

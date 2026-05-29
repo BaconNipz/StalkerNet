@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3972_public_card_scroll";
+const STORAGE_KEY = "stalkernet_pda_v3973_public_card_force_scroll";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -3527,3 +3527,95 @@ document.addEventListener("click", event => {
     applyPublicCardScrollFixV3972();
   }
 });
+
+
+// v3.9.7.3 FORCE Public Stalker Card scroll
+function findPublicCardPanelV3973() {
+  const direct =
+    document.getElementById("publicCardModal") ||
+    document.getElementById("profileModal") ||
+    document.querySelector(".public-card-modal") ||
+    document.querySelector(".stalker-card-modal");
+
+  if (direct) return direct;
+
+  return Array.from(document.querySelectorAll("article, section, div, dialog")).find(el => {
+    const text = (el.textContent || "");
+    return text.includes("PUBLIC STALKER CARD") && text.includes("FACTION") && text.includes("RANK");
+  });
+}
+
+function forcePublicCardScrollV3973() {
+  const panel = findPublicCardPanelV3973();
+  if (!panel) return;
+
+  panel.classList.add("public-card-force-scroll-v3973");
+  panel.style.maxHeight = "calc(100dvh - 92px)";
+  panel.style.overflowY = "auto";
+  panel.style.overflowX = "hidden";
+  panel.style.webkitOverflowScrolling = "touch";
+  panel.style.overscrollBehavior = "contain";
+  panel.style.paddingBottom = "110px";
+  panel.style.marginTop = "12px";
+  panel.style.marginBottom = "110px";
+  panel.style.touchAction = "pan-y";
+
+  let parent = panel.parentElement;
+  let guard = 0;
+
+  while (parent && parent !== document.body && guard < 6) {
+    const text = parent.textContent || "";
+    if (text.includes("PUBLIC STALKER CARD") || parent.classList.contains("modal") || parent.classList.contains("overlay")) {
+      parent.classList.add("public-card-force-backdrop-v3973");
+      parent.style.position = "fixed";
+      parent.style.inset = "0";
+      parent.style.overflowY = "auto";
+      parent.style.overflowX = "hidden";
+      parent.style.webkitOverflowScrolling = "touch";
+      parent.style.alignItems = "flex-start";
+      parent.style.justifyContent = "center";
+      parent.style.paddingTop = "12px";
+      parent.style.paddingBottom = "120px";
+      parent.style.maxHeight = "100dvh";
+      parent.style.touchAction = "pan-y";
+    }
+    parent = parent.parentElement;
+    guard++;
+  }
+}
+
+function forcePublicCardScrollSoonV3973() {
+  setTimeout(forcePublicCardScrollV3973, 20);
+  setTimeout(forcePublicCardScrollV3973, 120);
+  setTimeout(forcePublicCardScrollV3973, 350);
+  setTimeout(forcePublicCardScrollV3973, 900);
+}
+
+window.addEventListener("load", () => {
+  setTimeout(forcePublicCardScrollV3973, 1200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest(".message-card") ||
+    target.closest(".chat-message") ||
+    target.closest("[data-user-id]") ||
+    target.closest("[data-public-card]") ||
+    target.closest("#publicCardModal") ||
+    target.closest(".public-card-modal") ||
+    target.closest(".stalker-card-modal")
+  ) {
+    forcePublicCardScrollSoonV3973();
+  }
+});
+
+document.addEventListener("touchstart", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+  if (target.closest("#publicCardModal") || target.closest(".public-card-modal") || target.closest(".stalker-card-modal")) {
+    forcePublicCardScrollSoonV3973();
+  }
+}, { passive: true });
