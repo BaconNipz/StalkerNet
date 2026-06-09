@@ -1872,3 +1872,15 @@ html.public-card-root-locked-v3974 {
   touch-action: auto !important;
   padding-bottom: 80px !important;
 }
+
+
+/* v3.9.7.7 public card close-only fix */
+.public-card-close-fixed-v3977 {
+  pointer-events: auto !important;
+}
+
+html,
+body {
+  overflow-y: auto !important;
+  touch-action: auto !important;
+}
