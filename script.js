@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3974_modal_scroll_lock";
+const STORAGE_KEY = "stalkernet_pda_v3975_scroll_restore";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -3769,7 +3769,7 @@ function enablePublicCardModalControlsSoonV3974() {
   setTimeout(enablePublicCardModalControlsV3974, 800);
 }
 
-window.addEventListener("load", () => setTimeout(enablePublicCardModalControlsV3974, 1200));
+// v3975 disabled heavy v3974 auto lock
 
 document.addEventListener("click", event => {
   const target = event.target;
@@ -3785,6 +3785,155 @@ document.addEventListener("click", event => {
   }
 });
 
+// v3975 disabled heavy v3974 escape handler
+
+
+// v3.9.7.5 Public card scroll restore
+function findPublicCardPanelV3975() {
+  const direct =
+    document.getElementById("publicCardModal") ||
+    document.getElementById("profileModal") ||
+    document.querySelector(".public-card-modal") ||
+    document.querySelector(".stalker-card-modal");
+
+  if (direct) return direct;
+
+  return Array.from(document.querySelectorAll("article, section, div, dialog")).find(el => {
+    const text = el.textContent || "";
+    return text.includes("PUBLIC STALKER CARD") && text.includes("FACTION") && text.includes("RANK");
+  });
+}
+
+function findPublicCardBackdropV3975(panel) {
+  if (!panel) return null;
+  let node = panel.parentElement;
+  let guard = 0;
+
+  while (node && node !== document.body && guard < 6) {
+    const text = node.textContent || "";
+    const cls = String(node.className || "").toLowerCase();
+    if (
+      text.includes("PUBLIC STALKER CARD") &&
+      (cls.includes("modal") || cls.includes("overlay") || cls.includes("backdrop") || getComputedStyle(node).position === "fixed")
+    ) {
+      return node;
+    }
+    node = node.parentElement;
+    guard++;
+  }
+
+  return panel.parentElement;
+}
+
+function closePublicCardModalV3975() {
+  const panel = findPublicCardPanelV3975();
+  const backdrop = findPublicCardBackdropV3975(panel);
+
+  if (panel) {
+    panel.classList.add("hidden");
+    panel.setAttribute("aria-hidden", "true");
+  }
+
+  if (backdrop && backdrop !== panel) {
+    backdrop.classList.add("hidden");
+    backdrop.setAttribute("aria-hidden", "true");
+  }
+
+  document.documentElement.classList.remove("public-card-root-locked-v3974");
+  document.body.classList.remove("public-card-body-locked-v3974");
+  document.body.style.top = "";
+  document.body.style.position = "";
+  document.body.style.overflow = "";
+}
+
+function enablePublicCardScrollRestoreV3975() {
+  const panel = findPublicCardPanelV3975();
+  if (!panel) return;
+
+  const backdrop = findPublicCardBackdropV3975(panel);
+
+  // Undo earlier heavy locks.
+  document.documentElement.classList.remove("public-card-root-locked-v3974");
+  document.body.classList.remove("public-card-body-locked-v3974");
+  document.body.style.top = "";
+  document.body.style.position = "";
+  document.body.style.overflow = "";
+
+  panel.classList.add("public-card-scroll-restore-v3975");
+  panel.classList.remove("public-card-panel-v3974");
+
+  panel.style.maxHeight = "calc(100dvh - 80px)";
+  panel.style.overflowY = "auto";
+  panel.style.overflowX = "hidden";
+  panel.style.webkitOverflowScrolling = "touch";
+  panel.style.overscrollBehavior = "contain";
+  panel.style.touchAction = "auto";
+  panel.style.paddingBottom = "96px";
+
+  if (backdrop && backdrop !== panel) {
+    backdrop.classList.add("public-card-backdrop-restore-v3975");
+    backdrop.classList.remove("public-card-backdrop-v3974");
+
+    backdrop.style.overflowY = "hidden";
+    backdrop.style.overflowX = "hidden";
+    backdrop.style.touchAction = "auto";
+
+    if (!backdrop.dataset.v3975BackdropBound) {
+      backdrop.dataset.v3975BackdropBound = "true";
+      backdrop.addEventListener("click", event => {
+        if (event.target === backdrop) {
+          event.preventDefault();
+          closePublicCardModalV3975();
+        }
+      }, true);
+    }
+  }
+
+  if (!panel.dataset.v3975PanelBound) {
+    panel.dataset.v3975PanelBound = "true";
+    panel.addEventListener("click", event => event.stopPropagation());
+  }
+
+  Array.from(panel.querySelectorAll("button")).forEach(btn => {
+    const text = (btn.textContent || "").trim().toLowerCase();
+    if (text === "close" && !btn.dataset.v3975CloseBound) {
+      btn.dataset.v3975CloseBound = "true";
+      btn.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        closePublicCardModalV3975();
+      }, true);
+    }
+  });
+}
+
+function enablePublicCardScrollRestoreSoonV3975() {
+  setTimeout(enablePublicCardScrollRestoreV3975, 20);
+  setTimeout(enablePublicCardScrollRestoreV3975, 150);
+  setTimeout(enablePublicCardScrollRestoreV3975, 450);
+}
+
+window.addEventListener("load", () => {
+  setTimeout(enablePublicCardScrollRestoreV3975, 1200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest(".message-card") ||
+    target.closest(".chat-message") ||
+    target.closest("[data-user-id]") ||
+    target.closest("[data-public-card]") ||
+    target.closest("#publicCardModal") ||
+    target.closest(".public-card-modal") ||
+    target.closest(".stalker-card-modal")
+  ) {
+    enablePublicCardScrollRestoreSoonV3975();
+  }
+});
+
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closePublicCardModalV3974();
+  if (event.key === "Escape") closePublicCardModalV3975();
 });

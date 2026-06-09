@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3974-modal-scroll-lock";
+const CACHE_NAME = "stalkernet-cache-v3975-scroll-restore";
 
 const FILES_TO_CACHE = [
   "./",

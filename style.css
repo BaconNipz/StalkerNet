@@ -2086,3 +2086,68 @@ input:focus, select:focus { border-color: rgba(215,171,107,0.7); box-shadow: 0 0
     max-height: calc(100dvh - 72px) !important;
   }
 }
+
+
+/* v3.9.7.5 restore popup scrolling */
+html.public-card-root-locked-v3974,
+body.public-card-body-locked-v3974 {
+  overflow: auto !important;
+  height: auto !important;
+}
+
+body.public-card-body-locked-v3974 {
+  position: static !important;
+  top: auto !important;
+  width: auto !important;
+}
+
+.public-card-backdrop-restore-v3975 {
+  position: fixed !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  touch-action: auto !important;
+  padding: max(12px, env(safe-area-inset-top)) 10px max(20px, env(safe-area-inset-bottom)) !important;
+}
+
+.public-card-scroll-restore-v3975,
+#publicCardModal.public-card-scroll-restore-v3975,
+#profileModal.public-card-scroll-restore-v3975,
+.public-card-modal.public-card-scroll-restore-v3975,
+.stalker-card-modal.public-card-scroll-restore-v3975 {
+  max-height: calc(100dvh - 80px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: auto !important;
+  padding-bottom: 96px !important;
+  margin: 0 auto !important;
+}
+
+.public-card-scroll-restore-v3975 > *:last-child {
+  margin-bottom: 80px !important;
+}
+
+@supports not (height: 100dvh) {
+  .public-card-scroll-restore-v3975,
+  #publicCardModal.public-card-scroll-restore-v3975,
+  #profileModal.public-card-scroll-restore-v3975,
+  .public-card-modal.public-card-scroll-restore-v3975,
+  .stalker-card-modal.public-card-scroll-restore-v3975 {
+    max-height: calc(100vh - 80px) !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .public-card-scroll-restore-v3975,
+  #publicCardModal.public-card-scroll-restore-v3975,
+  #profileModal.public-card-scroll-restore-v3975,
+  .public-card-modal.public-card-scroll-restore-v3975,
+  .stalker-card-modal.public-card-scroll-restore-v3975 {
+    width: calc(100vw - 24px) !important;
+    max-height: calc(100dvh - 86px) !important;
+  }
+}
