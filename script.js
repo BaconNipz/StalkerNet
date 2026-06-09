@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3975_scroll_restore";
+const STORAGE_KEY = "stalkernet_pda_v3976_emergency_scroll_restore";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -3340,18 +3340,37 @@ document.addEventListener("click", event => {
 });
 
 
-// v3.9.7.1 SAFE Public Stalker Card saved-value fix
-function getSavedIdDataV3971() {
+
+// v3.9.7.6 emergency scroll restore
+function emergencyRestoreScrollV3976() {
+  const html = document.documentElement;
+  const body = document.body;
+
+  ["public-card-root-locked-v3974","public-card-body-locked-v3974","public-card-open-v3973"].forEach(cls => {
+    html.classList.remove(cls);
+    body.classList.remove(cls);
+  });
+
+  [html, body].forEach(el => {
+    el.style.overflow = "";
+    el.style.overflowY = "";
+    el.style.height = "";
+    el.style.position = "";
+    el.style.top = "";
+    el.style.left = "";
+    el.style.right = "";
+    el.style.width = "";
+    el.style.touchAction = "";
+  });
+}
+
+function getSavedIdDataV3976() {
   let localForm = {};
   try {
     const key = (typeof STALKERNET_ID_FORM_KEY_V394 !== "undefined") ? STALKERNET_ID_FORM_KEY_V394 : "stalkernet_id_form_v394";
     localForm = JSON.parse(localStorage.getItem(key) || "{}");
-  } catch (error) {
-    localForm = {};
-  }
-
+  } catch (error) {}
   const p = state?.profile || {};
-
   return {
     faction: localForm.faction || p.faction || "",
     rank: localForm.rank || p.rank || "",
@@ -3359,581 +3378,67 @@ function getSavedIdDataV3971() {
     reputation: localForm.reputation || p.reputation || "",
     badges: localForm.badges || p.badges || "",
     homeArea: localForm.homeArea || p.homeArea || p.home || "",
-    weapon: localForm.weapon || p.weapon || p.primaryWeapon || "",
-    bio: localForm.bio || p.bio || p.quote || ""
+    weapon: localForm.weapon || p.weapon || p.primaryWeapon || ""
   };
 }
 
-function cleanValueV3971(value, fallback) {
-  const clean = String(value || "").trim();
-  return clean || fallback;
-}
-
-function findPublicCardModalV3971() {
-  return (
-    document.getElementById("publicCardModal") ||
+function findPublicCardV3976() {
+  return document.getElementById("publicCardModal") ||
     document.getElementById("profileModal") ||
     document.querySelector(".public-card-modal") ||
     document.querySelector(".stalker-card-modal") ||
-    Array.from(document.querySelectorAll(".modal, .overlay, dialog, article, section")).find(el =>
-      (el.textContent || "").includes("PUBLIC STALKER CARD")
-    )
-  );
+    Array.from(document.querySelectorAll(".modal,.overlay,dialog,article,section,div")).find(el => {
+      const t = el.textContent || "";
+      return t.includes("PUBLIC STALKER CARD") && t.includes("FACTION");
+    });
 }
 
-function patchPublicCardFieldV3971(root, label, value) {
+function setPublicCardFieldV3976(root, label, value) {
   if (!root) return;
-
-  const labelEl = Array.from(root.querySelectorAll("*")).find(el =>
-    (el.textContent || "").trim().toUpperCase() === label.toUpperCase()
-  );
-
+  const labelEl = Array.from(root.querySelectorAll("*")).find(el => (el.textContent || "").trim().toUpperCase() === label);
   if (!labelEl || !labelEl.parentElement) return;
-
   const box = labelEl.parentElement;
-  const strong = box.querySelector("strong, b");
-  if (strong) {
-    strong.textContent = value;
-    return;
-  }
-
-  const children = Array.from(box.children).filter(child => child !== labelEl);
-  const valueEl = children.find(child => child.textContent && child.textContent.trim());
-  if (valueEl) {
-    valueEl.textContent = value;
-    return;
-  }
-
-  let fixed = box.querySelector(".public-card-safe-value-v3971");
-  if (!fixed) {
-    fixed = document.createElement("div");
-    fixed.className = "public-card-safe-value-v3971";
-    box.appendChild(fixed);
-  }
-  fixed.textContent = value;
+  const strong = box.querySelector("strong,b");
+  if (strong) { strong.textContent = value; return; }
+  const child = Array.from(box.children).find(el => el !== labelEl && el.textContent?.trim());
+  if (child) child.textContent = value;
 }
 
-function patchPublicCardOnceV3971() {
-  const modal = findPublicCardModalV3971();
+function patchPublicCardV3976() {
+  emergencyRestoreScrollV3976();
+  const modal = findPublicCardV3976();
   if (!modal) return;
+  const d = getSavedIdDataV3976();
+  const val = (x, fallback) => String(x || "").trim() || fallback;
 
-  const data = getSavedIdDataV3971();
+  setPublicCardFieldV3976(modal, "FACTION", val(d.faction, "Unknown"));
+  setPublicCardFieldV3976(modal, "RANK", val(d.rank, "Rookie"));
+  setPublicCardFieldV3976(modal, "STATUS", val(d.status, "Available"));
+  setPublicCardFieldV3976(modal, "REPUTATION", val(d.reputation, "Neutral"));
+  setPublicCardFieldV3976(modal, "HOME AREA", val(d.homeArea, "Unknown"));
+  setPublicCardFieldV3976(modal, "WEAPON", val(d.weapon, "Unknown"));
 
-  patchPublicCardFieldV3971(modal, "FACTION", cleanValueV3971(data.faction, "Unknown"));
-  patchPublicCardFieldV3971(modal, "RANK", cleanValueV3971(data.rank, "Rookie"));
-  patchPublicCardFieldV3971(modal, "STATUS", cleanValueV3971(data.status, "Available"));
-  patchPublicCardFieldV3971(modal, "REPUTATION", cleanValueV3971(data.reputation, "Neutral"));
-  patchPublicCardFieldV3971(modal, "HOME AREA", cleanValueV3971(data.homeArea, "Unknown"));
-  patchPublicCardFieldV3971(modal, "WEAPON", cleanValueV3971(data.weapon, "Unknown"));
-
-  const badges = cleanValueV3971(data.badges, "No badges recorded");
+  const badges = val(d.badges, "No badges recorded");
   Array.from(modal.querySelectorAll("*")).forEach(el => {
-    const text = (el.textContent || "").trim().toUpperCase();
-    if (text === "NO BADGES RECORDED" && badges !== "None") {
-      el.textContent = badges;
-    }
+    if ((el.textContent || "").trim().toUpperCase() === "NO BADGES RECORDED" && badges !== "None") el.textContent = badges;
   });
-
-  const bio = String(data.bio || "").trim();
-  if (bio && !modal.querySelector(".public-card-bio-v3971")) {
-    const bioBox = document.createElement("div");
-    bioBox.className = "public-card-bio-v3971";
-    const label = document.createElement("span");
-    label.textContent = "BIO";
-    const value = document.createElement("strong");
-    value.textContent = bio;
-    bioBox.appendChild(label);
-    bioBox.appendChild(value);
-
-    const joinedLabel = Array.from(modal.querySelectorAll("*")).find(el =>
-      (el.textContent || "").trim().toUpperCase() === "JOINED"
-    );
-
-    const joinedBox = joinedLabel?.parentElement;
-    if (joinedBox?.parentElement) joinedBox.parentElement.insertBefore(bioBox, joinedBox);
-    else modal.appendChild(bioBox);
-  }
-}
-
-function patchPublicCardSafelyV3971() {
-  setTimeout(patchPublicCardOnceV3971, 80);
-  setTimeout(patchPublicCardOnceV3971, 250);
-  setTimeout(patchPublicCardOnceV3971, 600);
+  modal.classList.add("public-card-basic-scroll-v3976");
 }
 
 window.addEventListener("load", () => {
-  setTimeout(patchPublicCardOnceV3971, 1200);
+  emergencyRestoreScrollV3976();
+  setTimeout(emergencyRestoreScrollV3976, 300);
+  setTimeout(emergencyRestoreScrollV3976, 1200);
 });
 
 document.addEventListener("click", event => {
+  emergencyRestoreScrollV3976();
   const target = event.target;
   if (!target || !target.closest) return;
-
-  if (
-    target.closest(".message-card") ||
-    target.closest(".chat-message") ||
-    target.closest("[data-user-id]") ||
-    target.closest("[data-public-card]") ||
-    target.closest("#profileSaveBtn") ||
-    target.closest("#publicCardModal") ||
-    target.closest(".public-card-modal")
-  ) {
-    patchPublicCardSafelyV3971();
+  if (target.closest(".message-card") || target.closest(".chat-message") || target.closest("[data-user-id]") || target.closest("[data-public-card]") || target.closest("#profileSaveBtn")) {
+    setTimeout(patchPublicCardV3976, 80);
+    setTimeout(patchPublicCardV3976, 250);
   }
-});
+}, true);
 
-
-// v3.9.7.2 Public Stalker Card scroll fix
-function markPublicCardScrollableV3972() {
-  const modal =
-    document.getElementById("publicCardModal") ||
-    document.getElementById("profileModal") ||
-    document.querySelector(".public-card-modal") ||
-    document.querySelector(".stalker-card-modal") ||
-    Array.from(document.querySelectorAll(".modal, .overlay, dialog, article, section, div")).find(el =>
-      (el.textContent || "").includes("PUBLIC STALKER CARD")
-    );
-
-  if (!modal) return;
-  modal.classList.add("public-card-scroll-fix-v3972");
-
-  const parent = modal.parentElement;
-  if (parent) parent.classList.add("public-card-scroll-backdrop-v3972");
-}
-
-function applyPublicCardScrollFixV3972() {
-  setTimeout(markPublicCardScrollableV3972, 50);
-  setTimeout(markPublicCardScrollableV3972, 180);
-  setTimeout(markPublicCardScrollableV3972, 500);
-}
-
-window.addEventListener("load", () => {
-  setTimeout(markPublicCardScrollableV3972, 1000);
-});
-
-document.addEventListener("click", event => {
-  const target = event.target;
-  if (!target || !target.closest) return;
-
-  if (
-    target.closest(".message-card") ||
-    target.closest(".chat-message") ||
-    target.closest("[data-user-id]") ||
-    target.closest("[data-public-card]") ||
-    target.closest("#publicCardModal") ||
-    target.closest(".public-card-modal") ||
-    target.closest(".stalker-card-modal")
-  ) {
-    applyPublicCardScrollFixV3972();
-  }
-});
-
-
-// v3.9.7.3 FORCE Public Stalker Card scroll
-function findPublicCardPanelV3973() {
-  const direct =
-    document.getElementById("publicCardModal") ||
-    document.getElementById("profileModal") ||
-    document.querySelector(".public-card-modal") ||
-    document.querySelector(".stalker-card-modal");
-
-  if (direct) return direct;
-
-  return Array.from(document.querySelectorAll("article, section, div, dialog")).find(el => {
-    const text = (el.textContent || "");
-    return text.includes("PUBLIC STALKER CARD") && text.includes("FACTION") && text.includes("RANK");
-  });
-}
-
-function forcePublicCardScrollV3973() {
-  const panel = findPublicCardPanelV3973();
-  if (!panel) return;
-
-  panel.classList.add("public-card-force-scroll-v3973");
-  panel.style.maxHeight = "calc(100dvh - 92px)";
-  panel.style.overflowY = "auto";
-  panel.style.overflowX = "hidden";
-  panel.style.webkitOverflowScrolling = "touch";
-  panel.style.overscrollBehavior = "contain";
-  panel.style.paddingBottom = "110px";
-  panel.style.marginTop = "12px";
-  panel.style.marginBottom = "110px";
-  panel.style.touchAction = "pan-y";
-
-  let parent = panel.parentElement;
-  let guard = 0;
-
-  while (parent && parent !== document.body && guard < 6) {
-    const text = parent.textContent || "";
-    if (text.includes("PUBLIC STALKER CARD") || parent.classList.contains("modal") || parent.classList.contains("overlay")) {
-      parent.classList.add("public-card-force-backdrop-v3973");
-      parent.style.position = "fixed";
-      parent.style.inset = "0";
-      parent.style.overflowY = "auto";
-      parent.style.overflowX = "hidden";
-      parent.style.webkitOverflowScrolling = "touch";
-      parent.style.alignItems = "flex-start";
-      parent.style.justifyContent = "center";
-      parent.style.paddingTop = "12px";
-      parent.style.paddingBottom = "120px";
-      parent.style.maxHeight = "100dvh";
-      parent.style.touchAction = "pan-y";
-    }
-    parent = parent.parentElement;
-    guard++;
-  }
-}
-
-function forcePublicCardScrollSoonV3973() {
-  setTimeout(forcePublicCardScrollV3973, 20);
-  setTimeout(forcePublicCardScrollV3973, 120);
-  setTimeout(forcePublicCardScrollV3973, 350);
-  setTimeout(forcePublicCardScrollV3973, 900);
-}
-
-window.addEventListener("load", () => {
-  setTimeout(forcePublicCardScrollV3973, 1200);
-});
-
-document.addEventListener("click", event => {
-  const target = event.target;
-  if (!target || !target.closest) return;
-
-  if (
-    target.closest(".message-card") ||
-    target.closest(".chat-message") ||
-    target.closest("[data-user-id]") ||
-    target.closest("[data-public-card]") ||
-    target.closest("#publicCardModal") ||
-    target.closest(".public-card-modal") ||
-    target.closest(".stalker-card-modal")
-  ) {
-    forcePublicCardScrollSoonV3973();
-  }
-});
-
-document.addEventListener("touchstart", event => {
-  const target = event.target;
-  if (!target || !target.closest) return;
-  if (target.closest("#publicCardModal") || target.closest(".public-card-modal") || target.closest(".stalker-card-modal")) {
-    forcePublicCardScrollSoonV3973();
-  }
-}, { passive: true });
-
-
-// v3.9.7.4 Public card modal scroll + backdrop close fix
-let stalkerNetModalScrollYV3974 = 0;
-
-function findPublicCardPanelV3974() {
-  const direct =
-    document.getElementById("publicCardModal") ||
-    document.getElementById("profileModal") ||
-    document.querySelector(".public-card-modal") ||
-    document.querySelector(".stalker-card-modal");
-
-  if (direct) return direct;
-
-  return Array.from(document.querySelectorAll("article, section, div, dialog")).find(el => {
-    const text = el.textContent || "";
-    return text.includes("PUBLIC STALKER CARD") && text.includes("FACTION") && text.includes("RANK");
-  });
-}
-
-function findPublicCardBackdropV3974(panel) {
-  if (!panel) return null;
-  let node = panel.parentElement;
-  let best = null;
-  let guard = 0;
-
-  while (node && node !== document.body && guard < 8) {
-    const text = node.textContent || "";
-    const classText = String(node.className || "").toLowerCase();
-    const style = getComputedStyle(node);
-    const looksLikeBackdrop =
-      text.includes("PUBLIC STALKER CARD") &&
-      (
-        style.position === "fixed" ||
-        style.position === "absolute" ||
-        classText.includes("modal") ||
-        classText.includes("overlay") ||
-        classText.includes("backdrop")
-      );
-
-    if (looksLikeBackdrop) best = node;
-    node = node.parentElement;
-    guard++;
-  }
-
-  return best || panel.parentElement;
-}
-
-function lockBackgroundScrollV3974() {
-  if (document.body.classList.contains("public-card-body-locked-v3974")) return;
-  stalkerNetModalScrollYV3974 = window.scrollY || document.documentElement.scrollTop || 0;
-  document.documentElement.classList.add("public-card-root-locked-v3974");
-  document.body.classList.add("public-card-body-locked-v3974");
-  document.body.style.top = `-${stalkerNetModalScrollYV3974}px`;
-}
-
-function unlockBackgroundScrollV3974() {
-  if (!document.body.classList.contains("public-card-body-locked-v3974")) return;
-  document.documentElement.classList.remove("public-card-root-locked-v3974");
-  document.body.classList.remove("public-card-body-locked-v3974");
-  document.body.style.top = "";
-  window.scrollTo(0, stalkerNetModalScrollYV3974 || 0);
-}
-
-function closePublicCardModalV3974() {
-  const panel = findPublicCardPanelV3974();
-  const backdrop = findPublicCardBackdropV3974(panel);
-
-  if (panel) {
-    panel.classList.add("hidden");
-    panel.setAttribute("aria-hidden", "true");
-    panel.style.display = "none";
-  }
-
-  if (backdrop && backdrop !== panel) {
-    backdrop.classList.add("hidden");
-    backdrop.setAttribute("aria-hidden", "true");
-    backdrop.style.display = "none";
-  }
-
-  unlockBackgroundScrollV3974();
-}
-
-function enablePublicCardModalControlsV3974() {
-  const panel = findPublicCardPanelV3974();
-  if (!panel) return;
-
-  const backdrop = findPublicCardBackdropV3974(panel);
-
-  panel.classList.add("public-card-panel-v3974");
-  panel.setAttribute("role", "dialog");
-  panel.setAttribute("aria-modal", "true");
-
-  panel.style.maxHeight = "calc(100dvh - 84px)";
-  panel.style.overflowY = "auto";
-  panel.style.overflowX = "hidden";
-  panel.style.webkitOverflowScrolling = "touch";
-  panel.style.overscrollBehavior = "contain";
-  panel.style.touchAction = "pan-y";
-  panel.style.paddingBottom = "90px";
-
-  if (backdrop && backdrop !== panel) {
-    backdrop.classList.add("public-card-backdrop-v3974");
-    backdrop.style.overflow = "hidden";
-    backdrop.style.touchAction = "none";
-
-    if (!backdrop.dataset.v3974BackdropBound) {
-      backdrop.dataset.v3974BackdropBound = "true";
-      backdrop.addEventListener("click", event => {
-        if (event.target === backdrop) {
-          event.preventDefault();
-          event.stopPropagation();
-          closePublicCardModalV3974();
-        }
-      }, true);
-
-      backdrop.addEventListener("touchmove", event => {
-        if (event.target === backdrop) event.preventDefault();
-      }, { passive: false });
-    }
-  }
-
-  if (!panel.dataset.v3974PanelBound) {
-    panel.dataset.v3974PanelBound = "true";
-    panel.addEventListener("click", event => event.stopPropagation());
-    panel.addEventListener("touchmove", event => event.stopPropagation(), { passive: true });
-  }
-
-  Array.from(panel.querySelectorAll("button")).forEach(btn => {
-    const text = (btn.textContent || "").trim().toLowerCase();
-    if (text === "close" && !btn.dataset.v3974CloseBound) {
-      btn.dataset.v3974CloseBound = "true";
-      btn.addEventListener("click", event => {
-        event.preventDefault();
-        event.stopPropagation();
-        closePublicCardModalV3974();
-      }, true);
-    }
-  });
-
-  lockBackgroundScrollV3974();
-}
-
-function enablePublicCardModalControlsSoonV3974() {
-  setTimeout(enablePublicCardModalControlsV3974, 20);
-  setTimeout(enablePublicCardModalControlsV3974, 120);
-  setTimeout(enablePublicCardModalControlsV3974, 350);
-  setTimeout(enablePublicCardModalControlsV3974, 800);
-}
-
-// v3975 disabled heavy v3974 auto lock
-
-document.addEventListener("click", event => {
-  const target = event.target;
-  if (!target || !target.closest) return;
-
-  if (
-    target.closest(".message-card") ||
-    target.closest(".chat-message") ||
-    target.closest("[data-user-id]") ||
-    target.closest("[data-public-card]")
-  ) {
-    enablePublicCardModalControlsSoonV3974();
-  }
-});
-
-// v3975 disabled heavy v3974 escape handler
-
-
-// v3.9.7.5 Public card scroll restore
-function findPublicCardPanelV3975() {
-  const direct =
-    document.getElementById("publicCardModal") ||
-    document.getElementById("profileModal") ||
-    document.querySelector(".public-card-modal") ||
-    document.querySelector(".stalker-card-modal");
-
-  if (direct) return direct;
-
-  return Array.from(document.querySelectorAll("article, section, div, dialog")).find(el => {
-    const text = el.textContent || "";
-    return text.includes("PUBLIC STALKER CARD") && text.includes("FACTION") && text.includes("RANK");
-  });
-}
-
-function findPublicCardBackdropV3975(panel) {
-  if (!panel) return null;
-  let node = panel.parentElement;
-  let guard = 0;
-
-  while (node && node !== document.body && guard < 6) {
-    const text = node.textContent || "";
-    const cls = String(node.className || "").toLowerCase();
-    if (
-      text.includes("PUBLIC STALKER CARD") &&
-      (cls.includes("modal") || cls.includes("overlay") || cls.includes("backdrop") || getComputedStyle(node).position === "fixed")
-    ) {
-      return node;
-    }
-    node = node.parentElement;
-    guard++;
-  }
-
-  return panel.parentElement;
-}
-
-function closePublicCardModalV3975() {
-  const panel = findPublicCardPanelV3975();
-  const backdrop = findPublicCardBackdropV3975(panel);
-
-  if (panel) {
-    panel.classList.add("hidden");
-    panel.setAttribute("aria-hidden", "true");
-  }
-
-  if (backdrop && backdrop !== panel) {
-    backdrop.classList.add("hidden");
-    backdrop.setAttribute("aria-hidden", "true");
-  }
-
-  document.documentElement.classList.remove("public-card-root-locked-v3974");
-  document.body.classList.remove("public-card-body-locked-v3974");
-  document.body.style.top = "";
-  document.body.style.position = "";
-  document.body.style.overflow = "";
-}
-
-function enablePublicCardScrollRestoreV3975() {
-  const panel = findPublicCardPanelV3975();
-  if (!panel) return;
-
-  const backdrop = findPublicCardBackdropV3975(panel);
-
-  // Undo earlier heavy locks.
-  document.documentElement.classList.remove("public-card-root-locked-v3974");
-  document.body.classList.remove("public-card-body-locked-v3974");
-  document.body.style.top = "";
-  document.body.style.position = "";
-  document.body.style.overflow = "";
-
-  panel.classList.add("public-card-scroll-restore-v3975");
-  panel.classList.remove("public-card-panel-v3974");
-
-  panel.style.maxHeight = "calc(100dvh - 80px)";
-  panel.style.overflowY = "auto";
-  panel.style.overflowX = "hidden";
-  panel.style.webkitOverflowScrolling = "touch";
-  panel.style.overscrollBehavior = "contain";
-  panel.style.touchAction = "auto";
-  panel.style.paddingBottom = "96px";
-
-  if (backdrop && backdrop !== panel) {
-    backdrop.classList.add("public-card-backdrop-restore-v3975");
-    backdrop.classList.remove("public-card-backdrop-v3974");
-
-    backdrop.style.overflowY = "hidden";
-    backdrop.style.overflowX = "hidden";
-    backdrop.style.touchAction = "auto";
-
-    if (!backdrop.dataset.v3975BackdropBound) {
-      backdrop.dataset.v3975BackdropBound = "true";
-      backdrop.addEventListener("click", event => {
-        if (event.target === backdrop) {
-          event.preventDefault();
-          closePublicCardModalV3975();
-        }
-      }, true);
-    }
-  }
-
-  if (!panel.dataset.v3975PanelBound) {
-    panel.dataset.v3975PanelBound = "true";
-    panel.addEventListener("click", event => event.stopPropagation());
-  }
-
-  Array.from(panel.querySelectorAll("button")).forEach(btn => {
-    const text = (btn.textContent || "").trim().toLowerCase();
-    if (text === "close" && !btn.dataset.v3975CloseBound) {
-      btn.dataset.v3975CloseBound = "true";
-      btn.addEventListener("click", event => {
-        event.preventDefault();
-        event.stopPropagation();
-        closePublicCardModalV3975();
-      }, true);
-    }
-  });
-}
-
-function enablePublicCardScrollRestoreSoonV3975() {
-  setTimeout(enablePublicCardScrollRestoreV3975, 20);
-  setTimeout(enablePublicCardScrollRestoreV3975, 150);
-  setTimeout(enablePublicCardScrollRestoreV3975, 450);
-}
-
-window.addEventListener("load", () => {
-  setTimeout(enablePublicCardScrollRestoreV3975, 1200);
-});
-
-document.addEventListener("click", event => {
-  const target = event.target;
-  if (!target || !target.closest) return;
-
-  if (
-    target.closest(".message-card") ||
-    target.closest(".chat-message") ||
-    target.closest("[data-user-id]") ||
-    target.closest("[data-public-card]") ||
-    target.closest("#publicCardModal") ||
-    target.closest(".public-card-modal") ||
-    target.closest(".stalker-card-modal")
-  ) {
-    enablePublicCardScrollRestoreSoonV3975();
-  }
-});
-
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closePublicCardModalV3975();
-});
+document.addEventListener("touchstart", emergencyRestoreScrollV3976, { passive: true });
