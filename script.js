@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3979_actual_card_modal";
+const STORAGE_KEY = "stalkernet_pda_v3980_cloud_id_save_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -3590,3 +3590,389 @@ document.addEventListener("click", event => {
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeStalkerCardActualV3979();
 });
+
+
+
+
+// v3.9.8.0 Strong cloud ID save fix
+// Saves the Stalker ID to BOTH users/{uid} and profiles/{uid}.
+// Uses the real visible form IDs from the current StalkerNet ID tab.
+function cloudStatusV3980(message, isError = false) {
+  const el = document.getElementById("cloudSaveStatusV3980");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("cloud-save-error-v3980", !!isError);
+    el.classList.toggle("cloud-save-ok-v3980", !isError);
+  }
+  if (typeof toast === "function") toast(message);
+  if (isError) console.warn(message);
+}
+
+function currentUserV3980() {
+  try {
+    if (typeof currentUser !== "undefined" && currentUser) return currentUser;
+    if (typeof auth !== "undefined" && auth?.currentUser) return auth.currentUser;
+    if (typeof firebaseAuth !== "undefined" && firebaseAuth?.currentUser) return firebaseAuth.currentUser;
+  } catch (error) {}
+  return null;
+}
+
+function dbV3980() {
+  try {
+    if (typeof db !== "undefined" && db) return db;
+    if (typeof firestore !== "undefined" && firestore) return firestore;
+  } catch (error) {}
+  return null;
+}
+
+function valueFromV3980(id) {
+  const el = document.getElementById(id);
+  if (!el) return "";
+  if (typeof el.value === "string") return el.value.trim();
+  return (el.textContent || "").trim();
+}
+
+function setValueV3980(id, value) {
+  const el = document.getElementById(id);
+  if (!el || value === undefined || value === null) return;
+  const clean = String(value);
+  if (typeof el.value === "string") {
+    el.value = clean;
+    if (el.tagName === "SELECT" && el.value !== clean) {
+      const option = Array.from(el.options || []).find(opt => opt.value === clean || opt.textContent === clean);
+      if (option) el.value = option.value;
+    }
+  } else {
+    el.textContent = clean;
+  }
+}
+
+function patchKeyForFactionV3980(faction) {
+  try {
+    if (typeof patchKeyFromFaction === "function") return patchKeyFromFaction(faction || "Loner");
+  } catch (error) {}
+
+  const key = String(faction || "Loner").toLowerCase().replace(/[^a-z0-9]+/g, "_");
+  const map = {
+    loner: "loners",
+    loners: "loners",
+    free_stalkers: "loners",
+    duty: "duty",
+    freedom: "freedom",
+    ecologist: "ecologists",
+    ecologists: "ecologists",
+    clear_sky: "clear_sky",
+    mercenary: "mercenaries",
+    mercenaries: "mercenaries",
+    monolith: "monolith",
+    bandit: "bandits",
+    bandits: "bandits",
+    renegades: "renegades",
+    isg: "isg",
+    unisg: "isg",
+    military: "military",
+    sin: "sin"
+  };
+  return map[key] || key || "loners";
+}
+
+function readVisibleIdFormV3980() {
+  const faction = valueFromV3980("factionSelect") || "Loner";
+  const homeArea = valueFromV3980("profileHomeArea") || "";
+  const weapon = valueFromV3980("profileWeapon") || "";
+  const bio = valueFromV3980("profileBio") || "";
+
+  return {
+    callsign: valueFromV3980("callsignInput"),
+    faction,
+    avatar: patchKeyForFactionV3980(faction),
+    patch: patchKeyForFactionV3980(faction),
+    rank: valueFromV3980("profileRank") || "Rookie",
+    status: valueFromV3980("onlineStatusSelect") || "Available",
+    reputation: valueFromV3980("profileReputation") || "Neutral",
+    badges: valueFromV3980("profileBadges") || "None",
+    area: homeArea,
+    homeArea,
+    location: homeArea,
+    home: homeArea,
+    weapon,
+    primaryWeapon: weapon,
+    bio,
+    quote: bio
+  };
+}
+
+function hasUsefulValueV3980(value) {
+  if (value === undefined || value === null) return false;
+  const clean = String(value).trim();
+  if (!clean) return false;
+  if (clean.toLowerCase() === "unknown") return false;
+  return true;
+}
+
+function mergePreferUsefulV3980(...objects) {
+  const result = {};
+  objects.forEach(obj => {
+    if (!obj) return;
+    Object.entries(obj).forEach(([key, value]) => {
+      if (hasUsefulValueV3980(value) || result[key] === undefined) {
+        if (hasUsefulValueV3980(value)) result[key] = value;
+      }
+    });
+  });
+  return result;
+}
+
+function applyIdProfileToAppV3980(profile) {
+  if (!profile) return;
+
+  const homeArea = profile.homeArea || profile.area || profile.location || profile.home || "";
+  const weapon = profile.weapon || profile.primaryWeapon || "";
+  const bio = profile.bio || profile.quote || "";
+  const faction = profile.faction || "Loner";
+  const avatar = profile.avatar || profile.patch || patchKeyForFactionV3980(faction);
+
+  setValueV3980("callsignInput", profile.callsign || "");
+  setValueV3980("factionSelect", faction);
+  setValueV3980("profileRank", profile.rank || "Rookie");
+  setValueV3980("onlineStatusSelect", profile.status || "Available");
+  setValueV3980("profileReputation", profile.reputation || "Neutral");
+  setValueV3980("profileBadges", profile.badges || "None");
+  setValueV3980("profileHomeArea", homeArea);
+  setValueV3980("profileWeapon", weapon);
+  setValueV3980("profileBio", bio);
+  setValueV3980("avatarSelect", avatar);
+
+  try {
+    if (typeof setSelectedPatch === "function") setSelectedPatch(avatar);
+  } catch (error) {}
+
+  if (!state.profile) state.profile = {};
+  state.profile = {
+    ...state.profile,
+    callsign: profile.callsign || state.profile.callsign || "",
+    name: profile.callsign || state.profile.name || "",
+    faction,
+    rank: profile.rank || "Rookie",
+    status: profile.status || "Available",
+    reputation: profile.reputation || "Neutral",
+    badges: profile.badges || "None",
+    area: homeArea,
+    homeArea,
+    location: homeArea,
+    home: homeArea,
+    weapon,
+    primaryWeapon: weapon,
+    bio,
+    quote: bio,
+    avatar,
+    patch: avatar
+  };
+
+  if (typeof currentProfile !== "undefined") {
+    currentProfile = {
+      ...(currentProfile || {}),
+      ...state.profile,
+      uid: currentUserV3980()?.uid || currentProfile?.uid || "",
+      email: currentUserV3980()?.email || currentProfile?.email || ""
+    };
+  }
+
+  try {
+    if (typeof writeStoredIdFormV394 === "function") {
+      writeStoredIdFormV394({
+        callsign: state.profile.callsign,
+        faction: state.profile.faction,
+        rank: state.profile.rank,
+        status: state.profile.status,
+        reputation: state.profile.reputation,
+        badges: state.profile.badges,
+        homeArea: state.profile.homeArea,
+        weapon: state.profile.weapon,
+        bio: state.profile.bio
+      });
+    }
+  } catch (error) {}
+
+  try { saveState(); } catch (error) {}
+  try { updateHeaderProfile(); } catch (error) {}
+  try { updateAuthUI(); } catch (error) {}
+  try { updateIdPreview(); } catch (error) {}
+}
+
+async function readDocV3980(collectionName, uid) {
+  const database = dbV3980();
+  if (!database || !uid || typeof database.collection !== "function") return null;
+  try {
+    const snap = await database.collection(collectionName).doc(uid).get();
+    return snap.exists ? snap.data() : null;
+  } catch (error) {
+    console.warn(`Could not read ${collectionName}/${uid}`, error);
+    return null;
+  }
+}
+
+async function saveDocV3980(collectionName, uid, data) {
+  const database = dbV3980();
+  if (!database || !uid || typeof database.collection !== "function") throw new Error("Firestore unavailable.");
+  await database.collection(collectionName).doc(uid).set(data, { merge: true });
+}
+
+async function loadCloudIdV3980(showStatus = false) {
+  const user = currentUserV3980();
+  if (!user) {
+    if (showStatus) cloudStatusV3980("Cloud ID: sign in first.", true);
+    return false;
+  }
+
+  const usersData = await readDocV3980("users", user.uid);
+  const profilesData = await readDocV3980("profiles", user.uid);
+  const localData = readVisibleIdFormV3980();
+  const stateData = state?.profile || {};
+
+  // Prefer useful local values, then profiles backup, then users public profile.
+  // This prevents blank/old cloud fields from wiping the form.
+  const merged = mergePreferUsefulV3980(
+    usersData,
+    profilesData,
+    stateData,
+    localData
+  );
+
+  if (!hasUsefulValueV3980(merged.callsign) && !usersData && !profilesData) {
+    if (showStatus) cloudStatusV3980("Cloud ID: no saved profile found yet.");
+    return false;
+  }
+
+  applyIdProfileToAppV3980({
+    ...merged,
+    homeArea: merged.homeArea || merged.area || merged.location || merged.home || "",
+    area: merged.area || merged.homeArea || merged.location || merged.home || "",
+    weapon: merged.weapon || merged.primaryWeapon || "",
+    bio: merged.bio || merged.quote || ""
+  });
+
+  if (showStatus) cloudStatusV3980("Cloud ID loaded.");
+  return true;
+}
+
+async function saveCloudIdV3980(showStatus = true) {
+  const user = currentUserV3980();
+  if (!user) {
+    cloudStatusV3980("Cloud save failed: sign in through Comms first.", true);
+    return false;
+  }
+
+  const form = readVisibleIdFormV3980();
+  if (!hasUsefulValueV3980(form.callsign)) {
+    cloudStatusV3980("Cloud save failed: enter a callsign first.", true);
+    return false;
+  }
+
+  const oldUsersData = await readDocV3980("users", user.uid);
+  const oldProfilesData = await readDocV3980("profiles", user.uid);
+  const createdAt =
+    oldUsersData?.createdAt ||
+    oldProfilesData?.createdAt ||
+    (typeof firebase !== "undefined" && firebase.firestore?.FieldValue?.serverTimestamp
+      ? firebase.firestore.FieldValue.serverTimestamp()
+      : new Date().toISOString());
+
+  const serverTime = (typeof firebase !== "undefined" && firebase.firestore?.FieldValue?.serverTimestamp)
+    ? firebase.firestore.FieldValue.serverTimestamp()
+    : new Date().toISOString();
+
+  const payload = {
+    ...form,
+    uid: user.uid,
+    email: user.email || "",
+    createdAt,
+    updatedAt: serverTime,
+    lastOnline: serverTime,
+    updatedAtLocal: new Date().toISOString()
+  };
+
+  try {
+    await saveDocV3980("users", user.uid, payload);
+    await saveDocV3980("profiles", user.uid, payload);
+    applyIdProfileToAppV3980(payload);
+    if (showStatus) cloudStatusV3980("Cloud save successful.");
+    return true;
+  } catch (error) {
+    console.error("Cloud save failed", error);
+    cloudStatusV3980("Cloud save failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+function bindCloudIdSaveV3980() {
+  const btn = document.getElementById("saveProfileBtn") || document.getElementById("profileSaveBtn");
+  if (!btn || btn.dataset.v3980Bound) return;
+  btn.dataset.v3980Bound = "true";
+
+  btn.addEventListener("click", event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    saveCloudIdV3980(true);
+  }, true);
+}
+
+function bindCloudIdAutosaveBackupV3980() {
+  const ids = [
+    "callsignInput",
+    "factionSelect",
+    "profileRank",
+    "onlineStatusSelect",
+    "profileReputation",
+    "profileBadges",
+    "profileHomeArea",
+    "profileWeapon",
+    "profileBio"
+  ];
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el || el.dataset.v3980AutoBound) return;
+    el.dataset.v3980AutoBound = "true";
+    const handler = () => {
+      const data = readVisibleIdFormV3980();
+      applyIdProfileToAppV3980(data);
+      cloudStatusV3980("Local ID backup updated. Press Save ID Card for cloud save.");
+    };
+    el.addEventListener("change", handler);
+    el.addEventListener("input", handler);
+  });
+}
+
+function setupCloudIdV3980() {
+  bindCloudIdSaveV3980();
+  bindCloudIdAutosaveBackupV3980();
+
+  try {
+    if (typeof auth !== "undefined" && auth?.onAuthStateChanged && !window.__cloudIdAuthV3980) {
+      window.__cloudIdAuthV3980 = true;
+      auth.onAuthStateChanged(user => {
+        if (user) setTimeout(() => loadCloudIdV3980(false), 700);
+      });
+    }
+  } catch (error) {}
+}
+
+window.addEventListener("load", () => {
+  setTimeout(setupCloudIdV3980, 300);
+  setTimeout(setupCloudIdV3980, 1200);
+  setTimeout(() => loadCloudIdV3980(false), 1500);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (target.closest('[data-tab="profileTab"]') || target.closest("#profileTab") || target.closest(".nav-btn")) {
+    setTimeout(setupCloudIdV3980, 200);
+  }
+}, true);
+
+// Make these available from console if needed.
+window.saveCloudIdV3980 = saveCloudIdV3980;
+window.loadCloudIdV3980 = loadCloudIdV3980;

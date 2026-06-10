@@ -1967,3 +1967,24 @@ html.public-card-root-locked-v3974 {
     max-height: calc(100dvh - 24px) !important;
   }
 }
+
+
+/* v3.9.8.0 cloud save status */
+.cloud-save-status-v3980 {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(215,171,107,0.22);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.24);
+  font-size: 0.9rem;
+}
+
+.cloud-save-ok-v3980 {
+  color: var(--text-soft);
+  border-color: rgba(172, 204, 145, 0.35);
+}
+
+.cloud-save-error-v3980 {
+  color: #f0b6a8;
+  border-color: rgba(220, 110, 85, 0.55);
+}
