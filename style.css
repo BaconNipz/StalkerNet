@@ -1999,3 +1999,16 @@ html.public-card-root-locked-v3974 {
   text-transform: none !important;
   font-variant-ligatures: normal !important;
 }
+
+
+/* v3.9.8.2 message action buttons should behave like buttons, not profile-card links */
+.message-actions button,
+.message-card button,
+.chat-message button,
+[data-delete-message],
+[data-report-message],
+[data-block-user] {
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
+}

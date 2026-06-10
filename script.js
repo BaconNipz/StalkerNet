@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3981_bio_spaces_fix";
+const STORAGE_KEY = "stalkernet_pda_v3982_comms_delete_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -4092,5 +4092,124 @@ document.addEventListener("click", event => {
 document.addEventListener("focusin", event => {
   if (event.target && event.target.id === "profileBio") {
     bindBioSpacesFixV3981();
+  }
+}, true);
+
+
+
+
+// v3.9.8.2 Comms delete button click-bubble fix
+// Prevents message action buttons from also opening the public stalker card.
+function isMessageActionControlV3982(target) {
+  if (!target || !target.closest) return false;
+
+  const control = target.closest(
+    "button, .small-btn, .message-action, .message-actions button, [data-delete-message], [data-report-message], [data-block-user], [data-unblock-user], [data-message-action]"
+  );
+
+  if (!control) return false;
+
+  const text = (control.textContent || "").trim().toLowerCase();
+  const aria = (control.getAttribute("aria-label") || "").trim().toLowerCase();
+  const title = (control.getAttribute("title") || "").trim().toLowerCase();
+  const dataAction = (control.dataset.action || control.dataset.messageAction || "").trim().toLowerCase();
+
+  return (
+    dataAction.includes("delete") ||
+    dataAction.includes("remove") ||
+    dataAction.includes("report") ||
+    dataAction.includes("block") ||
+    text === "delete" ||
+    text === "del" ||
+    text === "remove" ||
+    text === "report" ||
+    text === "block" ||
+    text.includes("delete") ||
+    text.includes("remove") ||
+    text.includes("report") ||
+    text.includes("block") ||
+    aria.includes("delete") ||
+    aria.includes("remove") ||
+    aria.includes("report") ||
+    aria.includes("block") ||
+    title.includes("delete") ||
+    title.includes("remove") ||
+    title.includes("report") ||
+    title.includes("block")
+  );
+}
+
+function bindCommsActionBubbleFixV3982() {
+  const roots = [
+    document.getElementById("messagesList"),
+    document.getElementById("chatMessages"),
+    document.getElementById("publicMessages"),
+    document.getElementById("publicChatMessages"),
+    document.getElementById("messageList"),
+    document.querySelector(".messages-list"),
+    document.querySelector(".chat-list"),
+    document.querySelector(".comms-feed"),
+    document
+  ].filter(Boolean);
+
+  roots.forEach(root => {
+    if (root.dataset && root.dataset.v3982BubbleFixBound) return;
+    if (root.dataset) root.dataset.v3982BubbleFixBound = "true";
+
+    root.addEventListener("click", event => {
+      if (!isMessageActionControlV3982(event.target)) return;
+      event.stopPropagation();
+      // Do NOT preventDefault: the original delete handler still needs to run.
+    }, true);
+
+    root.addEventListener("pointerdown", event => {
+      if (!isMessageActionControlV3982(event.target)) return;
+      event.stopPropagation();
+    }, true);
+
+    root.addEventListener("touchstart", event => {
+      if (!isMessageActionControlV3982(event.target)) return;
+      event.stopPropagation();
+    }, { capture: true, passive: true });
+  });
+}
+
+if (typeof renderMessages === "function" && !window.__renderMessagesPatchedV3982) {
+  window.__renderMessagesPatchedV3982 = true;
+  const originalRenderMessagesV3982 = renderMessages;
+  renderMessages = function(...args) {
+    const result = originalRenderMessagesV3982.apply(this, args);
+    setTimeout(bindCommsActionBubbleFixV3982, 40);
+    return result;
+  };
+}
+
+if (typeof renderChat === "function" && !window.__renderChatPatchedV3982) {
+  window.__renderChatPatchedV3982 = true;
+  const originalRenderChatV3982 = renderChat;
+  renderChat = function(...args) {
+    const result = originalRenderChatV3982.apply(this, args);
+    setTimeout(bindCommsActionBubbleFixV3982, 40);
+    return result;
+  };
+}
+
+window.stalkerNetDeleteClickGuardV3982 = function(event) {
+  if (event) event.stopPropagation();
+  return true;
+};
+
+window.addEventListener("load", () => {
+  setTimeout(bindCommsActionBubbleFixV3982, 300);
+  setTimeout(bindCommsActionBubbleFixV3982, 1200);
+});
+
+document.addEventListener("click", event => {
+  if (
+    event.target?.closest?.('[data-tab="commsTab"]') ||
+    event.target?.closest?.("#commsTab") ||
+    event.target?.closest?.(".nav-btn")
+  ) {
+    setTimeout(bindCommsActionBubbleFixV3982, 200);
   }
 }, true);
