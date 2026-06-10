@@ -1884,3 +1884,79 @@ body {
   overflow-y: auto !important;
   touch-action: auto !important;
 }
+
+
+/* v3.9.7.8 public card sheet fix */
+.public-card-backdrop-sheet-v3978 {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  padding: max(10px, env(safe-area-inset-top)) 10px max(14px, env(safe-area-inset-bottom)) !important;
+  background: rgba(0,0,0,0.72) !important;
+}
+
+.public-card-sheet-v3978,
+#publicCardModal.public-card-sheet-v3978,
+#profileModal.public-card-sheet-v3978,
+.public-card-modal.public-card-sheet-v3978,
+.stalker-card-modal.public-card-sheet-v3978 {
+  position: relative !important;
+  z-index: 10000 !important;
+  display: block !important;
+  width: min(540px, calc(100vw - 20px)) !important;
+  max-height: calc(100dvh - 28px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  margin: 0 auto !important;
+  padding-top: 56px !important;
+  padding-bottom: 88px !important;
+  box-sizing: border-box !important;
+}
+
+.public-card-close-v3978 {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10001 !important;
+  float: right !important;
+  margin: -44px 0 12px 8px !important;
+  min-width: 88px !important;
+  min-height: 42px !important;
+  background: rgba(0,0,0,0.88) !important;
+  border: 1px solid rgba(215,171,107,0.45) !important;
+}
+
+.public-card-sheet-v3978 > *:last-child {
+  margin-bottom: 76px !important;
+}
+
+html, body {
+  overflow-y: auto !important;
+  touch-action: auto !important;
+}
+
+body.public-card-body-locked-v3974,
+html.public-card-root-locked-v3974 {
+  overflow-y: auto !important;
+  height: auto !important;
+  position: static !important;
+  top: auto !important;
+  width: auto !important;
+  touch-action: auto !important;
+}
+
+@supports not (height: 100dvh) {
+  .public-card-sheet-v3978,
+  #publicCardModal.public-card-sheet-v3978,
+  #profileModal.public-card-sheet-v3978,
+  .public-card-modal.public-card-sheet-v3978,
+  .stalker-card-modal.public-card-sheet-v3978 {
+    max-height: calc(100vh - 28px) !important;
+  }
+}
