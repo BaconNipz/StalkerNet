@@ -1988,3 +1988,14 @@ html.public-card-root-locked-v3974 {
   color: #f0b6a8;
   border-color: rgba(220, 110, 85, 0.55);
 }
+
+
+/* v3.9.8.1 Bio / Marker Note writing fix */
+#profileBio {
+  white-space: pre-wrap !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  font-variant-ligatures: normal !important;
+}

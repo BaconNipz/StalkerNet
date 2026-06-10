@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3980-cloud-id-save-fix";
+const CACHE_NAME = "stalkernet-cache-v3981-bio-spaces-fix";
 
 const FILES_TO_CACHE = [
   "./",

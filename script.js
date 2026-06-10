@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3980_cloud_id_save_fix";
+const STORAGE_KEY = "stalkernet_pda_v3981_bio_spaces_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -3976,3 +3976,121 @@ document.addEventListener("click", event => {
 // Make these available from console if needed.
 window.saveCloudIdV3980 = saveCloudIdV3980;
 window.loadCloudIdV3980 = loadCloudIdV3980;
+
+
+
+
+// v3.9.8.1 Bio / Marker Note spaces fix
+// The Bio field must allow ordinary writing: spaces, punctuation, apostrophes, line breaks.
+function normaliseBioTextV3981(text) {
+  return String(text || "")
+    .replace(/\u00A0/g, " ")
+    .replace(/[ \t]{2,}/g, " ");
+}
+
+function bindBioSpacesFixV3981() {
+  const bio = document.getElementById("profileBio");
+  if (!bio || bio.dataset.v3981SpacesBound) return;
+
+  bio.dataset.v3981SpacesBound = "true";
+  bio.setAttribute("autocomplete", "off");
+  bio.setAttribute("autocapitalize", "sentences");
+  bio.setAttribute("spellcheck", "true");
+
+  // Stop global PDA hotkeys / sanitizers from eating the spacebar while typing.
+  ["keydown", "keypress", "keyup", "beforeinput", "input"].forEach(eventName => {
+    bio.addEventListener(eventName, event => {
+      event.stopPropagation();
+    }, true);
+  });
+
+  // Restore pasted/typed spaces if another handler strips or compacts them.
+  bio.addEventListener("input", () => {
+    const oldStart = bio.selectionStart;
+    const oldEnd = bio.selectionEnd;
+    const clean = normaliseBioTextV3981(bio.value);
+
+    if (bio.value !== clean) {
+      bio.value = clean;
+      try {
+        bio.setSelectionRange(oldStart, oldEnd);
+      } catch (error) {}
+    }
+
+    // Keep local/cloud profile state aligned with the real textarea value.
+    try {
+      if (!state.profile) state.profile = {};
+      state.profile.bio = bio.value;
+      state.profile.quote = bio.value;
+      if (typeof currentProfile !== "undefined" && currentProfile) {
+        currentProfile.bio = bio.value;
+        currentProfile.quote = bio.value;
+      }
+      if (typeof writeStoredIdFormV394 === "function") {
+        const existing = JSON.parse(localStorage.getItem("stalkernet_id_form_v394") || "{}");
+        writeStoredIdFormV394({ ...existing, bio: bio.value });
+      }
+    } catch (error) {}
+  }, true);
+
+  bio.addEventListener("paste", event => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const clipboard = event.clipboardData || window.clipboardData;
+    const text = clipboard ? clipboard.getData("text") : "";
+    const start = bio.selectionStart || 0;
+    const end = bio.selectionEnd || 0;
+    const before = bio.value.slice(0, start);
+    const after = bio.value.slice(end);
+    const insert = normaliseBioTextV3981(text);
+
+    bio.value = before + insert + after;
+    const pos = start + insert.length;
+    try {
+      bio.setSelectionRange(pos, pos);
+    } catch (error) {}
+
+    bio.dispatchEvent(new Event("input", { bubbles: true }));
+  }, true);
+}
+
+// Preserve spaces during cloud save reads.
+if (typeof readVisibleIdFormV3980 === "function" && !window.__readVisibleIdFormPatchedV3981) {
+  window.__readVisibleIdFormPatchedV3981 = true;
+  const originalReadVisibleIdFormV3981 = readVisibleIdFormV3980;
+  readVisibleIdFormV3980 = function(...args) {
+    const data = originalReadVisibleIdFormV3981.apply(this, args);
+    const bio = document.getElementById("profileBio");
+    if (bio) {
+      data.bio = bio.value;
+      data.quote = bio.value;
+    }
+    return data;
+  };
+}
+
+window.addEventListener("load", () => {
+  setTimeout(bindBioSpacesFixV3981, 250);
+  setTimeout(bindBioSpacesFixV3981, 1000);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest('[data-tab="profileTab"]') ||
+    target.closest("#profileTab") ||
+    target.closest("#profileBio") ||
+    target.closest(".nav-btn")
+  ) {
+    setTimeout(bindBioSpacesFixV3981, 100);
+  }
+}, true);
+
+document.addEventListener("focusin", event => {
+  if (event.target && event.target.id === "profileBio") {
+    bindBioSpacesFixV3981();
+  }
+}, true);
