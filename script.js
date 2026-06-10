@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3978_public_card_sheet";
+const STORAGE_KEY = "stalkernet_pda_v3979_actual_card_modal";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -3444,148 +3444,126 @@ document.addEventListener("click", event => {
 document.addEventListener("touchstart", emergencyRestoreScrollV3976, { passive: true });
 
 
-// v3.9.7.7 Public Stalker Card close fix only
-function findPublicCardPanelV3977() {
-  const direct =
-    document.getElementById("publicCardModal") ||
-    document.getElementById("profileModal") ||
-    document.querySelector(".public-card-modal") ||
-    document.querySelector(".stalker-card-modal");
-
-  if (direct) return direct;
-
-  return Array.from(document.querySelectorAll(".modal,.overlay,dialog,article,section,div")).find(el => {
-    const text = el.textContent || "";
-    return text.includes("PUBLIC STALKER CARD") && text.includes("FACTION") && text.includes("RANK");
-  });
-}
-
-function findPublicCardBackdropV3977(panel) {
-  if (!panel) return null;
-
-  let node = panel.parentElement;
-  let guard = 0;
-
-  while (node && node !== document.body && guard < 7) {
-    const text = node.textContent || "";
-    const classText = String(node.className || "").toLowerCase();
-    const style = getComputedStyle(node);
-
-    if (
-      text.includes("PUBLIC STALKER CARD") &&
-      (
-        classText.includes("modal") ||
-        classText.includes("overlay") ||
-        classText.includes("backdrop") ||
-        style.position === "fixed"
-      )
-    ) {
-      return node;
-    }
-
-    node = node.parentElement;
-    guard++;
-  }
-
-  return panel.parentElement || null;
-}
-
-function restoreAnyScrollLocksV3977() {
-  const html = document.documentElement;
-  const body = document.body;
+// v3.9.7.9 Actual Stalker Card modal fix
+function resetPublicCardExperimentClassesV3979() {
+  const modal = document.getElementById("stalkerCardModal");
+  const panel = modal?.querySelector(".stalker-card-panel");
+  const backdrop = document.getElementById("stalkerCardBackdrop");
 
   [
-    "public-card-root-locked-v3974",
-    "public-card-body-locked-v3974",
-    "public-card-open-v3973"
-  ].forEach(cls => {
-    html.classList.remove(cls);
-    body.classList.remove(cls);
+    document.documentElement,
+    document.body,
+    modal,
+    panel,
+    backdrop
+  ].filter(Boolean).forEach(el => {
+    [
+      "public-card-root-locked-v3974",
+      "public-card-body-locked-v3974",
+      "public-card-open-v3973",
+      "public-card-backdrop-sheet-v3978",
+      "public-card-sheet-v3978",
+      "public-card-backdrop-v3974",
+      "public-card-panel-v3974",
+      "public-card-force-backdrop-v3973",
+      "public-card-force-scroll-v3973",
+      "public-card-scroll-restore-v3975",
+      "public-card-backdrop-restore-v3975"
+    ].forEach(cls => el.classList.remove(cls));
   });
 
-  [html, body].forEach(el => {
-    el.style.overflow = "";
-    el.style.overflowY = "";
-    el.style.height = "";
-    el.style.position = "";
-    el.style.top = "";
-    el.style.left = "";
-    el.style.right = "";
-    el.style.width = "";
-    el.style.touchAction = "";
-  });
+  document.documentElement.style.overflowY = "";
+  document.body.style.overflowY = "";
+  document.body.style.overflow = "";
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.width = "";
 }
 
-function closePublicCardV3977() {
-  const panel = findPublicCardPanelV3977();
-  const backdrop = findPublicCardBackdropV3977(panel);
-
-  if (panel) {
-    panel.classList.add("hidden");
-    panel.setAttribute("aria-hidden", "true");
-    panel.style.display = "none";
+function closeStalkerCardActualV3979() {
+  const modal = document.getElementById("stalkerCardModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+    modal.style.display = "";
+    modal.style.pointerEvents = "";
   }
-
-  if (backdrop && backdrop !== panel) {
-    backdrop.classList.add("hidden");
-    backdrop.setAttribute("aria-hidden", "true");
-    backdrop.style.display = "none";
-  }
-
-  restoreAnyScrollLocksV3977();
+  resetPublicCardExperimentClassesV3979();
 }
 
-function bindPublicCardCloseV3977() {
-  restoreAnyScrollLocksV3977();
+// Replace/strengthen the original close function if it exists.
+window.closeStalkerCard = closeStalkerCardActualV3979;
+if (typeof closeStalkerCard !== "undefined") {
+  closeStalkerCard = closeStalkerCardActualV3979;
+}
 
-  const panel = findPublicCardPanelV3977();
-  if (!panel) return;
+function openStalkerCardActualV3979() {
+  const modal = document.getElementById("stalkerCardModal");
+  const panel = modal?.querySelector(".stalker-card-panel");
+  if (!modal || !panel) return;
 
-  const backdrop = findPublicCardBackdropV3977(panel);
+  resetPublicCardExperimentClassesV3979();
 
-  panel.classList.add("public-card-close-fixed-v3977");
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+  modal.style.display = "";
+  modal.style.pointerEvents = "";
 
-  if (!panel.dataset.v3977PanelBound) {
-    panel.dataset.v3977PanelBound = "true";
-    panel.addEventListener("click", event => {
+  panel.classList.add("stalker-card-panel-fixed-v3979");
+
+  // Make sure the top close button remains reachable.
+  const closeBtn = document.getElementById("closeStalkerCardBtn");
+  if (closeBtn) closeBtn.classList.add("stalker-card-close-fixed-v3979");
+}
+
+function bindActualStalkerCardModalV3979() {
+  const modal = document.getElementById("stalkerCardModal");
+  const backdrop = document.getElementById("stalkerCardBackdrop");
+  const closeBtn = document.getElementById("closeStalkerCardBtn");
+  const panel = modal?.querySelector(".stalker-card-panel");
+
+  if (!modal) return;
+
+  resetPublicCardExperimentClassesV3979();
+
+  if (closeBtn && !closeBtn.dataset.v3979Bound) {
+    closeBtn.dataset.v3979Bound = "true";
+    closeBtn.addEventListener("click", event => {
+      event.preventDefault();
       event.stopPropagation();
-    });
-  }
-
-  Array.from(panel.querySelectorAll("button")).forEach(btn => {
-    const text = (btn.textContent || "").trim().toLowerCase();
-
-    if (text === "close" && !btn.dataset.v3977CloseBound) {
-      btn.dataset.v3977CloseBound = "true";
-      btn.addEventListener("click", event => {
-        event.preventDefault();
-        event.stopPropagation();
-        closePublicCardV3977();
-      }, true);
-    }
-  });
-
-  if (backdrop && backdrop !== panel && !backdrop.dataset.v3977BackdropBound) {
-    backdrop.dataset.v3977BackdropBound = "true";
-    backdrop.addEventListener("click", event => {
-      if (event.target === backdrop) {
-        event.preventDefault();
-        event.stopPropagation();
-        closePublicCardV3977();
-      }
+      closeStalkerCardActualV3979();
     }, true);
   }
+
+  if (backdrop && !backdrop.dataset.v3979Bound) {
+    backdrop.dataset.v3979Bound = "true";
+    backdrop.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      closeStalkerCardActualV3979();
+    }, true);
+  }
+
+  if (panel && !panel.dataset.v3979Bound) {
+    panel.dataset.v3979Bound = "true";
+    panel.addEventListener("click", event => event.stopPropagation());
+  }
 }
 
-function bindPublicCardCloseSoonV3977() {
-  setTimeout(bindPublicCardCloseV3977, 40);
-  setTimeout(bindPublicCardCloseV3977, 180);
-  setTimeout(bindPublicCardCloseV3977, 500);
+// Patch renderStalkerCard so every opening applies the correct modal layout.
+if (typeof renderStalkerCard === "function" && !window.__renderStalkerCardPatchedV3979) {
+  window.__renderStalkerCardPatchedV3979 = true;
+  const originalRenderStalkerCardV3979 = renderStalkerCard;
+  renderStalkerCard = function(...args) {
+    originalRenderStalkerCardV3979.apply(this, args);
+    setTimeout(openStalkerCardActualV3979, 20);
+    setTimeout(openStalkerCardActualV3979, 120);
+  };
 }
 
 window.addEventListener("load", () => {
-  restoreAnyScrollLocksV3977();
-  setTimeout(bindPublicCardCloseV3977, 1000);
+  bindActualStalkerCardModalV3979();
+  resetPublicCardExperimentClassesV3979();
 });
 
 document.addEventListener("click", event => {
@@ -3593,167 +3571,22 @@ document.addEventListener("click", event => {
   if (!target || !target.closest) return;
 
   if (
+    target.closest("[data-stalker-card-user]") ||
     target.closest(".message-card") ||
-    target.closest(".chat-message") ||
-    target.closest("[data-user-id]") ||
-    target.closest("[data-public-card]") ||
-    target.closest("#publicCardModal") ||
-    target.closest(".public-card-modal") ||
-    target.closest(".stalker-card-modal")
+    target.closest(".chat-message")
   ) {
-    bindPublicCardCloseSoonV3977();
+    bindActualStalkerCardModalV3979();
+    setTimeout(openStalkerCardActualV3979, 80);
+    setTimeout(openStalkerCardActualV3979, 250);
   }
-}, true);
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closePublicCardV3977();
-});
-
-
-// v3.9.7.8 public card sheet fix, no body lock
-function findPublicCardPanelV3978() {
-  return document.getElementById("publicCardModal") ||
-    document.getElementById("profileModal") ||
-    document.querySelector(".public-card-modal") ||
-    document.querySelector(".stalker-card-modal") ||
-    Array.from(document.querySelectorAll(".modal,.overlay,dialog,article,section,div")).find(el => {
-      const text = el.textContent || "";
-      return text.includes("PUBLIC STALKER CARD") && text.includes("FACTION") && text.includes("RANK");
-    });
-}
-
-function findPublicCardBackdropV3978(panel) {
-  if (!panel) return null;
-  let node = panel.parentElement;
-  let best = null;
-  let guard = 0;
-  while (node && node !== document.body && guard < 8) {
-    const text = node.textContent || "";
-    const cls = String(node.className || "").toLowerCase();
-    const pos = getComputedStyle(node).position;
-    if (text.includes("PUBLIC STALKER CARD") && (cls.includes("modal") || cls.includes("overlay") || cls.includes("backdrop") || pos === "fixed" || pos === "absolute")) {
-      best = node;
-    }
-    node = node.parentElement;
-    guard++;
-  }
-  return best || panel.parentElement;
-}
-
-function restoreScrollV3978() {
-  document.documentElement.classList.remove("public-card-root-locked-v3974","public-card-open-v3973");
-  document.body.classList.remove("public-card-body-locked-v3974","public-card-open-v3973");
-  [document.documentElement, document.body].forEach(el => {
-    el.style.overflow = "";
-    el.style.overflowY = "";
-    el.style.height = "";
-    el.style.position = "";
-    el.style.top = "";
-    el.style.width = "";
-    el.style.touchAction = "";
-  });
-}
-
-function closePublicCardV3978() {
-  const panel = findPublicCardPanelV3978();
-  const backdrop = findPublicCardBackdropV3978(panel);
-  if (panel) {
-    panel.classList.add("hidden");
-    panel.classList.remove("public-card-sheet-v3978");
-    panel.setAttribute("aria-hidden", "true");
-    panel.style.display = "none";
-  }
-  if (backdrop && backdrop !== panel) {
-    backdrop.classList.add("hidden");
-    backdrop.classList.remove("public-card-backdrop-sheet-v3978");
-    backdrop.setAttribute("aria-hidden", "true");
-    backdrop.style.display = "none";
-    backdrop.style.pointerEvents = "none";
-  }
-  restoreScrollV3978();
-}
-
-function ensureCloseButtonV3978(panel) {
-  if (!panel) return;
-  let btn = panel.querySelector("[data-public-card-close-v3978]") ||
-    Array.from(panel.querySelectorAll("button")).find(b => (b.textContent || "").trim().toLowerCase() === "close");
-  if (!btn) {
-    btn = document.createElement("button");
-    btn.type = "button";
-    btn.textContent = "Close";
-    btn.className = "small-btn public-card-close-v3978";
-    btn.setAttribute("data-public-card-close-v3978", "true");
-    panel.insertBefore(btn, panel.firstChild);
-  } else {
-    btn.classList.add("public-card-close-v3978");
-    btn.setAttribute("data-public-card-close-v3978", "true");
-  }
-  if (!btn.dataset.v3978Bound) {
-    btn.dataset.v3978Bound = "true";
-    btn.addEventListener("click", event => {
-      event.preventDefault();
-      event.stopPropagation();
-      closePublicCardV3978();
-    }, true);
-  }
-}
-
-function activatePublicCardSheetV3978() {
-  restoreScrollV3978();
-  const panel = findPublicCardPanelV3978();
-  if (!panel) return;
-  const backdrop = findPublicCardBackdropV3978(panel);
-
-  panel.classList.add("public-card-sheet-v3978");
-  panel.classList.remove("hidden");
-  panel.style.display = "block";
-  panel.setAttribute("aria-hidden", "false");
-
-  if (backdrop && backdrop !== panel) {
-    backdrop.classList.add("public-card-backdrop-sheet-v3978");
-    backdrop.classList.remove("hidden");
-    backdrop.style.display = "flex";
-    backdrop.style.pointerEvents = "auto";
-    backdrop.setAttribute("aria-hidden", "false");
-    if (!backdrop.dataset.v3978BackdropBound) {
-      backdrop.dataset.v3978BackdropBound = "true";
-      backdrop.addEventListener("click", event => {
-        if (event.target === backdrop) {
-          event.preventDefault();
-          event.stopPropagation();
-          closePublicCardV3978();
-        }
-      }, true);
-    }
-  }
-  if (!panel.dataset.v3978PanelBound) {
-    panel.dataset.v3978PanelBound = "true";
-    panel.addEventListener("click", event => event.stopPropagation());
-  }
-  ensureCloseButtonV3978(panel);
-}
-
-function activatePublicCardSheetSoonV3978() {
-  setTimeout(activatePublicCardSheetV3978, 30);
-  setTimeout(activatePublicCardSheetV3978, 140);
-  setTimeout(activatePublicCardSheetV3978, 420);
-}
-
-window.addEventListener("load", () => setTimeout(restoreScrollV3978, 800));
-
-document.addEventListener("click", event => {
-  const target = event.target;
-  if (!target || !target.closest) return;
-  if (target.closest(".message-card") || target.closest(".chat-message") || target.closest("[data-user-id]") || target.closest("[data-public-card]")) {
-    activatePublicCardSheetSoonV3978();
-  }
-  if (target.closest("[data-public-card-close-v3978]")) {
+  if (target.closest("#closeStalkerCardBtn")) {
     event.preventDefault();
     event.stopPropagation();
-    closePublicCardV3978();
+    closeStalkerCardActualV3979();
   }
 }, true);
 
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closePublicCardV3978();
+  if (event.key === "Escape") closeStalkerCardActualV3979();
 });
