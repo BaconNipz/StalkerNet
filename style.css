@@ -2008,3 +2008,10 @@ html.public-card-root-locked-v3974 {
   z-index: 10 !important;
   pointer-events: auto !important;
 }
+
+
+/* v3.9.8.4 delete action should never trigger card display */
+[data-message-action="delete"] {
+  position: relative !important;
+  z-index: 20 !important;
+}

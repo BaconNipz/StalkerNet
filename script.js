@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3983_comms_delete_working";
+const STORAGE_KEY = "stalkernet_pda_v3984_delete_no_card";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -4258,4 +4258,149 @@ if (typeof renderMessages === "function" && !window.__renderMessagesPatchedV3983
 window.addEventListener("load", () => {
   setTimeout(bindMessageActionButtonsV3983, 300);
   setTimeout(bindMessageActionButtonsV3983, 1200);
+});
+
+
+
+
+// v3.9.8.4 Stop Stalker Card from opening after message deletion
+window.__stalkerCardSuppressUntilV3984 = 0;
+
+function suppressStalkerCardsV3984(ms = 1800) {
+  window.__stalkerCardSuppressUntilV3984 = Date.now() + ms;
+}
+
+function isStalkerCardSuppressedV3984() {
+  return Date.now() < (window.__stalkerCardSuppressUntilV3984 || 0);
+}
+
+function closeAnyStalkerCardV3984() {
+  const ids = ["stalkerCardModal", "publicCardModal", "profileModal"];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add("hidden");
+    el.setAttribute("aria-hidden", "true");
+    el.style.display = "";
+    el.style.pointerEvents = "";
+  });
+
+  document.querySelectorAll(".public-card-modal,.stalker-card-modal").forEach(el => {
+    el.classList.add("hidden");
+    el.setAttribute("aria-hidden", "true");
+  });
+
+  document.documentElement.classList.remove("public-card-root-locked-v3974", "public-card-open-v3973");
+  document.body.classList.remove("public-card-body-locked-v3974", "public-card-open-v3973");
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.overflow = "";
+  document.body.style.width = "";
+}
+
+function isDeleteMessageTapV3984(target) {
+  if (!target || !target.closest) return false;
+  const btn = target.closest("[data-message-action], button, .small-btn, .message-action");
+  if (!btn) return false;
+
+  const action = (btn.dataset.messageAction || btn.dataset.action || "").toLowerCase();
+  const text = (btn.textContent || "").trim().toLowerCase();
+  const aria = (btn.getAttribute("aria-label") || "").toLowerCase();
+  const title = (btn.getAttribute("title") || "").toLowerCase();
+
+  return action === "delete" || text.includes("delete") || aria.includes("delete") || title.includes("delete");
+}
+
+if (typeof deleteOwnMessageV3983 === "function" && !window.__deleteOwnMessagePatchedV3984) {
+  window.__deleteOwnMessagePatchedV3984 = true;
+  const originalDeleteOwnMessageV3984 = deleteOwnMessageV3983;
+
+  deleteOwnMessageV3983 = async function(...args) {
+    suppressStalkerCardsV3984(2600);
+    closeAnyStalkerCardV3984();
+
+    try {
+      const result = await originalDeleteOwnMessageV3984.apply(this, args);
+      suppressStalkerCardsV3984(2600);
+      setTimeout(closeAnyStalkerCardV3984, 50);
+      setTimeout(closeAnyStalkerCardV3984, 250);
+      setTimeout(closeAnyStalkerCardV3984, 700);
+      return result;
+    } catch (error) {
+      suppressStalkerCardsV3984(1200);
+      throw error;
+    }
+  };
+
+  window.deleteOwnMessageV3983 = deleteOwnMessageV3983;
+}
+
+if (typeof handleMessageActionV3983 === "function" && !window.__handleMessageActionPatchedV3984) {
+  window.__handleMessageActionPatchedV3984 = true;
+  const originalHandleMessageActionV3984 = handleMessageActionV3983;
+
+  handleMessageActionV3983 = function(event) {
+    if (isDeleteMessageTapV3984(event?.target)) {
+      suppressStalkerCardsV3984(2600);
+      closeAnyStalkerCardV3984();
+    }
+    return originalHandleMessageActionV3984.apply(this, arguments);
+  };
+
+  window.handleMessageActionV3983 = handleMessageActionV3983;
+}
+
+if (typeof renderStalkerCard === "function" && !window.__renderStalkerCardSuppressedV3984) {
+  window.__renderStalkerCardSuppressedV3984 = true;
+  const originalRenderStalkerCardV3984 = renderStalkerCard;
+
+  renderStalkerCard = function(...args) {
+    if (isStalkerCardSuppressedV3984()) {
+      closeAnyStalkerCardV3984();
+      return;
+    }
+    return originalRenderStalkerCardV3984.apply(this, args);
+  };
+}
+
+if (typeof handleStalkerCardClick === "function" && !window.__handleStalkerCardClickSuppressedV3984) {
+  window.__handleStalkerCardClickSuppressedV3984 = true;
+  const originalHandleStalkerCardClickV3984 = handleStalkerCardClick;
+
+  handleStalkerCardClick = function(event) {
+    if (isStalkerCardSuppressedV3984() || isDeleteMessageTapV3984(event?.target)) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+      }
+      closeAnyStalkerCardV3984();
+      return;
+    }
+    return originalHandleStalkerCardClickV3984.apply(this, arguments);
+  };
+}
+
+document.addEventListener("click", event => {
+  if (!isDeleteMessageTapV3984(event.target)) return;
+  suppressStalkerCardsV3984(2600);
+}, true);
+
+document.addEventListener("pointerdown", event => {
+  if (!isDeleteMessageTapV3984(event.target)) return;
+  suppressStalkerCardsV3984(2600);
+}, true);
+
+document.addEventListener("touchstart", event => {
+  if (!isDeleteMessageTapV3984(event.target)) return;
+  suppressStalkerCardsV3984(2600);
+}, { capture: true, passive: true });
+
+function stalkerCardSuppressionSweepV3984() {
+  if (isStalkerCardSuppressedV3984()) closeAnyStalkerCardV3984();
+  setTimeout(stalkerCardSuppressionSweepV3984, 120);
+}
+
+window.addEventListener("load", () => {
+  setTimeout(stalkerCardSuppressionSweepV3984, 300);
 });
