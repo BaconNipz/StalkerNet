@@ -2264,3 +2264,161 @@ html.public-card-root-locked-v3974 {
     height: 50px !important;
   }
 }
+
+
+/* v3.9.8.8 Archive OPEN button containment fix */
+#loreTab {
+  overflow-x: hidden !important;
+}
+
+#loreTab #loreList,
+#loreTab .lore-list,
+#loreTab .archive-list {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+#loreTab .archive-entry,
+#loreTab .archive-entry-contained-v3988 {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+#loreTab .archive-entry-button,
+#loreTab .archive-entry-button-contained-v3988,
+#loreTab [data-archive-toggle] {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding: 14px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  float: none !important;
+  transform: none !important;
+  text-align: left !important;
+}
+
+#loreTab .archive-title-row,
+#loreTab .archive-title-row-contained-v3988 {
+  display: grid !important;
+  grid-template-columns: 72px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+#loreTab .archive-title-row > div:last-child,
+#loreTab .archive-title-row-contained-v3988 > div:last-child {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+#loreTab .archive-title-row h3,
+#loreTab .archive-title-row-contained-v3988 h3 {
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+#loreTab .archive-meta {
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+  white-space: normal !important;
+  line-height: 1.25 !important;
+}
+
+#loreTab .archive-expand-mark,
+#loreTab .archive-expand-mark-contained-v3988 {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  justify-self: stretch !important;
+  align-self: stretch !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  position: static !important;
+  right: auto !important;
+  left: auto !important;
+  transform: none !important;
+}
+
+#loreTab .archive-hidden-body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+  padding: 0 14px 14px !important;
+}
+
+@media (max-width: 520px) {
+  #loreTab .archive-entry,
+  #loreTab .archive-entry-contained-v3988 {
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  #loreTab .archive-entry-button,
+  #loreTab .archive-entry-button-contained-v3988,
+  #loreTab [data-archive-toggle] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    padding: 13px 12px !important;
+  }
+
+  #loreTab .archive-title-row,
+  #loreTab .archive-title-row-contained-v3988 {
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  #loreTab .archive-title-row .stalker-avatar,
+  #loreTab .archive-title-row .patch-avatar,
+  #loreTab .archive-title-row img,
+  #loreTab .archive-title-row-contained-v3988 .stalker-avatar,
+  #loreTab .archive-title-row-contained-v3988 .patch-avatar,
+  #loreTab .archive-title-row-contained-v3988 img {
+    max-width: 54px !important;
+    width: 54px !important;
+    height: 54px !important;
+    object-fit: contain !important;
+  }
+}
+
+@media (max-width: 380px) {
+  #loreTab .archive-title-row,
+  #loreTab .archive-title-row-contained-v3988 {
+    grid-template-columns: 50px minmax(0, 1fr) !important;
+    gap: 9px !important;
+  }
+
+  #loreTab .archive-title-row .stalker-avatar,
+  #loreTab .archive-title-row .patch-avatar,
+  #loreTab .archive-title-row img,
+  #loreTab .archive-title-row-contained-v3988 .stalker-avatar,
+  #loreTab .archive-title-row-contained-v3988 .patch-avatar,
+  #loreTab .archive-title-row-contained-v3988 img {
+    max-width: 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+  }
+}

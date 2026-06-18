@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3987_archive_mobile_layout";
+const STORAGE_KEY = "stalkernet_pda_v3988_archive_open_button";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -4549,5 +4549,63 @@ document.addEventListener("click", event => {
   ) {
     setTimeout(fixArchiveMobileLayoutV3987, 60);
     setTimeout(fixArchiveMobileLayoutV3987, 220);
+  }
+}, true);
+
+
+
+
+// v3.9.8.8 Archive OPEN button mobile containment fix
+function fixArchiveOpenButtonLayoutV3988() {
+  const archiveTab = document.getElementById("loreTab");
+  if (!archiveTab) return;
+
+  archiveTab.classList.add("archive-open-button-layout-v3988");
+
+  archiveTab.querySelectorAll(".archive-entry").forEach(entry => {
+    entry.classList.add("archive-entry-contained-v3988");
+  });
+
+  archiveTab.querySelectorAll(".archive-entry-button").forEach(button => {
+    button.classList.add("archive-entry-button-contained-v3988");
+  });
+
+  archiveTab.querySelectorAll(".archive-title-row").forEach(row => {
+    row.classList.add("archive-title-row-contained-v3988");
+  });
+
+  archiveTab.querySelectorAll(".archive-expand-mark").forEach(mark => {
+    mark.classList.add("archive-expand-mark-contained-v3988");
+  });
+}
+
+if (typeof renderLore === "function" && !window.__renderLoreOpenButtonPatchedV3988) {
+  window.__renderLoreOpenButtonPatchedV3988 = true;
+  const originalRenderLoreV3988 = renderLore;
+  renderLore = function(...args) {
+    const result = originalRenderLoreV3988.apply(this, args);
+    setTimeout(fixArchiveOpenButtonLayoutV3988, 30);
+    setTimeout(fixArchiveOpenButtonLayoutV3988, 200);
+    return result;
+  };
+}
+
+window.addEventListener("load", () => {
+  setTimeout(fixArchiveOpenButtonLayoutV3988, 300);
+  setTimeout(fixArchiveOpenButtonLayoutV3988, 1200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+  if (
+    target.closest("#loreTab") ||
+    target.closest('[data-tab="loreTab"]') ||
+    target.closest('[data-tab="archiveTab"]') ||
+    target.closest(".archive-entry-button") ||
+    target.closest("[data-archive-toggle]")
+  ) {
+    setTimeout(fixArchiveOpenButtonLayoutV3988, 60);
+    setTimeout(fixArchiveOpenButtonLayoutV3988, 220);
   }
 }, true);
