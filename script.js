@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3988_archive_open_button";
+const STORAGE_KEY = "stalkernet_pda_v3989_cloud_jobs";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -4609,3 +4609,202 @@ document.addEventListener("click", event => {
     setTimeout(fixArchiveOpenButtonLayoutV3988, 220);
   }
 }, true);
+
+
+
+// v3.9.8.9 Cloud Jobs / Contracts Save
+window.__jobsCloudLoadedV3989 = false;
+window.__jobsCloudSaveTimerV3989 = null;
+
+function jobsCloudStatusV3989(message, isError = false) {
+  const el = document.getElementById("jobsCloudStatusV3989");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("jobs-cloud-error-v3989", !!isError);
+    el.classList.toggle("jobs-cloud-ok-v3989", !isError);
+  }
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+  console[isError ? "warn" : "log"](message);
+}
+
+function currentUserJobsV3989() {
+  try {
+    if (typeof currentUser !== "undefined" && currentUser) return currentUser;
+    if (typeof auth !== "undefined" && auth?.currentUser) return auth.currentUser;
+  } catch (error) {}
+  return null;
+}
+
+function dbJobsV3989() {
+  try {
+    if (typeof db !== "undefined" && db) return db;
+    if (typeof firestore !== "undefined" && firestore) return firestore;
+  } catch (error) {}
+  return null;
+}
+
+function stableJobIdV3989(job) {
+  if (job?.id) return String(job.id);
+  if (job?.jobId) return String(job.jobId);
+  const seed = [job?.title || "job", job?.type || "", job?.location || "", job?.status || "", job?.reward || "", job?.description || job?.objective || ""].join("|");
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) { hash = ((hash << 5) - hash) + seed.charCodeAt(i); hash |= 0; }
+  return "job_" + Math.abs(hash).toString(36);
+}
+
+function normaliseJobV3989(job) {
+  const id = stableJobIdV3989(job);
+  return {
+    ...job,
+    id,
+    jobId: id,
+    title: job?.title || "Untitled Job",
+    type: job?.type || job?.jobType || "Personal Note",
+    location: job?.location || job?.area || "Unknown",
+    risk: job?.risk || job?.riskLevel || "Unknown",
+    reward: job?.reward || job?.payment || "Unknown",
+    status: job?.status || "Active",
+    description: job?.description || job?.objective || job?.note || "",
+    updatedAtLocal: job?.updatedAtLocal || new Date().toISOString()
+  };
+}
+
+function readJobsStateV3989() {
+  const jobs = Array.isArray(state?.tasks) ? state.tasks : (Array.isArray(state?.jobs) ? state.jobs : []);
+  return jobs.map(normaliseJobV3989);
+}
+
+function writeJobsStateV3989(jobs) {
+  const normalised = (jobs || []).map(normaliseJobV3989);
+  state.tasks = normalised;
+  if (Array.isArray(state.jobs)) state.jobs = normalised;
+  try { saveState(); } catch (error) {}
+  try { renderTasks(); } catch (error) {}
+  try { renderJobs(); } catch (error) {}
+}
+
+async function loadCloudJobsV3989(showStatus = false) {
+  const user = currentUserJobsV3989();
+  const database = dbJobsV3989();
+  if (!user) { if (showStatus) jobsCloudStatusV3989("Jobs cloud: sign in first.", true); return false; }
+  if (!database?.collection) { if (showStatus) jobsCloudStatusV3989("Jobs cloud: Firestore unavailable.", true); return false; }
+
+  try {
+    const snap = await database.collection("userJobs").doc(user.uid).collection("items").get();
+    const cloudJobs = [];
+    snap.forEach(doc => cloudJobs.push(normaliseJobV3989({ id: doc.id, ...doc.data() })));
+    if (cloudJobs.length) writeJobsStateV3989(cloudJobs);
+    window.__jobsCloudLoadedV3989 = true;
+    if (showStatus) jobsCloudStatusV3989(cloudJobs.length ? `Jobs cloud loaded: ${cloudJobs.length}.` : "Jobs cloud: no saved contracts yet.");
+    return true;
+  } catch (error) {
+    jobsCloudStatusV3989("Jobs cloud load failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+async function saveCloudJobsV3989(showStatus = false) {
+  const user = currentUserJobsV3989();
+  const database = dbJobsV3989();
+  if (!user) { if (showStatus) jobsCloudStatusV3989("Jobs cloud save failed: sign in first.", true); return false; }
+  if (!database?.collection || !database?.batch) { if (showStatus) jobsCloudStatusV3989("Jobs cloud save failed: Firestore unavailable.", true); return false; }
+
+  const jobs = readJobsStateV3989();
+  try {
+    const col = database.collection("userJobs").doc(user.uid).collection("items");
+    const existing = await col.get();
+    const existingIds = new Set();
+    existing.forEach(doc => existingIds.add(doc.id));
+    const batch = database.batch();
+
+    jobs.forEach(job => {
+      const j = normaliseJobV3989(job);
+      existingIds.delete(j.id);
+      batch.set(col.doc(j.id), {
+        ...j,
+        uid: user.uid,
+        ownerId: user.uid,
+        ownerEmail: user.email || "",
+        updatedAtLocal: new Date().toISOString(),
+        updatedAt: (typeof firebase !== "undefined" && firebase.firestore?.FieldValue?.serverTimestamp)
+          ? firebase.firestore.FieldValue.serverTimestamp()
+          : new Date().toISOString()
+      }, { merge: true });
+    });
+
+    existingIds.forEach(id => batch.delete(col.doc(id)));
+    await batch.commit();
+    jobsCloudStatusV3989(`Jobs cloud saved: ${jobs.length}.`);
+    return true;
+  } catch (error) {
+    jobsCloudStatusV3989("Jobs cloud save failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+function scheduleCloudJobsSaveV3989() {
+  if (!window.__jobsCloudLoadedV3989) return;
+  clearTimeout(window.__jobsCloudSaveTimerV3989);
+  window.__jobsCloudSaveTimerV3989 = setTimeout(() => saveCloudJobsV3989(false), 700);
+}
+
+function bindJobsCloudV3989() {
+  const tab = document.getElementById("tasksTab") || document.getElementById("jobsTab");
+  if (!tab) return;
+
+  if (!document.getElementById("manualCloudJobsSaveBtnV3989")) {
+    const status = document.getElementById("jobsCloudStatusV3989");
+    if (status) {
+      const row = document.createElement("div");
+      row.className = "jobs-cloud-actions-v3989";
+      row.innerHTML = '<button id="manualCloudJobsSaveBtnV3989" class="small-btn">Save Jobs to Cloud</button><button id="manualCloudJobsLoadBtnV3989" class="small-btn">Load Cloud Jobs</button>';
+      status.insertAdjacentElement("afterend", row);
+      document.getElementById("manualCloudJobsSaveBtnV3989").addEventListener("click", () => saveCloudJobsV3989(true));
+      document.getElementById("manualCloudJobsLoadBtnV3989").addEventListener("click", () => loadCloudJobsV3989(true));
+    }
+  }
+
+  tab.querySelectorAll("button,input,select,textarea").forEach(el => {
+    if (el.dataset.v3989Bound) return;
+    el.dataset.v3989Bound = "true";
+    const eventName = el.tagName === "BUTTON" ? "click" : "change";
+    el.addEventListener(eventName, () => setTimeout(scheduleCloudJobsSaveV3989, 350));
+  });
+}
+
+if (typeof renderTasks === "function" && !window.__renderTasksCloudPatchedV3989) {
+  window.__renderTasksCloudPatchedV3989 = true;
+  const old = renderTasks;
+  renderTasks = function(...args) {
+    const result = old.apply(this, args);
+    setTimeout(bindJobsCloudV3989, 60);
+    return result;
+  };
+}
+if (typeof renderJobs === "function" && !window.__renderJobsCloudPatchedV3989) {
+  window.__renderJobsCloudPatchedV3989 = true;
+  const old = renderJobs;
+  renderJobs = function(...args) {
+    const result = old.apply(this, args);
+    setTimeout(bindJobsCloudV3989, 60);
+    return result;
+  };
+}
+
+window.addEventListener("load", () => {
+  setTimeout(bindJobsCloudV3989, 400);
+  setTimeout(loadCloudJobsV3989, 1600);
+  try {
+    if (typeof auth !== "undefined" && auth?.onAuthStateChanged && !window.__cloudJobsAuthBoundV3989) {
+      window.__cloudJobsAuthBoundV3989 = true;
+      auth.onAuthStateChanged(user => { if (user) setTimeout(() => loadCloudJobsV3989(false), 900); });
+    }
+  } catch (error) {}
+});
+document.addEventListener("click", event => {
+  const t = event.target;
+  if (t?.closest?.('[data-tab="tasksTab"],[data-tab="jobsTab"],#tasksTab,#jobsTab,.nav-btn')) setTimeout(bindJobsCloudV3989, 220);
+}, true);
+
+window.saveCloudJobsV3989 = saveCloudJobsV3989;
+window.loadCloudJobsV3989 = loadCloudJobsV3989;

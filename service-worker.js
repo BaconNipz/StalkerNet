@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3988-archive-open-button";
+const CACHE_NAME = "stalkernet-cache-v3989-cloud-jobs";
 
 const FILES_TO_CACHE = [
   "./",

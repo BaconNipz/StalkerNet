@@ -2422,3 +2422,17 @@ html.public-card-root-locked-v3974 {
     height: 48px !important;
   }
 }
+
+/* v3.9.8.9 Cloud Jobs / Contracts Save */
+.jobs-cloud-status-v3989 {
+  margin: 10px 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(215,171,107,0.22);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.24);
+  font-size: 0.9rem;
+}
+.jobs-cloud-ok-v3989 { color: var(--text-soft); border-color: rgba(172,204,145,0.35); }
+.jobs-cloud-error-v3989 { color: #f0b6a8; border-color: rgba(220,110,85,0.55); }
+.jobs-cloud-actions-v3989 { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 14px; }
+.jobs-cloud-actions-v3989 .small-btn { flex: 1 1 150px; }
