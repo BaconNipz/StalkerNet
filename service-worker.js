@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3990-cloud-jobs-real-only";
+const CACHE_NAME = "stalkernet-cache-v3991-cloud-jobs-purge-fake";
 
 const FILES_TO_CACHE = [
   "./",

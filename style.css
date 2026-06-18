@@ -2442,3 +2442,8 @@ html.public-card-root-locked-v3974 {
 .jobs-cloud-status-v3989::after {
   content: "";
 }
+
+/* v3.9.9.1 fake starter jobs purge */
+#purgeStarterJobsBtnV3991 {
+  flex: 1 1 150px;
+}

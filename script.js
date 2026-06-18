@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3990_cloud_jobs_real_only";
+const STORAGE_KEY = "stalkernet_pda_v3991_cloud_jobs_purge_fake";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -5035,5 +5035,327 @@ document.addEventListener("click", event => {
   if (!target || !target.closest) return;
   if (target.closest("#tasksTab") || target.closest("#jobsTab") || target.closest('[data-tab="tasksTab"]') || target.closest('[data-tab="jobsTab"]')) {
     setTimeout(rebindCloudJobButtonsV3990, 200);
+  }
+}, true);
+
+
+
+// v3.9.9.1 Purge fake starter jobs and force real cloud jobs
+const FAKE_JOB_TITLES_V3991 = [
+  "find a safe route to rostok",
+  "check med supplies",
+  "mark stash near old road"
+];
+
+function isFakeStarterJobV3991(job) {
+  const title = String(job?.title || "").trim().toLowerCase();
+  const source = String(job?.source || "").trim().toLowerCase();
+  const description = String(job?.description || job?.objective || job?.note || "").trim().toLowerCase();
+
+  return (
+    FAKE_JOB_TITLES_V3991.includes(title) ||
+    source === "system" ||
+    source === "placeholder" ||
+    description.includes("placeholder")
+  );
+}
+
+function purgeFakeStarterJobsV3991() {
+  let changed = false;
+
+  if (Array.isArray(state?.tasks)) {
+    const oldLen = state.tasks.length;
+    state.tasks = state.tasks.filter(job => !isFakeStarterJobV3991(job));
+    if (state.tasks.length !== oldLen) changed = true;
+  }
+
+  if (Array.isArray(state?.jobs)) {
+    const oldLen = state.jobs.length;
+    state.jobs = state.jobs.filter(job => !isFakeStarterJobV3991(job));
+    if (state.jobs.length !== oldLen) changed = true;
+  }
+
+  try {
+    Object.keys(localStorage).forEach(key => {
+      if (!/job|task|contract|stalkernet/i.test(key)) return;
+
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || "null");
+        let edited = false;
+
+        if (Array.isArray(parsed)) {
+          const filtered = parsed.filter(job => !isFakeStarterJobV3991(job));
+          if (filtered.length !== parsed.length) {
+            localStorage.setItem(key, JSON.stringify(filtered));
+            edited = true;
+          }
+        } else if (parsed && typeof parsed === "object") {
+          if (Array.isArray(parsed.tasks)) {
+            const filtered = parsed.tasks.filter(job => !isFakeStarterJobV3991(job));
+            if (filtered.length !== parsed.tasks.length) {
+              parsed.tasks = filtered;
+              edited = true;
+            }
+          }
+
+          if (Array.isArray(parsed.jobs)) {
+            const filtered = parsed.jobs.filter(job => !isFakeStarterJobV3991(job));
+            if (filtered.length !== parsed.jobs.length) {
+              parsed.jobs = filtered;
+              edited = true;
+            }
+          }
+
+          if (edited) localStorage.setItem(key, JSON.stringify(parsed));
+        }
+
+        if (edited) changed = true;
+      } catch (error) {}
+    });
+  } catch (error) {}
+
+  if (changed) {
+    try { saveState(); } catch (error) {}
+  }
+
+  return changed;
+}
+
+function getRealLocalJobsV3991() {
+  const raw = [];
+
+  try { if (Array.isArray(state?.jobs)) raw.push(...state.jobs); } catch (error) {}
+  try { if (Array.isArray(state?.tasks)) raw.push(...state.tasks); } catch (error) {}
+
+  const out = new Map();
+
+  raw.forEach(job => {
+    if (!job || isFakeStarterJobV3991(job)) return;
+
+    const title = String(job.title || "").trim();
+    const desc = String(job.description || job.objective || job.note || "").trim();
+    const loc = String(job.location || job.area || "").trim();
+    const reward = String(job.reward || job.payment || "").trim();
+
+    if (!title && !desc && !loc && !reward) return;
+    if (title.toLowerCase() === "untitled job" && !desc && !loc && !reward) return;
+
+    const normalised = typeof normaliseJobV3989 === "function"
+      ? normaliseJobV3989(job)
+      : { ...job, id: job.id || job.jobId || ("job_" + Date.now().toString(36)) };
+
+    out.set(normalised.id || normalised.jobId || title, normalised);
+  });
+
+  return Array.from(out.values());
+}
+
+function writeRealJobsV3991(jobs) {
+  const real = (jobs || []).filter(job => !isFakeStarterJobV3991(job)).map(job =>
+    typeof normaliseJobV3989 === "function" ? normaliseJobV3989(job) : job
+  );
+
+  state.tasks = real;
+  state.jobs = real;
+
+  try { saveState(); } catch (error) {}
+  try { renderTasks(); } catch (error) {}
+  try { renderJobs(); } catch (error) {}
+}
+
+async function deleteCloudFakeJobsV3991() {
+  const user = currentUserJobsV3989?.();
+  const database = dbJobsV3989?.();
+  if (!user || !database?.collection || !database?.batch) return false;
+
+  try {
+    const col = database.collection("userJobs").doc(user.uid).collection("items");
+    const snap = await col.get();
+    const batch = database.batch();
+    let count = 0;
+
+    snap.forEach(doc => {
+      const job = { id: doc.id, ...doc.data() };
+      if (isFakeStarterJobV3991(job)) {
+        batch.delete(col.doc(doc.id));
+        count++;
+      }
+    });
+
+    if (count > 0) {
+      await batch.commit();
+      jobsCloudStatusV3989?.(`Removed ${count} starter job${count === 1 ? "" : "s"} from cloud.`);
+      return true;
+    }
+  } catch (error) {
+    jobsCloudStatusV3989?.("Could not remove starter jobs: " + (error.message || "check rules."), true);
+  }
+
+  return false;
+}
+
+async function saveCloudJobsV3991(showStatus = true) {
+  purgeFakeStarterJobsV3991();
+
+  const user = currentUserJobsV3989?.();
+  const database = dbJobsV3989?.();
+
+  if (!user) {
+    jobsCloudStatusV3989?.("Jobs cloud save failed: sign in first.", true);
+    return false;
+  }
+
+  if (!database?.collection || !database?.batch) {
+    jobsCloudStatusV3989?.("Jobs cloud save failed: Firestore unavailable.", true);
+    return false;
+  }
+
+  const jobs = getRealLocalJobsV3991();
+
+  try {
+    const col = database.collection("userJobs").doc(user.uid).collection("items");
+    const existing = await col.get();
+    const batch = database.batch();
+
+    // Wipe old cloud docs first so starter jobs cannot return.
+    existing.forEach(doc => batch.delete(col.doc(doc.id)));
+
+    jobs.forEach(job => {
+      const j = typeof normaliseJobV3989 === "function" ? normaliseJobV3989(job) : job;
+      batch.set(col.doc(j.id), {
+        ...j,
+        uid: user.uid,
+        ownerId: user.uid,
+        ownerEmail: user.email || "",
+        placeholder: false,
+        starter: false,
+        updatedAtLocal: new Date().toISOString(),
+        updatedAt: (typeof firebase !== "undefined" && firebase.firestore?.FieldValue?.serverTimestamp)
+          ? firebase.firestore.FieldValue.serverTimestamp()
+          : new Date().toISOString()
+      }, { merge: true });
+    });
+
+    await batch.commit();
+    jobsCloudStatusV3989?.(`Jobs cloud saved: ${jobs.length} real contract${jobs.length === 1 ? "" : "s"}.`);
+    return true;
+  } catch (error) {
+    jobsCloudStatusV3989?.("Jobs cloud save failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+async function loadCloudJobsV3991(showStatus = true) {
+  purgeFakeStarterJobsV3991();
+  await deleteCloudFakeJobsV3991();
+
+  const user = currentUserJobsV3989?.();
+  const database = dbJobsV3989?.();
+
+  if (!user) {
+    jobsCloudStatusV3989?.("Jobs cloud: sign in first.", true);
+    return false;
+  }
+
+  if (!database?.collection) {
+    jobsCloudStatusV3989?.("Jobs cloud: Firestore unavailable.", true);
+    return false;
+  }
+
+  try {
+    const snap = await database.collection("userJobs").doc(user.uid).collection("items").get();
+    const jobs = [];
+
+    snap.forEach(doc => {
+      const job = { id: doc.id, ...doc.data() };
+      if (!isFakeStarterJobV3991(job)) jobs.push(job);
+    });
+
+    writeRealJobsV3991(jobs);
+    window.__jobsCloudLoadedV3989 = true;
+
+    if (jobs.length > 0) {
+      jobsCloudStatusV3989?.(`Jobs cloud loaded: ${jobs.length} real contract${jobs.length === 1 ? "" : "s"}.`);
+    } else {
+      jobsCloudStatusV3989?.("Jobs cloud: no real contracts found. Starter jobs cleared.");
+    }
+
+    return true;
+  } catch (error) {
+    jobsCloudStatusV3989?.("Jobs cloud load failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+function rebindCloudJobButtonsV3991() {
+  const saveBtn = document.getElementById("manualCloudJobsSaveBtnV3989");
+  const loadBtn = document.getElementById("manualCloudJobsLoadBtnV3989");
+
+  if (saveBtn && !saveBtn.dataset.v3991Bound) {
+    const fresh = saveBtn.cloneNode(true);
+    fresh.dataset.v3991Bound = "true";
+    saveBtn.replaceWith(fresh);
+    fresh.addEventListener("click", () => saveCloudJobsV3991(true));
+  }
+
+  if (loadBtn && !loadBtn.dataset.v3991Bound) {
+    const fresh = loadBtn.cloneNode(true);
+    fresh.dataset.v3991Bound = "true";
+    loadBtn.replaceWith(fresh);
+    fresh.addEventListener("click", () => loadCloudJobsV3991(true));
+  }
+
+  if (!document.getElementById("purgeStarterJobsBtnV3991")) {
+    const status = document.getElementById("jobsCloudStatusV3989");
+    const row = status?.nextElementSibling?.classList?.contains("jobs-cloud-actions-v3989") ? status.nextElementSibling : null;
+
+    if (row) {
+      const btn = document.createElement("button");
+      btn.id = "purgeStarterJobsBtnV3991";
+      btn.className = "small-btn";
+      btn.textContent = "Clear Starter Jobs";
+      btn.addEventListener("click", async () => {
+        purgeFakeStarterJobsV3991();
+        await deleteCloudFakeJobsV3991();
+        writeRealJobsV3991(getRealLocalJobsV3991());
+        jobsCloudStatusV3989?.("Starter jobs cleared. Real contracts only.");
+      });
+      row.appendChild(btn);
+    }
+  }
+}
+
+// Override previous cloud jobs functions.
+window.saveCloudJobsV3989 = saveCloudJobsV3991;
+window.loadCloudJobsV3989 = loadCloudJobsV3991;
+window.saveCloudJobsV3990 = saveCloudJobsV3991;
+window.loadCloudJobsV3990 = loadCloudJobsV3991;
+window.saveCloudJobsV3991 = saveCloudJobsV3991;
+window.loadCloudJobsV3991 = loadCloudJobsV3991;
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    purgeFakeStarterJobsV3991();
+    rebindCloudJobButtonsV3991();
+    try { renderTasks(); } catch (error) {}
+    try { renderJobs(); } catch (error) {}
+  }, 900);
+  setTimeout(rebindCloudJobButtonsV3991, 1800);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest("#tasksTab") ||
+    target.closest("#jobsTab") ||
+    target.closest('[data-tab="tasksTab"]') ||
+    target.closest('[data-tab="jobsTab"]')
+  ) {
+    setTimeout(() => {
+      purgeFakeStarterJobsV3991();
+      rebindCloudJobButtonsV3991();
+    }, 200);
   }
 }, true);
