@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3989_cloud_jobs";
+const STORAGE_KEY = "stalkernet_pda_v3990_cloud_jobs_real_only";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -4808,3 +4808,232 @@ document.addEventListener("click", event => {
 
 window.saveCloudJobsV3989 = saveCloudJobsV3989;
 window.loadCloudJobsV3989 = loadCloudJobsV3989;
+
+
+
+
+// v3.9.9.0 Cloud Jobs real-board fix
+// The first cloud-jobs patch was too willing to save/load starter placeholder jobs.
+// This patch ignores obvious placeholders and prefers real jobs created through the Jobs board.
+function isPlaceholderJobV3990(job) {
+  const title = String(job?.title || "").trim().toLowerCase();
+  const source = String(job?.source || "").trim().toLowerCase();
+  const description = String(job?.description || job?.objective || job?.note || "").trim().toLowerCase();
+
+  const placeholderTitles = [
+    "find a safe route to rostok",
+    "check med supplies",
+    "mark stash near old road",
+    "sample contract",
+    "example job",
+    "placeholder job"
+  ];
+
+  return (
+    placeholderTitles.includes(title) ||
+    source === "system" ||
+    source === "placeholder" ||
+    description.includes("placeholder")
+  );
+}
+
+function isRealJobV3990(job) {
+  if (!job) return false;
+  if (isPlaceholderJobV3990(job)) return false;
+
+  const title = String(job.title || "").trim();
+  const desc = String(job.description || job.objective || job.note || "").trim();
+  const location = String(job.location || job.area || "").trim();
+  const reward = String(job.reward || job.payment || "").trim();
+
+  return !!(title && title.toLowerCase() !== "untitled job") || !!desc || !!location || !!reward;
+}
+
+function readJobsFromEveryKnownSourceV3990() {
+  const pools = [];
+
+  try { if (Array.isArray(state?.jobs)) pools.push(...state.jobs); } catch (error) {}
+  try { if (Array.isArray(state?.tasks)) pools.push(...state.tasks); } catch (error) {}
+  try { if (Array.isArray(window.jobs)) pools.push(...window.jobs); } catch (error) {}
+  try { if (Array.isArray(window.tasks)) pools.push(...window.tasks); } catch (error) {}
+
+  // Read local storage backups because some earlier versions saved jobs under different keys.
+  try {
+    Object.keys(localStorage).forEach(key => {
+      if (!/job|task|contract|stalkernet/i.test(key)) return;
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key) || "null");
+        if (Array.isArray(parsed)) pools.push(...parsed);
+        if (Array.isArray(parsed?.jobs)) pools.push(...parsed.jobs);
+        if (Array.isArray(parsed?.tasks)) pools.push(...parsed.tasks);
+      } catch (error) {}
+    });
+  } catch (error) {}
+
+  const map = new Map();
+  pools.forEach(job => {
+    if (!isRealJobV3990(job)) return;
+    const normalised = typeof normaliseJobV3989 === "function"
+      ? normaliseJobV3989(job)
+      : { ...job, id: job.id || job.jobId || ("job_" + Date.now().toString(36)) };
+
+    const id = normalised.id || normalised.jobId;
+    map.set(id, normalised);
+  });
+
+  return Array.from(map.values());
+}
+
+function writeJobsToAllKnownStateV3990(jobs) {
+  const cleanJobs = (jobs || []).filter(isRealJobV3990).map(job =>
+    typeof normaliseJobV3989 === "function" ? normaliseJobV3989(job) : job
+  );
+
+  if (cleanJobs.length > 0) {
+    state.jobs = cleanJobs;
+    state.tasks = cleanJobs;
+  } else {
+    // Do not replace local jobs with an empty/placeholder-only cloud result.
+    return;
+  }
+
+  try { saveState(); } catch (error) {}
+  try { renderJobs(); } catch (error) {}
+  try { renderTasks(); } catch (error) {}
+}
+
+async function saveCloudJobsV3990(showStatus = true) {
+  const user = currentUserJobsV3989?.();
+  const database = dbJobsV3989?.();
+
+  if (!user) {
+    jobsCloudStatusV3989?.("Jobs cloud save failed: sign in first.", true);
+    return false;
+  }
+
+  if (!database?.collection || !database?.batch) {
+    jobsCloudStatusV3989?.("Jobs cloud save failed: Firestore unavailable.", true);
+    return false;
+  }
+
+  const jobs = readJobsFromEveryKnownSourceV3990();
+
+  try {
+    const col = database.collection("userJobs").doc(user.uid).collection("items");
+    const existing = await col.get();
+    const existingIds = new Set();
+    existing.forEach(doc => existingIds.add(doc.id));
+
+    const batch = database.batch();
+
+    jobs.forEach(job => {
+      const j = typeof normaliseJobV3989 === "function" ? normaliseJobV3989(job) : job;
+      existingIds.delete(j.id);
+      batch.set(col.doc(j.id), {
+        ...j,
+        uid: user.uid,
+        ownerId: user.uid,
+        ownerEmail: user.email || "",
+        placeholder: false,
+        updatedAtLocal: new Date().toISOString(),
+        updatedAt: (typeof firebase !== "undefined" && firebase.firestore?.FieldValue?.serverTimestamp)
+          ? firebase.firestore.FieldValue.serverTimestamp()
+          : new Date().toISOString()
+      }, { merge: true });
+    });
+
+    // Delete old placeholder docs from cloud so they stop coming back like canned meat in a bad stash.
+    existing.forEach(doc => {
+      const data = doc.data();
+      if (isPlaceholderJobV3990({ id: doc.id, ...data }) || !isRealJobV3990({ id: doc.id, ...data })) {
+        batch.delete(col.doc(doc.id));
+        existingIds.delete(doc.id);
+      }
+    });
+
+    await batch.commit();
+
+    jobsCloudStatusV3989?.(`Jobs cloud saved: ${jobs.length} real contract${jobs.length === 1 ? "" : "s"}.`);
+    return true;
+  } catch (error) {
+    jobsCloudStatusV3989?.("Jobs cloud save failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+async function loadCloudJobsV3990(showStatus = true) {
+  const user = currentUserJobsV3989?.();
+  const database = dbJobsV3989?.();
+
+  if (!user) {
+    jobsCloudStatusV3989?.("Jobs cloud: sign in first.", true);
+    return false;
+  }
+
+  if (!database?.collection) {
+    jobsCloudStatusV3989?.("Jobs cloud: Firestore unavailable.", true);
+    return false;
+  }
+
+  try {
+    const snap = await database.collection("userJobs").doc(user.uid).collection("items").get();
+    const cloudJobs = [];
+    snap.forEach(doc => {
+      const job = { id: doc.id, ...doc.data() };
+      if (isRealJobV3990(job)) cloudJobs.push(job);
+    });
+
+    if (cloudJobs.length > 0) {
+      writeJobsToAllKnownStateV3990(cloudJobs);
+      window.__jobsCloudLoadedV3989 = true;
+      jobsCloudStatusV3989?.(`Jobs cloud loaded: ${cloudJobs.length} real contract${cloudJobs.length === 1 ? "" : "s"}.`);
+      return true;
+    }
+
+    window.__jobsCloudLoadedV3989 = true;
+    jobsCloudStatusV3989?.("Jobs cloud: no real saved contracts found. Starter jobs ignored.");
+    return true;
+  } catch (error) {
+    jobsCloudStatusV3989?.("Jobs cloud load failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+// Override previous cloud jobs functions.
+window.saveCloudJobsV3989 = saveCloudJobsV3990;
+window.loadCloudJobsV3989 = loadCloudJobsV3990;
+window.saveCloudJobsV3990 = saveCloudJobsV3990;
+window.loadCloudJobsV3990 = loadCloudJobsV3990;
+
+// Re-wire manual buttons to the safer functions.
+function rebindCloudJobButtonsV3990() {
+  const saveBtn = document.getElementById("manualCloudJobsSaveBtnV3989");
+  const loadBtn = document.getElementById("manualCloudJobsLoadBtnV3989");
+
+  if (saveBtn && !saveBtn.dataset.v3990Bound) {
+    saveBtn.dataset.v3990Bound = "true";
+    saveBtn.replaceWith(saveBtn.cloneNode(true));
+    const fresh = document.getElementById("manualCloudJobsSaveBtnV3989");
+    fresh?.addEventListener("click", () => saveCloudJobsV3990(true));
+  }
+
+  if (loadBtn && !loadBtn.dataset.v3990Bound) {
+    loadBtn.dataset.v3990Bound = "true";
+    loadBtn.replaceWith(loadBtn.cloneNode(true));
+    const fresh = document.getElementById("manualCloudJobsLoadBtnV3989");
+    fresh?.addEventListener("click", () => loadCloudJobsV3990(true));
+  }
+}
+
+window.addEventListener("load", () => {
+  setTimeout(rebindCloudJobButtonsV3990, 800);
+  setTimeout(rebindCloudJobButtonsV3990, 1800);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+  if (target.closest("#tasksTab") || target.closest("#jobsTab") || target.closest('[data-tab="tasksTab"]') || target.closest('[data-tab="jobsTab"]')) {
+    setTimeout(rebindCloudJobButtonsV3990, 200);
+  }
+}, true);
