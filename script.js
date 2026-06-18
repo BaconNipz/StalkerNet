@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3991_cloud_jobs_purge_fake";
+const STORAGE_KEY = "stalkernet_pda_v3992_cloud_jobs_actual_starters";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -32,11 +32,7 @@ const loreEntries = [
   {title:"Zombies",category:"Factions",value:"Special / unlockable",base:"Not listed",relations:"Neutral with Monolith and Sin. Hostile to all others.",text:"Zombified Stalkers are listed as playable zombies in Anomaly. They are treated as their own faction entry and have a simple relationship pattern: neutral toward Monolith and Sin, hostile toward everyone else. They can be temporarily unlocked from the character selection screen by pressing the Z key.",sourceNote:"Based on S.T.A.L.K.E.R. Anomaly Wiki faction data.",patch:""}
 ];
 
-const defaultTasks = [
-  { id: id(), title: "Check the rail bridge", source: "Wolf", status: "Active", reward: "Ammo and local reputation" },
-  { id: id(), title: "Recover sealed documents", source: "Sidorovich", status: "Active", reward: "Rubles, maybe a discount" },
-  { id: id(), title: "Investigate strange broadcast", source: "Unknown Sender", status: "Unknown", reward: "Answers, or worse" }
-];
+const defaultTasks = [];
 
 const defaultProfile = {
   callsign: "Marked Rookie",
@@ -5356,6 +5352,358 @@ document.addEventListener("click", event => {
     setTimeout(() => {
       purgeFakeStarterJobsV3991();
       rebindCloudJobButtonsV3991();
+    }, 200);
+  }
+}, true);
+
+
+
+
+// v3.9.9.2 Actual starter job purge fix
+// The previous purge targeted older placeholder names. These are the real built-in defaults.
+const STARTER_JOB_TITLES_V3992 = new Set([
+  "check the rail bridge",
+  "recover sealed documents",
+  "investigate strange broadcast",
+  "find a safe route to rostok",
+  "check med supplies",
+  "mark stash near old road"
+]);
+
+function isStarterJobV3992(job) {
+  if (!job) return false;
+  const title = String(job.title || job.text || "").trim().toLowerCase();
+  const source = String(job.source || "").trim().toLowerCase();
+  const reward = String(job.reward || "").trim().toLowerCase();
+
+  if (STARTER_JOB_TITLES_V3992.has(title)) return true;
+
+  return (
+    (title === "check the rail bridge" && source === "wolf") ||
+    (title === "recover sealed documents" && source === "sidorovich") ||
+    (title === "investigate strange broadcast" && source === "unknown sender") ||
+    (source === "wolf" && reward.includes("local reputation")) ||
+    (source === "sidorovich" && reward.includes("discount")) ||
+    (source === "unknown sender" && reward.includes("answers"))
+  );
+}
+
+function purgeStarterJobsEverywhereV3992() {
+  let removed = 0;
+
+  if (Array.isArray(state?.tasks)) {
+    const old = state.tasks.length;
+    state.tasks = state.tasks.filter(job => !isStarterJobV3992(job));
+    removed += old - state.tasks.length;
+  }
+
+  if (Array.isArray(state?.jobs)) {
+    const old = state.jobs.length;
+    state.jobs = state.jobs.filter(job => !isStarterJobV3992(job));
+    removed += old - state.jobs.length;
+  }
+
+  try {
+    Object.keys(localStorage).forEach(key => {
+      if (!/stalkernet|job|jobs|task|tasks|contract/i.test(key)) return;
+
+      try {
+        const raw = localStorage.getItem(key);
+        const parsed = JSON.parse(raw || "null");
+        let edited = false;
+
+        if (Array.isArray(parsed)) {
+          const filtered = parsed.filter(job => !isStarterJobV3992(job));
+          if (filtered.length !== parsed.length) {
+            removed += parsed.length - filtered.length;
+            localStorage.setItem(key, JSON.stringify(filtered));
+          }
+        } else if (parsed && typeof parsed === "object") {
+          if (Array.isArray(parsed.tasks)) {
+            const filtered = parsed.tasks.filter(job => !isStarterJobV3992(job));
+            if (filtered.length !== parsed.tasks.length) {
+              removed += parsed.tasks.length - filtered.length;
+              parsed.tasks = filtered;
+              edited = true;
+            }
+          }
+
+          if (Array.isArray(parsed.jobs)) {
+            const filtered = parsed.jobs.filter(job => !isStarterJobV3992(job));
+            if (filtered.length !== parsed.jobs.length) {
+              removed += parsed.jobs.length - filtered.length;
+              parsed.jobs = filtered;
+              edited = true;
+            }
+          }
+
+          if (edited) localStorage.setItem(key, JSON.stringify(parsed));
+        }
+      } catch (error) {}
+    });
+  } catch (error) {}
+
+  try { saveState(); } catch (error) {}
+  try { renderTasks(); } catch (error) {}
+  try { renderJobs(); } catch (error) {}
+
+  return removed;
+}
+
+function realJobsOnlyV3992() {
+  const pool = [];
+
+  try { if (Array.isArray(state?.jobs)) pool.push(...state.jobs); } catch (error) {}
+  try { if (Array.isArray(state?.tasks)) pool.push(...state.tasks); } catch (error) {}
+
+  const map = new Map();
+
+  pool.forEach(job => {
+    if (!job || isStarterJobV3992(job)) return;
+
+    const title = String(job.title || job.text || "").trim();
+    const description = String(job.description || job.objective || job.note || "").trim();
+    const location = String(job.location || job.area || "").trim();
+    const reward = String(job.reward || job.payment || "").trim();
+
+    if (!title && !description && !location && !reward) return;
+
+    const normalised = typeof normaliseJobV3989 === "function"
+      ? normaliseJobV3989(job)
+      : { ...job, title, id: job.id || job.jobId || ("job_" + Date.now().toString(36)) };
+
+    const id = normalised.id || normalised.jobId || title;
+    map.set(id, normalised);
+  });
+
+  return Array.from(map.values());
+}
+
+async function deleteStarterJobsFromCloudV3992() {
+  const user = currentUserJobsV3989?.();
+  const database = dbJobsV3989?.();
+
+  if (!user || !database?.collection || !database?.batch) return 0;
+
+  try {
+    const col = database.collection("userJobs").doc(user.uid).collection("items");
+    const snap = await col.get();
+    const batch = database.batch();
+    let count = 0;
+
+    snap.forEach(doc => {
+      const job = { id: doc.id, ...doc.data() };
+      if (isStarterJobV3992(job)) {
+        batch.delete(col.doc(doc.id));
+        count++;
+      }
+    });
+
+    if (count > 0) await batch.commit();
+    return count;
+  } catch (error) {
+    jobsCloudStatusV3989?.("Could not clean cloud starter jobs: " + (error.message || "check rules."), true);
+    return 0;
+  }
+}
+
+async function clearStarterJobsV3992(showStatus = true) {
+  const localRemoved = purgeStarterJobsEverywhereV3992();
+  const cloudRemoved = await deleteStarterJobsFromCloudV3992();
+
+  // Render again after cloud cleanup, because some old event handlers redraw the board.
+  purgeStarterJobsEverywhereV3992();
+
+  if (showStatus) {
+    const total = localRemoved + cloudRemoved;
+    jobsCloudStatusV3989?.(
+      total > 0
+        ? `Cleared ${total} starter job${total === 1 ? "" : "s"}.`
+        : "No starter jobs found. Real contracts only."
+    );
+  }
+
+  return true;
+}
+
+async function saveCloudJobsV3992(showStatus = true) {
+  await clearStarterJobsV3992(false);
+
+  const user = currentUserJobsV3989?.();
+  const database = dbJobsV3989?.();
+
+  if (!user) {
+    jobsCloudStatusV3989?.("Jobs cloud save failed: sign in first.", true);
+    return false;
+  }
+
+  if (!database?.collection || !database?.batch) {
+    jobsCloudStatusV3989?.("Jobs cloud save failed: Firestore unavailable.", true);
+    return false;
+  }
+
+  const jobs = realJobsOnlyV3992();
+
+  try {
+    const col = database.collection("userJobs").doc(user.uid).collection("items");
+    const existing = await col.get();
+    const batch = database.batch();
+
+    existing.forEach(doc => batch.delete(col.doc(doc.id)));
+
+    jobs.forEach(job => {
+      const j = typeof normaliseJobV3989 === "function" ? normaliseJobV3989(job) : job;
+      batch.set(col.doc(j.id), {
+        ...j,
+        uid: user.uid,
+        ownerId: user.uid,
+        ownerEmail: user.email || "",
+        starter: false,
+        placeholder: false,
+        updatedAtLocal: new Date().toISOString(),
+        updatedAt: (typeof firebase !== "undefined" && firebase.firestore?.FieldValue?.serverTimestamp)
+          ? firebase.firestore.FieldValue.serverTimestamp()
+          : new Date().toISOString()
+      }, { merge: true });
+    });
+
+    await batch.commit();
+    jobsCloudStatusV3989?.(`Jobs cloud saved: ${jobs.length} real contract${jobs.length === 1 ? "" : "s"}.`);
+    return true;
+  } catch (error) {
+    jobsCloudStatusV3989?.("Jobs cloud save failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+async function loadCloudJobsV3992(showStatus = true) {
+  await clearStarterJobsV3992(false);
+
+  const user = currentUserJobsV3989?.();
+  const database = dbJobsV3989?.();
+
+  if (!user) {
+    jobsCloudStatusV3989?.("Jobs cloud: sign in first.", true);
+    return false;
+  }
+
+  if (!database?.collection) {
+    jobsCloudStatusV3989?.("Jobs cloud: Firestore unavailable.", true);
+    return false;
+  }
+
+  try {
+    const snap = await database.collection("userJobs").doc(user.uid).collection("items").get();
+    const jobs = [];
+
+    snap.forEach(doc => {
+      const job = { id: doc.id, ...doc.data() };
+      if (!isStarterJobV3992(job)) jobs.push(job);
+    });
+
+    const normalised = jobs.map(job => typeof normaliseJobV3989 === "function" ? normaliseJobV3989(job) : job);
+    state.jobs = normalised;
+    state.tasks = [];
+
+    try { saveState(); } catch (error) {}
+    try { renderTasks(); } catch (error) {}
+    try { renderJobs(); } catch (error) {}
+
+    window.__jobsCloudLoadedV3989 = true;
+
+    jobsCloudStatusV3989?.(
+      jobs.length
+        ? `Jobs cloud loaded: ${jobs.length} real contract${jobs.length === 1 ? "" : "s"}.`
+        : "Jobs cloud: no real contracts found. Starter jobs cleared."
+    );
+
+    return true;
+  } catch (error) {
+    jobsCloudStatusV3989?.("Jobs cloud load failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+function bindActualStarterClearButtonV3992() {
+  const oldButton = document.getElementById("purgeStarterJobsBtnV3991");
+  if (oldButton) {
+    oldButton.textContent = "Clear Starter Jobs";
+    oldButton.dataset.v3992Bound = "true";
+  }
+
+  const status = document.getElementById("jobsCloudStatusV3989");
+  const row = status?.nextElementSibling?.classList?.contains("jobs-cloud-actions-v3989") ? status.nextElementSibling : null;
+
+  if (row && !document.getElementById("clearStarterJobsBtnV3992")) {
+    const btn = document.createElement("button");
+    btn.id = "clearStarterJobsBtnV3992";
+    btn.className = "small-btn";
+    btn.textContent = "Clear Starter Jobs";
+    row.appendChild(btn);
+  }
+}
+
+// Capture phase event delegation so old button handlers cannot swallow the click.
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  const clearBtn = target.closest("#clearStarterJobsBtnV3992, #purgeStarterJobsBtnV3991");
+  if (clearBtn) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    clearStarterJobsV3992(true);
+    return;
+  }
+
+  const saveBtn = target.closest("#manualCloudJobsSaveBtnV3989");
+  if (saveBtn) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    saveCloudJobsV3992(true);
+    return;
+  }
+
+  const loadBtn = target.closest("#manualCloudJobsLoadBtnV3989");
+  if (loadBtn) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    loadCloudJobsV3992(true);
+    return;
+  }
+}, true);
+
+window.saveCloudJobsV3989 = saveCloudJobsV3992;
+window.loadCloudJobsV3989 = loadCloudJobsV3992;
+window.saveCloudJobsV3990 = saveCloudJobsV3992;
+window.loadCloudJobsV3990 = loadCloudJobsV3992;
+window.saveCloudJobsV3991 = saveCloudJobsV3992;
+window.loadCloudJobsV3991 = loadCloudJobsV3992;
+window.saveCloudJobsV3992 = saveCloudJobsV3992;
+window.loadCloudJobsV3992 = loadCloudJobsV3992;
+window.clearStarterJobsV3992 = clearStarterJobsV3992;
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    purgeStarterJobsEverywhereV3992();
+    bindActualStarterClearButtonV3992();
+  }, 500);
+
+  setTimeout(() => {
+    purgeStarterJobsEverywhereV3992();
+    bindActualStarterClearButtonV3992();
+  }, 1500);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#tasksTab, #jobsTab, [data-tab='tasksTab'], [data-tab='jobsTab']")) {
+    setTimeout(() => {
+      purgeStarterJobsEverywhereV3992();
+      bindActualStarterClearButtonV3992();
     }, 200);
   }
 }, true);

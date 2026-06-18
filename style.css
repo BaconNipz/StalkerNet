@@ -2447,3 +2447,10 @@ html.public-card-root-locked-v3974 {
 #purgeStarterJobsBtnV3991 {
   flex: 1 1 150px;
 }
+
+
+/* v3.9.9.2 actual starter job purge */
+#clearStarterJobsBtnV3992,
+#purgeStarterJobsBtnV3991 {
+  flex: 1 1 150px;
+}
