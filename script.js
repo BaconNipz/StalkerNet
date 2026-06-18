@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3993_cloud_jobs_single_clear_button";
+const STORAGE_KEY = "stalkernet_pda_v3994_cloud_map_markers";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -5753,3 +5753,341 @@ document.addEventListener("click", event => {
     setTimeout(cleanDuplicateClearStarterButtonsV3993, 500);
   }
 }, true);
+
+
+
+
+// v3.9.9.4 Cloud Map Markers / Pin State Save
+window.__mapCloudLoadedV3994 = false;
+window.__mapCloudSaveTimerV3994 = null;
+
+function mapCloudStatusV3994(message, isError = false) {
+  const el = document.getElementById("mapCloudStatusV3994");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("map-cloud-error-v3994", !!isError);
+    el.classList.toggle("map-cloud-ok-v3994", !isError);
+  }
+
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+  console[isError ? "warn" : "log"](message);
+}
+
+function currentUserMapV3994() {
+  try {
+    if (typeof currentUser !== "undefined" && currentUser) return currentUser;
+    if (typeof auth !== "undefined" && auth?.currentUser) return auth.currentUser;
+  } catch (error) {}
+  return null;
+}
+
+function dbMapV3994() {
+  try {
+    if (typeof db !== "undefined" && db) return db;
+    if (typeof firestore !== "undefined" && firestore) return firestore;
+  } catch (error) {}
+  return null;
+}
+
+function normaliseCustomPinV3994(pin) {
+  const idValue = String(pin?.id || pin?.pinId || ("pin_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 7)));
+  return {
+    id: idValue,
+    pinId: idValue,
+    mapId: pin?.mapId || "world",
+    name: pin?.name || "Custom field note",
+    type: pin?.type || "Custom Note",
+    note: pin?.note || pin?.description || "No note recorded.",
+    x: Number.isFinite(Number(pin?.x)) ? Math.round(Number(pin.x)) : 0,
+    y: Number.isFinite(Number(pin?.y)) ? Math.round(Number(pin.y)) : 0,
+    updatedAtLocal: pin?.updatedAtLocal || new Date().toISOString()
+  };
+}
+
+function readMapCloudStateV3994() {
+  const customPins = Array.isArray(state?.customPins)
+    ? state.customPins.map(normaliseCustomPinV3994)
+    : [];
+
+  return {
+    customPins,
+    hiddenPins: state?.hiddenPins || {},
+    pinOverrides: state?.pinOverrides || {},
+    allPinsHidden: !!state?.allPinsHidden,
+    selectedMapId: state?.selectedMapId || "",
+    activeMapSection: state?.activeMapSection || (typeof currentSectionId !== "undefined" ? currentSectionId : "world")
+  };
+}
+
+function applyMapCloudStateV3994(payload = {}) {
+  const customPins = Array.isArray(payload.customPins)
+    ? payload.customPins.map(normaliseCustomPinV3994)
+    : [];
+
+  state.customPins = customPins;
+  state.hiddenPins = payload.hiddenPins && typeof payload.hiddenPins === "object" ? payload.hiddenPins : {};
+  state.pinOverrides = payload.pinOverrides && typeof payload.pinOverrides === "object" ? payload.pinOverrides : {};
+  state.allPinsHidden = !!payload.allPinsHidden;
+
+  if (payload.selectedMapId) state.selectedMapId = payload.selectedMapId;
+  if (payload.activeMapSection) {
+    state.activeMapSection = payload.activeMapSection;
+    try { currentSectionId = payload.activeMapSection; } catch (error) {}
+  }
+
+  try { saveState(); } catch (error) {}
+  try { rebuildLeafletMarkers(); } catch (error) {}
+  try { renderPinManagerList(); } catch (error) {}
+  try { renderMapInfo(state.selectedMapId); } catch (error) {}
+  try { renderMapFilters(); } catch (error) {}
+  try { updateToggleAllPinsButton(); } catch (error) {}
+}
+
+async function saveCloudMapMarkersV3994(showStatus = true) {
+  const user = currentUserMapV3994();
+  const database = dbMapV3994();
+
+  if (!user) {
+    mapCloudStatusV3994("Map cloud save failed: sign in first.", true);
+    return false;
+  }
+
+  if (!database?.collection || !database?.batch) {
+    mapCloudStatusV3994("Map cloud save failed: Firestore unavailable.", true);
+    return false;
+  }
+
+  const snapshot = readMapCloudStateV3994();
+
+  try {
+    const root = database.collection("markers").doc(user.uid);
+    const items = root.collection("items");
+
+    const existing = await items.get();
+    const batch = database.batch();
+
+    existing.forEach(doc => batch.delete(items.doc(doc.id)));
+
+    snapshot.customPins.forEach(pin => {
+      batch.set(items.doc(pin.id), {
+        ...pin,
+        uid: user.uid,
+        ownerId: user.uid,
+        ownerEmail: user.email || "",
+        updatedAtLocal: new Date().toISOString(),
+        updatedAt: (typeof firebase !== "undefined" && firebase.firestore?.FieldValue?.serverTimestamp)
+          ? firebase.firestore.FieldValue.serverTimestamp()
+          : new Date().toISOString()
+      }, { merge: true });
+    });
+
+    batch.set(root, {
+      uid: user.uid,
+      ownerId: user.uid,
+      ownerEmail: user.email || "",
+      hiddenPins: snapshot.hiddenPins,
+      pinOverrides: snapshot.pinOverrides,
+      allPinsHidden: snapshot.allPinsHidden,
+      selectedMapId: snapshot.selectedMapId,
+      activeMapSection: snapshot.activeMapSection,
+      customPinCount: snapshot.customPins.length,
+      updatedAtLocal: new Date().toISOString(),
+      updatedAt: (typeof firebase !== "undefined" && firebase.firestore?.FieldValue?.serverTimestamp)
+        ? firebase.firestore.FieldValue.serverTimestamp()
+        : new Date().toISOString()
+    }, { merge: true });
+
+    await batch.commit();
+
+    window.__mapCloudLoadedV3994 = true;
+    mapCloudStatusV3994(`Map cloud saved: ${snapshot.customPins.length} custom marker${snapshot.customPins.length === 1 ? "" : "s"}.`);
+    return true;
+  } catch (error) {
+    mapCloudStatusV3994("Map cloud save failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+async function loadCloudMapMarkersV3994(showStatus = true) {
+  const user = currentUserMapV3994();
+  const database = dbMapV3994();
+
+  if (!user) {
+    mapCloudStatusV3994("Map cloud: sign in first.", true);
+    return false;
+  }
+
+  if (!database?.collection) {
+    mapCloudStatusV3994("Map cloud: Firestore unavailable.", true);
+    return false;
+  }
+
+  try {
+    const root = database.collection("markers").doc(user.uid);
+    const metaDoc = await root.get();
+    const itemsSnap = await root.collection("items").get();
+
+    const customPins = [];
+    itemsSnap.forEach(doc => {
+      customPins.push(normaliseCustomPinV3994({ id: doc.id, ...doc.data() }));
+    });
+
+    const meta = metaDoc.exists ? metaDoc.data() : {};
+
+    applyMapCloudStateV3994({
+      customPins,
+      hiddenPins: meta.hiddenPins || {},
+      pinOverrides: meta.pinOverrides || {},
+      allPinsHidden: !!meta.allPinsHidden,
+      selectedMapId: meta.selectedMapId || "",
+      activeMapSection: meta.activeMapSection || "world"
+    });
+
+    window.__mapCloudLoadedV3994 = true;
+    mapCloudStatusV3994(`Map cloud loaded: ${customPins.length} custom marker${customPins.length === 1 ? "" : "s"}.`);
+    return true;
+  } catch (error) {
+    mapCloudStatusV3994("Map cloud load failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+function scheduleCloudMapSaveV3994() {
+  if (!window.__mapCloudLoadedV3994) return;
+  clearTimeout(window.__mapCloudSaveTimerV3994);
+  window.__mapCloudSaveTimerV3994 = setTimeout(() => saveCloudMapMarkersV3994(false), 900);
+}
+
+function bindCloudMapButtonsV3994() {
+  const saveBtn = document.getElementById("saveMapCloudBtnV3994");
+  const loadBtn = document.getElementById("loadMapCloudBtnV3994");
+
+  if (saveBtn && !saveBtn.dataset.v3994Bound) {
+    saveBtn.dataset.v3994Bound = "true";
+    saveBtn.addEventListener("click", event => {
+      event.preventDefault();
+      saveCloudMapMarkersV3994(true);
+    });
+  }
+
+  if (loadBtn && !loadBtn.dataset.v3994Bound) {
+    loadBtn.dataset.v3994Bound = "true";
+    loadBtn.addEventListener("click", event => {
+      event.preventDefault();
+      loadCloudMapMarkersV3994(true);
+    });
+  }
+
+  // Watch map controls that change pin state.
+  [
+    "saveNewPinBtn",
+    "showAllPinsBtn",
+    "hideAllPinsBtn",
+    "resetPinsBtn",
+    "toggleAllPinsBtn"
+  ].forEach(idName => {
+    const el = document.getElementById(idName);
+    if (!el || el.dataset.v3994CloudWatch) return;
+    el.dataset.v3994CloudWatch = "true";
+    el.addEventListener("click", () => setTimeout(scheduleCloudMapSaveV3994, 350), true);
+  });
+}
+
+// Wrap direct map mutators.
+if (typeof createPinFromForm === "function" && !window.__createPinCloudPatchedV3994) {
+  window.__createPinCloudPatchedV3994 = true;
+  const originalCreatePinFromFormV3994 = createPinFromForm;
+  createPinFromForm = function(...args) {
+    const result = originalCreatePinFromFormV3994.apply(this, args);
+    setTimeout(scheduleCloudMapSaveV3994, 350);
+    return result;
+  };
+}
+
+if (typeof createPresetPinFromForm382 === "function" && !window.__createPresetPinCloudPatchedV3994) {
+  window.__createPresetPinCloudPatchedV3994 = true;
+  const originalCreatePresetPinFromForm382V3994 = createPresetPinFromForm382;
+  createPresetPinFromForm382 = function(...args) {
+    const result = originalCreatePresetPinFromForm382V3994.apply(this, args);
+    setTimeout(scheduleCloudMapSaveV3994, 350);
+    return result;
+  };
+}
+
+if (typeof deleteCustomPin === "function" && !window.__deleteCustomPinCloudPatchedV3994) {
+  window.__deleteCustomPinCloudPatchedV3994 = true;
+  const originalDeleteCustomPinV3994 = deleteCustomPin;
+  deleteCustomPin = function(...args) {
+    const result = originalDeleteCustomPinV3994.apply(this, args);
+    setTimeout(scheduleCloudMapSaveV3994, 350);
+    return result;
+  };
+}
+
+if (typeof togglePinHidden === "function" && !window.__togglePinHiddenCloudPatchedV3994) {
+  window.__togglePinHiddenCloudPatchedV3994 = true;
+  const originalTogglePinHiddenV3994 = togglePinHidden;
+  togglePinHidden = function(...args) {
+    const result = originalTogglePinHiddenV3994.apply(this, args);
+    setTimeout(scheduleCloudMapSaveV3994, 350);
+    return result;
+  };
+}
+
+if (typeof setAllPinsHidden === "function" && !window.__setAllPinsHiddenCloudPatchedV3994) {
+  window.__setAllPinsHiddenCloudPatchedV3994 = true;
+  const originalSetAllPinsHiddenV3994 = setAllPinsHidden;
+  setAllPinsHidden = function(...args) {
+    const result = originalSetAllPinsHiddenV3994.apply(this, args);
+    setTimeout(scheduleCloudMapSaveV3994, 350);
+    return result;
+  };
+}
+
+if (typeof savePinOverride === "function" && !window.__savePinOverrideCloudPatchedV3994) {
+  window.__savePinOverrideCloudPatchedV3994 = true;
+  const originalSavePinOverrideV3994 = savePinOverride;
+  savePinOverride = function(...args) {
+    const result = originalSavePinOverrideV3994.apply(this, args);
+    setTimeout(scheduleCloudMapSaveV3994, 350);
+    return result;
+  };
+}
+
+// Capture clicks on generated pin manager buttons too.
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest("#mapTab") ||
+    target.closest('[data-tab="mapTab"]') ||
+    target.closest("[data-toggle-pin]") ||
+    target.closest("[data-delete-pin]")
+  ) {
+    setTimeout(bindCloudMapButtonsV3994, 150);
+    if (
+      target.closest("[data-toggle-pin]") ||
+      target.closest("[data-delete-pin]")
+    ) {
+      setTimeout(scheduleCloudMapSaveV3994, 500);
+    }
+  }
+}, true);
+
+window.addEventListener("load", () => {
+  setTimeout(bindCloudMapButtonsV3994, 500);
+  setTimeout(bindCloudMapButtonsV3994, 1500);
+
+  try {
+    if (typeof auth !== "undefined" && auth?.onAuthStateChanged && !window.__cloudMapAuthBoundV3994) {
+      window.__cloudMapAuthBoundV3994 = true;
+      auth.onAuthStateChanged(user => {
+        if (user) setTimeout(() => loadCloudMapMarkersV3994(false), 1200);
+      });
+    }
+  } catch (error) {}
+});
+
+window.saveCloudMapMarkersV3994 = saveCloudMapMarkersV3994;
+window.loadCloudMapMarkersV3994 = loadCloudMapMarkersV3994;

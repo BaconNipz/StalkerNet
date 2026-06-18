@@ -2460,3 +2460,38 @@ html.public-card-root-locked-v3974 {
 .single-clear-starter-btn-v3993 {
   flex: 1 1 150px;
 }
+
+
+/* v3.9.9.4 Cloud Map Markers */
+.map-cloud-panel-v3994 {
+  margin: 10px 0 12px;
+}
+
+.map-cloud-status-v3994 {
+  margin: 8px 0 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(215,171,107,0.22);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.24);
+  font-size: 0.9rem;
+}
+
+.map-cloud-ok-v3994 {
+  color: var(--text-soft);
+  border-color: rgba(172,204,145,0.35);
+}
+
+.map-cloud-error-v3994 {
+  color: #f0b6a8;
+  border-color: rgba(220,110,85,0.55);
+}
+
+.map-cloud-actions-v3994 {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.map-cloud-actions-v3994 .small-btn {
+  flex: 1 1 150px;
+}
