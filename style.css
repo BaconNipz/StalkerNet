@@ -2125,3 +2125,142 @@ html.public-card-root-locked-v3974 {
     padding: 12px;
   }
 }
+
+
+/* v3.9.8.7 Archive mobile layout fix */
+#loreTab,
+#loreTab * {
+  box-sizing: border-box;
+}
+
+#loreTab {
+  overflow-x: hidden !important;
+}
+
+#loreTab .filter-row {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 8px;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+#loreTab .filter-row button,
+#loreTab .filter-row .small-btn {
+  flex: 0 0 auto;
+}
+
+#loreTab .lore-list,
+#loreTab .archive-list,
+#loreTab #loreList {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#loreTab .lore-card,
+#loreTab .archive-card,
+#loreTab .archive-entry,
+#loreTab .archive-card-mobile-fixed-v3987 {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+#loreTab .lore-card > *,
+#loreTab .archive-card > *,
+#loreTab .archive-entry > *,
+#loreTab .archive-card-mobile-fixed-v3987 > * {
+  min-width: 0 !important;
+}
+
+#loreTab .lore-card h3,
+#loreTab .archive-card h3,
+#loreTab .archive-entry h3,
+#loreTab .archive-card-mobile-fixed-v3987 h3 {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  max-width: 100%;
+}
+
+#loreTab .archive-open-button-fixed-v3987,
+#loreTab [data-archive-toggle],
+#loreTab .archive-entry-button {
+  position: static !important;
+  float: none !important;
+  transform: none !important;
+  right: auto !important;
+  left: auto !important;
+  top: auto !important;
+  margin-left: auto !important;
+  max-width: 92px !important;
+  min-width: 64px !important;
+  flex: 0 0 auto !important;
+  z-index: 2 !important;
+}
+
+@media (max-width: 520px) {
+  #loreTab .lore-card,
+  #loreTab .archive-card,
+  #loreTab .archive-entry,
+  #loreTab .archive-card-mobile-fixed-v3987 {
+    display: grid !important;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 10px 12px;
+    align-items: center;
+    padding: 14px 12px !important;
+  }
+
+  #loreTab .lore-card img,
+  #loreTab .archive-card img,
+  #loreTab .archive-entry img,
+  #loreTab .stalker-avatar,
+  #loreTab .patch-avatar {
+    max-width: 58px !important;
+    width: 58px !important;
+    height: 58px !important;
+    object-fit: contain !important;
+  }
+
+  #loreTab .archive-open-button-fixed-v3987,
+  #loreTab [data-archive-toggle],
+  #loreTab .archive-entry-button {
+    grid-column: 1 / -1 !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 4px 0 0 !important;
+  }
+
+  #loreTab .lore-card .archive-body,
+  #loreTab .archive-card .archive-body,
+  #loreTab .archive-entry .archive-body,
+  #loreTab .archive-card-mobile-fixed-v3987 .archive-body {
+    min-width: 0 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  #loreTab .lore-card,
+  #loreTab .archive-card,
+  #loreTab .archive-entry,
+  #loreTab .archive-card-mobile-fixed-v3987 {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 8px 10px;
+    padding: 12px 10px !important;
+  }
+
+  #loreTab .lore-card img,
+  #loreTab .archive-card img,
+  #loreTab .archive-entry img,
+  #loreTab .stalker-avatar,
+  #loreTab .patch-avatar {
+    max-width: 50px !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+}

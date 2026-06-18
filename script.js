@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3985_archive_tidy_merge";
+const STORAGE_KEY = "stalkernet_pda_v3987_archive_mobile_layout";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -4493,5 +4493,61 @@ document.addEventListener("click", event => {
 document.addEventListener("input", event => {
   if (event.target && event.target.id === "loreSearch") {
     setTimeout(tidyArchiveAfterRenderV3985, 60);
+  }
+}, true);
+
+
+
+
+// v3.9.8.7 Archive mobile card layout fix
+function fixArchiveMobileLayoutV3987() {
+  const archiveTab = document.getElementById("loreTab");
+  if (!archiveTab) return;
+
+  archiveTab.classList.add("archive-mobile-layout-v3987");
+
+  archiveTab.querySelectorAll(".lore-card, .archive-card, .archive-entry, .module-panel").forEach(card => {
+    const text = card.textContent || "";
+    if (text.includes("TYPE / VALUE") || text.includes("SOURCE") || card.querySelector("[data-archive-toggle], .archive-entry-button")) {
+      card.classList.add("archive-card-mobile-fixed-v3987");
+    }
+  });
+
+  archiveTab.querySelectorAll("button, .small-btn, .archive-entry-button, [data-archive-toggle]").forEach(btn => {
+    const text = (btn.textContent || "").trim().toUpperCase();
+    if (text === "OPEN" || text === "CLOSE" || btn.hasAttribute("data-archive-toggle")) {
+      btn.classList.add("archive-open-button-fixed-v3987");
+    }
+  });
+}
+
+if (typeof renderLore === "function" && !window.__renderLoreLayoutPatchedV3987) {
+  window.__renderLoreLayoutPatchedV3987 = true;
+  const originalRenderLoreV3987 = renderLore;
+  renderLore = function(...args) {
+    const result = originalRenderLoreV3987.apply(this, args);
+    setTimeout(fixArchiveMobileLayoutV3987, 30);
+    setTimeout(fixArchiveMobileLayoutV3987, 200);
+    return result;
+  };
+}
+
+window.addEventListener("load", () => {
+  setTimeout(fixArchiveMobileLayoutV3987, 300);
+  setTimeout(fixArchiveMobileLayoutV3987, 1200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+  if (
+    target.closest("#loreTab") ||
+    target.closest('[data-tab="loreTab"]') ||
+    target.closest('[data-tab="archiveTab"]') ||
+    target.closest(".archive-entry-button") ||
+    target.closest("[data-archive-toggle]")
+  ) {
+    setTimeout(fixArchiveMobileLayoutV3987, 60);
+    setTimeout(fixArchiveMobileLayoutV3987, 220);
   }
 }, true);

@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3986-remove-message-profile";
+const CACHE_NAME = "stalkernet-cache-v3987-archive-mobile-layout";
 
 const FILES_TO_CACHE = [
   "./",
