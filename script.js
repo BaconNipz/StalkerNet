@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3984_delete_no_card";
+const STORAGE_KEY = "stalkernet_pda_v3985_archive_tidy_merge";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -4404,3 +4404,94 @@ function stalkerCardSuppressionSweepV3984() {
 window.addEventListener("load", () => {
   setTimeout(stalkerCardSuppressionSweepV3984, 300);
 });
+
+
+
+
+// v3.9.8.5 Archive Tidy merge
+function tidyArchiveAfterRenderV3985() {
+  const archiveTab = document.getElementById("loreTab");
+  if (!archiveTab) return;
+
+  const search = document.getElementById("loreSearch");
+  if (search) {
+    search.setAttribute("placeholder", "Search name, category, location, threat, or keyword...");
+    search.setAttribute("aria-label", "Search PDA Archive");
+  }
+
+  archiveTab.querySelectorAll(".module-label").forEach(label => {
+    const text = (label.textContent || "").trim().toUpperCase();
+    if (text === "NO SIGNAL") {
+      label.textContent = "NO RECORDS";
+      const card = label.closest(".module-panel, article");
+      const message = card?.querySelector(".message-text, p");
+      if (message && /no archive entries found/i.test(message.textContent || "")) {
+        message.textContent = "No archive records match your search. Try a broader word, category, location, threat, or keyword.";
+      }
+    }
+  });
+
+  archiveTab.querySelectorAll("[data-archive-toggle], .archive-entry-button").forEach(btn => {
+    const card = btn.closest(".archive-collapsible, .archive-entry");
+    const isOpen = card?.classList.contains("open");
+    btn.setAttribute("aria-label", isOpen ? "Close archive record" : "Open archive record");
+
+    const marker = btn.querySelector(".archive-expand-mark");
+    if (marker) marker.textContent = isOpen ? "CLOSE" : "OPEN";
+  });
+
+  archiveTab.querySelectorAll(".archive-source, .source-note, blockquote").forEach(note => {
+    if (!note.dataset.tidiedV3985) {
+      note.dataset.tidiedV3985 = "true";
+      note.classList.add("archive-reference-note");
+    }
+  });
+}
+
+if (typeof toggleArchiveEntry === "function" && !window.__toggleArchiveEntryPatchedV3985) {
+  window.__toggleArchiveEntryPatchedV3985 = true;
+  const originalToggleArchiveEntryV3985 = toggleArchiveEntry;
+  toggleArchiveEntry = function(...args) {
+    const result = originalToggleArchiveEntryV3985.apply(this, args);
+    setTimeout(tidyArchiveAfterRenderV3985, 20);
+    return result;
+  };
+}
+
+if (typeof renderLore === "function" && !window.__renderLoreTidiedV3985) {
+  window.__renderLoreTidiedV3985 = true;
+  const originalRenderLoreV3985 = renderLore;
+  renderLore = function(...args) {
+    const result = originalRenderLoreV3985.apply(this, args);
+    setTimeout(tidyArchiveAfterRenderV3985, 20);
+    setTimeout(tidyArchiveAfterRenderV3985, 180);
+    return result;
+  };
+}
+
+window.addEventListener("load", () => {
+  setTimeout(tidyArchiveAfterRenderV3985, 300);
+  setTimeout(tidyArchiveAfterRenderV3985, 1200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest("#loreTab") ||
+    target.closest('[data-tab="loreTab"]') ||
+    target.closest('[data-tab="archiveTab"]') ||
+    target.closest(".archive-entry-button") ||
+    target.closest("[data-archive-toggle]")
+  ) {
+    setTimeout(tidyArchiveAfterRenderV3985, 60);
+    setTimeout(tidyArchiveAfterRenderV3985, 220);
+  }
+}, true);
+
+document.addEventListener("input", event => {
+  if (event.target && event.target.id === "loreSearch") {
+    setTimeout(tidyArchiveAfterRenderV3985, 60);
+  }
+}, true);

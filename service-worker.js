@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3984-delete-no-card";
+const CACHE_NAME = "stalkernet-cache-v3985-archive-tidy-merge";
 
 const FILES_TO_CACHE = [
   "./",
