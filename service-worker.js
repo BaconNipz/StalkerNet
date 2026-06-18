@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3992-cloud-jobs-actual-starters";
+const CACHE_NAME = "stalkernet-cache-v3993-cloud-jobs-single-clear-button";
 
 const FILES_TO_CACHE = [
   "./",

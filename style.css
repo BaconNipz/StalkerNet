@@ -2454,3 +2454,9 @@ html.public-card-root-locked-v3974 {
 #purgeStarterJobsBtnV3991 {
   flex: 1 1 150px;
 }
+
+
+/* v3.9.9.3 single Clear Starter Jobs button */
+.single-clear-starter-btn-v3993 {
+  flex: 1 1 150px;
+}

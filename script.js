@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3992_cloud_jobs_actual_starters";
+const STORAGE_KEY = "stalkernet_pda_v3993_cloud_jobs_single_clear_button";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -5705,5 +5705,51 @@ document.addEventListener("click", event => {
       purgeStarterJobsEverywhereV3992();
       bindActualStarterClearButtonV3992();
     }, 200);
+  }
+}, true);
+
+
+
+
+// v3.9.9.3 Single Clear Starter Jobs button polish
+function cleanDuplicateClearStarterButtonsV3993() {
+  const oldBtn = document.getElementById("purgeStarterJobsBtnV3991");
+  const newBtn = document.getElementById("clearStarterJobsBtnV3992");
+
+  // Keep the newer button. Remove the older duplicate if both exist.
+  if (oldBtn && newBtn) {
+    oldBtn.remove();
+  }
+
+  const remainingButtons = Array.from(document.querySelectorAll("#clearStarterJobsBtnV3992, #purgeStarterJobsBtnV3991"));
+  remainingButtons.slice(1).forEach(btn => btn.remove());
+
+  const keep = document.getElementById("clearStarterJobsBtnV3992") || document.getElementById("purgeStarterJobsBtnV3991");
+  if (keep) {
+    keep.id = "clearStarterJobsBtnV3992";
+    keep.textContent = "Clear Starter Jobs";
+    keep.classList.add("single-clear-starter-btn-v3993");
+  }
+}
+
+window.addEventListener("load", () => {
+  setTimeout(cleanDuplicateClearStarterButtonsV3993, 300);
+  setTimeout(cleanDuplicateClearStarterButtonsV3993, 1200);
+  setTimeout(cleanDuplicateClearStarterButtonsV3993, 2400);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest("#tasksTab") ||
+    target.closest("#jobsTab") ||
+    target.closest('[data-tab="tasksTab"]') ||
+    target.closest('[data-tab="jobsTab"]') ||
+    target.closest(".nav-btn")
+  ) {
+    setTimeout(cleanDuplicateClearStarterButtonsV3993, 100);
+    setTimeout(cleanDuplicateClearStarterButtonsV3993, 500);
   }
 }, true);
