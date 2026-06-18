@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3985-archive-tidy-merge";
+const CACHE_NAME = "stalkernet-cache-v3986-remove-message-profile";
 
 const FILES_TO_CACHE = [
   "./",

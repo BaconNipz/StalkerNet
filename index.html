@@ -122,14 +122,10 @@
         </div>
 
         <div class="filter-row" id="messageFilters"></div>
-        <div class="persona-box module-panel">
-          <div class="module-label">MESSAGE PROFILE</div>
-          <label for="personaSelect">Message Type</label>
-          <select id="personaSelect">
-            <option>Loner</option><option>Trader</option><option>Duty</option>
-            <option>Freedom</option><option>Ecologist</option><option>Monolith</option>
-          </select>
-        </div>
+        <select id="personaSelect" class="hidden" aria-hidden="true" tabindex="-1">
+          <option selected>Loner</option><option>Trader</option><option>Duty</option>
+          <option>Freedom</option><option>Ecologist</option><option>Monolith</option>
+        </select>
         <div id="messageList" class="message-list"></div>
         <div class="input-row">
           <input id="messageInput" type="text" placeholder="Write a public message..." />

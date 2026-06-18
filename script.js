@@ -394,7 +394,7 @@ function sendMessage() {
   const text = input.value.trim();
   if (!text) return;
 
-  const persona = document.getElementById("personaSelect").value;
+  const persona = document.getElementById("personaSelect")?.value || "Loner";
   const replies = personaReplies[persona] || personaReplies.Loner;
 
   state.messages.push({ id: id(), channel: "Private", sender: "You", faction: "Stalker", text, time: nowTime() });
