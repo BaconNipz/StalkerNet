@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3994-cloud-map-markers";
+const CACHE_NAME = "stalkernet-cache-v3995-public-card-polish";
 
 const FILES_TO_CACHE = [
   "./",

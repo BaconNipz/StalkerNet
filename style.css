@@ -2495,3 +2495,215 @@ html.public-card-root-locked-v3974 {
 .map-cloud-actions-v3994 .small-btn {
   flex: 1 1 150px;
 }
+
+
+/* v3.9.9.5 Public Stalker Card polish */
+#stalkerCardModal.public-card-polished-v3995:not(.hidden) {
+  padding-top: max(10px, env(safe-area-inset-top)) !important;
+}
+
+#stalkerCardModal .public-card-panel-polished-v3995 {
+  border: 1px solid rgba(215,171,107,0.28) !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(215,171,107,0.10), transparent 34%),
+    linear-gradient(180deg, rgba(27,34,25,0.98), rgba(8,10,7,0.98)) !important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03) inset,
+    0 0 34px rgba(0,0,0,0.82),
+    0 0 26px rgba(142,120,70,0.08) !important;
+  padding: 16px !important;
+  padding-bottom: 78px !important;
+}
+
+#stalkerCardModal .public-card-panel-polished-v3995::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  border-radius: 14px;
+  border: 1px solid rgba(212,221,195,0.05);
+}
+
+#stalkerCardModal .public-card-panel-polished-v3995 .module-label {
+  display: inline-flex;
+  max-width: calc(100% - 104px);
+  margin-bottom: 12px;
+  letter-spacing: 0.16em;
+}
+
+#stalkerCardModal .stalker-card-close-polished-v3995 {
+  border-color: rgba(215,171,107,0.34) !important;
+  background: linear-gradient(180deg, rgba(55,61,48,0.98), rgba(22,25,19,0.98)) !important;
+}
+
+#stalkerCardModal .stalker-card-identity-polished-v3995 {
+  display: grid !important;
+  grid-template-columns: 86px minmax(0, 1fr) !important;
+  gap: 14px !important;
+  align-items: center !important;
+  margin: 4px 0 12px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 14px;
+  background: rgba(0,0,0,0.18);
+}
+
+#stalkerCardModal .stalker-card-avatar-polished-v3995 {
+  width: 82px !important;
+  height: 82px !important;
+  border-radius: 16px !important;
+  border-color: rgba(215,171,107,0.48) !important;
+  background: radial-gradient(circle at 50% 35%, rgba(215,171,107,0.18), rgba(0,0,0,0.22) 72%) !important;
+}
+
+#stalkerCardModal .stalker-card-avatar-polished-v3995 img {
+  max-width: 76px !important;
+  max-height: 76px !important;
+  object-fit: contain !important;
+}
+
+#stalkerCardModal .stalker-card-identity h2 {
+  margin: 0 0 8px !important;
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+  line-height: 1.05 !important;
+  font-size: clamp(1.35rem, 6vw, 2rem) !important;
+  letter-spacing: 0.10em !important;
+}
+
+#stalkerCardModal #cardFactionBadge {
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+.card-intel-strip-v3995 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.card-intel-chip-v3995 {
+  padding: 9px 8px;
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.22);
+  min-width: 0;
+}
+
+.card-intel-chip-v3995 span {
+  display: block;
+  color: var(--text-dim);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 3px;
+}
+
+.card-intel-chip-v3995 strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
+
+#stalkerCardModal .stalker-badges-polished-v3995 {
+  gap: 8px !important;
+  margin: 10px 0 14px !important;
+}
+
+#stalkerCardModal .badge-chip-polished-v3995 {
+  border-color: rgba(215,171,107,0.30) !important;
+  background: rgba(0,0,0,0.28) !important;
+  box-shadow: inset 0 0 10px rgba(215,171,107,0.04);
+}
+
+#stalkerCardModal .stalker-card-grid-polished-v3995 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+#stalkerCardModal .card-data-cell-v3995 {
+  min-width: 0 !important;
+  border-radius: 10px !important;
+  border-color: rgba(212,221,195,0.10) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.018), transparent),
+    rgba(0,0,0,0.22) !important;
+}
+
+#stalkerCardModal .card-data-cell-v3995 strong {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+  font-size: 13px !important;
+}
+
+.card-section-label-v3995 {
+  margin: 14px 0 6px;
+  color: var(--text-dim);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+}
+
+#stalkerCardModal .stalker-card-bio-polished-v3995 {
+  margin-top: 0 !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-left: 3px solid rgba(215,171,107,0.55) !important;
+  background: rgba(0,0,0,0.24) !important;
+  overflow-wrap: anywhere;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+#stalkerCardModal .last-message-box-polished-v3995 {
+  border-radius: 10px !important;
+  border-color: rgba(212,221,195,0.12) !important;
+  background: rgba(0,0,0,0.25) !important;
+}
+
+#stalkerCardModal .card-last-message-polished-v3995 {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 460px) {
+  #stalkerCardModal .public-card-panel-polished-v3995 {
+    padding: 12px !important;
+    padding-bottom: 78px !important;
+  }
+
+  #stalkerCardModal .stalker-card-identity-polished-v3995 {
+    grid-template-columns: 68px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+
+  #stalkerCardModal .stalker-card-avatar-polished-v3995 {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  #stalkerCardModal .stalker-card-avatar-polished-v3995 img {
+    max-width: 58px !important;
+    max-height: 58px !important;
+  }
+
+  .card-intel-strip-v3995 {
+    grid-template-columns: 1fr;
+  }
+
+  #stalkerCardModal .stalker-card-grid-polished-v3995 {
+    grid-template-columns: 1fr !important;
+  }
+
+  #stalkerCardModal .public-card-panel-polished-v3995 .module-label {
+    max-width: calc(100% - 96px);
+    font-size: 10px;
+  }
+}

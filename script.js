@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3994_cloud_map_markers";
+const STORAGE_KEY = "stalkernet_pda_v3995_public_card_polish";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6091,3 +6091,147 @@ window.addEventListener("load", () => {
 
 window.saveCloudMapMarkersV3994 = saveCloudMapMarkersV3994;
 window.loadCloudMapMarkersV3994 = loadCloudMapMarkersV3994;
+
+
+
+
+// v3.9.9.5 Public Stalker Card polish
+function textOfV3995(id, fallback = "Unknown") {
+  const el = document.getElementById(id);
+  return (el?.textContent || fallback).trim() || fallback;
+}
+
+function makeCardChipV3995(label, value) {
+  const chip = document.createElement("div");
+  chip.className = "card-intel-chip-v3995";
+  chip.innerHTML = `<span>${label}</span><strong>${value}</strong>`;
+  return chip;
+}
+
+function polishStalkerCardV3995(profile = {}, fallback = {}, lastMessage = null) {
+  const modal = document.getElementById("stalkerCardModal");
+  const panel = modal?.querySelector(".stalker-card-panel");
+  if (!modal || !panel) return;
+
+  modal.classList.add("public-card-polished-v3995");
+  panel.classList.add("public-card-panel-polished-v3995");
+
+  const callsign = textOfV3995("cardCallsign", profile.callsign || fallback.callsign || "Unknown Stalker");
+  const faction = textOfV3995("cardFaction", profile.faction || fallback.faction || "Unknown");
+  const rank = textOfV3995("cardRank", profile.rank || "Unknown");
+  const status = textOfV3995("cardStatus", profile.status || "Unknown");
+  const rep = textOfV3995("cardReputation", profile.reputation || "Neutral");
+
+  panel.dataset.faction = faction.toLowerCase();
+  panel.dataset.reputation = rep.toLowerCase();
+  panel.dataset.status = status.toLowerCase();
+
+  const label = panel.querySelector(".module-label");
+  if (label) label.textContent = "PUBLIC STALKER DOSSIER";
+
+  const identity = panel.querySelector(".stalker-card-identity");
+  if (identity) identity.classList.add("stalker-card-identity-polished-v3995");
+
+  const closeBtn = document.getElementById("closeStalkerCardBtn");
+  if (closeBtn) {
+    closeBtn.textContent = "Close";
+    closeBtn.setAttribute("aria-label", "Close public stalker card");
+    closeBtn.classList.add("stalker-card-close-polished-v3995");
+  }
+
+  let intelStrip = document.getElementById("cardIntelStripV3995");
+  if (!intelStrip && identity) {
+    intelStrip = document.createElement("div");
+    intelStrip.id = "cardIntelStripV3995";
+    intelStrip.className = "card-intel-strip-v3995";
+    identity.insertAdjacentElement("afterend", intelStrip);
+  }
+
+  if (intelStrip) {
+    intelStrip.innerHTML = "";
+    intelStrip.appendChild(makeCardChipV3995("Rank", rank));
+    intelStrip.appendChild(makeCardChipV3995("Status", status));
+    intelStrip.appendChild(makeCardChipV3995("Rep", rep));
+  }
+
+  const avatar = document.getElementById("cardAvatar");
+  if (avatar) {
+    avatar.classList.add("stalker-card-avatar-polished-v3995");
+    avatar.setAttribute("title", `${callsign} faction patch`);
+  }
+
+  const badgeBox = document.getElementById("cardBadges");
+  if (badgeBox) {
+    badgeBox.classList.add("stalker-badges-polished-v3995");
+    const chips = Array.from(badgeBox.querySelectorAll("span"));
+    chips.forEach((chip, index) => {
+      chip.classList.add("badge-chip-polished-v3995");
+      chip.dataset.badgeIndex = String(index + 1);
+    });
+  }
+
+  const grid = panel.querySelector(".stalker-card-grid");
+  if (grid) {
+    grid.classList.add("stalker-card-grid-polished-v3995");
+    grid.querySelectorAll("div").forEach(cell => {
+      const labelEl = cell.querySelector("span");
+      const valueEl = cell.querySelector("strong");
+      if (!labelEl || !valueEl) return;
+
+      cell.classList.add("card-data-cell-v3995");
+      cell.dataset.cardField = labelEl.textContent.trim().toLowerCase().replace(/\s+/g, "-");
+      valueEl.title = valueEl.textContent.trim();
+    });
+  }
+
+  const bio = document.getElementById("cardBio");
+  if (bio) {
+    bio.classList.add("stalker-card-bio-polished-v3995");
+    if (!bio.previousElementSibling || bio.previousElementSibling.id !== "cardBioLabelV3995") {
+      const bioLabel = document.createElement("div");
+      bioLabel.id = "cardBioLabelV3995";
+      bioLabel.className = "card-section-label-v3995";
+      bioLabel.textContent = "PDA Note";
+      bio.insertAdjacentElement("beforebegin", bioLabel);
+    }
+  }
+
+  const lastBox = panel.querySelector(".last-message-box");
+  if (lastBox) {
+    lastBox.classList.add("last-message-box-polished-v3995");
+  }
+
+  const lastMsg = document.getElementById("cardLastMessage");
+  if (lastMsg) {
+    lastMsg.classList.add("card-last-message-polished-v3995");
+  }
+}
+
+if (typeof renderStalkerCard === "function" && !window.__renderStalkerCardPolishedV3995) {
+  window.__renderStalkerCardPolishedV3995 = true;
+  const originalRenderStalkerCardV3995 = renderStalkerCard;
+  renderStalkerCard = function(profile = {}, fallback = {}, lastMessage = null) {
+    const result = originalRenderStalkerCardV3995.apply(this, arguments);
+    setTimeout(() => polishStalkerCardV3995(profile, fallback, lastMessage), 30);
+    setTimeout(() => polishStalkerCardV3995(profile, fallback, lastMessage), 160);
+    return result;
+  };
+}
+
+window.addEventListener("load", () => {
+  setTimeout(() => polishStalkerCardV3995(), 900);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  if (
+    target.closest(".message-card") ||
+    target.closest("[data-stalker-card-user]") ||
+    target.closest("#stalkerCardModal")
+  ) {
+    setTimeout(() => polishStalkerCardV3995(), 120);
+    setTimeout(() => polishStalkerCardV3995(), 360);
+  }
+}, true);
