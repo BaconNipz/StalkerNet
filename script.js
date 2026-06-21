@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3995_public_card_polish";
+const STORAGE_KEY = "stalkernet_pda_v3996_comms_moderation_polish";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6233,5 +6233,337 @@ document.addEventListener("click", event => {
   ) {
     setTimeout(() => polishStalkerCardV3995(), 120);
     setTimeout(() => polishStalkerCardV3995(), 360);
+  }
+}, true);
+
+
+
+
+// v3.9.9.6 Comms moderation polish
+function ensureModerationStateV3996() {
+  if (!state.blockedSenders || typeof state.blockedSenders !== "object") state.blockedSenders = {};
+  if (!state.reportedMessages || typeof state.reportedMessages !== "object") state.reportedMessages = {};
+}
+
+function moderationStatusV3996(message, isError = false) {
+  const el = document.getElementById("moderationStatusV3996");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("moderation-error-v3996", !!isError);
+    el.classList.toggle("moderation-ok-v3996", !isError);
+  }
+
+  try { if (typeof setAuthStatus === "function") setAuthStatus(message, isError); } catch (error) {}
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+}
+
+function blockedCountV3996() {
+  ensureModerationStateV3996();
+  return Object.keys(state.blockedSenders || {}).length;
+}
+
+function updateModerationButtonsV3996() {
+  ensureModerationStateV3996();
+
+  const count = blockedCountV3996();
+  const modernToggle = document.getElementById("toggleBlockedUsersBtnV3996");
+  const oldToggle = document.getElementById("toggleBlockedUsersBtn");
+  const clearBtn = document.getElementById("clearBlockedUsersBtnV3996");
+
+  const label = count ? `Blocked Users (${count})` : "Blocked Users";
+  if (modernToggle) modernToggle.textContent = label;
+  if (oldToggle) oldToggle.textContent = label;
+  if (clearBtn) clearBtn.disabled = count === 0;
+}
+
+function polishMessageModerationButtonsV3996() {
+  ensureModerationStateV3996();
+
+  document.querySelectorAll("[data-message-action='report']").forEach(btn => {
+    const messageId = btn.dataset.messageId || "";
+    btn.classList.add("report-btn-v3996");
+
+    if (messageId && state.reportedMessages?.[messageId]) {
+      btn.textContent = "Reported";
+      btn.classList.add("already-reported-v3996");
+      btn.setAttribute("aria-label", "This message has already been reported");
+    } else {
+      btn.textContent = "Report Msg";
+      btn.setAttribute("aria-label", "Report this message");
+    }
+  });
+
+  document.querySelectorAll("[data-message-action='block']").forEach(btn => {
+    const senderId = btn.dataset.senderId || "";
+    btn.classList.add("block-btn-v3996");
+
+    if (senderId && state.blockedSenders?.[senderId]) {
+      btn.textContent = "Blocked";
+      btn.classList.add("already-blocked-v3996");
+      btn.setAttribute("aria-label", "Sender is blocked");
+    } else {
+      btn.textContent = "Block User";
+      btn.setAttribute("aria-label", "Block this user locally");
+    }
+  });
+
+  document.querySelectorAll(".message-actions").forEach(actions => {
+    actions.classList.add("message-actions-polished-v3996");
+  });
+
+  updateModerationButtonsV3996();
+}
+
+function renderBlockedUsersListV3996() {
+  ensureModerationStateV3996();
+
+  const list = document.getElementById("blockedUsersList");
+  if (!list) return;
+
+  const entries = Object.entries(state.blockedSenders || {});
+
+  if (!entries.length) {
+    list.innerHTML = `
+      <div class="blocked-empty-v3996">
+        <strong>No blocked users.</strong>
+        <span>Block hides future messages from that sender on this device.</span>
+      </div>
+    `;
+    updateModerationButtonsV3996();
+    return;
+  }
+
+  list.innerHTML = "";
+
+  entries.forEach(([senderId, info]) => {
+    const callsign = info?.callsign || "Unknown Stalker";
+    const date = info?.blockedAt ? new Date(info.blockedAt).toLocaleDateString() : "Unknown date";
+
+    const row = document.createElement("div");
+    row.className = "blocked-user-row blocked-user-row-polished-v3996";
+    row.innerHTML = `
+      <div class="blocked-user-info-v3996">
+        <strong>${escapeHtml(callsign)}</strong>
+        <span>Blocked ${escapeHtml(date)}</span>
+      </div>
+      <button class="tiny-btn unblock-btn-v3996" data-unblock-user-v3996="${escapeHtml(senderId)}">Unblock</button>
+    `;
+    list.appendChild(row);
+  });
+
+  list.querySelectorAll("[data-unblock-user-v3996]").forEach(btn => {
+    btn.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const senderId = btn.dataset.unblockUserV3996;
+      if (!senderId) return;
+
+      delete state.blockedSenders[senderId];
+      saveState();
+      renderBlockedUsersListV3996();
+      try { renderMessages(); } catch (error) {}
+      moderationStatusV3996("User unblocked.");
+    });
+  });
+
+  updateModerationButtonsV3996();
+}
+
+async function reportMessageV3996(messageId, senderId, callsign, text) {
+  ensureModerationStateV3996();
+
+  if (!currentUser || !db) {
+    moderationStatusV3996("Login before reporting messages.", true);
+    return false;
+  }
+
+  if (!messageId) {
+    moderationStatusV3996("Cannot report: missing message ID.", true);
+    return false;
+  }
+
+  if (state.reportedMessages[messageId]) {
+    moderationStatusV3996("You already reported this message.");
+    return true;
+  }
+
+  const reason = prompt(
+    `Report message from ${callsign || "Unknown Stalker"}?\n\nType a reason, for example:\nspam, harassment, abuse, scam, spoilers, impersonation`
+  );
+
+  if (!reason || !reason.trim()) return false;
+
+  try {
+    await db.collection("reports").add({
+      messageId,
+      channelId: "zone_broadcast",
+      senderId: senderId || "",
+      callsign: callsign || "Unknown",
+      textPreview: (text || "").slice(0, 220),
+      reason: reason.trim().slice(0, 220),
+      reporterId: currentUser.uid,
+      reporterEmail: currentUser.email || "",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      status: "open",
+      clientVersion: "v3.9.9.6"
+    });
+
+    state.reportedMessages[messageId] = {
+      callsign: callsign || "Unknown",
+      reason: reason.trim().slice(0, 220),
+      reportedAt: Date.now()
+    };
+
+    saveState();
+    polishMessageModerationButtonsV3996();
+    moderationStatusV3996("Message reported.");
+    return true;
+  } catch (error) {
+    moderationStatusV3996("Report failed: " + (error.message || "check Firebase rules."), true);
+    return false;
+  }
+}
+
+function blockSenderV3996(senderId, callsign = "this stalker") {
+  ensureModerationStateV3996();
+
+  if (!senderId) {
+    moderationStatusV3996("Cannot block: sender ID missing.", true);
+    return false;
+  }
+
+  if (state.blockedSenders[senderId]) {
+    moderationStatusV3996(`${callsign} is already blocked.`);
+    return true;
+  }
+
+  if (!confirm(`Block messages from ${callsign}? This hides future messages from them on this device only.`)) return false;
+
+  state.blockedSenders[senderId] = {
+    callsign,
+    blockedAt: Date.now()
+  };
+
+  saveState();
+  renderBlockedUsersListV3996();
+  try { renderMessages(); } catch (error) {}
+  moderationStatusV3996(`Blocked ${callsign}.`);
+  return true;
+}
+
+function clearBlockedUsersV3996() {
+  ensureModerationStateV3996();
+
+  const count = blockedCountV3996();
+  if (!count) {
+    moderationStatusV3996("No blocked users to clear.");
+    return;
+  }
+
+  if (!confirm(`Clear all ${count} blocked user${count === 1 ? "" : "s"}?`)) return;
+
+  state.blockedSenders = {};
+  saveState();
+  renderBlockedUsersListV3996();
+  try { renderMessages(); } catch (error) {}
+  moderationStatusV3996("All blocked users cleared.");
+}
+
+function toggleBlockedUsersPanelV3996() {
+  const list = document.getElementById("blockedUsersList");
+  if (!list) return;
+
+  list.classList.toggle("hidden");
+  renderBlockedUsersListV3996();
+
+  const open = !list.classList.contains("hidden");
+  moderationStatusV3996(open ? "Blocked users list opened." : "Blocked users list closed.");
+}
+
+// Override old moderation calls.
+window.reportMessageV3996 = reportMessageV3996;
+window.blockSenderV3996 = blockSenderV3996;
+
+if (typeof reportMessage === "function" && !window.__reportMessagePolishedV3996) {
+  window.__reportMessagePolishedV3996 = true;
+  reportMessage = reportMessageV3996;
+}
+
+if (typeof toggleBlockSender === "function" && !window.__toggleBlockSenderPolishedV3996) {
+  window.__toggleBlockSenderPolishedV3996 = true;
+  toggleBlockSender = blockSenderV3996;
+}
+
+if (typeof renderBlockedUsersList === "function" && !window.__renderBlockedUsersListPolishedV3996) {
+  window.__renderBlockedUsersListPolishedV3996 = true;
+  renderBlockedUsersList = renderBlockedUsersListV3996;
+}
+
+if (typeof toggleBlockedUsersPanel === "function" && !window.__toggleBlockedUsersPanelPolishedV3996) {
+  window.__toggleBlockedUsersPanelPolishedV3996 = true;
+  toggleBlockedUsersPanel = toggleBlockedUsersPanelV3996;
+}
+
+if (typeof renderMessages === "function" && !window.__renderMessagesModerationPolishedV3996) {
+  window.__renderMessagesModerationPolishedV3996 = true;
+  const originalRenderMessagesV3996 = renderMessages;
+  renderMessages = function(...args) {
+    const result = originalRenderMessagesV3996.apply(this, args);
+    setTimeout(polishMessageModerationButtonsV3996, 40);
+    setTimeout(updateModerationButtonsV3996, 80);
+    return result;
+  };
+}
+
+// Capture action buttons so the old handler does not double-run report/block.
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  const actionBtn = target.closest("[data-message-action='report'], [data-message-action='block']");
+  if (actionBtn) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    const action = actionBtn.dataset.messageAction;
+    const messageId = actionBtn.dataset.messageId || "";
+    const senderId = actionBtn.dataset.senderId || "";
+    const callsign = actionBtn.dataset.callsign || "Unknown";
+    const text = actionBtn.dataset.text || "";
+
+    if (action === "report") reportMessageV3996(messageId, senderId, callsign, text);
+    if (action === "block") blockSenderV3996(senderId, callsign);
+    return;
+  }
+
+  if (target.closest("#toggleBlockedUsersBtnV3996")) {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleBlockedUsersPanelV3996();
+    return;
+  }
+
+  if (target.closest("#clearBlockedUsersBtnV3996")) {
+    event.preventDefault();
+    event.stopPropagation();
+    clearBlockedUsersV3996();
+    return;
+  }
+}, true);
+
+window.addEventListener("load", () => {
+  ensureModerationStateV3996();
+  setTimeout(polishMessageModerationButtonsV3996, 500);
+  setTimeout(updateModerationButtonsV3996, 800);
+  setTimeout(renderBlockedUsersListV3996, 1200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#commsTab, [data-tab='commsTab'], .nav-btn, #messageList")) {
+    setTimeout(polishMessageModerationButtonsV3996, 180);
+    setTimeout(updateModerationButtonsV3996, 360);
   }
 }, true);

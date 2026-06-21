@@ -2707,3 +2707,141 @@ html.public-card-root-locked-v3974 {
     font-size: 10px;
   }
 }
+
+
+/* v3.9.9.6 Comms moderation polish */
+.moderation-panel-v3996 {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(215,171,107,0.18);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.018), transparent),
+    rgba(0,0,0,0.18);
+}
+
+.moderation-status-v3996 {
+  margin: 8px 0 10px;
+  line-height: 1.35;
+}
+
+.moderation-ok-v3996 {
+  color: var(--text-soft);
+}
+
+.moderation-error-v3996 {
+  color: #f0b6a8 !important;
+}
+
+.moderation-actions-v3996 {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.moderation-actions-v3996 .small-btn {
+  flex: 1 1 150px;
+}
+
+.blocked-users-panel-legacy-v3996 {
+  margin-top: 8px;
+}
+
+.blocked-users-panel-legacy-v3996 > #toggleBlockedUsersBtn {
+  display: none !important;
+}
+
+.blocked-users-list {
+  border-color: rgba(215,171,107,0.20) !important;
+  border-radius: 10px !important;
+}
+
+.blocked-empty-v3996 {
+  display: grid;
+  gap: 4px;
+  color: var(--text-soft);
+}
+
+.blocked-empty-v3996 strong {
+  color: var(--amber-bright);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blocked-empty-v3996 span {
+  color: var(--text-dim);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.blocked-user-row-polished-v3996 {
+  align-items: center;
+  border: 1px solid rgba(212,221,195,0.09);
+  border-radius: 8px;
+  padding: 8px;
+  background: rgba(0,0,0,0.18);
+}
+
+.blocked-user-info-v3996 {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.blocked-user-info-v3996 strong {
+  color: var(--amber-bright);
+  overflow-wrap: anywhere;
+}
+
+.blocked-user-info-v3996 span {
+  color: var(--text-dim);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.message-actions-polished-v3996 {
+  padding-top: 8px;
+  border-top: 1px solid rgba(212,221,195,0.07);
+}
+
+.report-btn-v3996,
+.block-btn-v3996 {
+  min-height: 34px;
+  border-radius: 7px !important;
+}
+
+.report-btn-v3996 {
+  border-color: rgba(215,171,107,0.28) !important;
+}
+
+.block-btn-v3996 {
+  border-color: rgba(220,110,85,0.28) !important;
+}
+
+.already-reported-v3996,
+.already-blocked-v3996 {
+  opacity: 0.72;
+  border-style: dashed !important;
+}
+
+#clearBlockedUsersBtnV3996:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 460px) {
+  .moderation-actions-v3996 {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .message-actions-polished-v3996 .tiny-btn {
+    flex: 1 1 120px;
+  }
+
+  .blocked-user-row-polished-v3996 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
