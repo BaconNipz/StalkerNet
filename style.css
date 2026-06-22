@@ -3646,3 +3646,119 @@ main > #settingsTab,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.1.1 Online / Last Seen Presence */
+#presencePanelV411 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+.presence-status-v411 {
+  margin: 6px 0 10px;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+.presence-error-v411 {
+  color: #f0b6a8 !important;
+}
+
+.presence-grid-v411 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+
+.presence-grid-v411 div {
+  min-width: 0;
+  padding: 9px 8px;
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 9px;
+  background: rgba(0,0,0,0.22);
+}
+
+.presence-grid-v411 span {
+  display: block;
+  color: var(--text-dim);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+
+.presence-grid-v411 strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.presence-online-v411 {
+  color: #b7df9a !important;
+}
+
+.presence-offline-v411 {
+  color: var(--text-dim) !important;
+}
+
+.presence-actions-v411 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.presence-actions-v411 .small-btn {
+  width: 100%;
+}
+
+.card-presence-strip-v411 {
+  margin: 8px 0 12px;
+}
+
+.card-presence-strip-v411 > div {
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(212,221,195,0.12);
+  background: rgba(0,0,0,0.22);
+}
+
+.card-presence-strip-v411 span {
+  display: block;
+  color: var(--text-dim);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 3px;
+}
+
+.card-presence-strip-v411 strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 12px;
+}
+
+.presence-online-box-v411 {
+  border-color: rgba(150,220,120,0.30) !important;
+}
+
+.presence-online-box-v411 strong {
+  color: #b7df9a !important;
+}
+
+@media (max-width: 460px) {
+  .presence-grid-v411,
+  .presence-actions-v411 {
+    grid-template-columns: 1fr !important;
+  }
+}

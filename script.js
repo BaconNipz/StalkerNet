@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v410_audio_settings_restore";
+const STORAGE_KEY = "stalkernet_pda_v411_presence";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "410");
+    url.searchParams.set("v", "411");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.1.0. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.1.1. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.0. Settings ready.";
+    status.textContent = "Current build: v4.1.1. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.0. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.1. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.0. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.1. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.0. Settings ready.";
+    status.textContent = "Current build: v4.1.1. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.0. Settings ready.";
+    status.textContent = "Current build: v4.1.1. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.1.0. Settings ready.";
+    if(st) st.textContent="Current build: v4.1.1. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "410");
+        url.searchParams.set("v", "411");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.0. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.1. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "410");
+        url.searchParams.set("v", "411");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.0. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.1. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -8667,3 +8667,333 @@ document.addEventListener("click", event => {
 
 window.ensureAudioControlsInSettingsV410 = ensureAudioControlsInSettingsV410;
 window.testAudioCueV410 = testAudioCueV410;
+
+
+
+// v4.1.1 Online / Last Seen Presence
+const STALKERNET_BUILD_V411 = "v4.1.1";
+window.__presenceHeartbeatV411 = null;
+window.__lastPresenceWriteV411 = 0;
+
+function presenceUserV411() {
+  try {
+    if (typeof currentUser !== "undefined" && currentUser) return currentUser;
+    if (typeof auth !== "undefined" && auth?.currentUser) return auth.currentUser;
+  } catch (error) {}
+  return null;
+}
+
+function presenceDbV411() {
+  try {
+    if (typeof db !== "undefined" && db) return db;
+    if (typeof firestore !== "undefined" && firestore) return firestore;
+  } catch (error) {}
+  return null;
+}
+
+function settingsHubV411() {
+  let hub = document.getElementById("settingsHubV405");
+  if (hub) return hub;
+
+  let settings = document.getElementById("settingsTab");
+  if (!settings) {
+    settings = document.createElement("section");
+    settings.id = "settingsTab";
+    settings.className = "tab-panel hidden settings-tab-v405 settings-tab-fixed-v406";
+    settings.innerHTML = `
+      <div class="section-top"><h2>Settings</h2></div>
+      <article class="module-panel settings-hub-card-v405">
+        <div class="module-label">PDA SETTINGS</div>
+        <p class="message-text">Device tools and local preferences live here.</p>
+      </article>
+      <div id="settingsHubV405" class="settings-hub-v405"></div>
+    `;
+    const main = document.querySelector("main") || document.body;
+    const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+    if (nav && nav.parentElement === main) main.insertBefore(settings, nav);
+    else main.appendChild(settings);
+  }
+
+  hub = document.getElementById("settingsHubV405");
+  if (!hub) {
+    hub = document.createElement("div");
+    hub.id = "settingsHubV405";
+    hub.className = "settings-hub-v405";
+    settings.appendChild(hub);
+  }
+
+  return hub;
+}
+
+function createPresencePanelV411() {
+  let panel = document.getElementById("presencePanelV411");
+  if (panel) return panel;
+
+  panel = document.createElement("div");
+  panel.id = "presencePanelV411";
+  panel.className = "presence-panel-v411 settings-module-v405";
+  panel.dataset.settingsOrderV405 = "15";
+  panel.innerHTML = `
+    <div class="module-label">ONLINE PRESENCE</div>
+    <p id="presenceStatusV411" class="message-text presence-status-v411">Presence waiting for login.</p>
+    <div class="presence-grid-v411">
+      <div><span>State</span><strong id="presenceStateV411">Unknown</strong></div>
+      <div><span>Last Seen</span><strong id="presenceLastSeenV411">Unknown</strong></div>
+      <div><span>Build</span><strong>${STALKERNET_BUILD_V411}</strong></div>
+    </div>
+    <div class="presence-actions-v411">
+      <button id="presenceRefreshBtnV411" class="small-btn">Refresh Presence</button>
+      <button id="presenceOfflineBtnV411" class="small-btn">Set Offline</button>
+    </div>
+  `;
+
+  return panel;
+}
+
+function installPresencePanelV411() {
+  const hub = settingsHubV411();
+  const panel = createPresencePanelV411();
+
+  if (panel.parentElement !== hub) hub.appendChild(panel);
+
+  Array.from(hub.children)
+    .sort((a, b) => Number(a.dataset.settingsOrderV405 || 99) - Number(b.dataset.settingsOrderV405 || 99))
+    .forEach(child => hub.appendChild(child));
+
+  bindPresencePanelV411();
+}
+
+function presenceStatusV411(message, isError = false) {
+  const el = document.getElementById("presenceStatusV411");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("presence-error-v411", !!isError);
+    el.classList.toggle("presence-ok-v411", !isError);
+  }
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+}
+
+function formatPresenceTimeV411(value) {
+  if (!value) return "Unknown";
+
+  let date = null;
+
+  try {
+    if (typeof value.toDate === "function") date = value.toDate();
+    else if (value.seconds) date = new Date(value.seconds * 1000);
+    else if (typeof value === "number") date = new Date(value);
+    else if (typeof value === "string") date = new Date(value);
+  } catch (error) {}
+
+  if (!date || Number.isNaN(date.getTime())) return "Unknown";
+
+  const diff = Date.now() - date.getTime();
+  if (diff < 30_000) return "Just now";
+  if (diff < 90_000) return "About 1 min ago";
+  if (diff < 60 * 60_000) return `${Math.round(diff / 60_000)} mins ago`;
+  if (diff < 24 * 60 * 60_000) return `${Math.round(diff / 60 / 60_000)} hours ago`;
+  return date.toLocaleDateString();
+}
+
+function updatePresenceUiV411(data = {}) {
+  const stateEl = document.getElementById("presenceStateV411");
+  const lastEl = document.getElementById("presenceLastSeenV411");
+
+  const online = data.online === true;
+  const lastSeen = data.lastSeen || data.lastSeenLocal || Date.now();
+
+  if (stateEl) {
+    stateEl.textContent = online ? "Online" : "Offline";
+    stateEl.classList.toggle("presence-online-v411", online);
+    stateEl.classList.toggle("presence-offline-v411", !online);
+  }
+
+  if (lastEl) lastEl.textContent = formatPresenceTimeV411(lastSeen);
+}
+
+async function writePresenceV411(online = true, showStatus = false) {
+  const user = presenceUserV411();
+  const database = presenceDbV411();
+
+  installPresencePanelV411();
+
+  if (!user) {
+    if (showStatus) presenceStatusV411("Presence failed: sign in first.", true);
+    updatePresenceUiV411({ online: false, lastSeenLocal: Date.now() });
+    return false;
+  }
+
+  if (!database?.collection) {
+    if (showStatus) presenceStatusV411("Presence failed: Firestore unavailable.", true);
+    return false;
+  }
+
+  // Avoid writing too aggressively.
+  if (online && Date.now() - window.__lastPresenceWriteV411 < 25_000 && !showStatus) return true;
+  window.__lastPresenceWriteV411 = Date.now();
+
+  try {
+    const payload = {
+      uid: user.uid,
+      ownerId: user.uid,
+      email: user.email || "",
+      online: !!online,
+      lastSeenLocal: Date.now(),
+      activeBuild: STALKERNET_BUILD_V411,
+      activeTab: document.querySelector(".nav-btn.active")?.dataset?.tab || "",
+      userAgentShort: navigator.userAgent.slice(0, 120)
+    };
+
+    if (typeof firebase !== "undefined" && firebase.firestore?.FieldValue?.serverTimestamp) {
+      payload.lastSeen = firebase.firestore.FieldValue.serverTimestamp();
+      payload.presenceUpdatedAt = firebase.firestore.FieldValue.serverTimestamp();
+    } else {
+      payload.lastSeen = new Date().toISOString();
+      payload.presenceUpdatedAt = new Date().toISOString();
+    }
+
+    await Promise.allSettled([
+      database.collection("users").doc(user.uid).set(payload, { merge: true }),
+      database.collection("profiles").doc(user.uid).set(payload, { merge: true })
+    ]);
+
+    updatePresenceUiV411({ ...payload, lastSeen: payload.lastSeenLocal });
+    if (showStatus) presenceStatusV411(online ? "Presence synced: online." : "Presence synced: offline.");
+    else presenceStatusV411(online ? "Presence online." : "Presence offline.");
+    return true;
+  } catch (error) {
+    presenceStatusV411("Presence sync failed: " + (error.message || "check rules."), true);
+    return false;
+  }
+}
+
+async function readPresenceV411(showStatus = false) {
+  const user = presenceUserV411();
+  const database = presenceDbV411();
+
+  installPresencePanelV411();
+
+  if (!user || !database?.collection) {
+    if (showStatus) presenceStatusV411("Presence unavailable until signed in.", true);
+    return false;
+  }
+
+  try {
+    const doc = await database.collection("users").doc(user.uid).get();
+    const data = doc.exists ? doc.data() : {};
+    updatePresenceUiV411(data);
+    if (showStatus) presenceStatusV411("Presence refreshed.");
+    return true;
+  } catch (error) {
+    presenceStatusV411("Presence refresh failed: " + (error.message || "check rules."), true);
+    return false;
+  }
+}
+
+function startPresenceHeartbeatV411() {
+  clearInterval(window.__presenceHeartbeatV411);
+  writePresenceV411(true, false);
+  window.__presenceHeartbeatV411 = setInterval(() => writePresenceV411(true, false), 60_000);
+}
+
+function bindPresencePanelV411() {
+  const refreshBtn = document.getElementById("presenceRefreshBtnV411");
+  const offlineBtn = document.getElementById("presenceOfflineBtnV411");
+
+  if (refreshBtn && !refreshBtn.dataset.v411Bound) {
+    refreshBtn.dataset.v411Bound = "true";
+    refreshBtn.addEventListener("click", event => {
+      event.preventDefault();
+      writePresenceV411(true, true);
+      setTimeout(() => readPresenceV411(false), 650);
+    });
+  }
+
+  if (offlineBtn && !offlineBtn.dataset.v411Bound) {
+    offlineBtn.dataset.v411Bound = "true";
+    offlineBtn.addEventListener("click", event => {
+      event.preventDefault();
+      writePresenceV411(false, true);
+    });
+  }
+}
+
+function addPresenceToStalkerCardV411(profile = {}) {
+  const modal = document.getElementById("stalkerCardModal");
+  const panel = modal?.querySelector(".stalker-card-panel");
+  if (!panel) return;
+
+  let strip = document.getElementById("cardPresenceStripV411");
+  const anchor =
+    document.getElementById("cardIntelStripV3995") ||
+    panel.querySelector(".stalker-card-grid") ||
+    panel.querySelector(".stalker-card-identity");
+
+  if (!strip) {
+    strip = document.createElement("div");
+    strip.id = "cardPresenceStripV411";
+    strip.className = "card-presence-strip-v411";
+  }
+
+  const online = profile.online === true;
+  const lastSeen = profile.lastSeen || profile.lastSeenLocal || profile.presenceUpdatedAt;
+  strip.innerHTML = `
+    <div class="${online ? "presence-online-box-v411" : "presence-offline-box-v411"}">
+      <span>${online ? "ONLINE" : "LAST SEEN"}</span>
+      <strong>${online ? "Active now" : formatPresenceTimeV411(lastSeen)}</strong>
+    </div>
+  `;
+
+  if (anchor && anchor.parentElement) {
+    anchor.insertAdjacentElement("afterend", strip);
+  } else {
+    panel.appendChild(strip);
+  }
+}
+
+if (typeof renderStalkerCard === "function" && !window.__presenceCardPatchedV411) {
+  window.__presenceCardPatchedV411 = true;
+  const originalRenderStalkerCardV411 = renderStalkerCard;
+  renderStalkerCard = function(profile = {}, fallback = {}, lastMessage = null) {
+    const result = originalRenderStalkerCardV411.apply(this, arguments);
+    setTimeout(() => addPresenceToStalkerCardV411(profile || fallback || {}), 90);
+    setTimeout(() => addPresenceToStalkerCardV411(profile || fallback || {}), 260);
+    return result;
+  };
+}
+
+window.addEventListener("beforeunload", () => {
+  try { writePresenceV411(false, false); } catch (error) {}
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") writePresenceV411(true, false);
+  else writePresenceV411(false, false);
+});
+
+window.addEventListener("load", () => {
+  installPresencePanelV411();
+  setTimeout(startPresenceHeartbeatV411, 1200);
+  setTimeout(() => readPresenceV411(false), 2200);
+
+  try {
+    if (typeof auth !== "undefined" && auth?.onAuthStateChanged && !window.__presenceAuthBoundV411) {
+      window.__presenceAuthBoundV411 = true;
+      auth.onAuthStateChanged(user => {
+        if (user) setTimeout(startPresenceHeartbeatV411, 800);
+      });
+    }
+  } catch (error) {}
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, [data-tab='settingsTab'], .nav-btn, [data-tab], .message-card")) {
+    setTimeout(installPresencePanelV411, 120);
+    setTimeout(() => writePresenceV411(true, false), 650);
+  }
+}, true);
+
+window.writePresenceV411 = writePresenceV411;
+window.readPresenceV411 = readPresenceV411;
+window.installPresencePanelV411 = installPresencePanelV411;
