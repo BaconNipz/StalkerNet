@@ -3026,3 +3026,55 @@ main > #cacheToolsPanelV3998:not(#messagesTab #cacheToolsPanelV3998) {
   width: 100% !important;
   max-width: 100% !important;
 }
+
+
+/* v4.0.2 App Install / PWA Polish */
+.install-app-panel-v402 {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid rgba(215,171,107,0.18);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.18);
+}
+
+.install-app-panel-v402.hidden,
+#installAppBtnV402.hidden {
+  display: none !important;
+}
+
+.install-status-v402 {
+  margin: 6px 0 8px;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+.install-ok-v402 {
+  color: var(--text-soft);
+}
+
+.install-error-v402 {
+  color: #f0b6a8 !important;
+}
+
+#installAppBtnV402 {
+  width: 100%;
+}
+
+body.stalkernet-standalone-v402 {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  background: #070a06;
+}
+
+body.stalkernet-standalone-v402 .phone-frame,
+body.stalkernet-standalone-v402 .pda-shell {
+  min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+}
+
+@media (display-mode: standalone) {
+  html,
+  body {
+    background: #070a06;
+    overscroll-behavior: none;
+  }
+}

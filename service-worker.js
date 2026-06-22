@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v4001-cache-inside-comms";
+const CACHE_NAME = "stalkernet-cache-v402-pwa-polish";
 
 const FILES_TO_CACHE = [
   "./",
@@ -79,5 +79,26 @@ self.addEventListener("activate", event => {
     if (self.clients && self.clients.claim) {
       await self.clients.claim();
     }
+  })());
+});
+
+
+// v4.0.2 PWA polish
+self.addEventListener("install", event => {
+  if (self.skipWaiting) self.skipWaiting();
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil((async () => {
+    const current = typeof CACHE_NAME !== "undefined" ? CACHE_NAME : "stalkernet-cache-v402-pwa-polish";
+    const keys = await caches.keys();
+
+    await Promise.all(keys.map(key => {
+      const isStalkerNet = key.startsWith("stalkernet-cache-") || key.toLowerCase().includes("stalkernet");
+      if (isStalkerNet && key !== current) return caches.delete(key);
+      return Promise.resolve(false);
+    }));
+
+    if (self.clients && self.clients.claim) await self.clients.claim();
   })());
 });

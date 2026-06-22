@@ -1,12 +1,12 @@
 {
   "name": "StalkerNet PDA",
   "short_name": "StalkerNet",
-  "description": "A handheld StalkerNet relay for Zone broadcasts, maps, field notes, and archive data.",
-  "start_url": "./",
+  "description": "A field PDA for StalkerNet: comms, jobs, map markers, archive, and stalker ID.",
+  "start_url": "./?v=402&source=pwa",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#171711",
-  "theme_color": "#171711",
+  "background_color": "#070a06",
+  "theme_color": "#0d120b",
   "orientation": "portrait",
   "icons": [
     {
@@ -20,6 +20,59 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "display_override": [
+    "standalone",
+    "minimal-ui",
+    "browser"
+  ],
+  "categories": [
+    "games",
+    "utilities"
+  ],
+  "lang": "en-AU",
+  "dir": "ltr",
+  "id": "/StalkerNet/?app=stalkernet-pda",
+  "shortcuts": [
+    {
+      "name": "Open Comms",
+      "short_name": "Comms",
+      "description": "Open StalkerNet Public Chat.",
+      "url": "./?v=402&tab=comms",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Open Jobs",
+      "short_name": "Jobs",
+      "description": "Open the local job board.",
+      "url": "./?v=402&tab=jobs",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Open Map",
+      "short_name": "Map",
+      "description": "Open the Zone map.",
+      "url": "./?v=402&tab=map",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }

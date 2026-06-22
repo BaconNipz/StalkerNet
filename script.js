@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v4001_cache_inside_comms";
+const STORAGE_KEY = "stalkernet_pda_v402_pwa_polish";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "4001");
+    url.searchParams.set("v", "402");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.0.1. Cache tools ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.0.2. Cache tools ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.1. Cache tools ready.";
+    status.textContent = "Current build: v4.0.2. Cache tools ready.";
   }
 }
 
@@ -6967,3 +6967,156 @@ document.addEventListener("click", event => {
     setTimeout(placeCachePanelInsideCommsV4001, 300);
   }
 }, true);
+
+
+
+
+// v4.0.2 App Install / PWA Polish
+const STALKERNET_BUILD_V402 = "v4.0.2";
+let deferredInstallPromptV402 = null;
+
+function isStandaloneV402() {
+  return (
+    window.matchMedia?.("(display-mode: standalone)")?.matches ||
+    window.navigator.standalone === true ||
+    document.referrer.startsWith("android-app://")
+  );
+}
+
+function installStatusV402(message, isError = false) {
+  const el = document.getElementById("installStatusV402");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("install-error-v402", !!isError);
+    el.classList.toggle("install-ok-v402", !isError);
+  }
+
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+}
+
+function updatePwaInstallPanelV402() {
+  const panel = document.getElementById("installAppPanelV402");
+  const btn = document.getElementById("installAppBtnV402");
+
+  if (!panel || !btn) return;
+
+  document.body.classList.toggle("stalkernet-standalone-v402", isStandaloneV402());
+
+  if (isStandaloneV402()) {
+    panel.classList.remove("hidden");
+    btn.classList.add("hidden");
+    installStatusV402("StalkerNet is running in installed app mode.");
+    return;
+  }
+
+  if (deferredInstallPromptV402) {
+    panel.classList.remove("hidden");
+    btn.classList.remove("hidden");
+    installStatusV402("Install StalkerNet for a cleaner full-screen PDA view.");
+    return;
+  }
+
+  // Brave/Chrome may not expose beforeinstallprompt instantly.
+  panel.classList.remove("hidden");
+  btn.classList.add("hidden");
+  installStatusV402("Install option appears in your browser menu if the button is unavailable.");
+}
+
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  deferredInstallPromptV402 = event;
+  updatePwaInstallPanelV402();
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPromptV402 = null;
+  updatePwaInstallPanelV402();
+  installStatusV402("StalkerNet installed.");
+});
+
+async function installStalkerNetV402() {
+  if (!deferredInstallPromptV402) {
+    installStatusV402("Install prompt unavailable. Use Brave menu → Add to Home screen / Install app.", true);
+    return false;
+  }
+
+  try {
+    deferredInstallPromptV402.prompt();
+    const choice = await deferredInstallPromptV402.userChoice;
+    deferredInstallPromptV402 = null;
+
+    if (choice?.outcome === "accepted") {
+      installStatusV402("Install accepted.");
+    } else {
+      installStatusV402("Install dismissed.");
+    }
+
+    updatePwaInstallPanelV402();
+    return choice?.outcome === "accepted";
+  } catch (error) {
+    installStatusV402("Install failed: " + (error.message || "use browser menu instead."), true);
+    return false;
+  }
+}
+
+function applyPwaUrlTabV402() {
+  const params = new URLSearchParams(location.search);
+  const tab = (params.get("tab") || "").toLowerCase();
+  const map = {
+    comms: "messagesTab",
+    chat: "messagesTab",
+    messages: "messagesTab",
+    map: "mapTab",
+    archive: "loreTab",
+    arc: "loreTab",
+    jobs: "tasksTab",
+    job: "tasksTab",
+    id: "idTab"
+  };
+
+  const targetId = map[tab];
+  if (!targetId) return;
+
+  const btn =
+    document.querySelector(`[data-tab="${targetId}"]`) ||
+    document.querySelector(`[data-target="${targetId}"]`) ||
+    document.querySelector(`button[aria-controls="${targetId}"]`);
+
+  if (btn) {
+    setTimeout(() => btn.click(), 450);
+    setTimeout(() => btn.click(), 1100);
+  }
+}
+
+function bindPwaInstallV402() {
+  const btn = document.getElementById("installAppBtnV402");
+  if (btn && !btn.dataset.v402Bound) {
+    btn.dataset.v402Bound = "true";
+    btn.addEventListener("click", event => {
+      event.preventDefault();
+      installStalkerNetV402();
+    });
+  }
+
+  updatePwaInstallPanelV402();
+
+  const cacheStatus = document.getElementById("cacheStatusV3998");
+  if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
+    cacheStatus.textContent = "Current build: v4.0.2. Cache tools ready.";
+  }
+}
+
+window.addEventListener("load", () => {
+  setTimeout(bindPwaInstallV402, 300);
+  setTimeout(bindPwaInstallV402, 1200);
+  setTimeout(applyPwaUrlTabV402, 650);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#installAppPanelV402, #cacheToolsPanelV3998, .nav-btn, [data-tab]")) {
+    setTimeout(bindPwaInstallV402, 160);
+  }
+}, true);
+
+window.installStalkerNetV402 = installStalkerNetV402;
