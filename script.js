@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3998_cache_polish";
+const STORAGE_KEY = "stalkernet_pda_v3999_cache_layout_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6826,3 +6826,55 @@ document.addEventListener("click", event => {
 
 window.clearOldStalkerNetCachesV3998 = clearOldStalkerNetCachesV3998;
 window.refreshStalkerNetAppV3998 = refreshStalkerNetAppV3998;
+
+
+
+
+// v3.9.9.9 Cache panel layout fix
+// Earlier cache panel could become a second layout column. Move it back into the PDA stack.
+function placeCachePanelSafelyV3999() {
+  const panel = document.getElementById("cacheToolsPanelV3998");
+  if (!panel) return;
+
+  panel.classList.add("cache-tools-panel-contained-v3999");
+
+  const appShell =
+    document.querySelector(".pda-screen") ||
+    document.querySelector(".pda-shell") ||
+    document.querySelector(".app-panel") ||
+    document.querySelector("main");
+
+  const tabNav =
+    document.querySelector(".bottom-nav") ||
+    document.querySelector(".tab-nav") ||
+    document.querySelector("nav");
+
+  // If the cache panel is currently a direct child of main and has become a second column,
+  // move it near the bottom of the PDA content, before bottom nav if possible.
+  if (appShell && panel.parentElement !== appShell) {
+    if (tabNav && tabNav.parentElement === appShell) {
+      appShell.insertBefore(panel, tabNav);
+    } else {
+      appShell.appendChild(panel);
+    }
+  }
+
+  // If it is already inside main but after the main app wrapper, pin it to full width.
+  panel.style.gridColumn = "1 / -1";
+  panel.style.width = "100%";
+  panel.style.maxWidth = "100%";
+}
+
+window.addEventListener("load", () => {
+  setTimeout(placeCachePanelSafelyV3999, 50);
+  setTimeout(placeCachePanelSafelyV3999, 350);
+  setTimeout(placeCachePanelSafelyV3999, 1200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+  if (target.closest(".nav-btn, [data-tab], #cacheToolsPanelV3998")) {
+    setTimeout(placeCachePanelSafelyV3999, 120);
+  }
+}, true);

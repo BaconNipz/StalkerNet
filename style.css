@@ -2895,3 +2895,46 @@ html.public-card-root-locked-v3974 {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* v3.9.9.9 Cache panel layout fix */
+html,
+body {
+  overflow-x: hidden !important;
+}
+
+body > #cacheToolsPanelV3998,
+main > #cacheToolsPanelV3998,
+#cacheToolsPanelV3998.cache-tools-panel-contained-v3999 {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  grid-column: 1 / -1 !important;
+  flex: 0 0 auto !important;
+  align-self: stretch !important;
+  box-sizing: border-box !important;
+  float: none !important;
+  position: relative !important;
+  right: auto !important;
+  left: auto !important;
+  margin: 14px 0 84px !important;
+}
+
+main,
+.app,
+.app-shell,
+.pda-shell,
+.pda-screen {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+#cacheToolsPanelV3998 .cache-actions-v3998 {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+}
+
+#cacheToolsPanelV3998 .small-btn {
+  width: 100% !important;
+}
