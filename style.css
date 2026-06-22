@@ -2845,3 +2845,10 @@ html.public-card-root-locked-v3974 {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+/* v3.9.9.7 Block button card suppression support */
+#stalkerCardModal.hidden,
+#stalkerCardBackdrop.hidden {
+  display: none !important;
+}

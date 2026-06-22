@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3996_comms_moderation_polish";
+const STORAGE_KEY = "stalkernet_pda_v3997_block_card_suppression";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6565,5 +6565,124 @@ document.addEventListener("click", event => {
   if (target?.closest?.("#commsTab, [data-tab='commsTab'], .nav-btn, #messageList")) {
     setTimeout(polishMessageModerationButtonsV3996, 180);
     setTimeout(updateModerationButtonsV3996, 360);
+  }
+}, true);
+
+
+
+
+// v3.9.9.7 Prevent Stalker Card opening after Block User
+window.__stalkerCardSuppressedUntilV3997 = 0;
+
+function suppressStalkerCardsV3997(ms = 2600) {
+  window.__stalkerCardSuppressedUntilV3997 = Date.now() + ms;
+}
+
+function isStalkerCardSuppressedV3997() {
+  return Date.now() < (window.__stalkerCardSuppressedUntilV3997 || 0);
+}
+
+function closeAnyStalkerCardV3997() {
+  const modal = document.getElementById("stalkerCardModal");
+  const backdrop = document.getElementById("stalkerCardBackdrop");
+
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+  }
+
+  if (backdrop) {
+    backdrop.classList.add("hidden");
+    backdrop.setAttribute("aria-hidden", "true");
+  }
+
+  document.body?.classList?.remove("stalker-card-open", "modal-open", "no-scroll");
+  document.documentElement?.classList?.remove("stalker-card-open", "modal-open", "no-scroll");
+}
+
+// Wrap public card rendering so suppression beats any delayed row click.
+if (typeof renderStalkerCard === "function" && !window.__renderStalkerCardSuppressedV3997) {
+  window.__renderStalkerCardSuppressedV3997 = true;
+  const originalRenderStalkerCardV3997 = renderStalkerCard;
+  renderStalkerCard = function(...args) {
+    if (isStalkerCardSuppressedV3997()) {
+      closeAnyStalkerCardV3997();
+      return null;
+    }
+
+    return originalRenderStalkerCardV3997.apply(this, args);
+  };
+}
+
+// Wrap old card-click handler too, if this build has one.
+if (typeof handleStalkerCardClick === "function" && !window.__handleStalkerCardClickSuppressedV3997) {
+  window.__handleStalkerCardClickSuppressedV3997 = true;
+  const originalHandleStalkerCardClickV3997 = handleStalkerCardClick;
+  handleStalkerCardClick = function(...args) {
+    if (isStalkerCardSuppressedV3997()) {
+      closeAnyStalkerCardV3997();
+      return null;
+    }
+
+    return originalHandleStalkerCardClickV3997.apply(this, args);
+  };
+}
+
+// Wrap the polished block function.
+if (typeof blockSenderV3996 === "function" && !window.__blockSenderSuppressCardV3997) {
+  window.__blockSenderSuppressCardV3997 = true;
+  const originalBlockSenderV3997 = blockSenderV3996;
+  blockSenderV3996 = function(...args) {
+    suppressStalkerCardsV3997(3200);
+    const result = originalBlockSenderV3997.apply(this, args);
+    suppressStalkerCardsV3997(3200);
+    setTimeout(closeAnyStalkerCardV3997, 40);
+    setTimeout(closeAnyStalkerCardV3997, 220);
+    setTimeout(closeAnyStalkerCardV3997, 700);
+    return result;
+  };
+
+  window.blockSenderV3996 = blockSenderV3996;
+  window.blockSenderV3997 = blockSenderV3996;
+}
+
+// Capture block clicks before message/card row handlers see them.
+["pointerdown", "touchstart", "mousedown", "click"].forEach(eventName => {
+  document.addEventListener(eventName, event => {
+    const target = event.target;
+    if (!target || !target.closest) return;
+
+    const blockBtn = target.closest(
+      "[data-message-action='block'], .block-btn-v3996, [aria-label='Block this user locally']"
+    );
+
+    if (!blockBtn) return;
+
+    suppressStalkerCardsV3997(3400);
+
+    // For click specifically, allow the polished moderation handler to run,
+    // but stop parent message-card handlers from also opening the dossier.
+    if (eventName === "click") {
+      setTimeout(closeAnyStalkerCardV3997, 40);
+      setTimeout(closeAnyStalkerCardV3997, 180);
+      setTimeout(closeAnyStalkerCardV3997, 600);
+    }
+  }, true);
+});
+
+// Final safety net: if a card appears during the suppression window, close it.
+function watcherCloseSuppressedCardV3997() {
+  if (!isStalkerCardSuppressedV3997()) return;
+  closeAnyStalkerCardV3997();
+}
+
+window.addEventListener("load", () => {
+  setInterval(watcherCloseSuppressedCardV3997, 150);
+});
+
+document.addEventListener("click", event => {
+  if (isStalkerCardSuppressedV3997()) {
+    setTimeout(closeAnyStalkerCardV3997, 30);
+    setTimeout(closeAnyStalkerCardV3997, 200);
   }
 }, true);

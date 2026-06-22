@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3996-comms-moderation-polish";
+const CACHE_NAME = "stalkernet-cache-v3997-block-card-suppression";
 
 const FILES_TO_CACHE = [
   "./",
