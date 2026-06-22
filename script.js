@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3997_block_card_suppression";
+const STORAGE_KEY = "stalkernet_pda_v3998_cache_polish";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6686,3 +6686,143 @@ document.addEventListener("click", event => {
     setTimeout(closeAnyStalkerCardV3997, 200);
   }
 }, true);
+
+
+
+
+// v3.9.9.8 Offline / Cache Polish
+const STALKERNET_BUILD_V3998 = "v3.9.9.8";
+const STALKERNET_CACHE_PREFIX_V3998 = "stalkernet-cache-";
+
+function cacheStatusV3998(message, isError = false) {
+  const el = document.getElementById("cacheStatusV3998");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("cache-error-v3998", !!isError);
+    el.classList.toggle("cache-ok-v3998", !isError);
+  }
+
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+  console[isError ? "warn" : "log"](message);
+}
+
+async function clearOldStalkerNetCachesV3998() {
+  if (!("caches" in window)) {
+    cacheStatusV3998("Cache API not available in this browser.", true);
+    return false;
+  }
+
+  try {
+    const names = await caches.keys();
+    let cleared = 0;
+
+    await Promise.all(names.map(name => {
+      const isStalkerNetCache =
+        name.startsWith(STALKERNET_CACHE_PREFIX_V3998) ||
+        name.toLowerCase().includes("stalkernet");
+
+      const isCurrent = name === "stalkernet-cache-v3998-cache-polish";
+
+      if (isStalkerNetCache && !isCurrent) {
+        cleared++;
+        return caches.delete(name);
+      }
+
+      return Promise.resolve(false);
+    }));
+
+    cacheStatusV3998(
+      cleared
+        ? `Cleared ${cleared} old StalkerNet cache${cleared === 1 ? "" : "s"}.`
+        : "No old StalkerNet caches found."
+    );
+
+    return true;
+  } catch (error) {
+    cacheStatusV3998("Cache cleanup failed: " + (error.message || "unknown error."), true);
+    return false;
+  }
+}
+
+async function refreshStalkerNetAppV3998() {
+  cacheStatusV3998("Refreshing app files...");
+
+  try {
+    if ("serviceWorker" in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map(reg => {
+        if (reg.scope && reg.scope.includes(location.origin)) {
+          return reg.update().catch(() => null);
+        }
+        return Promise.resolve(null);
+      }));
+    }
+
+    await clearOldStalkerNetCachesV3998();
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("v", "3998");
+    url.searchParams.set("refresh", Date.now().toString(36));
+    window.location.href = url.toString();
+
+    return true;
+  } catch (error) {
+    cacheStatusV3998("Refresh failed: " + (error.message || "try manual reload."), true);
+    return false;
+  }
+}
+
+function bindCacheToolsV3998() {
+  const refreshBtn = document.getElementById("refreshAppBtnV3998");
+  const clearBtn = document.getElementById("clearOldCachesBtnV3998");
+
+  if (refreshBtn && !refreshBtn.dataset.v3998Bound) {
+    refreshBtn.dataset.v3998Bound = "true";
+    refreshBtn.addEventListener("click", event => {
+      event.preventDefault();
+      refreshStalkerNetAppV3998();
+    });
+  }
+
+  if (clearBtn && !clearBtn.dataset.v3998Bound) {
+    clearBtn.dataset.v3998Bound = "true";
+    clearBtn.addEventListener("click", async event => {
+      event.preventDefault();
+      await clearOldStalkerNetCachesV3998();
+    });
+  }
+
+  const buildLabel = document.getElementById("buildLabelV3998");
+  if (buildLabel) buildLabel.textContent = STALKERNET_BUILD_V3998;
+}
+
+async function claimFreshServiceWorkerV3998() {
+  try {
+    if (!("serviceWorker" in navigator)) return;
+
+    const reg = await navigator.serviceWorker.ready;
+    if (reg?.waiting) {
+      reg.waiting.postMessage({ type: "SKIP_WAITING", build: STALKERNET_BUILD_V3998 });
+    }
+
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: "STALKERNET_BUILD", build: STALKERNET_BUILD_V3998 });
+    }
+  } catch (error) {}
+}
+
+window.addEventListener("load", () => {
+  setTimeout(bindCacheToolsV3998, 400);
+  setTimeout(claimFreshServiceWorkerV3998, 900);
+  setTimeout(() => cacheStatusV3998("Current build: v3.9.9.8. Cache tools ready."), 1200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#cacheToolsPanelV3998")) {
+    setTimeout(bindCacheToolsV3998, 100);
+  }
+}, true);
+
+window.clearOldStalkerNetCachesV3998 = clearOldStalkerNetCachesV3998;
+window.refreshStalkerNetAppV3998 = refreshStalkerNetAppV3998;

@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v3997-block-card-suppression";
+const CACHE_NAME = "stalkernet-cache-v3998-cache-polish";
 
 const FILES_TO_CACHE = [
   "./",
@@ -54,4 +54,30 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request))
   );
+});
+
+
+// v3.9.9.8 service worker cache polish
+self.addEventListener("message", event => {
+  const data = event.data || {};
+  if (data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil((async () => {
+    const current = typeof CACHE_NAME !== "undefined" ? CACHE_NAME : "stalkernet-cache-v3998-cache-polish";
+    const keys = await caches.keys();
+
+    await Promise.all(keys.map(key => {
+      const isStalkerNet = key.startsWith("stalkernet-cache-") || key.toLowerCase().includes("stalkernet");
+      if (isStalkerNet && key !== current) return caches.delete(key);
+      return Promise.resolve(false);
+    }));
+
+    if (self.clients && self.clients.claim) {
+      await self.clients.claim();
+    }
+  })());
 });
