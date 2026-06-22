@@ -3078,3 +3078,80 @@ body.stalkernet-standalone-v402 .pda-shell {
     overscroll-behavior: none;
   }
 }
+
+
+/* v4.0.3 Audio Cue Settings */
+.audio-settings-panel-v403 {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid rgba(215,171,107,0.18);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.18);
+}
+
+.audio-status-v403 {
+  margin: 6px 0 8px;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+.audio-ok-v403 {
+  color: var(--text-soft);
+}
+
+.audio-error-v403 {
+  color: #f0b6a8 !important;
+}
+
+.audio-actions-v403 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.audio-actions-v403 .small-btn,
+#toggleAudioBtnV403,
+#testAudioBtnV403 {
+  width: 100%;
+}
+
+#toggleAudioBtnV403.audio-disabled-v403 {
+  opacity: 0.72;
+  border-style: dashed !important;
+}
+
+.audio-volume-row-v403 {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 48px;
+  gap: 8px;
+  align-items: center;
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.audio-volume-row-v403 input[type="range"] {
+  width: 100%;
+  accent-color: #d7ab6b;
+}
+
+.audio-volume-row-v403 strong {
+  color: var(--amber-bright);
+  text-align: right;
+}
+
+@media (max-width: 460px) {
+  .audio-actions-v403 {
+    grid-template-columns: 1fr;
+  }
+
+  .audio-volume-row-v403 {
+    grid-template-columns: 1fr;
+  }
+
+  .audio-volume-row-v403 strong {
+    text-align: left;
+  }
+}

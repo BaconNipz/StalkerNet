@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v402_pwa_polish";
+const STORAGE_KEY = "stalkernet_pda_v403_audio_settings";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "402");
+    url.searchParams.set("v", "403");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.0.2. Cache tools ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.0.3. Cache tools ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.2. Cache tools ready.";
+    status.textContent = "Current build: v4.0.3. Cache tools ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.2. Cache tools ready.";
+    cacheStatus.textContent = "Current build: v4.0.3. Cache tools ready.";
   }
 }
 
@@ -7120,3 +7120,272 @@ document.addEventListener("click", event => {
 }, true);
 
 window.installStalkerNetV402 = installStalkerNetV402;
+
+
+
+
+// v4.0.3 Audio Cue Settings
+const AUDIO_SETTINGS_KEY_V403 = "stalkernet_audio_settings_v403";
+const AUDIO_DEFAULTS_V403 = {
+  enabled: true,
+  volume: 0.45
+};
+
+function loadAudioSettingsV403() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(AUDIO_SETTINGS_KEY_V403) || "null");
+    return {
+      ...AUDIO_DEFAULTS_V403,
+      ...(saved && typeof saved === "object" ? saved : {})
+    };
+  } catch (error) {
+    return { ...AUDIO_DEFAULTS_V403 };
+  }
+}
+
+function saveAudioSettingsV403(settings) {
+  const clean = {
+    enabled: !!settings.enabled,
+    volume: Math.min(1, Math.max(0, Number(settings.volume)))
+  };
+  localStorage.setItem(AUDIO_SETTINGS_KEY_V403, JSON.stringify(clean));
+  return clean;
+}
+
+window.audioSettingsV403 = loadAudioSettingsV403();
+
+function audioStatusV403(message, isError = false) {
+  const el = document.getElementById("audioStatusV403");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("audio-error-v403", !!isError);
+    el.classList.toggle("audio-ok-v403", !isError);
+  }
+
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+}
+
+function updateAudioControlsV403() {
+  const settings = window.audioSettingsV403 || loadAudioSettingsV403();
+  const toggle = document.getElementById("toggleAudioBtnV403");
+  const slider = document.getElementById("audioVolumeSliderV403");
+  const value = document.getElementById("audioVolumeValueV403");
+
+  if (toggle) {
+    toggle.textContent = settings.enabled ? "Audio Cues: On" : "Audio Cues: Off";
+    toggle.classList.toggle("audio-disabled-v403", !settings.enabled);
+  }
+
+  if (slider) slider.value = String(Math.round(settings.volume * 100));
+  if (value) value.textContent = `${Math.round(settings.volume * 100)}%`;
+
+  audioStatusV403(settings.enabled ? "Audio cues enabled for this device." : "Audio cues muted for this device.");
+}
+
+function setAudioEnabledV403(enabled) {
+  window.audioSettingsV403 = saveAudioSettingsV403({
+    ...(window.audioSettingsV403 || AUDIO_DEFAULTS_V403),
+    enabled
+  });
+  updateAudioControlsV403();
+}
+
+function setAudioVolumeV403(volume) {
+  window.audioSettingsV403 = saveAudioSettingsV403({
+    ...(window.audioSettingsV403 || AUDIO_DEFAULTS_V403),
+    volume
+  });
+  updateAudioControlsV403();
+}
+
+function patchAudioElementV403(audio) {
+  if (!audio || audio.dataset.v403AudioPatched) return audio;
+  audio.dataset.v403AudioPatched = "true";
+
+  try {
+    audio.volume = window.audioSettingsV403.volume;
+    audio.muted = !window.audioSettingsV403.enabled;
+  } catch (error) {}
+
+  const originalPlay = audio.play?.bind(audio);
+  if (typeof originalPlay === "function") {
+    audio.play = function(...args) {
+      const settings = window.audioSettingsV403 || loadAudioSettingsV403();
+
+      try {
+        this.volume = settings.volume;
+        this.muted = !settings.enabled;
+      } catch (error) {}
+
+      if (!settings.enabled || settings.volume <= 0) {
+        return Promise.resolve();
+      }
+
+      try {
+        return originalPlay(...args);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    };
+  }
+
+  return audio;
+}
+
+function patchAllAudioElementsV403() {
+  document.querySelectorAll("audio").forEach(patchAudioElementV403);
+
+  // Patch common global audio objects if earlier builds use them.
+  [
+    "bootAudio",
+    "clickAudio",
+    "uiClickAudio",
+    "pdaClickAudio",
+    "stalkerNetBootAudio"
+  ].forEach(name => {
+    try {
+      if (window[name]) patchAudioElementV403(window[name]);
+    } catch (error) {}
+  });
+}
+
+// Wrap common cue functions if present.
+[
+  "playClick",
+  "playClickSound",
+  "playUiClick",
+  "playBootSound",
+  "playBootCue",
+  "playAudioCue",
+  "playPdaSound"
+].forEach(name => {
+  try {
+    if (typeof window[name] === "function" && !window[`__${name}AudioSettingsPatchedV403`]) {
+      window[`__${name}AudioSettingsPatchedV403`] = true;
+      const original = window[name];
+      window[name] = function(...args) {
+        const settings = window.audioSettingsV403 || loadAudioSettingsV403();
+        if (!settings.enabled || settings.volume <= 0) return null;
+        return original.apply(this, args);
+      };
+    }
+  } catch (error) {}
+});
+
+function beepFallbackV403() {
+  const settings = window.audioSettingsV403 || loadAudioSettingsV403();
+
+  if (!settings.enabled || settings.volume <= 0) {
+    audioStatusV403("Audio cues are muted.");
+    return;
+  }
+
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) {
+      audioStatusV403("Audio test unavailable in this browser.", true);
+      return;
+    }
+
+    const ctx = new AudioContextClass();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    oscillator.type = "square";
+    oscillator.frequency.value = 520;
+    gain.gain.value = 0.035 * settings.volume;
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    oscillator.start();
+    setTimeout(() => {
+      oscillator.stop();
+      ctx.close?.();
+    }, 95);
+
+    audioStatusV403("Test cue played.");
+  } catch (error) {
+    audioStatusV403("Audio test failed: " + (error.message || "browser blocked playback."), true);
+  }
+}
+
+function testAudioCueV403() {
+  patchAllAudioElementsV403();
+
+  const settings = window.audioSettingsV403 || loadAudioSettingsV403();
+
+  if (!settings.enabled || settings.volume <= 0) {
+    audioStatusV403("Audio cues are muted.");
+    return;
+  }
+
+  const audio =
+    document.querySelector("audio[data-click]") ||
+    document.querySelector("audio#clickAudio") ||
+    document.querySelector("audio#uiClickAudio") ||
+    document.querySelector("audio");
+
+  if (audio) {
+    try {
+      patchAudioElementV403(audio);
+      audio.currentTime = 0;
+      const result = audio.play();
+      if (result?.catch) result.catch(() => beepFallbackV403());
+      audioStatusV403("Test cue played.");
+      return;
+    } catch (error) {}
+  }
+
+  beepFallbackV403();
+}
+
+function bindAudioSettingsV403() {
+  patchAllAudioElementsV403();
+
+  const toggle = document.getElementById("toggleAudioBtnV403");
+  const test = document.getElementById("testAudioBtnV403");
+  const slider = document.getElementById("audioVolumeSliderV403");
+
+  if (toggle && !toggle.dataset.v403Bound) {
+    toggle.dataset.v403Bound = "true";
+    toggle.addEventListener("click", event => {
+      event.preventDefault();
+      const current = window.audioSettingsV403 || loadAudioSettingsV403();
+      setAudioEnabledV403(!current.enabled);
+    });
+  }
+
+  if (test && !test.dataset.v403Bound) {
+    test.dataset.v403Bound = "true";
+    test.addEventListener("click", event => {
+      event.preventDefault();
+      testAudioCueV403();
+    });
+  }
+
+  if (slider && !slider.dataset.v403Bound) {
+    slider.dataset.v403Bound = "true";
+    slider.addEventListener("input", event => {
+      setAudioVolumeV403(Number(event.target.value) / 100);
+    });
+  }
+
+  updateAudioControlsV403();
+}
+
+window.addEventListener("load", () => {
+  setTimeout(bindAudioSettingsV403, 250);
+  setTimeout(bindAudioSettingsV403, 1200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#audioSettingsPanelV403, #cacheToolsPanelV3998, .nav-btn, [data-tab]")) {
+    setTimeout(bindAudioSettingsV403, 120);
+  }
+}, true);
+
+window.setAudioEnabledV403 = setAudioEnabledV403;
+window.setAudioVolumeV403 = setAudioVolumeV403;
+window.testAudioCueV403 = testAudioCueV403;
