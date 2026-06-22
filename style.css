@@ -2938,3 +2938,46 @@ main,
 #cacheToolsPanelV3998 .small-btn {
   width: 100% !important;
 }
+
+
+/* v4.0.0 Remove cache-panel void spacing */
+#commsTab.comms-tight-before-cache-v4000 {
+  padding-bottom: 10px !important;
+  margin-bottom: 0 !important;
+}
+
+#commsTab.comms-tight-before-cache-v4000 .message-list {
+  margin-bottom: 10px !important;
+  padding-bottom: 0 !important;
+}
+
+#commsTab.comms-tight-before-cache-v4000 .input-row {
+  margin-bottom: 0 !important;
+}
+
+#cacheToolsPanelV3998.cache-tools-panel-tight-v4000 {
+  margin-top: 10px !important;
+  margin-bottom: 18px !important;
+  padding: 10px !important;
+}
+
+#cacheToolsPanelV3998.cache-tools-panel-tight-v4000 .cache-status-v3998 {
+  margin: 6px 0 8px !important;
+}
+
+#cacheToolsPanelV3998.cache-tools-panel-tight-v4000 .cache-actions-v3998 {
+  gap: 8px !important;
+}
+
+.pda-screen:has(#cacheToolsPanelV3998.cache-tools-panel-tight-v4000),
+.pda-shell:has(#cacheToolsPanelV3998.cache-tools-panel-tight-v4000),
+main:has(#cacheToolsPanelV3998.cache-tools-panel-tight-v4000) {
+  gap: 10px !important;
+}
+
+@media (max-width: 460px) {
+  #cacheToolsPanelV3998.cache-tools-panel-tight-v4000 {
+    margin-top: 8px !important;
+    margin-bottom: 12px !important;
+  }
+}

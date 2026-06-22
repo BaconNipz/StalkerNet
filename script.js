@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v3999_cache_layout_fix";
+const STORAGE_KEY = "stalkernet_pda_v4000_cache_space_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6876,5 +6876,52 @@ document.addEventListener("click", event => {
   if (!target || !target.closest) return;
   if (target.closest(".nav-btn, [data-tab], #cacheToolsPanelV3998")) {
     setTimeout(placeCachePanelSafelyV3999, 120);
+  }
+}, true);
+
+
+
+
+// v4.0.0 Cache panel spacing fix
+function tightenCachePanelSpacingV4000() {
+  const panel = document.getElementById("cacheToolsPanelV3998");
+  if (!panel) return;
+
+  panel.classList.add("cache-tools-panel-tight-v4000");
+
+  const activePanel = document.querySelector(".tab-panel.active, .tab-panel:not(.hidden)");
+  const commsPanel = document.getElementById("commsTab");
+
+  if (commsPanel && !commsPanel.classList.contains("hidden")) {
+    commsPanel.classList.add("comms-tight-before-cache-v4000");
+  }
+
+  // Keep cache tools inside the PDA shell, above the bottom nav.
+  const nav =
+    document.querySelector(".bottom-nav") ||
+    document.querySelector(".tab-nav") ||
+    document.querySelector("nav");
+
+  const shell =
+    document.querySelector(".pda-screen") ||
+    document.querySelector(".pda-shell") ||
+    document.querySelector("main");
+
+  if (shell && nav && nav.parentElement === shell && panel.parentElement === shell) {
+    shell.insertBefore(panel, nav);
+  }
+}
+
+window.addEventListener("load", () => {
+  setTimeout(tightenCachePanelSpacingV4000, 80);
+  setTimeout(tightenCachePanelSpacingV4000, 500);
+  setTimeout(tightenCachePanelSpacingV4000, 1500);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.(".nav-btn, [data-tab], #cacheToolsPanelV3998, #commsTab")) {
+    setTimeout(tightenCachePanelSpacingV4000, 120);
+    setTimeout(tightenCachePanelSpacingV4000, 420);
   }
 }, true);
