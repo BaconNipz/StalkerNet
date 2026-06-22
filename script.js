@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v403_audio_settings";
+const STORAGE_KEY = "stalkernet_pda_v404_audio_panel_force";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "403");
+    url.searchParams.set("v", "404");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.0.3. Cache tools ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.0.4. Cache tools ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.3. Cache tools ready.";
+    status.textContent = "Current build: v4.0.4. Cache tools ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.3. Cache tools ready.";
+    cacheStatus.textContent = "Current build: v4.0.4. Cache tools ready.";
   }
 }
 
@@ -7389,3 +7389,136 @@ document.addEventListener("click", event => {
 window.setAudioEnabledV403 = setAudioEnabledV403;
 window.setAudioVolumeV403 = setAudioVolumeV403;
 window.testAudioCueV403 = testAudioCueV403;
+
+
+
+
+// v4.0.4 Force-visible Audio Cues panel
+function ensureAudioPanelVisibleV404() {
+  let panel = document.getElementById("audioSettingsPanelV403");
+  const cachePanel = document.getElementById("cacheToolsPanelV3998");
+  const installPanel = document.getElementById("installAppPanelV402");
+  const cacheActions = cachePanel?.querySelector(".cache-actions-v3998");
+
+  if (!cachePanel) return;
+
+  if (!panel) {
+    panel = document.createElement("div");
+    panel.id = "audioSettingsPanelV403";
+    panel.className = "audio-settings-panel-v403 audio-settings-panel-forced-v404";
+    panel.innerHTML = `
+      <div class="module-label">AUDIO CUES</div>
+      <p id="audioStatusV403" class="message-text audio-status-v403">Audio cues are local to this device.</p>
+      <div class="audio-actions-v403">
+        <button id="toggleAudioBtnV403" class="small-btn">Audio Cues: On</button>
+        <button id="testAudioBtnV403" class="small-btn">Test Cue</button>
+      </div>
+      <label class="audio-volume-row-v403" for="audioVolumeSliderV403">
+        <span>Volume</span>
+        <input id="audioVolumeSliderV403" type="range" min="0" max="100" value="45" />
+        <strong id="audioVolumeValueV403">45%</strong>
+      </label>
+    `;
+  }
+
+  panel.classList.remove("hidden");
+  panel.classList.add("audio-settings-panel-forced-v404");
+
+  // Put it after App Install if installed mode is showing, otherwise before cache buttons.
+  if (installPanel && installPanel.parentElement === cachePanel) {
+    installPanel.insertAdjacentElement("afterend", panel);
+  } else if (cacheActions && cacheActions.parentElement === cachePanel) {
+    cacheActions.insertAdjacentElement("beforebegin", panel);
+  } else {
+    cachePanel.appendChild(panel);
+  }
+
+  const cacheStatus = document.getElementById("cacheStatusV3998");
+  if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
+    cacheStatus.textContent = "Current build: v4.0.4. Cache tools ready.";
+  }
+
+  try {
+    if (typeof bindAudioSettingsV403 === "function") bindAudioSettingsV403();
+    else {
+      const toggle = document.getElementById("toggleAudioBtnV403");
+      const test = document.getElementById("testAudioBtnV403");
+      const slider = document.getElementById("audioVolumeSliderV403");
+      const value = document.getElementById("audioVolumeValueV403");
+
+      const key = "stalkernet_audio_settings_v403";
+      const load = () => {
+        try { return { enabled: true, volume: 0.45, ...JSON.parse(localStorage.getItem(key) || "{}") }; }
+        catch (error) { return { enabled: true, volume: 0.45 }; }
+      };
+      const save = settings => localStorage.setItem(key, JSON.stringify(settings));
+      const update = () => {
+        const s = load();
+        if (toggle) toggle.textContent = s.enabled ? "Audio Cues: On" : "Audio Cues: Off";
+        if (slider) slider.value = String(Math.round(Number(s.volume || 0.45) * 100));
+        if (value) value.textContent = `${Math.round(Number(s.volume || 0.45) * 100)}%`;
+      };
+
+      if (toggle && !toggle.dataset.v404Bound) {
+        toggle.dataset.v404Bound = "true";
+        toggle.addEventListener("click", () => {
+          const s = load();
+          s.enabled = !s.enabled;
+          save(s);
+          update();
+        });
+      }
+
+      if (slider && !slider.dataset.v404Bound) {
+        slider.dataset.v404Bound = "true";
+        slider.addEventListener("input", () => {
+          const s = load();
+          s.volume = Number(slider.value) / 100;
+          save(s);
+          update();
+        });
+      }
+
+      if (test && !test.dataset.v404Bound) {
+        test.dataset.v404Bound = "true";
+        test.addEventListener("click", () => {
+          const s = load();
+          if (!s.enabled) return;
+          try {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AC();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = "square";
+            osc.frequency.value = 520;
+            gain.gain.value = 0.035 * Number(s.volume || 0.45);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            setTimeout(() => {
+              osc.stop();
+              ctx.close?.();
+            }, 90);
+          } catch (error) {}
+        });
+      }
+
+      update();
+    }
+  } catch (error) {}
+}
+
+window.addEventListener("load", () => {
+  setTimeout(ensureAudioPanelVisibleV404, 50);
+  setTimeout(ensureAudioPanelVisibleV404, 350);
+  setTimeout(ensureAudioPanelVisibleV404, 1200);
+  setTimeout(ensureAudioPanelVisibleV404, 2400);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#cacheToolsPanelV3998, #installAppPanelV402, .nav-btn, [data-tab]")) {
+    setTimeout(ensureAudioPanelVisibleV404, 120);
+    setTimeout(ensureAudioPanelVisibleV404, 450);
+  }
+}, true);

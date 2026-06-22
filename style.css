@@ -3155,3 +3155,50 @@ body.stalkernet-standalone-v402 .pda-shell {
     text-align: left;
   }
 }
+
+
+/* v4.0.4 Force-visible Audio Cues panel */
+#cacheToolsPanelV3998 #audioSettingsPanelV403.audio-settings-panel-forced-v404,
+#audioSettingsPanelV403.audio-settings-panel-forced-v404 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 10px 0 !important;
+  padding: 10px !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: rgba(0,0,0,0.18) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+#audioSettingsPanelV403 .audio-actions-v403 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+#audioSettingsPanelV403 .small-btn {
+  width: 100% !important;
+}
+
+#audioSettingsPanelV403 .audio-volume-row-v403 {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) 52px !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+#audioSettingsPanelV403 .audio-volume-row-v403 input[type="range"] {
+  width: 100% !important;
+  accent-color: #d7ab6b;
+}
+
+@media (max-width: 460px) {
+  #audioSettingsPanelV403 .audio-actions-v403,
+  #audioSettingsPanelV403 .audio-volume-row-v403 {
+    grid-template-columns: 1fr !important;
+  }
+}

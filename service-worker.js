@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v403-audio-settings";
+const CACHE_NAME = "stalkernet-cache-v404-audio-panel-force";
 
 const FILES_TO_CACHE = [
   "./",
