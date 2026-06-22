@@ -3305,3 +3305,128 @@ nav:has(.settings-nav-v405) {
 #messagesTab > #installAppPanelV402 {
   display: none !important;
 }
+
+
+/* v4.0.6 Settings tab layout fix */
+html,
+body {
+  overflow-x: hidden !important;
+}
+
+main,
+.pda-screen,
+.pda-shell,
+.phone-frame {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+.tab-panel-fixed-v406,
+.tab-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  grid-column: 1 / -1 !important;
+  flex: 0 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+.tab-panel.hidden,
+.tab-panel-fixed-v406.hidden {
+  display: none !important;
+}
+
+.tab-panel.active,
+.tab-panel-fixed-v406.active {
+  display: block !important;
+}
+
+#settingsTab.settings-tab-fixed-v406 {
+  display: none;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-bottom: 116px !important;
+  overflow-x: hidden !important;
+}
+
+#settingsTab.settings-tab-fixed-v406.active {
+  display: block !important;
+}
+
+.bottom-nav,
+.tab-nav,
+nav {
+  width: 100% !important;
+  max-width: 100% !important;
+  grid-column: 1 / -1 !important;
+  flex: 0 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+.bottom-nav:has(.settings-nav-fixed-v406),
+.tab-nav:has(.settings-nav-fixed-v406),
+nav:has(.settings-nav-fixed-v406) {
+  display: grid !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+}
+
+.settings-nav-fixed-v406 {
+  min-width: 0 !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.settings-nav-fixed-v406 span {
+  display: block;
+  font-size: 0.86rem !important;
+  letter-spacing: 0.12em !important;
+}
+
+.settings-nav-fixed-v406 small {
+  display: block;
+  font-size: 0.64rem !important;
+  line-height: 1.1 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#settingsTab .settings-hub-v405,
+#settingsTab .settings-hub-card-v405,
+#settingsTab .settings-module-v405,
+#settingsTab #audioSettingsPanelV403,
+#settingsTab #installAppPanelV402,
+#settingsTab #cacheToolsPanelV3998 {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Stop settings tools from creating a second column anywhere else. */
+body > #settingsTab,
+main > #settingsTab,
+.pda-screen > #settingsTab,
+.pda-shell > #settingsTab {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  float: none !important;
+}
+
+@media (max-width: 460px) {
+  .bottom-nav:has(.settings-nav-fixed-v406),
+  .tab-nav:has(.settings-nav-fixed-v406),
+  nav:has(.settings-nav-fixed-v406) {
+    gap: 4px !important;
+  }
+
+  .settings-nav-fixed-v406 span {
+    font-size: 0.74rem !important;
+  }
+
+  .settings-nav-fixed-v406 small {
+    font-size: 0.55rem !important;
+  }
+}

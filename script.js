@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v405_settings_area";
+const STORAGE_KEY = "stalkernet_pda_v406_settings_layout_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "405");
+    url.searchParams.set("v", "406");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.0.5. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.0.6. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.5. Settings ready.";
+    status.textContent = "Current build: v4.0.6. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.5. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.0.6. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.5. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.0.6. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.5. Settings ready.";
+    status.textContent = "Current build: v4.0.6. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7720,3 +7720,151 @@ document.addEventListener("click", event => {
 
 window.setupSettingsAreaV405 = setupSettingsAreaV405;
 window.activateTabV405 = activateTabV405;
+
+
+
+
+// v4.0.6 Settings tab layout fix
+function getPdaMainV406() {
+  return (
+    document.querySelector(".pda-screen") ||
+    document.querySelector(".pda-shell") ||
+    document.querySelector(".phone-frame main") ||
+    document.querySelector("main") ||
+    document.body
+  );
+}
+
+function fixSettingsLayoutV406() {
+  const settingsTab = document.getElementById("settingsTab");
+  const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+  const main = getPdaMainV406();
+
+  if (!settingsTab || !main) return;
+
+  settingsTab.classList.add("settings-tab-fixed-v406");
+
+  // Move Settings into the same parent as the other tab panels, before nav if possible.
+  const knownPanel =
+    document.getElementById("messagesTab") ||
+    document.getElementById("mapTab") ||
+    document.getElementById("loreTab") ||
+    document.getElementById("tasksTab") ||
+    document.getElementById("idTab");
+
+  const panelParent = knownPanel?.parentElement || main;
+
+  if (settingsTab.parentElement !== panelParent) {
+    if (nav && nav.parentElement === panelParent) panelParent.insertBefore(settingsTab, nav);
+    else panelParent.appendChild(settingsTab);
+  }
+
+  // Ensure nav stays after panels, not beside them.
+  if (nav && nav.parentElement === panelParent && nav.nextElementSibling) {
+    panelParent.appendChild(nav);
+  }
+
+  // Ensure Settings nav button exists and is compact.
+  let settingsBtn = document.querySelector('[data-tab="settingsTab"]');
+  if (!settingsBtn && nav) {
+    settingsBtn = document.createElement("button");
+    settingsBtn.className = "nav-btn settings-nav-v405 settings-nav-fixed-v406";
+    settingsBtn.dataset.tab = "settingsTab";
+    settingsBtn.innerHTML = "<span>SET</span><small>Settings</small>";
+    nav.appendChild(settingsBtn);
+  }
+
+  if (settingsBtn) {
+    settingsBtn.classList.add("settings-nav-fixed-v406");
+    settingsBtn.innerHTML = "<span>SET</span><small>Settings</small>";
+  }
+
+  // Make sure panel classes are sane.
+  document.querySelectorAll(".tab-panel").forEach(panel => {
+    panel.classList.add("tab-panel-fixed-v406");
+  });
+
+  // Move settings modules into settings hub if needed.
+  try {
+    if (typeof moveCurrentToolsIntoSettingsV405 === "function") moveCurrentToolsIntoSettingsV405();
+  } catch (error) {}
+
+  const status = document.getElementById("cacheStatusV3998");
+  if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
+    status.textContent = "Current build: v4.0.6. Settings ready.";
+  }
+}
+
+function activateTabFixedV406(tabId) {
+  fixSettingsLayoutV406();
+
+  const panels = Array.from(document.querySelectorAll(".tab-panel"));
+  const buttons = Array.from(document.querySelectorAll("[data-tab]"));
+
+  panels.forEach(panel => {
+    const active = panel.id === tabId;
+    panel.classList.toggle("active", active);
+    panel.classList.toggle("hidden", !active);
+    panel.style.display = active ? "" : "none";
+  });
+
+  buttons.forEach(btn => {
+    const active = btn.dataset.tab === tabId;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-selected", active ? "true" : "false");
+  });
+
+  if (tabId === "settingsTab") {
+    setTimeout(fixSettingsLayoutV406, 50);
+    setTimeout(() => {
+      try {
+        if (typeof moveCurrentToolsIntoSettingsV405 === "function") moveCurrentToolsIntoSettingsV405();
+      } catch (error) {}
+    }, 120);
+  }
+}
+
+// Capture all tab clicks so the layout cannot show two screens side-by-side.
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  const tabButton = target.closest("[data-tab]");
+  if (!tabButton) return;
+
+  const tabId = tabButton.dataset.tab;
+  if (!tabId) return;
+
+  if (document.getElementById(tabId)) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    activateTabFixedV406(tabId);
+  }
+}, true);
+
+window.addEventListener("load", () => {
+  setTimeout(fixSettingsLayoutV406, 50);
+  setTimeout(fixSettingsLayoutV406, 300);
+  setTimeout(fixSettingsLayoutV406, 900);
+  setTimeout(fixSettingsLayoutV406, 1800);
+
+  // If the app accidentally boots with two active panels, keep Comms unless a URL asks for Settings.
+  setTimeout(() => {
+    const params = new URLSearchParams(location.search);
+    const requested = (params.get("tab") || "").toLowerCase();
+    if (requested === "settings" || requested === "set") activateTabFixedV406("settingsTab");
+    else if (!document.querySelector(".tab-panel.active")) activateTabFixedV406("messagesTab");
+  }, 450);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, .nav-btn, [data-tab]")) {
+    setTimeout(fixSettingsLayoutV406, 80);
+    setTimeout(fixSettingsLayoutV406, 350);
+  }
+}, true);
+
+window.fixSettingsLayoutV406 = fixSettingsLayoutV406;
+window.activateTabFixedV406 = activateTabFixedV406;
