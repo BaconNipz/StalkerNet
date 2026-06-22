@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v409_settings_reappear_fix";
+const STORAGE_KEY = "stalkernet_pda_v410_audio_settings_restore";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "409");
+    url.searchParams.set("v", "410");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.0.9. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.1.0. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.9. Settings ready.";
+    status.textContent = "Current build: v4.1.0. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.9. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.0. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.9. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.0. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.9. Settings ready.";
+    status.textContent = "Current build: v4.1.0. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.9. Settings ready.";
+    status.textContent = "Current build: v4.1.0. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.0.9. Settings ready.";
+    if(st) st.textContent="Current build: v4.1.0. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "409");
+        url.searchParams.set("v", "410");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.0.9. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.0. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "409");
+        url.searchParams.set("v", "410");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.0.9. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.0. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -8416,3 +8416,254 @@ document.addEventListener("click", event => {
 }, true);
 
 window.finalSettingsCommsCleanupV409 = finalSettingsCommsCleanupV409;
+
+
+
+
+// v4.1.0 Restore Audio Controls inside Settings only
+const AUDIO_SETTINGS_KEY_V410 = "stalkernet_audio_settings_v403";
+
+function getSettingsHubV410() {
+  let settings = document.getElementById("settingsTab");
+  if (!settings) {
+    settings = document.createElement("section");
+    settings.id = "settingsTab";
+    settings.className = "tab-panel hidden settings-tab-v405 settings-tab-fixed-v406";
+    settings.innerHTML = `
+      <div class="section-top"><h2>Settings</h2></div>
+      <article class="module-panel settings-hub-card-v405">
+        <div class="module-label">PDA SETTINGS</div>
+        <p class="message-text">Device tools and local preferences live here.</p>
+      </article>
+      <div id="settingsHubV405" class="settings-hub-v405"></div>
+    `;
+    const main = document.querySelector("main") || document.body;
+    const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+    if (nav && nav.parentElement === main) main.insertBefore(settings, nav);
+    else main.appendChild(settings);
+  }
+
+  let hub = document.getElementById("settingsHubV405");
+  if (!hub) {
+    hub = document.createElement("div");
+    hub.id = "settingsHubV405";
+    hub.className = "settings-hub-v405";
+    settings.appendChild(hub);
+  }
+
+  return hub;
+}
+
+function loadAudioSettingsV410() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(AUDIO_SETTINGS_KEY_V410) || "null");
+    return {
+      enabled: saved?.enabled !== false,
+      volume: Number.isFinite(Number(saved?.volume)) ? Number(saved.volume) : 0.5
+    };
+  } catch (error) {
+    return { enabled: true, volume: 0.5 };
+  }
+}
+
+function saveAudioSettingsV410(settings) {
+  const clean = {
+    enabled: !!settings.enabled,
+    volume: Math.min(1, Math.max(0, Number(settings.volume)))
+  };
+  localStorage.setItem(AUDIO_SETTINGS_KEY_V410, JSON.stringify(clean));
+  window.audioSettingsV403 = clean;
+  return clean;
+}
+
+function ensureAudioControlsInSettingsV410() {
+  const hub = getSettingsHubV410();
+  let audio = document.getElementById("audioSettingsPanelV403");
+
+  if (!audio) {
+    audio = document.createElement("div");
+    audio.id = "audioSettingsPanelV403";
+    audio.className = "audio-settings-panel-v403 audio-settings-only-v410 settings-module-v405";
+    audio.innerHTML = `
+      <div class="module-label">AUDIO CUES</div>
+      <p id="audioStatusV403" class="message-text audio-status-v403">Audio cues are local to this device.</p>
+      <div class="audio-actions-v403">
+        <button id="toggleAudioBtnV403" class="small-btn">Audio Cues: On</button>
+        <button id="testAudioBtnV403" class="small-btn">Test Cue</button>
+      </div>
+      <label class="audio-volume-row-v403" for="audioVolumeSliderV403">
+        <span>Volume</span>
+        <input id="audioVolumeSliderV403" type="range" min="0" max="100" value="50" />
+        <strong id="audioVolumeValueV403">50%</strong>
+      </label>
+    `;
+  }
+
+  audio.classList.remove("hidden");
+  audio.classList.add("audio-settings-only-v410", "settings-module-v405");
+  audio.dataset.settingsOrderV405 = "10";
+
+  if (audio.parentElement !== hub) {
+    hub.appendChild(audio);
+  }
+
+  // Remove accidental Comms copies, but do not remove the real Settings panel.
+  const comms = document.getElementById("messagesTab") || document.getElementById("commsTab");
+  if (comms) {
+    comms.querySelectorAll(".audio-settings-panel-v403, #audioSettingsPanelV403").forEach(panel => {
+      if (panel !== audio) panel.remove();
+    });
+  }
+
+  bindAudioControlsV410();
+  sortSettingsModulesV410();
+}
+
+function sortSettingsModulesV410() {
+  const hub = getSettingsHubV410();
+  Array.from(hub.children)
+    .sort((a, b) => Number(a.dataset.settingsOrderV405 || 99) - Number(b.dataset.settingsOrderV405 || 99))
+    .forEach(child => hub.appendChild(child));
+}
+
+function audioStatusV410(message, isError = false) {
+  const el = document.getElementById("audioStatusV403");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("audio-error-v403", !!isError);
+    el.classList.toggle("audio-ok-v403", !isError);
+  }
+
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+}
+
+function updateAudioControlsV410() {
+  const settings = loadAudioSettingsV410();
+  const toggle = document.getElementById("toggleAudioBtnV403");
+  const slider = document.getElementById("audioVolumeSliderV403");
+  const value = document.getElementById("audioVolumeValueV403");
+
+  if (toggle) {
+    toggle.textContent = settings.enabled ? "Audio Cues: On" : "Audio Cues: Off";
+    toggle.classList.toggle("audio-disabled-v403", !settings.enabled);
+  }
+
+  if (slider) slider.value = String(Math.round(settings.volume * 100));
+  if (value) value.textContent = `${Math.round(settings.volume * 100)}%`;
+
+  audioStatusV410(settings.enabled ? "Audio cues enabled for this device." : "Audio cues muted for this device.");
+}
+
+function patchAudioPlaybackV410() {
+  const settings = loadAudioSettingsV410();
+
+  document.querySelectorAll("audio").forEach(audio => {
+    try {
+      audio.volume = settings.volume;
+      audio.muted = !settings.enabled || settings.volume <= 0;
+    } catch (error) {}
+  });
+}
+
+function testAudioCueV410() {
+  const settings = loadAudioSettingsV410();
+  if (!settings.enabled || settings.volume <= 0) {
+    audioStatusV410("Audio cues are muted.");
+    return;
+  }
+
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) {
+      audioStatusV410("Audio test unavailable in this browser.", true);
+      return;
+    }
+
+    const ctx = new AC();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "square";
+    osc.frequency.value = 520;
+    gain.gain.value = 0.035 * settings.volume;
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+
+    setTimeout(() => {
+      osc.stop();
+      ctx.close?.();
+    }, 95);
+
+    audioStatusV410("Test cue played.");
+  } catch (error) {
+    audioStatusV410("Audio test failed: " + (error.message || "browser blocked playback."), true);
+  }
+}
+
+function bindAudioControlsV410() {
+  const toggle = document.getElementById("toggleAudioBtnV403");
+  const test = document.getElementById("testAudioBtnV403");
+  const slider = document.getElementById("audioVolumeSliderV403");
+
+  if (toggle && !toggle.dataset.v410Bound) {
+    toggle.dataset.v410Bound = "true";
+    toggle.addEventListener("click", event => {
+      event.preventDefault();
+      const settings = loadAudioSettingsV410();
+      saveAudioSettingsV410({ ...settings, enabled: !settings.enabled });
+      patchAudioPlaybackV410();
+      updateAudioControlsV410();
+    });
+  }
+
+  if (test && !test.dataset.v410Bound) {
+    test.dataset.v410Bound = "true";
+    test.addEventListener("click", event => {
+      event.preventDefault();
+      testAudioCueV410();
+    });
+  }
+
+  if (slider && !slider.dataset.v410Bound) {
+    slider.dataset.v410Bound = "true";
+    slider.addEventListener("input", event => {
+      const settings = loadAudioSettingsV410();
+      saveAudioSettingsV410({ ...settings, volume: Number(event.target.value) / 100 });
+      patchAudioPlaybackV410();
+      updateAudioControlsV410();
+    });
+  }
+
+  updateAudioControlsV410();
+  patchAudioPlaybackV410();
+}
+
+// Override the v4.0.9 muted helper with a safe version that creates Settings audio.
+window.ensureAudioPanelVisibleV404 = function() {
+  ensureAudioControlsInSettingsV410();
+};
+
+const oldFinalSettingsCommsCleanupV409 = window.finalSettingsCommsCleanupV409;
+window.finalSettingsCommsCleanupV409 = function(...args) {
+  if (typeof oldFinalSettingsCommsCleanupV409 === "function") {
+    try { oldFinalSettingsCommsCleanupV409.apply(this, args); } catch (error) {}
+  }
+  ensureAudioControlsInSettingsV410();
+};
+
+window.addEventListener("load", () => {
+  [80, 350, 900, 1800, 3200].forEach(t => setTimeout(ensureAudioControlsInSettingsV410, t));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, [data-tab='settingsTab'], .settings-nav-v405, .settings-nav-fixed-v406, .nav-btn")) {
+    setTimeout(ensureAudioControlsInSettingsV410, 80);
+    setTimeout(ensureAudioControlsInSettingsV410, 350);
+  }
+}, true);
+
+window.ensureAudioControlsInSettingsV410 = ensureAudioControlsInSettingsV410;
+window.testAudioCueV410 = testAudioCueV410;

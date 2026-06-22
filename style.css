@@ -3591,3 +3591,58 @@ main > #settingsTab,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.1.0 Restore Audio Controls in Settings */
+#settingsTab #audioSettingsPanelV403.audio-settings-only-v410,
+#settingsTab .audio-settings-panel-v403.audio-settings-only-v410 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+#settingsTab #audioSettingsPanelV403 .audio-actions-v403 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+#settingsTab #audioSettingsPanelV403 .small-btn {
+  width: 100% !important;
+}
+
+#settingsTab #audioSettingsPanelV403 .audio-volume-row-v403 {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) 52px !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+#settingsTab #audioSettingsPanelV403 .audio-volume-row-v403 input[type="range"] {
+  width: 100% !important;
+  accent-color: #d7ab6b;
+}
+
+#messagesTab #audioSettingsPanelV403,
+#messagesTab .audio-settings-panel-v403,
+#commsTab #audioSettingsPanelV403,
+#commsTab .audio-settings-panel-v403 {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+@media (max-width:460px){
+  #settingsTab #audioSettingsPanelV403 .audio-actions-v403,
+  #settingsTab #audioSettingsPanelV403 .audio-volume-row-v403 {
+    grid-template-columns: 1fr !important;
+  }
+}
