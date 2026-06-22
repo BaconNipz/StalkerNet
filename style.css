@@ -3202,3 +3202,106 @@ body.stalkernet-standalone-v402 .pda-shell {
     grid-template-columns: 1fr !important;
   }
 }
+
+
+/* v4.0.5 Settings Area */
+.settings-tab-v405 {
+  padding-bottom: 112px !important;
+}
+
+.settings-hub-card-v405 {
+  margin-bottom: 12px;
+}
+
+.settings-hub-v405 {
+  display: grid;
+  gap: 12px;
+}
+
+.settings-module-v405 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+#settingsTab #audioSettingsPanelV403,
+#settingsTab #installAppPanelV402,
+#settingsTab #cacheToolsPanelV3998 {
+  display: block !important;
+  position: relative !important;
+  float: none !important;
+  grid-column: auto !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.018), transparent),
+    rgba(0,0,0,0.18) !important;
+}
+
+#settingsTab #installAppPanelV402.hidden {
+  display: block !important;
+}
+
+#settingsTab #installAppBtnV402.hidden {
+  display: none !important;
+}
+
+#settingsTab .cache-actions-v3998,
+#settingsTab .audio-actions-v403 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+}
+
+#settingsTab .small-btn {
+  width: 100% !important;
+}
+
+.settings-nav-v405 span {
+  letter-spacing: 0.14em;
+}
+
+.bottom-nav:has(.settings-nav-v405),
+.tab-nav:has(.settings-nav-v405),
+nav:has(.settings-nav-v405) {
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+@media (max-width: 520px) {
+  .bottom-nav:has(.settings-nav-v405),
+  .tab-nav:has(.settings-nav-v405),
+  nav:has(.settings-nav-v405) {
+    gap: 6px !important;
+  }
+
+  .settings-nav-v405 span {
+    font-size: 0.88em;
+  }
+
+  .settings-nav-v405 small {
+    font-size: 0.66em;
+  }
+}
+
+@media (max-width: 460px) {
+  #settingsTab .cache-actions-v3998,
+  #settingsTab .audio-actions-v403,
+  #settingsTab .audio-volume-row-v403 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Keep old Comms area clean after panels move. */
+#messagesTab > #cacheToolsPanelV3998,
+#messagesTab > #audioSettingsPanelV403,
+#messagesTab > #installAppPanelV402 {
+  display: none !important;
+}

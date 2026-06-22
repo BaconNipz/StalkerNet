@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v404_audio_panel_force";
+const STORAGE_KEY = "stalkernet_pda_v405_settings_area";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "404");
+    url.searchParams.set("v", "405");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.0.4. Cache tools ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.0.5. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.4. Cache tools ready.";
+    status.textContent = "Current build: v4.0.5. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.4. Cache tools ready.";
+    cacheStatus.textContent = "Current build: v4.0.5. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.4. Cache tools ready.";
+    cacheStatus.textContent = "Current build: v4.0.5. Settings ready.";
   }
 
   try {
@@ -7522,3 +7522,201 @@ document.addEventListener("click", event => {
     setTimeout(ensureAudioPanelVisibleV404, 450);
   }
 }, true);
+
+
+
+
+// v4.0.5 Settings Area
+// Moves Audio Cues, App Install, and Cache Maintenance into a proper Settings tab.
+const STALKERNET_BUILD_V405 = "v4.0.5";
+
+function settingsStatusV405(message) {
+  console.log(message);
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+}
+
+function ensureSettingsTabV405() {
+  let settingsTab = document.getElementById("settingsTab");
+
+  if (!settingsTab) {
+    settingsTab = document.createElement("section");
+    settingsTab.id = "settingsTab";
+    settingsTab.className = "tab-panel hidden settings-tab-v405";
+    settingsTab.innerHTML = `
+      <div class="section-top"><h2>Settings</h2></div>
+      <article class="module-panel settings-hub-card-v405">
+        <div class="module-label">PDA SETTINGS</div>
+        <p class="message-text">Device tools and local preferences live here. Future settings should be added to this tab instead of crowding other screens.</p>
+      </article>
+      <div id="settingsHubV405" class="settings-hub-v405"></div>
+    `;
+
+    const main = document.querySelector("main") || document.querySelector(".pda-screen") || document.body;
+    const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+    if (nav && nav.parentElement === main) main.insertBefore(settingsTab, nav);
+    else main.appendChild(settingsTab);
+  }
+
+  let hub = document.getElementById("settingsHubV405");
+  if (!hub) {
+    hub = document.createElement("div");
+    hub.id = "settingsHubV405";
+    hub.className = "settings-hub-v405";
+    settingsTab.appendChild(hub);
+  }
+
+  settingsTab.classList.add("settings-tab-v405");
+  return { settingsTab, hub };
+}
+
+function ensureSettingsNavV405() {
+  const existing = document.querySelector('[data-tab="settingsTab"]');
+  if (existing) {
+    existing.classList.add("settings-nav-v405");
+    if (!existing.querySelector("small")) {
+      existing.innerHTML = "<span>SET</span><small>Settings</small>";
+    }
+    return existing;
+  }
+
+  const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+  if (!nav) return null;
+
+  const btn = document.createElement("button");
+  btn.className = "nav-btn settings-nav-v405";
+  btn.dataset.tab = "settingsTab";
+  btn.innerHTML = "<span>SET</span><small>Settings</small>";
+  nav.appendChild(btn);
+  return btn;
+}
+
+function movePanelToSettingsV405(panel, title, order = 99) {
+  if (!panel) return;
+
+  const { hub } = ensureSettingsTabV405();
+
+  panel.classList.add("settings-module-v405");
+  panel.dataset.settingsOrderV405 = String(order);
+
+  // Ensure each moved panel has a friendly module label if it lost one.
+  const label = panel.querySelector(".module-label");
+  if (label && title) label.textContent = title;
+
+  if (panel.parentElement !== hub) {
+    hub.appendChild(panel);
+  }
+
+  // Sort modules by order.
+  Array.from(hub.children)
+    .sort((a, b) => Number(a.dataset.settingsOrderV405 || 99) - Number(b.dataset.settingsOrderV405 || 99))
+    .forEach(child => hub.appendChild(child));
+}
+
+function moveCurrentToolsIntoSettingsV405() {
+  const { hub } = ensureSettingsTabV405();
+
+  const audio = document.getElementById("audioSettingsPanelV403");
+  const install = document.getElementById("installAppPanelV402");
+  const cache = document.getElementById("cacheToolsPanelV3998");
+
+  // If audio panel does not exist yet, ask the force-fix function to create it.
+  try {
+    if (!audio && typeof ensureAudioPanelVisibleV404 === "function") ensureAudioPanelVisibleV404();
+  } catch (error) {}
+
+  movePanelToSettingsV405(document.getElementById("audioSettingsPanelV403"), "AUDIO CUES", 10);
+  movePanelToSettingsV405(document.getElementById("installAppPanelV402"), "APP INSTALL", 20);
+  movePanelToSettingsV405(document.getElementById("cacheToolsPanelV3998"), "CACHE MAINTENANCE", 30);
+
+  // Remove any old cache panel margin that was only for Comms.
+  const cachePanel = document.getElementById("cacheToolsPanelV3998");
+  if (cachePanel) {
+    cachePanel.classList.remove(
+      "cache-tools-panel-inside-comms-v4001",
+      "cache-tools-panel-tight-v4000",
+      "cache-tools-panel-contained-v3999"
+    );
+    cachePanel.classList.add("cache-tools-panel-settings-v405");
+    cachePanel.style.gridColumn = "";
+    cachePanel.style.width = "";
+    cachePanel.style.maxWidth = "";
+    cachePanel.style.marginBottom = "";
+  }
+
+  const status = document.getElementById("cacheStatusV3998");
+  if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
+    status.textContent = "Current build: v4.0.5. Settings ready.";
+  }
+
+  // Keep old binders alive after moving DOM.
+  try { if (typeof bindAudioSettingsV403 === "function") bindAudioSettingsV403(); } catch (error) {}
+  try { if (typeof bindPwaInstallV402 === "function") bindPwaInstallV402(); } catch (error) {}
+  try { if (typeof bindCacheToolsV3998 === "function") bindCacheToolsV3998(); } catch (error) {}
+}
+
+function activateTabV405(tabId) {
+  const panels = Array.from(document.querySelectorAll(".tab-panel"));
+  const buttons = Array.from(document.querySelectorAll("[data-tab]"));
+
+  panels.forEach(panel => {
+    const active = panel.id === tabId;
+    panel.classList.toggle("active", active);
+    panel.classList.toggle("hidden", !active);
+  });
+
+  buttons.forEach(btn => {
+    const active = btn.dataset.tab === tabId;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-selected", active ? "true" : "false");
+  });
+
+  if (tabId === "settingsTab") {
+    setTimeout(moveCurrentToolsIntoSettingsV405, 40);
+    setTimeout(moveCurrentToolsIntoSettingsV405, 300);
+  }
+}
+
+// Capture settings nav clicks before older tab code ignores the new tab.
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (!target || !target.closest) return;
+
+  const settingsBtn = target.closest('[data-tab="settingsTab"]');
+  if (settingsBtn) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    activateTabV405("settingsTab");
+    return;
+  }
+}, true);
+
+function setupSettingsAreaV405() {
+  ensureSettingsTabV405();
+  ensureSettingsNavV405();
+  moveCurrentToolsIntoSettingsV405();
+
+  // If opened with shortcut.
+  const params = new URLSearchParams(location.search);
+  const tab = (params.get("tab") || "").toLowerCase();
+  if (tab === "settings" || tab === "set") {
+    setTimeout(() => activateTabV405("settingsTab"), 300);
+    setTimeout(() => activateTabV405("settingsTab"), 900);
+  }
+}
+
+window.addEventListener("load", () => {
+  setTimeout(setupSettingsAreaV405, 150);
+  setTimeout(setupSettingsAreaV405, 700);
+  setTimeout(setupSettingsAreaV405, 1600);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.(".nav-btn, [data-tab], #settingsTab, #settingsHubV405")) {
+    setTimeout(setupSettingsAreaV405, 160);
+  }
+}, true);
+
+window.setupSettingsAreaV405 = setupSettingsAreaV405;
+window.activateTabV405 = activateTabV405;
