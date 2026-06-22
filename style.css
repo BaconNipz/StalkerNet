@@ -2981,3 +2981,48 @@ main:has(#cacheToolsPanelV3998.cache-tools-panel-tight-v4000) {
     margin-bottom: 12px !important;
   }
 }
+
+
+/* v4.0.1 Cache panel belongs inside Comms, not near the bottom nav */
+#messagesTab #cacheToolsPanelV3998.cache-tools-panel-inside-comms-v4001 {
+  display: block !important;
+  position: relative !important;
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  grid-column: auto !important;
+  margin: 12px 0 0 !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+}
+
+#messagesTab #cacheToolsPanelV3998.cache-tools-panel-inside-comms-v4001 .cache-status-v3998 {
+  margin: 6px 0 8px !important;
+  line-height: 1.35 !important;
+}
+
+#messagesTab #cacheToolsPanelV3998.cache-tools-panel-inside-comms-v4001 .cache-actions-v3998 {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+}
+
+#messagesTab #cacheToolsPanelV3998.cache-tools-panel-inside-comms-v4001 .small-btn {
+  width: 100% !important;
+}
+
+#messagesTab {
+  padding-bottom: 112px !important;
+}
+
+#messagesTab .input-row {
+  margin-bottom: 0 !important;
+}
+
+.phone-frame > #cacheToolsPanelV3998,
+.pda-shell > #cacheToolsPanelV3998:not(#messagesTab #cacheToolsPanelV3998),
+main > #cacheToolsPanelV3998:not(#messagesTab #cacheToolsPanelV3998) {
+  width: 100% !important;
+  max-width: 100% !important;
+}

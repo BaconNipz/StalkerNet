@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v4000_cache_space_fix";
+const STORAGE_KEY = "stalkernet_pda_v4001_cache_inside_comms";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "3998");
+    url.searchParams.set("v", "4001");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v3.9.9.8. Cache tools ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.0.1. Cache tools ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6923,5 +6923,47 @@ document.addEventListener("click", event => {
   if (target?.closest?.(".nav-btn, [data-tab], #cacheToolsPanelV3998, #commsTab")) {
     setTimeout(tightenCachePanelSpacingV4000, 120);
     setTimeout(tightenCachePanelSpacingV4000, 420);
+  }
+}, true);
+
+
+
+
+// v4.0.1 Put Cache Maintenance inside Comms tab and keep it above bottom nav
+function placeCachePanelInsideCommsV4001() {
+  const panel = document.getElementById("cacheToolsPanelV3998");
+  const comms = document.getElementById("messagesTab");
+  const inputRow = document.querySelector("#messagesTab .input-row");
+
+  if (!panel || !comms || !inputRow) return;
+
+  panel.classList.add("cache-tools-panel-inside-comms-v4001");
+  panel.style.gridColumn = "";
+  panel.style.width = "";
+  panel.style.maxWidth = "";
+  panel.style.marginBottom = "";
+
+  if (panel.parentElement !== comms || panel.previousElementSibling !== inputRow) {
+    inputRow.insertAdjacentElement("afterend", panel);
+  }
+
+  const status = document.getElementById("cacheStatusV3998");
+  if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
+    status.textContent = "Current build: v4.0.1. Cache tools ready.";
+  }
+}
+
+window.addEventListener("load", () => {
+  setTimeout(placeCachePanelInsideCommsV4001, 20);
+  setTimeout(placeCachePanelInsideCommsV4001, 300);
+  setTimeout(placeCachePanelInsideCommsV4001, 1000);
+  setTimeout(placeCachePanelInsideCommsV4001, 2200);
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.(".nav-btn, [data-tab], #cacheToolsPanelV3998, #messagesTab")) {
+    setTimeout(placeCachePanelInsideCommsV4001, 80);
+    setTimeout(placeCachePanelInsideCommsV4001, 300);
   }
 }, true);
