@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v407_settings_cache_split";
+const STORAGE_KEY = "stalkernet_pda_v408_settings_split_cleanup";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "407");
+    url.searchParams.set("v", "408");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.0.7. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.0.8. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.7. Settings ready.";
+    status.textContent = "Current build: v4.0.8. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.7. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.0.8. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.0.7. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.0.8. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.7. Settings ready.";
+    status.textContent = "Current build: v4.0.8. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.0.7. Settings ready.";
+    status.textContent = "Current build: v4.0.8. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.0.7. Settings ready.";
+    if(st) st.textContent="Current build: v4.0.8. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -7982,3 +7982,205 @@ document.addEventListener("click",e=>{
   if(t?.closest?.(".nav-btn,[data-tab],#messagesTab,#commsTab,#settingsTab,#commsCacheToolsPanelV407")) setTimeout(setupSettingsCacheSplitV407,150);
 },true);
 window.setupSettingsCacheSplitV407=setupSettingsCacheSplitV407;
+
+
+
+// v4.0.8 Strict Settings/Comms cleanup
+// Comms keeps only the small quick cache panel.
+// Settings keeps Audio Cues, App Install, and full Cache Maintenance.
+
+function getCommsTabV408() {
+  return document.getElementById("messagesTab") || document.getElementById("commsTab");
+}
+
+function getSettingsHubV408() {
+  let settings = document.getElementById("settingsTab");
+  if (!settings) {
+    settings = document.createElement("section");
+    settings.id = "settingsTab";
+    settings.className = "tab-panel hidden settings-tab-v405 settings-tab-fixed-v406";
+    settings.innerHTML = `
+      <div class="section-top"><h2>Settings</h2></div>
+      <article class="module-panel settings-hub-card-v405">
+        <div class="module-label">PDA SETTINGS</div>
+        <p class="message-text">Device tools and local preferences live here.</p>
+      </article>
+      <div id="settingsHubV405" class="settings-hub-v405"></div>
+    `;
+    const main = document.querySelector("main") || document.body;
+    const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+    if (nav && nav.parentElement === main) main.insertBefore(settings, nav);
+    else main.appendChild(settings);
+  }
+
+  let hub = document.getElementById("settingsHubV405");
+  if (!hub) {
+    hub = document.createElement("div");
+    hub.id = "settingsHubV405";
+    hub.className = "settings-hub-v405";
+    settings.appendChild(hub);
+  }
+
+  return hub;
+}
+
+function ensureCommsQuickCacheV408() {
+  const comms = getCommsTabV408();
+  if (!comms) return;
+
+  let quick = document.getElementById("commsCacheToolsPanelV407");
+  if (!quick) {
+    quick = document.createElement("section");
+    quick.id = "commsCacheToolsPanelV407";
+    quick.className = "comms-cache-tools-panel-v407 module-panel";
+    quick.innerHTML = `
+      <div class="module-label">CACHE MAINTENANCE</div>
+      <p id="commsCacheStatusV407" class="message-text comms-cache-status-v407">Quick cache tools for this device.</p>
+      <div class="comms-cache-actions-v407">
+        <button id="refreshAppBtnCommsV407" class="small-btn">Refresh App</button>
+        <button id="clearOldCachesBtnCommsV407" class="small-btn">Clear Old Caches</button>
+      </div>
+    `;
+  }
+
+  quick.classList.remove("hidden");
+  quick.classList.add("comms-cache-panel-visible-v408");
+
+  const input = comms.querySelector(".input-row");
+  if (input && quick.previousElementSibling !== input) {
+    input.insertAdjacentElement("afterend", quick);
+  } else if (!input && quick.parentElement !== comms) {
+    comms.appendChild(quick);
+  }
+
+  const refresh = document.getElementById("refreshAppBtnCommsV407");
+  const clear = document.getElementById("clearOldCachesBtnCommsV407");
+
+  if (refresh && !refresh.dataset.v408Bound) {
+    refresh.dataset.v408Bound = "true";
+    refresh.addEventListener("click", event => {
+      event.preventDefault();
+      if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
+      else {
+        const url = new URL(location.href);
+        url.searchParams.set("v", "408");
+        url.searchParams.set("refresh", Date.now().toString(36));
+        location.href = url.toString();
+      }
+    });
+  }
+
+  if (clear && !clear.dataset.v408Bound) {
+    clear.dataset.v408Bound = "true";
+    clear.addEventListener("click", event => {
+      event.preventDefault();
+      if (typeof clearCommsOldCachesV407 === "function") clearCommsOldCachesV407();
+      else if ("caches" in window) {
+        caches.keys().then(keys => Promise.all(keys.map(key => {
+          if ((key.startsWith("stalkernet-cache-") || key.toLowerCase().includes("stalkernet")) && key !== "stalkernet-cache-v408-settings-split-cleanup") {
+            return caches.delete(key);
+          }
+          return false;
+        })));
+      }
+    });
+  }
+}
+
+function moveSettingsModulesV408() {
+  const hub = getSettingsHubV408();
+  const comms = getCommsTabV408();
+
+  // Full cache panel belongs in Settings only.
+  const fullCache = document.getElementById("cacheToolsPanelV3998");
+  if (fullCache) {
+    fullCache.classList.remove(
+      "cache-tools-panel-inside-comms-v4001",
+      "cache-tools-panel-tight-v4000",
+      "cache-tools-panel-contained-v3999",
+      "comms-cache-panel-visible-v407"
+    );
+    fullCache.classList.add("settings-module-v405", "settings-cache-panel-v408");
+    fullCache.dataset.settingsOrderV405 = "30";
+
+    if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
+
+    const status = document.getElementById("cacheStatusV3998");
+    if (status) status.textContent = "Current build: v4.0.8. Settings ready.";
+  }
+
+  // Audio belongs in Settings only and should NOT be nested inside cache panel.
+  let audio = document.getElementById("audioSettingsPanelV403");
+
+  if (!audio) {
+    try {
+      if (typeof ensureAudioPanelVisibleV404 === "function") ensureAudioPanelVisibleV404();
+    } catch (error) {}
+    audio = document.getElementById("audioSettingsPanelV403");
+  }
+
+  if (audio) {
+    audio.classList.remove("hidden");
+    audio.classList.add("settings-module-v405", "audio-settings-only-v408");
+    audio.dataset.settingsOrderV405 = "10";
+    if (audio.parentElement !== hub) hub.appendChild(audio);
+  }
+
+  // App install belongs in Settings only.
+  const install = document.getElementById("installAppPanelV402");
+  if (install) {
+    install.classList.add("settings-module-v405", "install-panel-settings-v408");
+    install.dataset.settingsOrderV405 = "20";
+    if (install.parentElement !== hub) hub.appendChild(install);
+  }
+
+  // Remove accidental duplicates inside Comms.
+  if (comms) {
+    Array.from(comms.querySelectorAll("#cacheToolsPanelV3998, #audioSettingsPanelV403, #installAppPanelV402, .audio-settings-panel-v403")).forEach(panel => {
+      if (panel.id === "commsCacheToolsPanelV407") return;
+      if (panel.id === "cacheToolsPanelV3998" || panel.id === "audioSettingsPanelV403" || panel.id === "installAppPanelV402" || panel.classList.contains("audio-settings-panel-v403")) {
+        if (panel.id === "cacheToolsPanelV3998" && fullCache) return;
+        if (panel.id === "audioSettingsPanelV403" && audio) return;
+        if (panel.id === "installAppPanelV402" && install) return;
+        panel.remove();
+      }
+    });
+  }
+
+  // Sort Settings modules.
+  Array.from(hub.children)
+    .sort((a, b) => Number(a.dataset.settingsOrderV405 || 99) - Number(b.dataset.settingsOrderV405 || 99))
+    .forEach(child => hub.appendChild(child));
+
+  try { if (typeof bindAudioSettingsV403 === "function") bindAudioSettingsV403(); } catch (error) {}
+  try { if (typeof bindPwaInstallV402 === "function") bindPwaInstallV402(); } catch (error) {}
+  try { if (typeof bindCacheToolsV3998 === "function") bindCacheToolsV3998(); } catch (error) {}
+}
+
+function strictSettingsCommsCleanupV408() {
+  try { if (typeof fixSettingsLayoutV406 === "function") fixSettingsLayoutV406(); } catch (error) {}
+  moveSettingsModulesV408();
+  ensureCommsQuickCacheV408();
+
+  // Force final visibility rules.
+  const comms = getCommsTabV408();
+  if (comms) {
+    comms.querySelectorAll(".audio-settings-panel-v403").forEach(el => {
+      if (!el.closest("#settingsTab")) el.remove();
+    });
+  }
+}
+
+window.addEventListener("load", () => {
+  [50, 250, 750, 1500, 3000].forEach(t => setTimeout(strictSettingsCommsCleanupV408, t));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.(".nav-btn, [data-tab], #messagesTab, #commsTab, #settingsTab, #commsCacheToolsPanelV407, #cacheToolsPanelV3998")) {
+    setTimeout(strictSettingsCommsCleanupV408, 80);
+    setTimeout(strictSettingsCommsCleanupV408, 300);
+  }
+}, true);
+
+window.strictSettingsCommsCleanupV408 = strictSettingsCommsCleanupV408;

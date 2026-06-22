@@ -3452,3 +3452,71 @@ main > #settingsTab,
   #settingsTab #audioSettingsPanelV403 .audio-actions-v403,
   #settingsTab #audioSettingsPanelV403 .audio-volume-row-v403{grid-template-columns:1fr!important;}
 }
+
+/* v4.0.8 Strict Settings/Comms cleanup */
+
+/* Comms gets only the quick cache panel. */
+#messagesTab > #cacheToolsPanelV3998,
+#messagesTab > #audioSettingsPanelV403,
+#messagesTab > #installAppPanelV402,
+#messagesTab .audio-settings-panel-v403,
+#commsTab > #cacheToolsPanelV3998,
+#commsTab > #audioSettingsPanelV403,
+#commsTab > #installAppPanelV402,
+#commsTab .audio-settings-panel-v403 {
+  display: none !important;
+}
+
+#messagesTab #commsCacheToolsPanelV407,
+#commsTab #commsCacheToolsPanelV407 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 12px 0 0 !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+#commsCacheToolsPanelV407 .comms-cache-actions-v407 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+}
+
+#commsCacheToolsPanelV407 .small-btn {
+  width: 100% !important;
+}
+
+/* Settings gets the full modules. */
+#settingsTab #audioSettingsPanelV403.audio-settings-only-v408,
+#settingsTab #cacheToolsPanelV3998.settings-cache-panel-v408,
+#settingsTab #installAppPanelV402.install-panel-settings-v408 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+#settingsTab #audioSettingsPanelV403,
+#settingsTab #cacheToolsPanelV3998,
+#settingsTab #installAppPanelV402 {
+  box-sizing: border-box !important;
+}
+
+@media (max-width:460px){
+  #commsCacheToolsPanelV407 .comms-cache-actions-v407,
+  #settingsTab #cacheToolsPanelV3998 .cache-actions-v3998,
+  #settingsTab #audioSettingsPanelV403 .audio-actions-v403,
+  #settingsTab #audioSettingsPanelV403 .audio-volume-row-v403 {
+    grid-template-columns: 1fr !important;
+  }
+}

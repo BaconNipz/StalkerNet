@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v407-settings-cache-split";
+const CACHE_NAME = "stalkernet-cache-v408-settings-split-cleanup";
 
 const FILES_TO_CACHE = [
   "./",
