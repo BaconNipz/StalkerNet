@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v411_presence";
+const STORAGE_KEY = "stalkernet_pda_v412_data_backup";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "411");
+    url.searchParams.set("v", "412");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.1.1. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.1.2. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.1. Settings ready.";
+    status.textContent = "Current build: v4.1.2. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.1. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.2. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.1. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.2. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.1. Settings ready.";
+    status.textContent = "Current build: v4.1.2. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.1. Settings ready.";
+    status.textContent = "Current build: v4.1.2. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.1.1. Settings ready.";
+    if(st) st.textContent="Current build: v4.1.2. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "411");
+        url.searchParams.set("v", "412");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.1. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.2. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "411");
+        url.searchParams.set("v", "412");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.1. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.2. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -8997,3 +8997,287 @@ document.addEventListener("click", event => {
 window.writePresenceV411 = writePresenceV411;
 window.readPresenceV411 = readPresenceV411;
 window.installPresencePanelV411 = installPresencePanelV411;
+
+
+
+// v4.1.2 Data Backup / Restore
+const STALKERNET_BUILD_V412 = "v4.1.2";
+
+function settingsHubV412() {
+  let hub = document.getElementById("settingsHubV405");
+  if (hub) return hub;
+
+  let settings = document.getElementById("settingsTab");
+  if (!settings) {
+    settings = document.createElement("section");
+    settings.id = "settingsTab";
+    settings.className = "tab-panel hidden settings-tab-v405 settings-tab-fixed-v406";
+    settings.innerHTML = `
+      <div class="section-top"><h2>Settings</h2></div>
+      <article class="module-panel settings-hub-card-v405">
+        <div class="module-label">PDA SETTINGS</div>
+        <p class="message-text">Device tools and local preferences live here.</p>
+      </article>
+      <div id="settingsHubV405" class="settings-hub-v405"></div>
+    `;
+    const main = document.querySelector("main") || document.body;
+    const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+    if (nav && nav.parentElement === main) main.insertBefore(settings, nav);
+    else main.appendChild(settings);
+  }
+
+  hub = document.getElementById("settingsHubV405");
+  if (!hub) {
+    hub = document.createElement("div");
+    hub.id = "settingsHubV405";
+    hub.className = "settings-hub-v405";
+    settings.appendChild(hub);
+  }
+
+  return hub;
+}
+
+function createBackupPanelV412() {
+  let panel = document.getElementById("backupPanelV412");
+  if (panel) return panel;
+
+  panel = document.createElement("div");
+  panel.id = "backupPanelV412";
+  panel.className = "backup-panel-v412 settings-module-v405";
+  panel.dataset.settingsOrderV405 = "40";
+  panel.innerHTML = `
+    <div class="module-label">DATA BACKUP</div>
+    <p id="backupStatusV412" class="message-text backup-status-v412">Export local StalkerNet data before risky updates. Firebase cloud data is not deleted or changed.</p>
+    <div class="backup-actions-v412">
+      <button id="copyBackupBtnV412" class="small-btn">Copy Backup</button>
+      <button id="downloadBackupBtnV412" class="small-btn">Download Backup</button>
+    </div>
+    <details class="backup-restore-box-v412">
+      <summary>Restore from Backup</summary>
+      <p class="message-text">Paste a StalkerNet backup JSON below, then press Restore. The app will reload afterward.</p>
+      <textarea id="backupInputV412" placeholder="Paste backup JSON here..."></textarea>
+      <button id="restoreBackupBtnV412" class="small-btn danger-lite-v412">Restore Local Backup</button>
+    </details>
+  `;
+
+  return panel;
+}
+
+function backupStatusV412(message, isError = false) {
+  const el = document.getElementById("backupStatusV412");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("backup-error-v412", !!isError);
+    el.classList.toggle("backup-ok-v412", !isError);
+  }
+  try { if (typeof toast === "function") toast(message); } catch (error) {}
+}
+
+function collectLocalBackupV412() {
+  const local = {};
+  const session = {};
+
+  try {
+    Object.keys(localStorage).sort().forEach(key => {
+      if (
+        key.toLowerCase().includes("stalkernet") ||
+        key.toLowerCase().includes("pda") ||
+        key.toLowerCase().includes("audio")
+      ) {
+        local[key] = localStorage.getItem(key);
+      }
+    });
+  } catch (error) {}
+
+  try {
+    Object.keys(sessionStorage).sort().forEach(key => {
+      if (key.toLowerCase().includes("stalkernet") || key.toLowerCase().includes("pda")) {
+        session[key] = sessionStorage.getItem(key);
+      }
+    });
+  } catch (error) {}
+
+  let appState = null;
+  try {
+    appState = JSON.parse(JSON.stringify(typeof state !== "undefined" ? state : null));
+  } catch (error) {}
+
+  return {
+    app: "StalkerNet",
+    backupVersion: "v4.1.2",
+    createdAt: new Date().toISOString(),
+    origin: location.origin,
+    path: location.pathname,
+    localStorage: local,
+    sessionStorage: session,
+    appState,
+    note: "Local StalkerNet backup only. Does not contain Firebase Auth password or server-side Firestore data."
+  };
+}
+
+function backupJsonV412() {
+  return JSON.stringify(collectLocalBackupV412(), null, 2);
+}
+
+async function copyBackupV412() {
+  const text = backupJsonV412();
+
+  try {
+    await navigator.clipboard.writeText(text);
+    backupStatusV412("Backup copied to clipboard.");
+    return true;
+  } catch (error) {
+    const input = document.getElementById("backupInputV412");
+    if (input) {
+      input.value = text;
+      input.focus();
+      input.select();
+    }
+    backupStatusV412("Clipboard blocked. Backup placed in restore box for manual copy.", true);
+    return false;
+  }
+}
+
+function downloadBackupV412() {
+  try {
+    const blob = new Blob([backupJsonV412()], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+    a.href = url;
+    a.download = `stalkernet-backup-${stamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    backupStatusV412("Backup download started.");
+    return true;
+  } catch (error) {
+    backupStatusV412("Download failed: " + (error.message || "copy backup instead."), true);
+    return false;
+  }
+}
+
+function validateBackupV412(payload) {
+  if (!payload || typeof payload !== "object") throw new Error("Backup must be JSON object.");
+  if (payload.app !== "StalkerNet") throw new Error("This does not look like a StalkerNet backup.");
+  if (!payload.localStorage || typeof payload.localStorage !== "object") throw new Error("Backup has no localStorage section.");
+  return true;
+}
+
+function restoreBackupV412() {
+  const input = document.getElementById("backupInputV412");
+  const raw = input?.value?.trim();
+
+  if (!raw) {
+    backupStatusV412("Paste a backup JSON first.", true);
+    return false;
+  }
+
+  let payload = null;
+
+  try {
+    payload = JSON.parse(raw);
+    validateBackupV412(payload);
+  } catch (error) {
+    backupStatusV412("Invalid backup: " + (error.message || "JSON parse failed."), true);
+    return false;
+  }
+
+  if (!confirm("Restore this local StalkerNet backup? This replaces local app data on this device, then reloads the app.")) {
+    return false;
+  }
+
+  try {
+    const local = payload.localStorage || {};
+    Object.keys(local).forEach(key => {
+      if (
+        key.toLowerCase().includes("stalkernet") ||
+        key.toLowerCase().includes("pda") ||
+        key.toLowerCase().includes("audio")
+      ) {
+        localStorage.setItem(key, local[key]);
+      }
+    });
+
+    const session = payload.sessionStorage || {};
+    Object.keys(session).forEach(key => {
+      if (key.toLowerCase().includes("stalkernet") || key.toLowerCase().includes("pda")) {
+        sessionStorage.setItem(key, session[key]);
+      }
+    });
+
+    backupStatusV412("Backup restored. Reloading...");
+    setTimeout(() => {
+      const url = new URL(location.href);
+      url.searchParams.set("v", "412");
+      url.searchParams.set("restore", Date.now().toString(36));
+      location.href = url.toString();
+    }, 700);
+
+    return true;
+  } catch (error) {
+    backupStatusV412("Restore failed: " + (error.message || "unknown error."), true);
+    return false;
+  }
+}
+
+function installBackupPanelV412() {
+  const hub = settingsHubV412();
+  const panel = createBackupPanelV412();
+
+  if (panel.parentElement !== hub) hub.appendChild(panel);
+
+  Array.from(hub.children)
+    .sort((a, b) => Number(a.dataset.settingsOrderV405 || 99) - Number(b.dataset.settingsOrderV405 || 99))
+    .forEach(child => hub.appendChild(child));
+
+  bindBackupPanelV412();
+}
+
+function bindBackupPanelV412() {
+  const copy = document.getElementById("copyBackupBtnV412");
+  const download = document.getElementById("downloadBackupBtnV412");
+  const restore = document.getElementById("restoreBackupBtnV412");
+
+  if (copy && !copy.dataset.v412Bound) {
+    copy.dataset.v412Bound = "true";
+    copy.addEventListener("click", event => {
+      event.preventDefault();
+      copyBackupV412();
+    });
+  }
+
+  if (download && !download.dataset.v412Bound) {
+    download.dataset.v412Bound = "true";
+    download.addEventListener("click", event => {
+      event.preventDefault();
+      downloadBackupV412();
+    });
+  }
+
+  if (restore && !restore.dataset.v412Bound) {
+    restore.dataset.v412Bound = "true";
+    restore.addEventListener("click", event => {
+      event.preventDefault();
+      restoreBackupV412();
+    });
+  }
+}
+
+window.addEventListener("load", () => {
+  [120, 700, 1600].forEach(t => setTimeout(installBackupPanelV412, t));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, [data-tab='settingsTab'], .settings-nav-v405, .settings-nav-fixed-v406, .nav-btn")) {
+    setTimeout(installBackupPanelV412, 160);
+    setTimeout(installBackupPanelV412, 450);
+  }
+}, true);
+
+window.collectLocalBackupV412 = collectLocalBackupV412;
+window.copyBackupV412 = copyBackupV412;
+window.downloadBackupV412 = downloadBackupV412;
+window.restoreBackupV412 = restoreBackupV412;

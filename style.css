@@ -3762,3 +3762,83 @@ main > #settingsTab,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.1.2 Data Backup / Restore */
+#backupPanelV412 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+.backup-status-v412 {
+  margin: 6px 0 10px;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+.backup-error-v412 {
+  color: #f0b6a8 !important;
+}
+
+.backup-actions-v412 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.backup-actions-v412 .small-btn,
+#restoreBackupBtnV412 {
+  width: 100%;
+}
+
+.backup-restore-box-v412 {
+  margin-top: 10px;
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 10px;
+  padding: 10px;
+  background: rgba(0,0,0,0.20);
+}
+
+.backup-restore-box-v412 summary {
+  cursor: pointer;
+  color: var(--amber-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+#backupInputV412 {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  border: 1px solid rgba(215,171,107,0.22);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.35);
+  color: var(--text-soft);
+  padding: 10px;
+  box-sizing: border-box;
+  font-family: monospace;
+  font-size: 12px;
+  margin: 8px 0;
+}
+
+.danger-lite-v412 {
+  border-color: rgba(220,110,85,0.38) !important;
+}
+
+@media (max-width: 460px) {
+  .backup-actions-v412 {
+    grid-template-columns: 1fr !important;
+  }
+}
