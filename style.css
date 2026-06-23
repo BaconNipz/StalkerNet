@@ -3842,3 +3842,82 @@ main > #settingsTab,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.1.3 System Status / Diagnostics */
+#systemStatusPanelV413 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+.system-status-message-v413 {
+  margin: 6px 0 10px;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+.system-status-error-v413,
+.status-warn-v413 {
+  color: #f0b6a8 !important;
+}
+
+.status-good-v413 {
+  color: #b7df9a !important;
+}
+
+.system-status-grid-v413 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.system-status-grid-v413 div {
+  min-width: 0;
+  padding: 9px 8px;
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 9px;
+  background: rgba(0,0,0,0.22);
+}
+
+.system-status-grid-v413 span {
+  display: block;
+  color: var(--text-dim);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+
+.system-status-grid-v413 strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.system-status-actions-v413 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.system-status-actions-v413 .small-btn {
+  width: 100%;
+}
+
+@media (max-width: 460px) {
+  .system-status-grid-v413,
+  .system-status-actions-v413 {
+    grid-template-columns: 1fr !important;
+  }
+}
