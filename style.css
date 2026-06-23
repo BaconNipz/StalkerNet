@@ -3921,3 +3921,86 @@ main > #settingsTab,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.1.4 Error Log / Bug Report */
+#errorLogPanelV414 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+.error-log-status-v414 {
+  margin: 6px 0 10px;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+.error-log-alert-v414 {
+  color: #f0b6a8 !important;
+}
+
+.error-log-actions-v414 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.error-log-actions-v414 .small-btn {
+  width: 100%;
+}
+
+.error-log-list-v414 {
+  display: grid;
+  gap: 8px;
+}
+
+.error-log-empty-v414,
+.error-log-row-v414 {
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 9px;
+  background: rgba(0,0,0,0.22);
+  padding: 9px 8px;
+}
+
+.error-log-empty-v414 strong,
+.error-log-row-v414 strong {
+  color: var(--amber-bright);
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+
+.error-log-empty-v414 span,
+.error-log-row-v414 span {
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+.error-log-row-v414 p {
+  margin: 6px 0 0;
+  color: var(--text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.danger-lite-v414 {
+  border-color: rgba(220,110,85,0.38) !important;
+}
+
+@media (max-width: 460px) {
+  .error-log-actions-v414 {
+    grid-template-columns: 1fr !important;
+  }
+}

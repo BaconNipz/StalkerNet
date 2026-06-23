@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v413_system_status";
+const STORAGE_KEY = "stalkernet_pda_v414_error_log";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "413");
+    url.searchParams.set("v", "414");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.1.3. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.1.4. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.3. Settings ready.";
+    status.textContent = "Current build: v4.1.4. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.4. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.4. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.3. Settings ready.";
+    status.textContent = "Current build: v4.1.4. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.3. Settings ready.";
+    status.textContent = "Current build: v4.1.4. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.1.3. Settings ready.";
+    if(st) st.textContent="Current build: v4.1.4. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "413");
+        url.searchParams.set("v", "414");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.3. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.4. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "413");
+        url.searchParams.set("v", "414");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.3. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.4. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "413");
+      url.searchParams.set("v", "414");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.4. Settings ready.";
   }
 }
 
@@ -9545,3 +9545,305 @@ document.addEventListener("click", event => {
 window.collectSystemStatusV413 = collectSystemStatusV413;
 window.refreshSystemStatusV413 = refreshSystemStatusV413;
 window.copySystemStatusV413 = copySystemStatusV413;
+
+
+
+// v4.1.4 Error Log / Bug Report
+const STALKERNET_BUILD_V414 = "v4.1.4";
+const ERROR_LOG_KEY_V414 = "stalkernet_error_log_v414";
+const ERROR_LOG_LIMIT_V414 = 40;
+
+function settingsHubV414() {
+  let hub = document.getElementById("settingsHubV405");
+  if (hub) return hub;
+
+  let settings = document.getElementById("settingsTab");
+  if (!settings) {
+    settings = document.createElement("section");
+    settings.id = "settingsTab";
+    settings.className = "tab-panel hidden settings-tab-v405 settings-tab-fixed-v406";
+    settings.innerHTML = `
+      <div class="section-top"><h2>Settings</h2></div>
+      <article class="module-panel settings-hub-card-v405">
+        <div class="module-label">PDA SETTINGS</div>
+        <p class="message-text">Device tools and local preferences live here.</p>
+      </article>
+      <div id="settingsHubV405" class="settings-hub-v405"></div>
+    `;
+    const main = document.querySelector("main") || document.body;
+    const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+    if (nav && nav.parentElement === main) main.insertBefore(settings, nav);
+    else main.appendChild(settings);
+  }
+
+  hub = document.getElementById("settingsHubV405");
+  if (!hub) {
+    hub = document.createElement("div");
+    hub.id = "settingsHubV405";
+    hub.className = "settings-hub-v405";
+    settings.appendChild(hub);
+  }
+
+  return hub;
+}
+
+function readErrorLogV414() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(ERROR_LOG_KEY_V414) || "[]");
+    return Array.isArray(saved) ? saved : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function writeErrorLogV414(entries) {
+  try {
+    localStorage.setItem(ERROR_LOG_KEY_V414, JSON.stringify(entries.slice(-ERROR_LOG_LIMIT_V414)));
+  } catch (error) {}
+}
+
+function addErrorLogEntryV414(type, message, extra = {}) {
+  const entry = {
+    type,
+    message: String(message || "Unknown issue").slice(0, 500),
+    time: new Date().toISOString(),
+    build: STALKERNET_BUILD_V414,
+    url: location.href,
+    ...extra
+  };
+
+  const entries = readErrorLogV414();
+  entries.push(entry);
+  writeErrorLogV414(entries);
+
+  try { renderErrorLogV414(); } catch (error) {}
+
+  return entry;
+}
+
+function createErrorLogPanelV414() {
+  let panel = document.getElementById("errorLogPanelV414");
+  if (panel) return panel;
+
+  panel = document.createElement("div");
+  panel.id = "errorLogPanelV414";
+  panel.className = "error-log-panel-v414 settings-module-v405";
+  panel.dataset.settingsOrderV405 = "55";
+  panel.innerHTML = `
+    <div class="module-label">ERROR LOG</div>
+    <p id="errorLogStatusV414" class="message-text error-log-status-v414">No recent PDA faults detected.</p>
+    <div class="error-log-actions-v414">
+      <button id="refreshErrorLogBtnV414" class="small-btn">Refresh Log</button>
+      <button id="copyErrorLogBtnV414" class="small-btn">Copy Bug Report</button>
+      <button id="clearErrorLogBtnV414" class="small-btn danger-lite-v414">Clear Log</button>
+    </div>
+    <div id="errorLogListV414" class="error-log-list-v414"></div>
+  `;
+
+  return panel;
+}
+
+function installErrorLogPanelV414() {
+  const hub = settingsHubV414();
+  const panel = createErrorLogPanelV414();
+
+  if (panel.parentElement !== hub) hub.appendChild(panel);
+
+  Array.from(hub.children)
+    .sort((a, b) => Number(a.dataset.settingsOrderV405 || 99) - Number(b.dataset.settingsOrderV405 || 99))
+    .forEach(child => hub.appendChild(child));
+
+  bindErrorLogPanelV414();
+  renderErrorLogV414();
+
+  const cacheStatus = document.getElementById("cacheStatusV3998");
+  if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
+    cacheStatus.textContent = "Current build: v4.1.4. Settings ready.";
+  }
+}
+
+function errorLogStatusV414(message, isError = false) {
+  const el = document.getElementById("errorLogStatusV414");
+  if (el) {
+    el.textContent = message;
+    el.classList.toggle("error-log-alert-v414", !!isError);
+  }
+  try { if (typeof toast === "function" && isError) toast(message); } catch (error) {}
+}
+
+function renderErrorLogV414() {
+  const list = document.getElementById("errorLogListV414");
+  const entries = readErrorLogV414();
+
+  if (!list) return;
+
+  if (!entries.length) {
+    list.innerHTML = `
+      <div class="error-log-empty-v414">
+        <strong>No recorded faults.</strong>
+        <span>The PDA is quiet. Suspiciously quiet.</span>
+      </div>
+    `;
+    errorLogStatusV414("No recent PDA faults detected.");
+    return;
+  }
+
+  errorLogStatusV414(`${entries.length} recent log entr${entries.length === 1 ? "y" : "ies"} recorded.`, true);
+
+  list.innerHTML = "";
+
+  entries.slice().reverse().slice(0, 10).forEach(entry => {
+    const row = document.createElement("div");
+    row.className = "error-log-row-v414";
+    const date = new Date(entry.time);
+    const time = Number.isNaN(date.getTime()) ? "Unknown time" : date.toLocaleString();
+
+    row.innerHTML = `
+      <div>
+        <strong>${escapeHtml(entry.type || "log")}</strong>
+        <span>${escapeHtml(time)}</span>
+      </div>
+      <p>${escapeHtml(entry.message || "Unknown issue")}</p>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function bugReportTextV414() {
+  const entries = readErrorLogV414();
+
+  let status = null;
+  try {
+    if (typeof collectSystemStatusV413 === "function") {
+      // This may return a promise in newer builds, so keep a simple fallback here.
+      status = "Use System Status panel for full diagnostics.";
+    }
+  } catch (error) {}
+
+  return [
+    "STALKERNET BUG REPORT",
+    `Build: ${STALKERNET_BUILD_V414}`,
+    `Time: ${new Date().toISOString()}`,
+    `URL: ${location.href}`,
+    `Screen: ${window.innerWidth}x${window.innerHeight}`,
+    `Online: ${navigator.onLine}`,
+    `User Agent: ${navigator.userAgent}`,
+    "",
+    "RECENT ERROR LOG:",
+    entries.length ? JSON.stringify(entries, null, 2) : "No recorded faults.",
+    "",
+    status || ""
+  ].join("\n");
+}
+
+async function copyErrorLogV414() {
+  const text = bugReportTextV414();
+
+  try {
+    await navigator.clipboard.writeText(text);
+    errorLogStatusV414("Bug report copied.");
+    return true;
+  } catch (error) {
+    console.log(text);
+    errorLogStatusV414("Clipboard blocked. Bug report printed to console.", true);
+    return false;
+  }
+}
+
+function clearErrorLogV414() {
+  if (!confirm("Clear the local StalkerNet error log?")) return false;
+  writeErrorLogV414([]);
+  renderErrorLogV414();
+  errorLogStatusV414("Error log cleared.");
+  return true;
+}
+
+function bindErrorLogPanelV414() {
+  const refresh = document.getElementById("refreshErrorLogBtnV414");
+  const copy = document.getElementById("copyErrorLogBtnV414");
+  const clear = document.getElementById("clearErrorLogBtnV414");
+
+  if (refresh && !refresh.dataset.v414Bound) {
+    refresh.dataset.v414Bound = "true";
+    refresh.addEventListener("click", event => {
+      event.preventDefault();
+      renderErrorLogV414();
+    });
+  }
+
+  if (copy && !copy.dataset.v414Bound) {
+    copy.dataset.v414Bound = "true";
+    copy.addEventListener("click", event => {
+      event.preventDefault();
+      copyErrorLogV414();
+    });
+  }
+
+  if (clear && !clear.dataset.v414Bound) {
+    clear.dataset.v414Bound = "true";
+    clear.addEventListener("click", event => {
+      event.preventDefault();
+      clearErrorLogV414();
+    });
+  }
+}
+
+// Global fault capture.
+if (!window.__stalkernetErrorCaptureV414) {
+  window.__stalkernetErrorCaptureV414 = true;
+
+  window.addEventListener("error", event => {
+    addErrorLogEntryV414("error", event.message || "Script error", {
+      source: event.filename || "",
+      line: event.lineno || 0,
+      column: event.colno || 0
+    });
+  });
+
+  window.addEventListener("unhandledrejection", event => {
+    const reason = event.reason;
+    addErrorLogEntryV414("promise", reason?.message || String(reason || "Unhandled promise rejection"), {
+      stack: reason?.stack ? String(reason.stack).slice(0, 800) : ""
+    });
+  });
+
+  const originalConsoleError = console.error?.bind(console);
+  const originalConsoleWarn = console.warn?.bind(console);
+
+  console.error = function(...args) {
+    addErrorLogEntryV414("console.error", args.map(arg => {
+      try { return typeof arg === "string" ? arg : JSON.stringify(arg); }
+      catch (error) { return String(arg); }
+    }).join(" ").slice(0, 500));
+    return originalConsoleError ? originalConsoleError(...args) : undefined;
+  };
+
+  console.warn = function(...args) {
+    const text = args.map(arg => {
+      try { return typeof arg === "string" ? arg : JSON.stringify(arg); }
+      catch (error) { return String(arg); }
+    }).join(" ");
+
+    if (/stalkernet|firebase|firestore|cache|service|auth|map|marker|profile|job|presence/i.test(text)) {
+      addErrorLogEntryV414("console.warn", text.slice(0, 500));
+    }
+
+    return originalConsoleWarn ? originalConsoleWarn(...args) : undefined;
+  };
+}
+
+window.addEventListener("load", () => {
+  [150, 700, 1600].forEach(t => setTimeout(installErrorLogPanelV414, t));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, [data-tab='settingsTab'], .settings-nav-v405, .settings-nav-fixed-v406, .nav-btn")) {
+    setTimeout(installErrorLogPanelV414, 160);
+    setTimeout(installErrorLogPanelV414, 450);
+  }
+}, true);
+
+window.addErrorLogEntryV414 = addErrorLogEntryV414;
+window.readErrorLogV414 = readErrorLogV414;
+window.copyErrorLogV414 = copyErrorLogV414;
