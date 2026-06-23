@@ -4004,3 +4004,46 @@ main > #settingsTab,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.1.5 Error Log Noise Filter */
+#firestoreNoisePanelV415 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 9px;
+  background: rgba(0,0,0,0.22);
+  padding: 9px 8px;
+  margin-bottom: 10px;
+}
+
+#firestoreNoisePanelV415 strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  margin-bottom: 3px;
+}
+
+#firestoreNoisePanelV415 span {
+  display: block;
+  color: var(--text-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+#firestoreNoisePanelV415 .small-btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 460px) {
+  #firestoreNoisePanelV415 {
+    grid-template-columns: 1fr !important;
+  }
+
+  #firestoreNoisePanelV415 .small-btn {
+    width: 100% !important;
+  }
+}

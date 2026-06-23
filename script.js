@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v414_error_log";
+const STORAGE_KEY = "stalkernet_pda_v415_error_log_filter";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "414");
+    url.searchParams.set("v", "415");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.1.4. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.1.5. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.4. Settings ready.";
+    status.textContent = "Current build: v4.1.5. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.4. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.5. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.4. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.5. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.4. Settings ready.";
+    status.textContent = "Current build: v4.1.5. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.4. Settings ready.";
+    status.textContent = "Current build: v4.1.5. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.1.4. Settings ready.";
+    if(st) st.textContent="Current build: v4.1.5. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "414");
+        url.searchParams.set("v", "415");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.4. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.5. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "414");
+        url.searchParams.set("v", "415");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.4. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.5. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "414");
+      url.searchParams.set("v", "415");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.4. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.5. Settings ready.";
   }
 }
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.4. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.5. Settings ready.";
   }
 }
 
@@ -9847,3 +9847,200 @@ document.addEventListener("click", event => {
 window.addErrorLogEntryV414 = addErrorLogEntryV414;
 window.readErrorLogV414 = readErrorLogV414;
 window.copyErrorLogV414 = copyErrorLogV414;
+
+
+
+// v4.1.5 Error Log Noise Filter
+const STALKERNET_BUILD_V415 = "v4.1.5";
+const FIRESTORE_NOISE_STATS_KEY_V415 = "stalkernet_firestore_noise_stats_v415";
+
+function firestoreNoiseRegexV415(message) {
+  return /@firebase\/firestore.*WebChannelConnection RPC ['"](Listen|Write)['"] stream .*transport errored/i.test(String(message || ""));
+}
+
+function readFirestoreNoiseStatsV415() {
+  try {
+    return JSON.parse(localStorage.getItem(FIRESTORE_NOISE_STATS_KEY_V415) || '{"count":0,"lastMessage":"","lastTime":null}');
+  } catch (error) {
+    return { count: 0, lastMessage: "", lastTime: null };
+  }
+}
+
+function writeFirestoreNoiseStatsV415(stats) {
+  try {
+    localStorage.setItem(FIRESTORE_NOISE_STATS_KEY_V415, JSON.stringify(stats));
+  } catch (error) {}
+}
+
+function recordFirestoreNoiseV415(message) {
+  const stats = readFirestoreNoiseStatsV415();
+  stats.count = Number(stats.count || 0) + 1;
+  stats.lastMessage = String(message || "").slice(0, 500);
+  stats.lastTime = new Date().toISOString();
+  writeFirestoreNoiseStatsV415(stats);
+  updateFirestoreNoiseUiV415();
+}
+
+function cleanFirestoreNoiseFromLogV415() {
+  try {
+    if (typeof readErrorLogV414 !== "function" || typeof writeErrorLogV414 !== "function") return;
+
+    const entries = readErrorLogV414();
+    if (!Array.isArray(entries) || !entries.length) return;
+
+    let removed = 0;
+    const clean = entries.filter(entry => {
+      const noisy = entry?.type === "console.warn" && firestoreNoiseRegexV415(entry.message);
+      if (noisy) removed++;
+      return !noisy;
+    });
+
+    if (removed) {
+      const stats = readFirestoreNoiseStatsV415();
+      stats.count = Number(stats.count || 0) + removed;
+      stats.lastTime = new Date().toISOString();
+      stats.lastMessage = `${removed} old Firebase transport warnings were cleaned from Error Log.`;
+      writeFirestoreNoiseStatsV415(stats);
+      writeErrorLogV414(clean);
+    }
+  } catch (error) {}
+}
+
+function addNoiseFilterPanelV415() {
+  const errorPanel = document.getElementById("errorLogPanelV414");
+  if (!errorPanel) return;
+
+  let panel = document.getElementById("firestoreNoisePanelV415");
+  if (panel) return;
+
+  panel = document.createElement("div");
+  panel.id = "firestoreNoisePanelV415";
+  panel.className = "firestore-noise-panel-v415";
+  panel.innerHTML = `
+    <div>
+      <strong>Firebase Radio Static Filter</strong>
+      <span id="firestoreNoiseTextV415">No filtered transport warnings yet.</span>
+    </div>
+    <button id="resetFirestoreNoiseBtnV415" class="small-btn">Reset Count</button>
+  `;
+
+  const list = document.getElementById("errorLogListV414");
+  if (list) errorPanel.insertBefore(panel, list);
+  else errorPanel.appendChild(panel);
+
+  const reset = document.getElementById("resetFirestoreNoiseBtnV415");
+  if (reset && !reset.dataset.v415Bound) {
+    reset.dataset.v415Bound = "true";
+    reset.addEventListener("click", event => {
+      event.preventDefault();
+      writeFirestoreNoiseStatsV415({ count: 0, lastMessage: "", lastTime: null });
+      updateFirestoreNoiseUiV415();
+    });
+  }
+
+  updateFirestoreNoiseUiV415();
+}
+
+function updateFirestoreNoiseUiV415() {
+  const text = document.getElementById("firestoreNoiseTextV415");
+  if (!text) return;
+
+  const stats = readFirestoreNoiseStatsV415();
+  const count = Number(stats.count || 0);
+
+  if (!count) {
+    text.textContent = "No filtered transport warnings yet.";
+    return;
+  }
+
+  let last = "recently";
+  try {
+    if (stats.lastTime) last = new Date(stats.lastTime).toLocaleTimeString();
+  } catch (error) {}
+
+  text.textContent = `${count} repeated Firestore transport warning${count === 1 ? "" : "s"} filtered. Last seen ${last}.`;
+}
+
+// Reassign the global error log function so the old console.warn wrapper calls the filtered version.
+if (typeof addErrorLogEntryV414 === "function" && !window.__errorLogNoiseFilterInstalledV415) {
+  window.__errorLogNoiseFilterInstalledV415 = true;
+  window.__originalAddErrorLogEntryV414 = addErrorLogEntryV414;
+
+  addErrorLogEntryV414 = function(type, message, extra = {}) {
+    if (type === "console.warn" && firestoreNoiseRegexV415(message)) {
+      recordFirestoreNoiseV415(message);
+      return {
+        type: "filtered.firestore.transport",
+        message: String(message || "").slice(0, 500),
+        time: new Date().toISOString(),
+        build: STALKERNET_BUILD_V415,
+        filtered: true
+      };
+    }
+
+    return window.__originalAddErrorLogEntryV414(type, message, {
+      ...extra,
+      build: STALKERNET_BUILD_V415
+    });
+  };
+
+  window.addErrorLogEntryV414 = addErrorLogEntryV414;
+}
+
+const oldRenderErrorLogV414_V415 = window.renderErrorLogV414 || (typeof renderErrorLogV414 === "function" ? renderErrorLogV414 : null);
+if (oldRenderErrorLogV414_V415 && !window.__renderErrorLogPatchedV415) {
+  window.__renderErrorLogPatchedV415 = true;
+  renderErrorLogV414 = function(...args) {
+    const result = oldRenderErrorLogV414_V415.apply(this, args);
+    setTimeout(addNoiseFilterPanelV415, 40);
+    setTimeout(updateFirestoreNoiseUiV415, 80);
+    return result;
+  };
+  window.renderErrorLogV414 = renderErrorLogV414;
+}
+
+const oldBugReportTextV414_V415 = window.bugReportTextV414 || (typeof bugReportTextV414 === "function" ? bugReportTextV414 : null);
+if (oldBugReportTextV414_V415 && !window.__bugReportPatchedV415) {
+  window.__bugReportPatchedV415 = true;
+  bugReportTextV414 = function(...args) {
+    const base = oldBugReportTextV414_V415.apply(this, args);
+    const stats = readFirestoreNoiseStatsV415();
+    return [
+      base,
+      "",
+      "FILTERED FIREBASE TRANSPORT WARNINGS:",
+      `Count: ${Number(stats.count || 0)}`,
+      `Last Time: ${stats.lastTime || "None"}`,
+      `Last Message: ${stats.lastMessage || "None"}`
+    ].join("\n");
+  };
+  window.bugReportTextV414 = bugReportTextV414;
+}
+
+function installFirestoreNoiseFilterV415() {
+  cleanFirestoreNoiseFromLogV415();
+  addNoiseFilterPanelV415();
+  updateFirestoreNoiseUiV415();
+
+  const cacheStatus = document.getElementById("cacheStatusV3998");
+  if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
+    cacheStatus.textContent = "Current build: v4.1.5. Settings ready.";
+  }
+
+  try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
+}
+
+window.addEventListener("load", () => {
+  [80, 500, 1400, 2600].forEach(t => setTimeout(installFirestoreNoiseFilterV415, t));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, #errorLogPanelV414, [data-tab='settingsTab'], .nav-btn")) {
+    setTimeout(installFirestoreNoiseFilterV415, 120);
+    setTimeout(installFirestoreNoiseFilterV415, 450);
+  }
+}, true);
+
+window.installFirestoreNoiseFilterV415 = installFirestoreNoiseFilterV415;
+window.readFirestoreNoiseStatsV415 = readFirestoreNoiseStatsV415;
