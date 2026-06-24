@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v419-settings-category-polish";
+const CACHE_NAME = "stalkernet-cache-v420-settings-drawer-toggle-lock";
 
 const FILES_TO_CACHE = [
   "./",

@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v419_settings_category_polish";
+const STORAGE_KEY = "stalkernet_pda_v420_settings_drawer_toggle_lock";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "419");
+    url.searchParams.set("v", "420");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.1.9. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.2.0. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.9. Settings ready.";
+    status.textContent = "Current build: v4.2.0. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.9. Settings ready.";
+    status.textContent = "Current build: v4.2.0. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.9. Settings ready.";
+    status.textContent = "Current build: v4.2.0. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.1.9. Settings ready.";
+    if(st) st.textContent="Current build: v4.2.0. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "419");
+        url.searchParams.set("v", "420");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.9. Settings ready.";
+    if (status) status.textContent = "Current build: v4.2.0. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "419");
+        url.searchParams.set("v", "420");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.9. Settings ready.";
+    if (status) status.textContent = "Current build: v4.2.0. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "419");
+      url.searchParams.set("v", "420");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
   }
 }
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
   }
 }
 
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10278,7 +10278,7 @@ function moveSettingsPanelsIntoCategoriesV416() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.5|v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
   }
 
   // Rebind controls after moving DOM.
@@ -10573,7 +10573,7 @@ function moveSettingsPanelsIntoCategoriesStableV417() {
 
     const cacheStatus = document.getElementById("cacheStatusV3998");
     if (cacheStatus && /v4\.1\.6|v4\.1\.5|v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-      cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+      cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
     }
   } finally {
     window.__settingsCategoryMovingV417 = false;
@@ -10903,7 +10903,7 @@ function updatePrefsCountV418() {
 
 function patchBuildLabelsV418() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
 
   const buildFields = [
     document.getElementById("sysBuildV413"),
@@ -11228,7 +11228,7 @@ function bindMovedPanelsV419() {
 
 function patchBuildLabelsV419() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
 
   const sysBuild = document.getElementById("sysBuildV413");
   if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V419;
@@ -11300,3 +11300,219 @@ document.addEventListener("click", event => {
 
 window.setupCategoryPolishV419 = setupCategoryPolishV419;
 window.updateCategoryCountsV419 = updateCategoryCountsV419;
+
+
+
+// v4.2.0 Settings Drawer Toggle Lock
+// Fixes drawers flashing open then closing due to older Settings cleanup timers.
+
+const STALKERNET_BUILD_V420 = "v4.2.0";
+const SETTINGS_DRAWER_STATE_KEY_V420 = "stalkernet_settings_categories_open_v416";
+
+function readDrawerStateV420() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SETTINGS_DRAWER_STATE_KEY_V420) || "{}");
+    return saved && typeof saved === "object" ? saved : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function writeDrawerStateV420(state) {
+  try {
+    localStorage.setItem(SETTINGS_DRAWER_STATE_KEY_V420, JSON.stringify(state || {}));
+  } catch (error) {}
+}
+
+function drawerCategoryIdV420(details) {
+  if (!details) return "";
+  return details.dataset.categoryIdV416 ||
+    (details.id || "").replace("settingsCategoryV416_", "");
+}
+
+function rememberDrawerIntentV420(details, open) {
+  const id = drawerCategoryIdV420(details);
+  if (!id) return;
+
+  const state = readDrawerStateV420();
+  state[id] = !!open;
+  writeDrawerStateV420(state);
+
+  window.__drawerIntentV420 = {
+    id,
+    open: !!open,
+    until: Date.now() + 2200
+  };
+}
+
+function enforceDrawerIntentV420() {
+  const intent = window.__drawerIntentV420;
+  if (!intent || Date.now() > intent.until) return;
+
+  const details = document.getElementById(`settingsCategoryV416_${intent.id}`);
+  if (!details) return;
+
+  if (details.open !== intent.open) {
+    details.open = intent.open;
+  }
+
+  const state = readDrawerStateV420();
+  state[intent.id] = !!intent.open;
+  writeDrawerStateV420(state);
+
+  try { if (typeof updateCategoryCountsV419 === "function") updateCategoryCountsV419(); } catch (error) {}
+  try { if (typeof updatePrefsCountV418 === "function") updatePrefsCountV418(); } catch (error) {}
+}
+
+function scheduleDrawerIntentEnforceV420() {
+  [0, 40, 120, 260, 520, 900, 1400, 2100].forEach(delay => {
+    setTimeout(enforceDrawerIntentV420, delay);
+  });
+}
+
+function bindDrawerToggleLockV420() {
+  document.querySelectorAll(".settings-category-v416").forEach(details => {
+    if (details.dataset.v420ToggleLock) return;
+    details.dataset.v420ToggleLock = "true";
+    details.classList.add("settings-category-toggle-lock-v420");
+
+    const summary = details.querySelector("summary");
+    if (summary && !summary.dataset.v420ToggleLock) {
+      summary.dataset.v420ToggleLock = "true";
+
+      const prepareIntent = event => {
+        // At pointer/click time, <details>.open is still the old value.
+        // The user's intent is therefore the opposite.
+        rememberDrawerIntentV420(details, !details.open);
+        scheduleDrawerIntentEnforceV420();
+      };
+
+      summary.addEventListener("pointerdown", prepareIntent, true);
+      summary.addEventListener("touchstart", prepareIntent, true);
+      summary.addEventListener("mousedown", prepareIntent, true);
+      summary.addEventListener("click", () => {
+        // After the native toggle runs, enforce again to survive old delayed cleanup timers.
+        setTimeout(() => {
+          rememberDrawerIntentV420(details, details.open);
+          scheduleDrawerIntentEnforceV420();
+        }, 0);
+      }, false);
+    }
+
+    details.addEventListener("toggle", () => {
+      rememberDrawerIntentV420(details, details.open);
+      scheduleDrawerIntentEnforceV420();
+    });
+  });
+}
+
+function applySavedDrawerStateV420() {
+  const state = readDrawerStateV420();
+  document.querySelectorAll(".settings-category-v416").forEach(details => {
+    const id = drawerCategoryIdV420(details);
+    if (!id) return;
+
+    if (Object.prototype.hasOwnProperty.call(state, id)) {
+      details.open = !!state[id];
+    }
+  });
+}
+
+function patchOlderDrawerStateFunctionsV420() {
+  // Older category helpers sometimes reapply stale state and close the drawer.
+  // Make them respect the user's newest drawer tap instead.
+  window.applyCategoryStateV416 = function() {
+    applySavedDrawerStateV420();
+    enforceDrawerIntentV420();
+  };
+
+  window.readCategoryStateV416 = readDrawerStateV420;
+  window.writeCategoryStateV416 = writeDrawerStateV420;
+
+  try {
+    applyCategoryStateV416 = window.applyCategoryStateV416;
+    readCategoryStateV416 = window.readCategoryStateV416;
+    writeCategoryStateV416 = window.writeCategoryStateV416;
+  } catch (error) {}
+}
+
+function patchSettingsDrawerBuildLabelsV420() {
+  const cacheStatus = document.getElementById("cacheStatusV3998");
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.0. Settings ready.";
+
+  const sysBuild = document.getElementById("sysBuildV413");
+  if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V420;
+
+  const presenceBuild = document.querySelector("#presencePanelV411 .presence-grid-v411 div:nth-child(3) strong");
+  if (presenceBuild && /^v4\./.test(presenceBuild.textContent || "")) presenceBuild.textContent = STALKERNET_BUILD_V420;
+}
+
+function stableSettingsDrawerSetupV420() {
+  patchOlderDrawerStateFunctionsV420();
+
+  try { if (typeof setupCategoryPolishV419 === "function") setupCategoryPolishV419(); } catch (error) {}
+  try { if (typeof fixSettingsDisplayV418 === "function") fixSettingsDisplayV418(); } catch (error) {}
+  try { if (typeof setupSettingsCategoriesStableV417 === "function") setupSettingsCategoriesStableV417(); } catch (error) {}
+
+  bindDrawerToggleLockV420();
+  applySavedDrawerStateV420();
+  enforceDrawerIntentV420();
+  patchSettingsDrawerBuildLabelsV420();
+
+  // Re-bind after other helpers add/move drawers.
+  setTimeout(bindDrawerToggleLockV420, 200);
+}
+
+// Override older category setup paths so they do not win the tug-of-war.
+window.setupSettingsCategoriesV416 = stableSettingsDrawerSetupV420;
+window.moveSettingsPanelsIntoCategoriesV416 = function() {
+  try { if (typeof placeCategoryPanelsV419 === "function") placeCategoryPanelsV419(); } catch (error) {}
+  bindDrawerToggleLockV420();
+  enforceDrawerIntentV420();
+};
+
+window.setupSettingsCategoriesStableV417 = stableSettingsDrawerSetupV420;
+window.moveSettingsPanelsIntoCategoriesStableV417 = function() {
+  try { if (typeof placeCategoryPanelsV419 === "function") placeCategoryPanelsV419(); } catch (error) {}
+  bindDrawerToggleLockV420();
+  enforceDrawerIntentV420();
+};
+
+try {
+  setupSettingsCategoriesV416 = window.setupSettingsCategoriesV416;
+  moveSettingsPanelsIntoCategoriesV416 = window.moveSettingsPanelsIntoCategoriesV416;
+  setupSettingsCategoriesStableV417 = window.setupSettingsCategoriesStableV417;
+  moveSettingsPanelsIntoCategoriesStableV417 = window.moveSettingsPanelsIntoCategoriesStableV417;
+} catch (error) {}
+
+window.addEventListener("load", () => {
+  [60, 240, 700, 1500, 3000].forEach(delay => {
+    setTimeout(stableSettingsDrawerSetupV420, delay);
+  });
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  const summary = target?.closest?.(".settings-category-v416 summary");
+
+  if (summary) {
+    const details = summary.closest(".settings-category-v416");
+    if (details) {
+      // Preserve the exact drawer the user is tapping.
+      setTimeout(() => {
+        rememberDrawerIntentV420(details, details.open);
+        scheduleDrawerIntentEnforceV420();
+      }, 0);
+    }
+  }
+
+  if (target?.closest?.("#settingsTab, [data-tab='settingsTab'], .settings-nav-v405, .settings-nav-fixed-v406, .nav-btn, .settings-category-v416")) {
+    setTimeout(stableSettingsDrawerSetupV420, 90);
+    setTimeout(enforceDrawerIntentV420, 260);
+    setTimeout(enforceDrawerIntentV420, 650);
+    setTimeout(enforceDrawerIntentV420, 1300);
+  }
+}, true);
+
+window.stableSettingsDrawerSetupV420 = stableSettingsDrawerSetupV420;
+window.enforceDrawerIntentV420 = enforceDrawerIntentV420;
