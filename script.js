@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v428_build_display_hard_lock";
+const STORAGE_KEY = "stalkernet_pda_v430_comms_search_filter";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "428");
+    url.searchParams.set("v", "430");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.2.8. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.3.0. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6882,7 +6882,7 @@ document.addEventListener("click", event => {
 
 
 
-// v4.2.8 Cache panel spacing fix
+// v4.3.0 Cache panel spacing fix
 function tightenCachePanelSpacingV4000() {
   const panel = document.getElementById("cacheToolsPanelV3998");
   if (!panel) return;
@@ -6929,7 +6929,7 @@ document.addEventListener("click", event => {
 
 
 
-// v4.2.8 Put Cache Maintenance inside Comms tab and keep it above bottom nav
+// v4.3.0 Put Cache Maintenance inside Comms tab and keep it above bottom nav
 function placeCachePanelInsideCommsV4001() {
   const panel = document.getElementById("cacheToolsPanelV3998");
   const comms = document.getElementById("messagesTab");
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.8. Settings ready.";
+    status.textContent = "Current build: v4.3.0. Settings ready.";
   }
 }
 
@@ -6971,8 +6971,8 @@ document.addEventListener("click", event => {
 
 
 
-// v4.2.8 App Install / PWA Polish
-const STALKERNET_BUILD_V402 = "v4.2.8";
+// v4.3.0 App Install / PWA Polish
+const STALKERNET_BUILD_V402 = "v4.3.0";
 let deferredInstallPromptV402 = null;
 
 function isStandaloneV402() {
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
   }
 }
 
@@ -7124,7 +7124,7 @@ window.installStalkerNetV402 = installStalkerNetV402;
 
 
 
-// v4.2.8 Audio Cue Settings
+// v4.3.0 Audio Cue Settings
 const AUDIO_SETTINGS_KEY_V403 = "stalkernet_audio_settings_v403";
 const AUDIO_DEFAULTS_V403 = {
   enabled: true,
@@ -7393,7 +7393,7 @@ window.testAudioCueV403 = testAudioCueV403;
 
 
 
-// v4.2.8 Force-visible Audio Cues panel
+// v4.3.0 Force-visible Audio Cues panel
 function ensureAudioPanelVisibleV404() {
   let panel = document.getElementById("audioSettingsPanelV403");
   const cachePanel = document.getElementById("cacheToolsPanelV3998");
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
   }
 
   try {
@@ -7526,9 +7526,9 @@ document.addEventListener("click", event => {
 
 
 
-// v4.2.8 Settings Area
+// v4.3.0 Settings Area
 // Moves Audio Cues, App Install, and Cache Maintenance into a proper Settings tab.
-const STALKERNET_BUILD_V405 = "v4.2.8";
+const STALKERNET_BUILD_V405 = "v4.3.0";
 
 function settingsStatusV405(message) {
   console.log(message);
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.8. Settings ready.";
+    status.textContent = "Current build: v4.3.0. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7724,7 +7724,7 @@ window.activateTabV405 = activateTabV405;
 
 
 
-// v4.2.8 Settings tab layout fix
+// v4.3.0 Settings tab layout fix
 function getPdaMainV406() {
   return (
     document.querySelector(".pda-screen") ||
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.8. Settings ready.";
+    status.textContent = "Current build: v4.3.0. Settings ready.";
   }
 }
 
@@ -7871,7 +7871,7 @@ window.activateTabFixedV406 = activateTabFixedV406;
 
 
 
-// v4.2.8 Settings/Comms split: Audio only in Settings, Cache in both.
+// v4.3.0 Settings/Comms split: Audio only in Settings, Cache in both.
 function commsTabV407(){ return document.getElementById("messagesTab") || document.getElementById("commsTab"); }
 function settingsHubV407(){
   if (typeof ensureSettingsTabV405 === "function") { try { return ensureSettingsTabV405().hub; } catch(e){} }
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.2.8. Settings ready.";
+    if(st) st.textContent="Current build: v4.3.0. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -7985,7 +7985,7 @@ window.setupSettingsCacheSplitV407=setupSettingsCacheSplitV407;
 
 
 
-// v4.2.8 Strict Settings/Comms cleanup
+// v4.3.0 Strict Settings/Comms cleanup
 // Comms keeps only the small quick cache panel.
 // Settings keeps Audio Cues, App Install, and full Cache Maintenance.
 
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "428");
+        url.searchParams.set("v", "430");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.2.8. Settings ready.";
+    if (status) status.textContent = "Current build: v4.3.0. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8188,7 +8188,7 @@ window.strictSettingsCommsCleanupV408 = strictSettingsCommsCleanupV408;
 
 
 
-// v4.2.8 Stop full Cache/Audio from reappearing in Comms
+// v4.3.0 Stop full Cache/Audio from reappearing in Comms
 function getCommsTabV409() {
   return document.getElementById("messagesTab") || document.getElementById("commsTab");
 }
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "428");
+        url.searchParams.set("v", "430");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.2.8. Settings ready.";
+    if (status) status.textContent = "Current build: v4.3.0. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -8420,7 +8420,7 @@ window.finalSettingsCommsCleanupV409 = finalSettingsCommsCleanupV409;
 
 
 
-// v4.2.8 Restore Audio Controls inside Settings only
+// v4.3.0 Restore Audio Controls inside Settings only
 const AUDIO_SETTINGS_KEY_V410 = "stalkernet_audio_settings_v403";
 
 function getSettingsHubV410() {
@@ -8640,7 +8640,7 @@ function bindAudioControlsV410() {
   patchAudioPlaybackV410();
 }
 
-// Override the v4.2.8 muted helper with a safe version that creates Settings audio.
+// Override the v4.3.0 muted helper with a safe version that creates Settings audio.
 window.ensureAudioPanelVisibleV404 = function() {
   ensureAudioControlsInSettingsV410();
 };
@@ -8670,8 +8670,8 @@ window.testAudioCueV410 = testAudioCueV410;
 
 
 
-// v4.2.8 Online / Last Seen Presence
-const STALKERNET_BUILD_V411 = "v4.2.8";
+// v4.3.0 Online / Last Seen Presence
+const STALKERNET_BUILD_V411 = "v4.3.0";
 window.__presenceHeartbeatV411 = null;
 window.__lastPresenceWriteV411 = 0;
 
@@ -9000,8 +9000,8 @@ window.installPresencePanelV411 = installPresencePanelV411;
 
 
 
-// v4.2.8 Data Backup / Restore
-const STALKERNET_BUILD_V412 = "v4.2.8";
+// v4.3.0 Data Backup / Restore
+const STALKERNET_BUILD_V412 = "v4.3.0";
 
 function settingsHubV412() {
   let hub = document.getElementById("settingsHubV405");
@@ -9104,7 +9104,7 @@ function collectLocalBackupV412() {
 
   return {
     app: "StalkerNet",
-    backupVersion: "v4.2.8",
+    backupVersion: "v4.3.0",
     createdAt: new Date().toISOString(),
     origin: location.origin,
     path: location.pathname,
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "428");
+      url.searchParams.set("v", "430");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9284,8 +9284,8 @@ window.restoreBackupV412 = restoreBackupV412;
 
 
 
-// v4.2.8 System Status / Diagnostics
-const STALKERNET_BUILD_V413 = "v4.2.8";
+// v4.3.0 System Status / Diagnostics
+const STALKERNET_BUILD_V413 = "v4.3.0";
 
 function settingsHubV413() {
   let hub = document.getElementById("settingsHubV405");
@@ -9333,7 +9333,7 @@ function createSystemStatusPanelV413() {
     <div class="module-label">SYSTEM STATUS</div>
     <p id="systemStatusMessageV413" class="message-text system-status-message-v413">Diagnostics ready.</p>
     <div class="system-status-grid-v413">
-      <div><span>Build</span><strong id="sysBuildV413">v4.2.8</strong></div>
+      <div><span>Build</span><strong id="sysBuildV413">v4.3.0</strong></div>
       <div><span>Login</span><strong id="sysLoginV413">Checking</strong></div>
       <div><span>Firebase</span><strong id="sysFirebaseV413">Checking</strong></div>
       <div><span>Service Worker</span><strong id="sysWorkerV413">Checking</strong></div>
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
   }
 }
 
@@ -9548,8 +9548,8 @@ window.copySystemStatusV413 = copySystemStatusV413;
 
 
 
-// v4.2.8 Error Log / Bug Report
-const STALKERNET_BUILD_V414 = "v4.2.8";
+// v4.3.0 Error Log / Bug Report
+const STALKERNET_BUILD_V414 = "v4.3.0";
 const ERROR_LOG_KEY_V414 = "stalkernet_error_log_v414";
 const ERROR_LOG_LIMIT_V414 = 40;
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
   }
 }
 
@@ -9850,8 +9850,8 @@ window.copyErrorLogV414 = copyErrorLogV414;
 
 
 
-// v4.2.8 Error Log Noise Filter
-const STALKERNET_BUILD_V415 = "v4.2.8";
+// v4.3.0 Error Log Noise Filter
+const STALKERNET_BUILD_V415 = "v4.3.0";
 const FIRESTORE_NOISE_STATS_KEY_V415 = "stalkernet_firestore_noise_stats_v415";
 
 function firestoreNoiseRegexV415(message) {
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10047,10 +10047,10 @@ window.readFirestoreNoiseStatsV415 = readFirestoreNoiseStatsV415;
 
 
 
-// v4.2.8 Settings Category Tabs
-// Clean rebuild from v4.2.8. No drawer/details system.
+// v4.3.0 Settings Category Tabs
+// Clean rebuild from v4.3.0. No drawer/details system.
 
-const STALKERNET_BUILD_V422 = "v4.2.8";
+const STALKERNET_BUILD_V422 = "v4.3.0";
 const SETTINGS_TAB_STATE_KEY_V422 = "stalkernet_settings_category_tab_v422";
 
 const SETTINGS_CATEGORIES_V422 = [
@@ -10276,7 +10276,7 @@ function activateSettingsCategoryV422(categoryId, save = true) {
 
 function patchBuildLabelsV422() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.8. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
 
   const sysBuild = document.getElementById("sysBuildV413");
   if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V422;
@@ -10349,11 +10349,11 @@ window.activateSettingsCategoryV422 = activateSettingsCategoryV422;
 
 
 
-// v4.2.8 Settings Tabs Content Fix
+// v4.3.0 Settings Tabs Content Fix
 // Stable self-contained content panels for Settings category tabs.
 // This avoids relying on older panels being moved around correctly.
 
-const STALKERNET_BUILD_V423 = "v4.2.8";
+const STALKERNET_BUILD_V423 = "v4.3.0";
 const SETTINGS_TAB_STATE_KEY_V423 = "stalkernet_settings_category_tab_v422";
 const AUDIO_KEY_V423 = "stalkernet_audio_settings_v403";
 const ERROR_LOG_KEY_V423 = "stalkernet_error_log_v414";
@@ -10462,7 +10462,7 @@ function getCategoryBodyV423(id) {
 }
 
 function clearOldAutoMovedContentV423() {
-  // Hide old/moved settings modules so only the stable v4.2.8 panels show in tabs.
+  // Hide old/moved settings modules so only the stable v4.3.0 panels show in tabs.
   const oldIds = [
     "audioSettingsPanelV403",
     "presencePanelV411",
@@ -10741,7 +10741,7 @@ function installAppCacheContentV423() {
     cache.className = "settings-lite-panel-v423";
     cache.innerHTML = `
       <div class="module-label">CACHE MAINTENANCE</div>
-      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.2.8. Settings ready.</p>
+      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.3.0. Settings ready.</p>
       <div class="settings-two-buttons-v423">
         <button id="settingsRefreshAppV423" class="small-btn">Refresh App</button>
         <button id="settingsClearCachesV423" class="small-btn">Clear Old Caches</button>
@@ -10799,7 +10799,7 @@ function bindCacheV423() {
     refresh.addEventListener("click", event => {
       event.preventDefault();
       const url = new URL(location.href);
-      url.searchParams.set("v", "428");
+      url.searchParams.set("v", "430");
       url.searchParams.set("refresh", Date.now().toString(36));
       location.href = url.toString();
     });
@@ -10924,7 +10924,7 @@ function installDiagnosticsContentV423() {
     status.innerHTML = `
       <div class="module-label">SYSTEM STATUS</div>
       <div class="settings-status-grid-v423">
-        <div><span>Build</span><strong>v4.2.8</strong></div>
+        <div><span>Build</span><strong>v4.3.0</strong></div>
         <div><span>Login</span><strong id="settingsDiagLoginV423">Checking</strong></div>
         <div><span>Firebase</span><strong id="settingsDiagFirebaseV423">Checking</strong></div>
         <div><span>Screen</span><strong>${window.innerWidth}x${window.innerHeight}</strong></div>
@@ -11060,7 +11060,7 @@ function installStableSettingsContentV423() {
   activateSettingsTabV423(activeSettingsTabV423());
 }
 
-// Override v4.2.8 setup functions to use the robust v4.2.8 content.
+// Override v4.3.0 setup functions to use the robust v4.3.0 content.
 window.activateSettingsCategoryV422 = activateSettingsTabV423;
 window.setupSettingsCategoryTabsV422 = installStableSettingsContentV423;
 window.moveSettingsPanelsIntoTabsV422 = installStableSettingsContentV423;
@@ -11094,8 +11094,8 @@ window.activateSettingsTabV423 = activateSettingsTabV423;
 
 
 
-// v4.2.8 Display Preferences
-const STALKERNET_BUILD_V424 = "v4.2.8";
+// v4.3.0 Display Preferences
+const STALKERNET_BUILD_V424 = "v4.3.0";
 const DISPLAY_PREFS_KEY_V424 = "stalkernet_display_preferences_v424";
 
 function readDisplayPrefsV424() {
@@ -11263,7 +11263,7 @@ function bindDisplayPrefsV424() {
 
 function patchBuildLabelsV424() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.8. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V424;
@@ -11313,10 +11313,10 @@ window.installDisplayPrefsPanelV424 = installDisplayPrefsPanelV424;
 
 
 
-// v4.2.8 Comms Draft Lite SAFE
+// v4.3.0 Comms Draft Lite SAFE
 // Small patch only. Does not touch Settings category tabs.
 
-const STALKERNET_BUILD_V426 = "v4.2.8";
+const STALKERNET_BUILD_V426 = "v4.3.0";
 const COMMS_DRAFT_KEY_V426 = "stalkernet_comms_draft_lite_v426";
 
 function getCommsInputV426() {
@@ -11454,7 +11454,7 @@ function bindCommsDraftLiteV426() {
 
 function patchBuildLabelsV426() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.8. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V426;
@@ -11490,9 +11490,9 @@ window.clearCommsDraftLiteV426 = clearCommsDraftLiteV426;
 
 
 
-// v4.2.8 Build Display Sync
+// v4.3.0 Build Display Sync
 // One central build label, synced across visible panels and reports.
-const STALKERNET_BUILD_V427 = "v4.2.8";
+const STALKERNET_BUILD_V427 = "v4.3.0";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V427;
 
 function stalkerNetBuildV427() {
@@ -11543,7 +11543,7 @@ function syncKnownBuildFieldsV427() {
     }
   });
 
-  // Presence panel build field from v4.2.8/v4.2.8 settings tabs.
+  // Presence panel build field from v4.3.0/v4.3.0 settings tabs.
   document.querySelectorAll(
     "#settingsPresencePanelV423 .settings-status-grid-v423 strong, " +
     "#presencePanelV411 .presence-grid-v411 strong, " +
@@ -11636,10 +11636,10 @@ window.syncBuildDisplayV427 = syncBuildDisplayV427;
 
 
 
-// v4.2.8 Build Display HARD LOCK
+// v4.3.0 Build Display HARD LOCK
 // Stops older helpers from flipping visible build labels back and forth.
 
-const STALKERNET_BUILD_V428 = "v4.2.8";
+const STALKERNET_BUILD_V428 = "v4.3.0";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V428;
 
 function currentBuildV428() {
@@ -11807,3 +11807,301 @@ document.addEventListener("click", event => {
 
 window.syncBuildFieldsV428 = syncBuildFieldsV428;
 window.setupBuildHardLockV428 = setupBuildHardLockV428;
+
+
+
+// v4.3.0 Comms Search / Filter Polish
+const STALKERNET_BUILD_V430 = "v4.3.0";
+window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V430;
+
+const COMMS_SEARCH_STATE_KEY_V430 = "stalkernet_comms_search_state_v430";
+
+function commsRootV430() {
+  return document.getElementById("messagesTab") || document.getElementById("commsTab");
+}
+
+function readCommsSearchStateV430() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(COMMS_SEARCH_STATE_KEY_V430) || "null");
+    return {
+      query: typeof saved?.query === "string" ? saved.query : "",
+      mode: ["all", "callsign", "faction", "message"].includes(saved?.mode) ? saved.mode : "all"
+    };
+  } catch (error) {
+    return { query: "", mode: "all" };
+  }
+}
+
+function saveCommsSearchStateV430(state) {
+  const clean = {
+    query: String(state.query || ""),
+    mode: ["all", "callsign", "faction", "message"].includes(state.mode) ? state.mode : "all"
+  };
+  try { localStorage.setItem(COMMS_SEARCH_STATE_KEY_V430, JSON.stringify(clean)); } catch (error) {}
+  return clean;
+}
+
+function ensureCommsSearchPanelV430() {
+  const root = commsRootV430();
+  if (!root) return null;
+
+  let panel = document.getElementById("commsSearchPanelV430");
+  if (!panel) {
+    panel = document.createElement("section");
+    panel.id = "commsSearchPanelV430";
+    panel.className = "comms-search-panel-v430 module-panel";
+    panel.innerHTML = `
+      <div class="module-label">COMMS SEARCH</div>
+      <div class="comms-search-row-v430">
+        <input id="commsSearchInputV430" type="search" placeholder="Search callsign, faction, or message..." autocomplete="off" />
+        <button id="clearCommsSearchBtnV430" class="small-btn">Clear</button>
+      </div>
+      <div class="comms-search-modes-v430">
+        <button class="small-btn comms-search-mode-v430" data-search-mode-v430="all">All</button>
+        <button class="small-btn comms-search-mode-v430" data-search-mode-v430="callsign">Callsign</button>
+        <button class="small-btn comms-search-mode-v430" data-search-mode-v430="faction">Faction</button>
+        <button class="small-btn comms-search-mode-v430" data-search-mode-v430="message">Message</button>
+      </div>
+      <p id="commsSearchStatusV430" class="message-text comms-search-status-v430">Search ready.</p>
+    `;
+  }
+
+  const filters =
+    root.querySelector(".comms-filters") ||
+    root.querySelector(".filter-row") ||
+    root.querySelector(".channel-tabs") ||
+    root.querySelector(".section-top");
+
+  if (filters && panel.parentElement !== root) {
+    filters.insertAdjacentElement("afterend", panel);
+  } else if (!panel.parentElement) {
+    // Prefer before messages list if possible.
+    const list =
+      root.querySelector("#messagesList") ||
+      root.querySelector("#messageList") ||
+      root.querySelector(".messages-list") ||
+      root.querySelector(".comms-list") ||
+      root.querySelector(".message-list");
+    if (list) root.insertBefore(panel, list);
+    else root.insertBefore(panel, root.firstElementChild?.nextElementSibling || root.firstElementChild);
+  }
+
+  bindCommsSearchPanelV430();
+  applyCommsSearchStateToUiV430();
+  return panel;
+}
+
+function messageCardsV430() {
+  const root = commsRootV430();
+  if (!root) return [];
+
+  const selectors = [
+    ".message-card",
+    ".comms-message",
+    ".chat-message",
+    "[data-message-id]",
+    ".feed-card"
+  ];
+
+  const cards = new Set();
+  selectors.forEach(selector => {
+    root.querySelectorAll(selector).forEach(el => {
+      if (el.id === "commsSearchPanelV430" || el.closest("#commsSearchPanelV430")) return;
+      if (el.closest(".input-row") || el.closest("#commsDraftLitePanelV426") || el.closest("#commsCacheToolsPanelV407")) return;
+      cards.add(el);
+    });
+  });
+
+  // Fallback: detect message-looking module panels that include Delete or sender headers.
+  if (!cards.size) {
+    root.querySelectorAll(".module-panel, article, .card").forEach(el => {
+      const text = (el.innerText || "").trim();
+      if (!text || text.length < 12) return;
+      if (/write a public message|cache maintenance|comms search/i.test(text)) return;
+      if (/delete|public chat|mercenary|loner|duty|freedom|bandit|clear sky|monolith/i.test(text)) cards.add(el);
+    });
+  }
+
+  return Array.from(cards);
+}
+
+function cardTextForModeV430(card, mode) {
+  const text = (card.innerText || card.textContent || "").toLowerCase();
+
+  if (mode === "all") return text;
+
+  if (mode === "callsign") {
+    const headings = Array.from(card.querySelectorAll("h1,h2,h3,h4,strong,.callsign,.sender,.message-author,.message-name"))
+      .map(el => el.textContent || "")
+      .join(" ");
+    return (headings || text.split("\n").slice(0, 2).join(" ")).toLowerCase();
+  }
+
+  if (mode === "faction") {
+    const factionish = Array.from(card.querySelectorAll(".faction,.message-meta,.meta,small"))
+      .map(el => el.textContent || "")
+      .join(" ");
+    const known = text.match(/(loner|mercenary|duty|freedom|bandit|clear sky|monolith|military|ecologist|renegade|sin|isg)/gi);
+    return ((factionish || "") + " " + (known || []).join(" ")).toLowerCase();
+  }
+
+  if (mode === "message") {
+    const paragraphs = Array.from(card.querySelectorAll("p,.message-body,.body,.text"))
+      .map(el => el.textContent || "")
+      .join(" ");
+    return (paragraphs || text).toLowerCase();
+  }
+
+  return text;
+}
+
+function applyCommsSearchV430() {
+  const state = readCommsSearchStateV430();
+  const query = state.query.trim().toLowerCase();
+  const cards = messageCardsV430();
+  let shown = 0;
+
+  cards.forEach(card => {
+    const haystack = cardTextForModeV430(card, state.mode);
+    const match = !query || haystack.includes(query);
+
+    card.classList.toggle("comms-search-hidden-v430", !match);
+    card.style.display = match ? "" : "none";
+
+    if (match) shown++;
+  });
+
+  const status = document.getElementById("commsSearchStatusV430");
+  if (status) {
+    if (!query) {
+      status.textContent = cards.length ? `Showing ${cards.length} recent message${cards.length === 1 ? "" : "s"}.` : "No messages detected yet.";
+    } else {
+      status.textContent = `Showing ${shown} of ${cards.length} message${cards.length === 1 ? "" : "s"} for “${state.query.trim()}”.`;
+    }
+  }
+
+  updateCommsSearchModeButtonsV430();
+}
+
+function updateCommsSearchModeButtonsV430() {
+  const state = readCommsSearchStateV430();
+
+  document.querySelectorAll(".comms-search-mode-v430").forEach(btn => {
+    const active = btn.dataset.searchModeV430 === state.mode;
+    btn.classList.toggle("active", active);
+    btn.classList.toggle("setting-on-v424", active);
+    btn.setAttribute("aria-pressed", active ? "true" : "false");
+  });
+}
+
+function applyCommsSearchStateToUiV430() {
+  const state = readCommsSearchStateV430();
+  const input = document.getElementById("commsSearchInputV430");
+
+  if (input && input.value !== state.query) input.value = state.query;
+
+  updateCommsSearchModeButtonsV430();
+  applyCommsSearchV430();
+}
+
+function clearCommsSearchV430() {
+  const state = readCommsSearchStateV430();
+  saveCommsSearchStateV430({ ...state, query: "" });
+
+  const input = document.getElementById("commsSearchInputV430");
+  if (input) input.value = "";
+
+  applyCommsSearchV430();
+}
+
+function bindCommsSearchPanelV430() {
+  const input = document.getElementById("commsSearchInputV430");
+  const clear = document.getElementById("clearCommsSearchBtnV430");
+
+  if (input && !input.dataset.v430Bound) {
+    input.dataset.v430Bound = "true";
+    input.addEventListener("input", () => {
+      const state = readCommsSearchStateV430();
+      saveCommsSearchStateV430({ ...state, query: input.value || "" });
+      applyCommsSearchV430();
+    });
+  }
+
+  if (clear && !clear.dataset.v430Bound) {
+    clear.dataset.v430Bound = "true";
+    clear.addEventListener("click", event => {
+      event.preventDefault();
+      clearCommsSearchV430();
+    });
+  }
+
+  document.querySelectorAll(".comms-search-mode-v430").forEach(btn => {
+    if (btn.dataset.v430Bound) return;
+    btn.dataset.v430Bound = "true";
+
+    btn.addEventListener("click", event => {
+      event.preventDefault();
+      const state = readCommsSearchStateV430();
+      saveCommsSearchStateV430({ ...state, mode: btn.dataset.searchModeV430 || "all" });
+      applyCommsSearchV430();
+    });
+  });
+}
+
+function patchBuildLabelsV430() {
+  window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V430;
+
+  if (typeof syncBuildFieldsV428 === "function") {
+    try { syncBuildFieldsV428(); } catch (error) {}
+  }
+
+  const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+
+  document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #messagesTab strong, #commsTab strong").forEach(el => {
+    const text = el.textContent || "";
+    if (/^v4\.\d+\.\d+$/.test(text.trim())) el.textContent = STALKERNET_BUILD_V430;
+    else if (/Current build: v4\.\d+\.\d+/.test(text)) {
+      el.textContent = text.replace(/Current build: v4\.\d+\.\d+\. Settings ready\./, `Current build: ${STALKERNET_BUILD_V430}. Settings ready.`);
+    }
+  });
+}
+
+let commsSearchObserverV430 = null;
+
+function startCommsSearchObserverV430() {
+  const root = commsRootV430();
+  if (!root || commsSearchObserverV430) return;
+
+  commsSearchObserverV430 = new MutationObserver(() => {
+    clearTimeout(window.__commsSearchTimerV430);
+    window.__commsSearchTimerV430 = setTimeout(() => {
+      ensureCommsSearchPanelV430();
+      applyCommsSearchV430();
+    }, 120);
+  });
+
+  commsSearchObserverV430.observe(root, { childList: true, subtree: true });
+}
+
+function setupCommsSearchV430() {
+  ensureCommsSearchPanelV430();
+  applyCommsSearchV430();
+  startCommsSearchObserverV430();
+  patchBuildLabelsV430();
+}
+
+window.addEventListener("load", () => {
+  [120, 500, 1200, 2400].forEach(delay => setTimeout(setupCommsSearchV430, delay));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#messagesTab, #commsTab, [data-tab='messagesTab'], [data-tab='commsTab'], .nav-btn, #commsSearchPanelV430")) {
+    setTimeout(setupCommsSearchV430, 120);
+    setTimeout(applyCommsSearchV430, 400);
+  }
+}, true);
+
+window.setupCommsSearchV430 = setupCommsSearchV430;
+window.applyCommsSearchV430 = applyCommsSearchV430;
