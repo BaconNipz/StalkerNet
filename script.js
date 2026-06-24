@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v417_settings_categories_stable";
+const STORAGE_KEY = "stalkernet_pda_v418_settings_display_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "417");
+    url.searchParams.set("v", "418");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.1.7. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.1.8. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.7. Settings ready.";
+    status.textContent = "Current build: v4.1.8. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.7. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.7. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.7. Settings ready.";
+    status.textContent = "Current build: v4.1.8. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.7. Settings ready.";
+    status.textContent = "Current build: v4.1.8. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.1.7. Settings ready.";
+    if(st) st.textContent="Current build: v4.1.8. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "417");
+        url.searchParams.set("v", "418");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.7. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.8. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "417");
+        url.searchParams.set("v", "418");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.7. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.8. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "417");
+      url.searchParams.set("v", "418");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.7. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
   }
 }
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.7. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
   }
 }
 
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.7. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10278,7 +10278,7 @@ function moveSettingsPanelsIntoCategoriesV416() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.5|v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.7. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
   }
 
   // Rebind controls after moving DOM.
@@ -10573,7 +10573,7 @@ function moveSettingsPanelsIntoCategoriesStableV417() {
 
     const cacheStatus = document.getElementById("cacheStatusV3998");
     if (cacheStatus && /v4\.1\.6|v4\.1\.5|v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-      cacheStatus.textContent = "Current build: v4.1.7. Settings ready.";
+      cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
     }
   } finally {
     window.__settingsCategoryMovingV417 = false;
@@ -10650,3 +10650,306 @@ document.addEventListener("click", event => {
     setTimeout(moveSettingsPanelsIntoCategoriesStableV417, 520);
   }
 }, true);
+
+
+
+// v4.1.8 Settings Display Fix
+// Fixes invisible Audio Cues inside PDA Preferences, stale diagnostics build labels,
+// and large warning toasts covering the Settings drawers.
+
+const STALKERNET_BUILD_V418 = "v4.1.8";
+const AUDIO_SETTINGS_KEY_V418 = "stalkernet_audio_settings_v403";
+
+function getSettingsHubV418() {
+  let hub = document.getElementById("settingsHubV405");
+  if (hub) return hub;
+
+  let settings = document.getElementById("settingsTab");
+  if (!settings) {
+    settings = document.createElement("section");
+    settings.id = "settingsTab";
+    settings.className = "tab-panel hidden settings-tab-v405 settings-tab-fixed-v406";
+    settings.innerHTML = `
+      <div class="section-top"><h2>Settings</h2></div>
+      <article class="module-panel settings-hub-card-v405">
+        <div class="module-label">PDA SETTINGS</div>
+        <p class="message-text">Device tools and local preferences live here.</p>
+      </article>
+      <div id="settingsHubV405" class="settings-hub-v405"></div>
+    `;
+    const main = document.querySelector("main") || document.body;
+    const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+    if (nav && nav.parentElement === main) main.insertBefore(settings, nav);
+    else main.appendChild(settings);
+  }
+
+  hub = document.getElementById("settingsHubV405");
+  if (!hub) {
+    hub = document.createElement("div");
+    hub.id = "settingsHubV405";
+    hub.className = "settings-hub-v405";
+    settings.appendChild(hub);
+  }
+
+  return hub;
+}
+
+function getPrefsBodyV418() {
+  if (typeof setupSettingsCategoriesStableV417 === "function") {
+    try { setupSettingsCategoriesStableV417(); } catch (error) {}
+  }
+
+  let body = document.getElementById("settingsCategoryBodyV416_prefs");
+  if (body) return body;
+
+  const hub = getSettingsHubV418();
+  let details = document.getElementById("settingsCategoryV416_prefs");
+  if (!details) {
+    details = document.createElement("details");
+    details.id = "settingsCategoryV416_prefs";
+    details.className = "settings-category-v416 settings-category-stable-v417";
+    details.dataset.settingsCategorySystemV416 = "true";
+    details.dataset.settingsOrderV405 = "5";
+    details.innerHTML = `
+      <summary>
+        <span>
+          <strong>PDA Preferences</strong>
+          <em>Audio cues and presence</em>
+        </span>
+        <b id="settingsCategoryCountV416_prefs">0</b>
+      </summary>
+      <div id="settingsCategoryBodyV416_prefs" class="settings-category-body-v416"></div>
+    `;
+    hub.appendChild(details);
+  }
+
+  body = document.getElementById("settingsCategoryBodyV416_prefs");
+  return body;
+}
+
+function readAudioSettingsV418() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(AUDIO_SETTINGS_KEY_V418) || "null");
+    return {
+      enabled: saved?.enabled !== false,
+      volume: Number.isFinite(Number(saved?.volume)) ? Number(saved.volume) : 0.5
+    };
+  } catch (error) {
+    return { enabled: true, volume: 0.5 };
+  }
+}
+
+function saveAudioSettingsV418(settings) {
+  const clean = {
+    enabled: !!settings.enabled,
+    volume: Math.max(0, Math.min(1, Number(settings.volume)))
+  };
+  localStorage.setItem(AUDIO_SETTINGS_KEY_V418, JSON.stringify(clean));
+  window.audioSettingsV403 = clean;
+  return clean;
+}
+
+function makeAudioPanelV418() {
+  let panel = document.getElementById("audioSettingsPanelV418");
+  if (panel) return panel;
+
+  panel = document.createElement("div");
+  panel.id = "audioSettingsPanelV418";
+  panel.className = "audio-settings-panel-v418 settings-module-v405 settings-categorized-panel-v416 settings-categorized-panel-stable-v417";
+  panel.dataset.settingsCategoryV416 = "prefs";
+  panel.innerHTML = `
+    <div class="module-label">AUDIO CUES</div>
+    <p id="audioStatusV418" class="message-text audio-status-v418">Audio cues are local to this device.</p>
+    <div class="audio-actions-v418">
+      <button id="toggleAudioBtnV418" class="small-btn">Audio Cues: On</button>
+      <button id="testAudioBtnV418" class="small-btn">Test Cue</button>
+    </div>
+    <label class="audio-volume-row-v418" for="audioVolumeSliderV418">
+      <span>Volume</span>
+      <input id="audioVolumeSliderV418" type="range" min="0" max="100" value="50" />
+      <strong id="audioVolumeValueV418">50%</strong>
+    </label>
+  `;
+  return panel;
+}
+
+function updateAudioUiV418() {
+  const settings = readAudioSettingsV418();
+  const toggle = document.getElementById("toggleAudioBtnV418");
+  const slider = document.getElementById("audioVolumeSliderV418");
+  const value = document.getElementById("audioVolumeValueV418");
+  const status = document.getElementById("audioStatusV418");
+
+  if (toggle) toggle.textContent = settings.enabled ? "Audio Cues: On" : "Audio Cues: Off";
+  if (slider) slider.value = String(Math.round(settings.volume * 100));
+  if (value) value.textContent = `${Math.round(settings.volume * 100)}%`;
+  if (status) status.textContent = settings.enabled ? "Audio cues enabled for this device." : "Audio cues muted for this device.";
+
+  document.querySelectorAll("audio").forEach(audio => {
+    try {
+      audio.volume = settings.volume;
+      audio.muted = !settings.enabled || settings.volume <= 0;
+    } catch (error) {}
+  });
+}
+
+function testAudioCueV418() {
+  const settings = readAudioSettingsV418();
+  const status = document.getElementById("audioStatusV418");
+
+  if (!settings.enabled || settings.volume <= 0) {
+    if (status) status.textContent = "Audio cues are muted.";
+    return;
+  }
+
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) {
+      if (status) status.textContent = "Audio test unavailable in this browser.";
+      return;
+    }
+
+    const ctx = new AC();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "square";
+    osc.frequency.value = 520;
+    gain.gain.value = 0.035 * settings.volume;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+
+    setTimeout(() => {
+      try { osc.stop(); } catch (error) {}
+      try { ctx.close?.(); } catch (error) {}
+    }, 95);
+
+    if (status) status.textContent = "Test cue played.";
+  } catch (error) {
+    if (status) status.textContent = "Audio test failed.";
+  }
+}
+
+function bindAudioPanelV418() {
+  const toggle = document.getElementById("toggleAudioBtnV418");
+  const test = document.getElementById("testAudioBtnV418");
+  const slider = document.getElementById("audioVolumeSliderV418");
+
+  if (toggle && !toggle.dataset.v418Bound) {
+    toggle.dataset.v418Bound = "true";
+    toggle.addEventListener("click", event => {
+      event.preventDefault();
+      const current = readAudioSettingsV418();
+      saveAudioSettingsV418({ ...current, enabled: !current.enabled });
+      updateAudioUiV418();
+    });
+  }
+
+  if (test && !test.dataset.v418Bound) {
+    test.dataset.v418Bound = "true";
+    test.addEventListener("click", event => {
+      event.preventDefault();
+      testAudioCueV418();
+    });
+  }
+
+  if (slider && !slider.dataset.v418Bound) {
+    slider.dataset.v418Bound = "true";
+    slider.addEventListener("input", event => {
+      const current = readAudioSettingsV418();
+      saveAudioSettingsV418({ ...current, volume: Number(event.target.value) / 100 });
+      updateAudioUiV418();
+    });
+  }
+
+  updateAudioUiV418();
+}
+
+function installAudioPanelV418() {
+  const body = getPrefsBodyV418();
+  if (!body) return;
+
+  // Keep the old flaky audio panel hidden, but not deleted. This avoids older helpers recreating it in Comms.
+  const oldAudio = document.getElementById("audioSettingsPanelV403");
+  if (oldAudio) {
+    oldAudio.classList.add("audio-old-hidden-v418");
+    oldAudio.style.display = "none";
+  }
+
+  const panel = makeAudioPanelV418();
+  if (panel.parentElement !== body) {
+    if (body.firstElementChild) body.insertBefore(panel, body.firstElementChild);
+    else body.appendChild(panel);
+  }
+
+  bindAudioPanelV418();
+  updatePrefsCountV418();
+}
+
+function updatePrefsCountV418() {
+  const count = document.getElementById("settingsCategoryCountV416_prefs");
+  const body = document.getElementById("settingsCategoryBodyV416_prefs");
+  if (!count || !body) return;
+
+  const visiblePanels = Array.from(body.children).filter(child => {
+    if (!(child instanceof HTMLElement)) return false;
+    if (child.id === "audioSettingsPanelV403") return false;
+    const style = getComputedStyle(child);
+    return style.display !== "none" && style.visibility !== "hidden";
+  });
+
+  count.textContent = String(visiblePanels.length);
+}
+
+function patchBuildLabelsV418() {
+  const cacheStatus = document.getElementById("cacheStatusV3998");
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
+
+  const buildFields = [
+    document.getElementById("sysBuildV413"),
+    document.querySelector("#presencePanelV411 .presence-grid-v411 div:nth-child(3) strong")
+  ];
+
+  buildFields.forEach(el => {
+    if (el && /^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V418;
+  });
+}
+
+function quietSettingsWarningToastsV418() {
+  // Some old warning toast can sit over the categories. Hide it only while Settings is active.
+  const settingsActive = document.getElementById("settingsTab")?.classList.contains("active");
+  document.body.classList.toggle("settings-active-v418", !!settingsActive);
+}
+
+function fixSettingsDisplayV418() {
+  installAudioPanelV418();
+  patchBuildLabelsV418();
+  updatePrefsCountV418();
+  quietSettingsWarningToastsV418();
+
+  // If v4.1.7 category helper is present, keep its stable categorization but avoid the missing audio panel.
+  try { if (typeof moveSettingsPanelsIntoCategoriesStableV417 === "function") moveSettingsPanelsIntoCategoriesStableV417(); } catch (error) {}
+  setTimeout(() => {
+    installAudioPanelV418();
+    patchBuildLabelsV418();
+    updatePrefsCountV418();
+    quietSettingsWarningToastsV418();
+  }, 120);
+}
+
+window.addEventListener("load", () => {
+  [80, 350, 900, 1800, 3200].forEach(t => setTimeout(fixSettingsDisplayV418, t));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, [data-tab='settingsTab'], .settings-nav-v405, .settings-nav-fixed-v406, .nav-btn, #settingsCategoryV416_prefs")) {
+    setTimeout(fixSettingsDisplayV418, 60);
+    setTimeout(fixSettingsDisplayV418, 240);
+    setTimeout(fixSettingsDisplayV418, 700);
+  }
+}, true);
+
+window.installAudioPanelV418 = installAudioPanelV418;
+window.fixSettingsDisplayV418 = fixSettingsDisplayV418;
+window.testAudioCueV418 = testAudioCueV418;
