@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v434-archive-search-filter";
+const CACHE_NAME = "stalkernet-cache-v435-public-dossier-tools";
 
 const FILES_TO_CACHE = [
   "./",

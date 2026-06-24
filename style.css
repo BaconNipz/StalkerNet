@@ -4845,3 +4845,62 @@ body.display-reduced-motion-v424 *::after {
     width: 100% !important;
   }
 }
+
+/* v4.3.5 Public Stalker ID / Dossier Tools */
+#dossierToolsPanelV435 {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 10px 0 !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+.dossier-meter-v435 {
+  width: 100% !important;
+  height: 18px !important;
+  border: 1px solid rgba(215,171,107,0.24) !important;
+  border-radius: 999px !important;
+  background: rgba(0,0,0,0.34) !important;
+  overflow: hidden !important;
+  margin: 8px 0 !important;
+}
+
+#dossierMeterFillV435 {
+  height: 100% !important;
+  min-width: 0 !important;
+  width: 0%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(90deg, rgba(215,171,107,0.48), rgba(215,171,107,0.86)) !important;
+  color: #11150f !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  transition: width 0.25s ease !important;
+}
+
+.dossier-missing-v435 {
+  margin: 6px 0 10px !important;
+  font-size: 11px !important;
+}
+
+.dossier-actions-v435 {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.dossier-actions-v435 .small-btn {
+  width: 100% !important;
+}
+
+@media (max-width: 520px) {
+  .dossier-actions-v435 {
+    grid-template-columns: 1fr !important;
+  }
+}
