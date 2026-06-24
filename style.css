@@ -4437,3 +4437,9 @@ body.display-reduced-motion-v424 *::after {
 .build-sync-v427 {
   color: var(--amber-bright);
 }
+
+
+/* v4.2.8 Build Display HARD LOCK */
+.build-hard-lock-v428 {
+  color: var(--amber-bright);
+}

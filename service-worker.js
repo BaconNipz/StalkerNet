@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v427-build-display-sync";
+const CACHE_NAME = "stalkernet-cache-v428-build-display-hard-lock";
 
 const FILES_TO_CACHE = [
   "./",
