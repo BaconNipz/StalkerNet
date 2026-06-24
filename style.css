@@ -4182,3 +4182,52 @@ main > #settingsTab,
     font-size: 12px;
   }
 }
+
+/* v4.1.7 Stable Settings Categories */
+.settings-category-stable-v417 {
+  transition: none !important;
+  animation: none !important;
+}
+
+.settings-category-body-v416 {
+  contain: layout style !important;
+}
+
+.settings-categorized-panel-stable-v417 {
+  transform: translateZ(0);
+  transition: none !important;
+  animation: none !important;
+}
+
+#settingsTab #settingsHubV405 {
+  align-content: start !important;
+}
+
+/* Hide uncategorized known panels if an old helper briefly drops one in the hub root. */
+#settingsTab #settingsHubV405 > #audioSettingsPanelV403,
+#settingsTab #settingsHubV405 > #presencePanelV411,
+#settingsTab #settingsHubV405 > #installAppPanelV402,
+#settingsTab #settingsHubV405 > #cacheToolsPanelV3998,
+#settingsTab #settingsHubV405 > #backupPanelV412,
+#settingsTab #settingsHubV405 > #systemStatusPanelV413,
+#settingsTab #settingsHubV405 > #errorLogPanelV414 {
+  display: none !important;
+}
+
+/* Show them normally once inside their drawers. */
+#settingsTab .settings-category-body-v416 > #audioSettingsPanelV403,
+#settingsTab .settings-category-body-v416 > #presencePanelV411,
+#settingsTab .settings-category-body-v416 > #installAppPanelV402,
+#settingsTab .settings-category-body-v416 > #cacheToolsPanelV3998,
+#settingsTab .settings-category-body-v416 > #backupPanelV412,
+#settingsTab .settings-category-body-v416 > #systemStatusPanelV413,
+#settingsTab .settings-category-body-v416 > #errorLogPanelV414 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Prevent flicker while details redraw. */
+.settings-category-v416:not([open]) > .settings-category-body-v416 {
+  display: none !important;
+}
