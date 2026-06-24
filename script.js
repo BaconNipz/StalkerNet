@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v432_map_marker_filter";
+const STORAGE_KEY = "stalkernet_pda_v433_map_marker_click_fix";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "432");
+    url.searchParams.set("v", "433");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.3.2. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.3.3. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6882,7 +6882,7 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.2 Cache panel spacing fix
+// v4.3.3 Cache panel spacing fix
 function tightenCachePanelSpacingV4000() {
   const panel = document.getElementById("cacheToolsPanelV3998");
   if (!panel) return;
@@ -6929,7 +6929,7 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.2 Put Cache Maintenance inside Comms tab and keep it above bottom nav
+// v4.3.3 Put Cache Maintenance inside Comms tab and keep it above bottom nav
 function placeCachePanelInsideCommsV4001() {
   const panel = document.getElementById("cacheToolsPanelV3998");
   const comms = document.getElementById("messagesTab");
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.3.2. Settings ready.";
+    status.textContent = "Current build: v4.3.3. Settings ready.";
   }
 }
 
@@ -6971,8 +6971,8 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.2 App Install / PWA Polish
-const STALKERNET_BUILD_V402 = "v4.3.2";
+// v4.3.3 App Install / PWA Polish
+const STALKERNET_BUILD_V402 = "v4.3.3";
 let deferredInstallPromptV402 = null;
 
 function isStandaloneV402() {
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
   }
 }
 
@@ -7124,7 +7124,7 @@ window.installStalkerNetV402 = installStalkerNetV402;
 
 
 
-// v4.3.2 Audio Cue Settings
+// v4.3.3 Audio Cue Settings
 const AUDIO_SETTINGS_KEY_V403 = "stalkernet_audio_settings_v403";
 const AUDIO_DEFAULTS_V403 = {
   enabled: true,
@@ -7393,7 +7393,7 @@ window.testAudioCueV403 = testAudioCueV403;
 
 
 
-// v4.3.2 Force-visible Audio Cues panel
+// v4.3.3 Force-visible Audio Cues panel
 function ensureAudioPanelVisibleV404() {
   let panel = document.getElementById("audioSettingsPanelV403");
   const cachePanel = document.getElementById("cacheToolsPanelV3998");
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
   }
 
   try {
@@ -7526,9 +7526,9 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.2 Settings Area
+// v4.3.3 Settings Area
 // Moves Audio Cues, App Install, and Cache Maintenance into a proper Settings tab.
-const STALKERNET_BUILD_V405 = "v4.3.2";
+const STALKERNET_BUILD_V405 = "v4.3.3";
 
 function settingsStatusV405(message) {
   console.log(message);
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.3.2. Settings ready.";
+    status.textContent = "Current build: v4.3.3. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7724,7 +7724,7 @@ window.activateTabV405 = activateTabV405;
 
 
 
-// v4.3.2 Settings tab layout fix
+// v4.3.3 Settings tab layout fix
 function getPdaMainV406() {
   return (
     document.querySelector(".pda-screen") ||
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.3.2. Settings ready.";
+    status.textContent = "Current build: v4.3.3. Settings ready.";
   }
 }
 
@@ -7871,7 +7871,7 @@ window.activateTabFixedV406 = activateTabFixedV406;
 
 
 
-// v4.3.2 Settings/Comms split: Audio only in Settings, Cache in both.
+// v4.3.3 Settings/Comms split: Audio only in Settings, Cache in both.
 function commsTabV407(){ return document.getElementById("messagesTab") || document.getElementById("commsTab"); }
 function settingsHubV407(){
   if (typeof ensureSettingsTabV405 === "function") { try { return ensureSettingsTabV405().hub; } catch(e){} }
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.3.2. Settings ready.";
+    if(st) st.textContent="Current build: v4.3.3. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -7985,7 +7985,7 @@ window.setupSettingsCacheSplitV407=setupSettingsCacheSplitV407;
 
 
 
-// v4.3.2 Strict Settings/Comms cleanup
+// v4.3.3 Strict Settings/Comms cleanup
 // Comms keeps only the small quick cache panel.
 // Settings keeps Audio Cues, App Install, and full Cache Maintenance.
 
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "432");
+        url.searchParams.set("v", "433");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.3.2. Settings ready.";
+    if (status) status.textContent = "Current build: v4.3.3. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8188,7 +8188,7 @@ window.strictSettingsCommsCleanupV408 = strictSettingsCommsCleanupV408;
 
 
 
-// v4.3.2 Stop full Cache/Audio from reappearing in Comms
+// v4.3.3 Stop full Cache/Audio from reappearing in Comms
 function getCommsTabV409() {
   return document.getElementById("messagesTab") || document.getElementById("commsTab");
 }
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "432");
+        url.searchParams.set("v", "433");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.3.2. Settings ready.";
+    if (status) status.textContent = "Current build: v4.3.3. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -8420,7 +8420,7 @@ window.finalSettingsCommsCleanupV409 = finalSettingsCommsCleanupV409;
 
 
 
-// v4.3.2 Restore Audio Controls inside Settings only
+// v4.3.3 Restore Audio Controls inside Settings only
 const AUDIO_SETTINGS_KEY_V410 = "stalkernet_audio_settings_v403";
 
 function getSettingsHubV410() {
@@ -8640,7 +8640,7 @@ function bindAudioControlsV410() {
   patchAudioPlaybackV410();
 }
 
-// Override the v4.3.2 muted helper with a safe version that creates Settings audio.
+// Override the v4.3.3 muted helper with a safe version that creates Settings audio.
 window.ensureAudioPanelVisibleV404 = function() {
   ensureAudioControlsInSettingsV410();
 };
@@ -8670,8 +8670,8 @@ window.testAudioCueV410 = testAudioCueV410;
 
 
 
-// v4.3.2 Online / Last Seen Presence
-const STALKERNET_BUILD_V411 = "v4.3.2";
+// v4.3.3 Online / Last Seen Presence
+const STALKERNET_BUILD_V411 = "v4.3.3";
 window.__presenceHeartbeatV411 = null;
 window.__lastPresenceWriteV411 = 0;
 
@@ -9000,8 +9000,8 @@ window.installPresencePanelV411 = installPresencePanelV411;
 
 
 
-// v4.3.2 Data Backup / Restore
-const STALKERNET_BUILD_V412 = "v4.3.2";
+// v4.3.3 Data Backup / Restore
+const STALKERNET_BUILD_V412 = "v4.3.3";
 
 function settingsHubV412() {
   let hub = document.getElementById("settingsHubV405");
@@ -9104,7 +9104,7 @@ function collectLocalBackupV412() {
 
   return {
     app: "StalkerNet",
-    backupVersion: "v4.3.2",
+    backupVersion: "v4.3.3",
     createdAt: new Date().toISOString(),
     origin: location.origin,
     path: location.pathname,
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "432");
+      url.searchParams.set("v", "433");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9284,8 +9284,8 @@ window.restoreBackupV412 = restoreBackupV412;
 
 
 
-// v4.3.2 System Status / Diagnostics
-const STALKERNET_BUILD_V413 = "v4.3.2";
+// v4.3.3 System Status / Diagnostics
+const STALKERNET_BUILD_V413 = "v4.3.3";
 
 function settingsHubV413() {
   let hub = document.getElementById("settingsHubV405");
@@ -9333,7 +9333,7 @@ function createSystemStatusPanelV413() {
     <div class="module-label">SYSTEM STATUS</div>
     <p id="systemStatusMessageV413" class="message-text system-status-message-v413">Diagnostics ready.</p>
     <div class="system-status-grid-v413">
-      <div><span>Build</span><strong id="sysBuildV413">v4.3.2</strong></div>
+      <div><span>Build</span><strong id="sysBuildV413">v4.3.3</strong></div>
       <div><span>Login</span><strong id="sysLoginV413">Checking</strong></div>
       <div><span>Firebase</span><strong id="sysFirebaseV413">Checking</strong></div>
       <div><span>Service Worker</span><strong id="sysWorkerV413">Checking</strong></div>
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
   }
 }
 
@@ -9548,8 +9548,8 @@ window.copySystemStatusV413 = copySystemStatusV413;
 
 
 
-// v4.3.2 Error Log / Bug Report
-const STALKERNET_BUILD_V414 = "v4.3.2";
+// v4.3.3 Error Log / Bug Report
+const STALKERNET_BUILD_V414 = "v4.3.3";
 const ERROR_LOG_KEY_V414 = "stalkernet_error_log_v414";
 const ERROR_LOG_LIMIT_V414 = 40;
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
   }
 }
 
@@ -9850,8 +9850,8 @@ window.copyErrorLogV414 = copyErrorLogV414;
 
 
 
-// v4.3.2 Error Log Noise Filter
-const STALKERNET_BUILD_V415 = "v4.3.2";
+// v4.3.3 Error Log Noise Filter
+const STALKERNET_BUILD_V415 = "v4.3.3";
 const FIRESTORE_NOISE_STATS_KEY_V415 = "stalkernet_firestore_noise_stats_v415";
 
 function firestoreNoiseRegexV415(message) {
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10047,10 +10047,10 @@ window.readFirestoreNoiseStatsV415 = readFirestoreNoiseStatsV415;
 
 
 
-// v4.3.2 Settings Category Tabs
-// Clean rebuild from v4.3.2. No drawer/details system.
+// v4.3.3 Settings Category Tabs
+// Clean rebuild from v4.3.3. No drawer/details system.
 
-const STALKERNET_BUILD_V422 = "v4.3.2";
+const STALKERNET_BUILD_V422 = "v4.3.3";
 const SETTINGS_TAB_STATE_KEY_V422 = "stalkernet_settings_category_tab_v422";
 
 const SETTINGS_CATEGORIES_V422 = [
@@ -10276,7 +10276,7 @@ function activateSettingsCategoryV422(categoryId, save = true) {
 
 function patchBuildLabelsV422() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
 
   const sysBuild = document.getElementById("sysBuildV413");
   if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V422;
@@ -10349,11 +10349,11 @@ window.activateSettingsCategoryV422 = activateSettingsCategoryV422;
 
 
 
-// v4.3.2 Settings Tabs Content Fix
+// v4.3.3 Settings Tabs Content Fix
 // Stable self-contained content panels for Settings category tabs.
 // This avoids relying on older panels being moved around correctly.
 
-const STALKERNET_BUILD_V423 = "v4.3.2";
+const STALKERNET_BUILD_V423 = "v4.3.3";
 const SETTINGS_TAB_STATE_KEY_V423 = "stalkernet_settings_category_tab_v422";
 const AUDIO_KEY_V423 = "stalkernet_audio_settings_v403";
 const ERROR_LOG_KEY_V423 = "stalkernet_error_log_v414";
@@ -10462,7 +10462,7 @@ function getCategoryBodyV423(id) {
 }
 
 function clearOldAutoMovedContentV423() {
-  // Hide old/moved settings modules so only the stable v4.3.2 panels show in tabs.
+  // Hide old/moved settings modules so only the stable v4.3.3 panels show in tabs.
   const oldIds = [
     "audioSettingsPanelV403",
     "presencePanelV411",
@@ -10741,7 +10741,7 @@ function installAppCacheContentV423() {
     cache.className = "settings-lite-panel-v423";
     cache.innerHTML = `
       <div class="module-label">CACHE MAINTENANCE</div>
-      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.3.2. Settings ready.</p>
+      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.3.3. Settings ready.</p>
       <div class="settings-two-buttons-v423">
         <button id="settingsRefreshAppV423" class="small-btn">Refresh App</button>
         <button id="settingsClearCachesV423" class="small-btn">Clear Old Caches</button>
@@ -10799,7 +10799,7 @@ function bindCacheV423() {
     refresh.addEventListener("click", event => {
       event.preventDefault();
       const url = new URL(location.href);
-      url.searchParams.set("v", "432");
+      url.searchParams.set("v", "433");
       url.searchParams.set("refresh", Date.now().toString(36));
       location.href = url.toString();
     });
@@ -10924,7 +10924,7 @@ function installDiagnosticsContentV423() {
     status.innerHTML = `
       <div class="module-label">SYSTEM STATUS</div>
       <div class="settings-status-grid-v423">
-        <div><span>Build</span><strong>v4.3.2</strong></div>
+        <div><span>Build</span><strong>v4.3.3</strong></div>
         <div><span>Login</span><strong id="settingsDiagLoginV423">Checking</strong></div>
         <div><span>Firebase</span><strong id="settingsDiagFirebaseV423">Checking</strong></div>
         <div><span>Screen</span><strong>${window.innerWidth}x${window.innerHeight}</strong></div>
@@ -11060,7 +11060,7 @@ function installStableSettingsContentV423() {
   activateSettingsTabV423(activeSettingsTabV423());
 }
 
-// Override v4.3.2 setup functions to use the robust v4.3.2 content.
+// Override v4.3.3 setup functions to use the robust v4.3.3 content.
 window.activateSettingsCategoryV422 = activateSettingsTabV423;
 window.setupSettingsCategoryTabsV422 = installStableSettingsContentV423;
 window.moveSettingsPanelsIntoTabsV422 = installStableSettingsContentV423;
@@ -11094,8 +11094,8 @@ window.activateSettingsTabV423 = activateSettingsTabV423;
 
 
 
-// v4.3.2 Display Preferences
-const STALKERNET_BUILD_V424 = "v4.3.2";
+// v4.3.3 Display Preferences
+const STALKERNET_BUILD_V424 = "v4.3.3";
 const DISPLAY_PREFS_KEY_V424 = "stalkernet_display_preferences_v424";
 
 function readDisplayPrefsV424() {
@@ -11263,7 +11263,7 @@ function bindDisplayPrefsV424() {
 
 function patchBuildLabelsV424() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V424;
@@ -11313,10 +11313,10 @@ window.installDisplayPrefsPanelV424 = installDisplayPrefsPanelV424;
 
 
 
-// v4.3.2 Comms Draft Lite SAFE
+// v4.3.3 Comms Draft Lite SAFE
 // Small patch only. Does not touch Settings category tabs.
 
-const STALKERNET_BUILD_V426 = "v4.3.2";
+const STALKERNET_BUILD_V426 = "v4.3.3";
 const COMMS_DRAFT_KEY_V426 = "stalkernet_comms_draft_lite_v426";
 
 function getCommsInputV426() {
@@ -11454,7 +11454,7 @@ function bindCommsDraftLiteV426() {
 
 function patchBuildLabelsV426() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V426;
@@ -11490,9 +11490,9 @@ window.clearCommsDraftLiteV426 = clearCommsDraftLiteV426;
 
 
 
-// v4.3.2 Build Display Sync
+// v4.3.3 Build Display Sync
 // One central build label, synced across visible panels and reports.
-const STALKERNET_BUILD_V427 = "v4.3.2";
+const STALKERNET_BUILD_V427 = "v4.3.3";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V427;
 
 function stalkerNetBuildV427() {
@@ -11543,7 +11543,7 @@ function syncKnownBuildFieldsV427() {
     }
   });
 
-  // Presence panel build field from v4.3.2/v4.3.2 settings tabs.
+  // Presence panel build field from v4.3.3/v4.3.3 settings tabs.
   document.querySelectorAll(
     "#settingsPresencePanelV423 .settings-status-grid-v423 strong, " +
     "#presencePanelV411 .presence-grid-v411 strong, " +
@@ -11636,10 +11636,10 @@ window.syncBuildDisplayV427 = syncBuildDisplayV427;
 
 
 
-// v4.3.2 Build Display HARD LOCK
+// v4.3.3 Build Display HARD LOCK
 // Stops older helpers from flipping visible build labels back and forth.
 
-const STALKERNET_BUILD_V428 = "v4.3.2";
+const STALKERNET_BUILD_V428 = "v4.3.3";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V428;
 
 function currentBuildV428() {
@@ -11810,8 +11810,8 @@ window.setupBuildHardLockV428 = setupBuildHardLockV428;
 
 
 
-// v4.3.2 Comms Search / Filter Polish
-const STALKERNET_BUILD_V430 = "v4.3.2";
+// v4.3.3 Comms Search / Filter Polish
+const STALKERNET_BUILD_V430 = "v4.3.3";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V430;
 
 const COMMS_SEARCH_STATE_KEY_V430 = "stalkernet_comms_search_state_v430";
@@ -12056,7 +12056,7 @@ function patchBuildLabelsV430() {
   }
 
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
 
   document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #messagesTab strong, #commsTab strong").forEach(el => {
     const text = el.textContent || "";
@@ -12108,8 +12108,8 @@ window.applyCommsSearchV430 = applyCommsSearchV430;
 
 
 
-// v4.3.2 Jobs Board Filter / Sort
-const STALKERNET_BUILD_V431 = "v4.3.2";
+// v4.3.3 Jobs Board Filter / Sort
+const STALKERNET_BUILD_V431 = "v4.3.3";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V431;
 
 const JOBS_FILTER_STATE_KEY_V431 = "stalkernet_jobs_filter_state_v431";
@@ -12450,7 +12450,7 @@ function patchBuildLabelsV431() {
   }
 
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
 
   document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #jobsTab strong, #jobsTab span, #jobsTab p").forEach(el => {
     const text = el.textContent || "";
@@ -12502,8 +12502,8 @@ window.applyJobsFilterV431 = applyJobsFilterV431;
 
 
 
-// v4.3.2 Map Marker Filter / Visibility Polish
-const STALKERNET_BUILD_V432 = "v4.3.2";
+// v4.3.3 Map Marker Filter / Visibility Polish
+const STALKERNET_BUILD_V432 = "v4.3.3";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V432;
 
 const MAP_FILTER_STATE_KEY_V432 = "stalkernet_map_marker_filter_state_v432";
@@ -12855,7 +12855,7 @@ function patchBuildLabelsV432() {
   }
 
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.2. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
 
   document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #mapTab strong, #mapTab span, #mapTab p").forEach(el => {
     const text = el.textContent || "";
@@ -12904,3 +12904,263 @@ document.addEventListener("click", event => {
 
 window.setupMapMarkerFilterV432 = setupMapMarkerFilterV432;
 window.applyMapMarkerFilterV432 = applyMapMarkerFilterV432;
+
+
+
+// v4.3.3 Map Marker Click / Description Fix
+const STALKERNET_BUILD_V433 = "v4.3.3";
+window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V433;
+
+function activeMapNameV433(point) {
+  try {
+    const section = MAP_SECTIONS.find(section => section.id === point?.mapId) || getActiveSection?.();
+    return section?.name || point?.mapId || "Unknown map";
+  } catch (error) {
+    return point?.mapId || "Unknown map";
+  }
+}
+
+function safePointNoteV433(point) {
+  const note = point?.note || point?.description || point?.details || "";
+  return String(note).trim() || "No field description recorded for this marker yet.";
+}
+
+function renderMapInfo(selectedId = state.selectedMapId) {
+  const all = getAllMapPoints();
+  const point = all.find(item => item.id === selectedId) || all.find(item => pointInSection(item, getActiveSection?.() || {})) || all[0];
+  if (!point) return;
+
+  state.selectedMapId = point.id;
+  saveState();
+
+  const card = document.getElementById("mapInfo");
+  if (!card) return;
+
+  const isDefaultPin = Array.isArray(defaultMapPoints) && defaultMapPoints.some(pin => pin.id === point.id);
+  const markerKind = isDefaultPin ? "Default marker" : "Custom marker";
+  const sectionName = activeMapNameV433(point);
+  const x = Number.isFinite(Number(point.x)) ? Math.round(Number(point.x)) : "--";
+  const y = Number.isFinite(Number(point.y)) ? Math.round(Number(point.y)) : "--";
+
+  card.innerHTML = `
+    <div class="module-label">LOCATION DATA</div>
+    <div class="map-info-head-v433">
+      <div>
+        <h3>${escapeHtml(point.name || "Unknown Marker")}</h3>
+        <p class="muted">${escapeHtml(point.type || "Unknown Type")}</p>
+      </div>
+      <span class="map-info-badge-v433">${escapeHtml(markerKind)}</span>
+    </div>
+    <p class="map-info-note-v433">${escapeHtml(safePointNoteV433(point))}</p>
+    <div class="map-info-grid-v433">
+      <div><span>Map</span><strong>${escapeHtml(sectionName)}</strong></div>
+      <div><span>Coords</span><strong>x:${x} y:${y}</strong></div>
+    </div>
+  `;
+}
+
+function popupHtmlV433(point, canDrag) {
+  const note = safePointNoteV433(point);
+  const x = Number.isFinite(Number(point.x)) ? Math.round(Number(point.x)) : "--";
+  const y = Number.isFinite(Number(point.y)) ? Math.round(Number(point.y)) : "--";
+
+  return `
+    <div class="map-popup-v433">
+      <div class="map-popup-title">${escapeHtml(point.name || "Unknown Marker")}</div>
+      <div class="map-popup-type">${escapeHtml(point.type || "Unknown Type")}</div>
+      <div class="map-popup-note-v433">${escapeHtml(note)}</div>
+      <div class="map-popup-type">x:${x} y:${y} // ${canDrag ? "Custom pin can be dragged." : "Default pin locked."}</div>
+    </div>
+  `;
+}
+
+function setSelectedMarkerClassV433(pointId) {
+  try {
+    leafletMarkers.forEach(marker => {
+      const icon = marker.getElement?.();
+      if (!icon) return;
+      const selected = marker.__stalkerPointIdV433 === pointId;
+      icon.classList.toggle("selected-map-marker-v433", selected);
+      icon.querySelectorAll(".poi-icon").forEach(inner => inner.classList.toggle("selected-map-marker-inner-v433", selected));
+    });
+  } catch (error) {}
+}
+
+function preserveMapViewDuringV433(callback) {
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
+  const mapCenter = leafletMap?.getCenter?.();
+  const mapZoom = leafletMap?.getZoom?.();
+
+  const result = callback?.();
+
+  // Leaflet popups can auto-pan. Put the view back immediately and again after layout settles.
+  const restore = () => {
+    try {
+      if (leafletMap && mapCenter && Number.isFinite(mapZoom)) {
+        leafletMap.setView(mapCenter, mapZoom, { animate: false });
+      }
+    } catch (error) {}
+
+    try {
+      window.scrollTo(scrollX, scrollY);
+    } catch (error) {}
+  };
+
+  restore();
+  setTimeout(restore, 40);
+  setTimeout(restore, 160);
+
+  return result;
+}
+
+function buildMarker(point) {
+  const cleanType = point.type || "Location";
+  const cleanName = point.name || "Marker";
+  const cleanNote = safePointNoteV433(point);
+
+  const iconHtml = `
+    <div
+      class="poi-icon ${mapTypeClass(cleanType)} map-marker-icon-v433"
+      data-marker-id="${escapeHtml(point.id)}"
+      data-marker-type="${escapeHtml(cleanType)}"
+      data-marker-name="${escapeHtml(cleanName)}"
+      title="${escapeHtml(cleanName)}"
+      aria-label="${escapeHtml(cleanName + " // " + cleanType + " // " + cleanNote)}"
+    ></div>
+  `;
+
+  const icon = L.divIcon({
+    html: iconHtml,
+    className: "stalkernet-leaflet-marker-v433",
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+    popupAnchor: [0, -10]
+  });
+
+  const isDefaultPin = defaultMapPoints.some(pin => pin.id === point.id);
+  const canDrag = !isDefaultPin;
+
+  const marker = L.marker([point.y, point.x], {
+    icon,
+    draggable: canDrag,
+    bubblingMouseEvents: false,
+    keyboard: false,
+    riseOnHover: true,
+    autoPan: false
+  });
+
+  marker.__stalkerPointIdV433 = point.id;
+
+  marker.bindPopup(popupHtmlV433(point, canDrag), {
+    autoPan: false,
+    keepInView: false,
+    closeButton: true,
+    autoClose: true,
+    closeOnClick: true,
+    maxWidth: 260
+  });
+
+  marker.on("click", event => {
+    if (event?.originalEvent) {
+      L.DomEvent.stopPropagation(event.originalEvent);
+      L.DomEvent.preventDefault(event.originalEvent);
+    }
+
+    preserveMapViewDuringV433(() => {
+      state.selectedMapId = point.id;
+      saveState();
+      renderMapInfo(point.id);
+      setSelectedMarkerClassV433(point.id);
+      marker.openPopup();
+    });
+  });
+
+  marker.on("popupopen", () => {
+    preserveMapViewDuringV433(() => {
+      renderMapInfo(point.id);
+      setSelectedMarkerClassV433(point.id);
+    });
+  });
+
+  if (canDrag) {
+    marker.on("dragstart", () => {
+      try { marker.closePopup(); } catch (error) {}
+    });
+
+    marker.on("dragend", event => {
+      const newPos = event.target.getLatLng();
+      savePinOverride(point.id, newPos);
+      renderMapInfo(point.id);
+      renderPinManagerList();
+      setSelectedMarkerClassV433(point.id);
+
+      // Rebuild so marker popup/coordinate text uses the new saved point.
+      rebuildLeafletMarkers();
+      setTimeout(() => {
+        try {
+          const updated = leafletMarkers.find(item => item.__stalkerPointIdV433 === point.id);
+          if (updated) {
+            setSelectedMarkerClassV433(point.id);
+            updated.openPopup();
+          }
+        } catch (error) {}
+      }, 80);
+    });
+  }
+
+  return marker;
+}
+
+function patchMapBuildLabelsV433() {
+  window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V433;
+
+  if (typeof syncBuildFieldsV428 === "function") {
+    try { syncBuildFieldsV428(); } catch (error) {}
+  }
+
+  const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+
+  document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #mapTab strong, #mapTab span, #mapTab p").forEach(el => {
+    const text = el.textContent || "";
+    if (/^v4\.\d+\.\d+$/.test(text.trim())) el.textContent = STALKERNET_BUILD_V433;
+    else if (/Current build: v4\.\d+\.\d+/.test(text)) {
+      el.textContent = text.replace(/Current build: v4\.\d+\.\d+\. Settings ready\./, `Current build: ${STALKERNET_BUILD_V433}. Settings ready.`);
+    }
+  });
+}
+
+function setupMapMarkerClickFixV433() {
+  patchMapBuildLabelsV433();
+
+  // Rebuild existing markers so they use no-autopan marker click behaviour.
+  if (leafletMap && leafletMarkers?.length && !window.__rebuiltMapMarkersV433) {
+    window.__rebuiltMapMarkersV433 = true;
+    try { rebuildLeafletMarkers(); } catch (error) {}
+  }
+
+  if (state?.selectedMapId) {
+    setTimeout(() => setSelectedMarkerClassV433(state.selectedMapId), 120);
+  }
+}
+
+window.addEventListener("load", () => {
+  [180, 700, 1600, 3200].forEach(delay => setTimeout(setupMapMarkerClickFixV433, delay));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+
+  if (target?.closest?.("#mapTab, [data-tab='mapTab'], .nav-btn, .leaflet-marker-icon, .map-marker-icon-v433")) {
+    setTimeout(setupMapMarkerClickFixV433, 120);
+    setTimeout(() => {
+      if (typeof applyMapMarkerFilterV432 === "function") {
+        try { applyMapMarkerFilterV432(); } catch (error) {}
+      }
+    }, 220);
+  }
+}, true);
+
+window.setupMapMarkerClickFixV433 = setupMapMarkerClickFixV433;
+window.setSelectedMarkerClassV433 = setSelectedMarkerClassV433;

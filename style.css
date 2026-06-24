@@ -4677,3 +4677,100 @@ body.display-reduced-motion-v424 *::after {
     width: 100% !important;
   }
 }
+
+/* v4.3.3 Map Marker Click / Description Fix */
+.stalkernet-leaflet-marker-v433 {
+  background: transparent !important;
+  border: none !important;
+}
+
+.map-marker-icon-v433 {
+  width: 16px !important;
+  height: 16px !important;
+  cursor: pointer !important;
+}
+
+.selected-map-marker-v433 .map-marker-icon-v433,
+.selected-map-marker-inner-v433 {
+  outline: 2px solid rgba(245,246,238,0.85) !important;
+  outline-offset: 2px !important;
+  box-shadow:
+    0 0 0 4px rgba(215,171,107,0.22),
+    0 0 16px rgba(215,171,107,0.55) !important;
+}
+
+.map-info-head-v433 {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin-bottom: 8px !important;
+}
+
+.map-info-head-v433 h3 {
+  margin-bottom: 2px !important;
+}
+
+.map-info-badge-v433 {
+  flex: 0 0 auto;
+  border: 1px solid rgba(215,171,107,0.24);
+  border-radius: 999px;
+  padding: 4px 8px;
+  color: var(--amber-bright);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  background: rgba(0,0,0,0.24);
+}
+
+.map-info-note-v433 {
+  margin: 8px 0 10px !important;
+}
+
+.map-info-grid-v433 {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.map-info-grid-v433 div {
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.22);
+  padding: 8px;
+  min-width: 0;
+}
+
+.map-info-grid-v433 span {
+  display: block;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  font-size: 9px;
+  margin-bottom: 3px;
+}
+
+.map-info-grid-v433 strong {
+  color: var(--amber-bright);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.map-popup-v433 {
+  max-width: 245px;
+}
+
+.map-popup-note-v433 {
+  margin: 6px 0;
+  line-height: 1.35;
+}
+
+@media (max-width: 460px) {
+  .map-info-head-v433 {
+    display: grid !important;
+  }
+
+  .map-info-grid-v433 {
+    grid-template-columns: 1fr !important;
+  }
+}
