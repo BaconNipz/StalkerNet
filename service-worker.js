@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v424-display-preferences";
+const CACHE_NAME = "stalkernet-cache-v425-comms-draft-autosave";
 
 const FILES_TO_CACHE = [
   "./",

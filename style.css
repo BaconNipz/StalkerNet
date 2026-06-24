@@ -4392,3 +4392,58 @@ body.display-reduced-motion-v424 *::after {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.2.5 Comms Draft Autosave */
+#commsDraftPanelV425 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 8px 0 0 !important;
+  padding: 8px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.16) !important;
+  border-radius: 9px !important;
+  background: rgba(0,0,0,0.18) !important;
+}
+
+#commsDraftPanelV425 span {
+  display: block;
+  color: var(--text-soft);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+#commsDraftPanelV425 strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  margin-top: 2px;
+}
+
+#clearCommsDraftBtnV425 {
+  white-space: nowrap !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+#commsDraftPanelV425.draft-count-hidden-v425 strong {
+  display: none !important;
+}
+
+.settings-comms-prefs-panel-v425 {
+  display: block !important;
+}
+
+@media (max-width: 460px) {
+  #commsDraftPanelV425 {
+    grid-template-columns: 1fr !important;
+  }
+
+  #clearCommsDraftBtnV425 {
+    width: 100% !important;
+  }
+}
