@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v426_comms_draft_lite";
+const STORAGE_KEY = "stalkernet_pda_v427_build_display_sync";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "426");
+    url.searchParams.set("v", "427");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.2.6. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.2.7. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.6. Settings ready.";
+    status.textContent = "Current build: v4.2.7. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.7. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.7. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.6. Settings ready.";
+    status.textContent = "Current build: v4.2.7. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.6. Settings ready.";
+    status.textContent = "Current build: v4.2.7. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.2.6. Settings ready.";
+    if(st) st.textContent="Current build: v4.2.7. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "426");
+        url.searchParams.set("v", "427");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.2.6. Settings ready.";
+    if (status) status.textContent = "Current build: v4.2.7. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "426");
+        url.searchParams.set("v", "427");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.2.6. Settings ready.";
+    if (status) status.textContent = "Current build: v4.2.7. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "426");
+      url.searchParams.set("v", "427");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.7. Settings ready.";
   }
 }
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.7. Settings ready.";
   }
 }
 
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.7. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10276,7 +10276,7 @@ function activateSettingsCategoryV422(categoryId, save = true) {
 
 function patchBuildLabelsV422() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.7. Settings ready.";
 
   const sysBuild = document.getElementById("sysBuildV413");
   if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V422;
@@ -10741,7 +10741,7 @@ function installAppCacheContentV423() {
     cache.className = "settings-lite-panel-v423";
     cache.innerHTML = `
       <div class="module-label">CACHE MAINTENANCE</div>
-      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.2.6. Settings ready.</p>
+      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.2.7. Settings ready.</p>
       <div class="settings-two-buttons-v423">
         <button id="settingsRefreshAppV423" class="small-btn">Refresh App</button>
         <button id="settingsClearCachesV423" class="small-btn">Clear Old Caches</button>
@@ -10799,7 +10799,7 @@ function bindCacheV423() {
     refresh.addEventListener("click", event => {
       event.preventDefault();
       const url = new URL(location.href);
-      url.searchParams.set("v", "426");
+      url.searchParams.set("v", "427");
       url.searchParams.set("refresh", Date.now().toString(36));
       location.href = url.toString();
     });
@@ -10924,7 +10924,7 @@ function installDiagnosticsContentV423() {
     status.innerHTML = `
       <div class="module-label">SYSTEM STATUS</div>
       <div class="settings-status-grid-v423">
-        <div><span>Build</span><strong>v4.2.3</strong></div>
+        <div><span>Build</span><strong>v4.2.7</strong></div>
         <div><span>Login</span><strong id="settingsDiagLoginV423">Checking</strong></div>
         <div><span>Firebase</span><strong id="settingsDiagFirebaseV423">Checking</strong></div>
         <div><span>Screen</span><strong>${window.innerWidth}x${window.innerHeight}</strong></div>
@@ -11263,7 +11263,7 @@ function bindDisplayPrefsV424() {
 
 function patchBuildLabelsV424() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.7. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V424;
@@ -11454,7 +11454,7 @@ function bindCommsDraftLiteV426() {
 
 function patchBuildLabelsV426() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.7. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V426;
@@ -11487,3 +11487,149 @@ document.addEventListener("click", event => {
 
 window.setupCommsDraftLiteV426 = setupCommsDraftLiteV426;
 window.clearCommsDraftLiteV426 = clearCommsDraftLiteV426;
+
+
+
+// v4.2.7 Build Display Sync
+// One central build label, synced across visible panels and reports.
+const STALKERNET_BUILD_V427 = "v4.2.7";
+window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V427;
+
+function stalkerNetBuildV427() {
+  return window.STALKERNET_CURRENT_BUILD || STALKERNET_BUILD_V427;
+}
+
+function replaceBuildTextV427(root) {
+  if (!root) return;
+
+  const build = stalkerNetBuildV427();
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const text = node.nodeValue || "";
+      if (/v4\.\d+\.\d+/.test(text) || /Current build: v4\.\d+\.\d+/.test(text)) {
+        return NodeFilter.FILTER_ACCEPT;
+      }
+      return NodeFilter.FILTER_REJECT;
+    }
+  });
+
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  nodes.forEach(node => {
+    node.nodeValue = node.nodeValue
+      .replace(/Current build: v4\.\d+\.\d+\. Settings ready\./g, `Current build: ${build}. Settings ready.`)
+      .replace(/\bv4\.\d+\.\d+\b/g, build);
+  });
+}
+
+function syncKnownBuildFieldsV427() {
+  const build = stalkerNetBuildV427();
+
+  const exactFields = [
+    "sysBuildV413",
+    "settingsCacheStatusV423",
+    "cacheStatusV3998"
+  ];
+
+  exactFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    if (id.toLowerCase().includes("cache") || /Current build:/i.test(el.textContent || "")) {
+      el.textContent = `Current build: ${build}. Settings ready.`;
+    } else {
+      el.textContent = build;
+    }
+  });
+
+  // Presence panel build field from v4.2.3/v4.2.4 settings tabs.
+  document.querySelectorAll(
+    "#settingsPresencePanelV423 .settings-status-grid-v423 strong, " +
+    "#presencePanelV411 .presence-grid-v411 strong, " +
+    "#settingsDiagnosticsPanelV423 strong, " +
+    "#systemStatusPanelV413 strong"
+  ).forEach(el => {
+    if (/^v4\.\d+\.\d+$/.test((el.textContent || "").trim())) {
+      el.textContent = build;
+    }
+  });
+
+  replaceBuildTextV427(document.getElementById("settingsTab"));
+  replaceBuildTextV427(document.getElementById("messagesTab") || document.getElementById("commsTab"));
+}
+
+function patchBuildReportFunctionsV427() {
+  const build = stalkerNetBuildV427();
+
+  if (typeof window.statusReportV423 === "function" && !window.__statusReportBuildPatchedV427) {
+    window.__statusReportBuildPatchedV427 = true;
+    const original = window.statusReportV423;
+    window.statusReportV423 = function(...args) {
+      return String(original.apply(this, args)).replace(/\bv4\.\d+\.\d+\b/g, build);
+    };
+    try { statusReportV423 = window.statusReportV423; } catch (error) {}
+  }
+
+  if (typeof window.collectLocalBackupV412 === "function" && !window.__backupBuildPatchedV427) {
+    window.__backupBuildPatchedV427 = true;
+    const original = window.collectLocalBackupV412;
+    window.collectLocalBackupV412 = function(...args) {
+      const data = original.apply(this, args);
+      if (data && typeof data === "object") data.backupVersion = build;
+      return data;
+    };
+    try { collectLocalBackupV412 = window.collectLocalBackupV412; } catch (error) {}
+  }
+
+  if (typeof window.collectSystemStatusV413 === "function" && !window.__systemStatusBuildPatchedV427) {
+    window.__systemStatusBuildPatchedV427 = true;
+    const original = window.collectSystemStatusV413;
+    window.collectSystemStatusV413 = async function(...args) {
+      const data = await original.apply(this, args);
+      if (data && typeof data === "object") data.build = build;
+      return data;
+    };
+    try { collectSystemStatusV413 = window.collectSystemStatusV413; } catch (error) {}
+  }
+}
+
+function syncBuildDisplayV427() {
+  patchBuildReportFunctionsV427();
+  syncKnownBuildFieldsV427();
+}
+
+// Patch older build-label functions so future refreshes keep the latest label.
+[
+  "patchBuildLabelsV424",
+  "patchBuildLabelsV425",
+  "patchBuildLabelsV426",
+  "patchBuildLabelsV423",
+  "patchBuildLabelsV422"
+].forEach(fnName => {
+  const original = window[fnName];
+  if (typeof original === "function" && !original.__buildSyncPatchedV427) {
+    const patched = function(...args) {
+      const result = original.apply(this, args);
+      setTimeout(syncBuildDisplayV427, 20);
+      return result;
+    };
+    patched.__buildSyncPatchedV427 = true;
+    window[fnName] = patched;
+    try { eval(`${fnName} = window[fnName]`); } catch (error) {}
+  }
+});
+
+window.addEventListener("load", () => {
+  [80, 250, 700, 1500, 3000].forEach(delay => setTimeout(syncBuildDisplayV427, delay));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, .settings-category-btn-v422, .nav-btn, [data-tab], #messagesTab, #commsTab")) {
+    setTimeout(syncBuildDisplayV427, 80);
+    setTimeout(syncBuildDisplayV427, 300);
+  }
+}, true);
+
+window.syncBuildDisplayV427 = syncBuildDisplayV427;

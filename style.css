@@ -4431,3 +4431,9 @@ body.display-reduced-motion-v424 *::after {
     width: 100% !important;
   }
 }
+
+
+/* v4.2.7 Build Display Sync */
+.build-sync-v427 {
+  color: var(--amber-bright);
+}
