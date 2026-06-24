@@ -4048,162 +4048,105 @@ main > #settingsTab,
   }
 }
 
-/* v4.1.6 Settings Categories */
-.settings-categories-intro-v416 {
+/* v4.2.2 Settings Category Tabs */
+#settingsCategoryTabsShellV422 {
   display: block !important;
-  margin: 0 0 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.settings-tabs-intro-v422 {
+  margin: 0 0 10px !important;
   padding: 12px !important;
   border: 1px solid rgba(215,171,107,0.18) !important;
   border-radius: 10px !important;
   background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
 }
 
-.settings-category-actions-v416 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 10px;
+.settings-category-buttons-v422 {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin: 0 0 10px !important;
 }
 
-.settings-category-actions-v416 .small-btn {
-  width: 100%;
+.settings-category-btn-v422 {
+  width: 100% !important;
+  min-width: 0 !important;
+  text-align: center !important;
+  white-space: normal !important;
+  line-height: 1.2 !important;
 }
 
-.settings-category-v416 {
+.settings-category-btn-v422.active {
+  border-color: rgba(215,171,107,0.55) !important;
+  background: linear-gradient(180deg, rgba(215,171,107,0.24), rgba(215,171,107,0.10)) !important;
+  color: var(--amber-bright) !important;
+}
+
+.settings-category-panels-v422 {
   display: block !important;
+  width: 100% !important;
+}
+
+.settings-category-pane-v422 {
+  display: none;
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
-  margin: 0 0 10px !important;
-  border: 1px solid rgba(215,171,107,0.18);
-  border-radius: 12px;
-  background: rgba(0,0,0,0.18);
-  overflow: hidden;
 }
 
-.settings-category-v416 summary {
-  cursor: pointer;
-  list-style: none;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  user-select: none;
+.settings-category-pane-v422.active {
+  display: block !important;
 }
 
-.settings-category-v416 summary::-webkit-details-marker {
-  display: none;
+.settings-category-pane-head-v422 {
+  padding: 10px 11px;
+  margin: 0 0 10px;
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.20);
 }
 
-.settings-category-v416 summary::before {
-  content: "▸";
-  color: var(--amber-bright);
-  font-size: 14px;
-  margin-right: 6px;
-  grid-row: 1;
-  grid-column: 1;
-  align-self: start;
-}
-
-.settings-category-v416[open] summary::before {
-  content: "▾";
-}
-
-.settings-category-v416 summary > span {
-  min-width: 0;
-  padding-left: 22px;
-  grid-column: 1;
-}
-
-.settings-category-v416 summary strong {
+.settings-category-pane-head-v422 strong {
   display: block;
   color: var(--amber-bright);
-  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  font-size: 12px;
 }
 
-.settings-category-v416 summary em {
+.settings-category-pane-head-v422 span {
   display: block;
   color: var(--text-dim);
   font-size: 11px;
-  font-style: normal;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
-.settings-category-v416 summary b {
-  display: inline-grid;
-  place-items: center;
-  min-width: 26px;
-  height: 22px;
-  padding: 0 6px;
-  border-radius: 999px;
-  background: rgba(215,171,107,0.12);
-  color: var(--amber-bright);
-  border: 1px solid rgba(215,171,107,0.20);
-  font-size: 11px;
+.settings-category-body-v422 {
+  display: grid !important;
+  gap: 10px !important;
 }
 
-.settings-category-body-v416 {
-  display: grid;
-  gap: 10px;
-  padding: 0 10px 10px;
-}
-
-.settings-categorized-panel-v416 {
+.settings-panel-in-tabs-v422 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
   margin: 0 !important;
+  box-sizing: border-box !important;
 }
 
-.settings-category-empty-v416 {
-  opacity: 0.62;
+/* Purge/hide old drawer UI if any was cached. */
+#settingsTab .settings-category-v416,
+#settingsTab #settingsCategoriesIntroV416,
+#settingsTab .settings-category-body-v416 {
+  display: none !important;
 }
 
-.settings-category-empty-v416 summary b {
-  color: var(--text-dim);
-  border-color: rgba(212,221,195,0.10);
-  background: rgba(0,0,0,0.18);
-}
-
-#settingsTab #settingsHubV405 > .settings-module-v405:not(.settings-categorized-panel-v416):not(#settingsCategoriesIntroV416) {
-  margin-bottom: 10px !important;
-}
-
-@media (max-width: 460px) {
-  .settings-category-actions-v416 {
-    grid-template-columns: 1fr !important;
-  }
-
-  .settings-category-v416 summary {
-    padding: 11px 10px;
-  }
-
-  .settings-category-v416 summary strong {
-    font-size: 12px;
-  }
-}
-
-/* v4.1.7 Stable Settings Categories */
-.settings-category-stable-v417 {
-  transition: none !important;
-  animation: none !important;
-}
-
-.settings-category-body-v416 {
-  contain: layout style !important;
-}
-
-.settings-categorized-panel-stable-v417 {
-  transform: translateZ(0);
-  transition: none !important;
-  animation: none !important;
-}
-
-#settingsTab #settingsHubV405 {
-  align-content: start !important;
-}
-
-/* Hide uncategorized known panels if an old helper briefly drops one in the hub root. */
+/* Hide known panels if old scripts drop them into the root Settings hub. */
 #settingsTab #settingsHubV405 > #audioSettingsPanelV403,
 #settingsTab #settingsHubV405 > #presencePanelV411,
 #settingsTab #settingsHubV405 > #installAppPanelV402,
@@ -4214,199 +4157,15 @@ main > #settingsTab,
   display: none !important;
 }
 
-/* Show them normally once inside their drawers. */
-#settingsTab .settings-category-body-v416 > #audioSettingsPanelV403,
-#settingsTab .settings-category-body-v416 > #presencePanelV411,
-#settingsTab .settings-category-body-v416 > #installAppPanelV402,
-#settingsTab .settings-category-body-v416 > #cacheToolsPanelV3998,
-#settingsTab .settings-category-body-v416 > #backupPanelV412,
-#settingsTab .settings-category-body-v416 > #systemStatusPanelV413,
-#settingsTab .settings-category-body-v416 > #errorLogPanelV414 {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* Prevent flicker while details redraw. */
-.settings-category-v416:not([open]) > .settings-category-body-v416 {
-  display: none !important;
-}
-
-/* v4.1.8 Settings Display Fix */
-#audioSettingsPanelV418 {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: relative !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 12px !important;
-  box-sizing: border-box !important;
-  border: 1px solid rgba(215,171,107,0.18) !important;
-  border-radius: 10px !important;
-  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
-}
-
-.audio-old-hidden-v418 {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-}
-
-#audioSettingsPanelV418 .audio-actions-v418 {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 8px !important;
-  margin-bottom: 10px !important;
-}
-
-#audioSettingsPanelV418 .small-btn {
-  width: 100% !important;
-}
-
-#audioSettingsPanelV418 .audio-volume-row-v418 {
-  display: grid !important;
-  grid-template-columns: auto minmax(0, 1fr) 52px !important;
-  gap: 8px !important;
-  align-items: center !important;
-}
-
-#audioSettingsPanelV418 .audio-volume-row-v418 span {
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 10px;
-}
-
-#audioSettingsPanelV418 .audio-volume-row-v418 input[type="range"] {
-  width: 100% !important;
-  accent-color: #d7ab6b;
-}
-
-#audioSettingsPanelV418 .audio-volume-row-v418 strong {
-  color: var(--amber-bright);
-  font-size: 12px;
-}
-
-/* Keep the large warning toast from covering Settings drawers. */
-body.settings-active-v418 .toast.error,
-body.settings-active-v418 .toast.danger,
-body.settings-active-v418 .emission-warning,
-body.settings-active-v418 [class*="emission"],
-body.settings-active-v418 [class*="warning-toast"] {
-  display: none !important;
-}
-
 @media (max-width: 460px) {
-  #audioSettingsPanelV418 .audio-actions-v418,
-  #audioSettingsPanelV418 .audio-volume-row-v418 {
-    grid-template-columns: 1fr !important;
+  .settings-category-buttons-v422 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
   }
-}
 
-/* v4.1.9 Settings Category Polish */
-
-/* Remove the odd left-side marker/arrow artifacts. */
-#settingsTab .settings-category-v416,
-#settingsTab .settings-category-v416 summary {
-  list-style: none !important;
-}
-
-#settingsTab .settings-category-v416 summary::-webkit-details-marker {
-  display: none !important;
-}
-
-#settingsTab .settings-category-v416 summary::before,
-#settingsTab .settings-category-v416 summary::after {
-  display: none !important;
-  content: none !important;
-}
-
-#settingsTab .settings-category-v416 summary > span {
-  padding-left: 0 !important;
-}
-
-/* Cleaner header layout. */
-#settingsTab .settings-category-polished-v419 summary {
-  grid-template-columns: minmax(0, 1fr) auto !important;
-  padding: 12px !important;
-}
-
-#settingsTab .settings-category-polished-v419 summary strong::before {
-  content: "▸ ";
-  color: var(--amber-bright);
-  opacity: 0.75;
-}
-
-#settingsTab .settings-category-polished-v419[open] summary strong::before {
-  content: "▾ ";
-}
-
-/* Hide any old ghost audio panel from prior builds. */
-#settingsTab #audioSettingsPanelV403,
-#messagesTab #audioSettingsPanelV403,
-#commsTab #audioSettingsPanelV403 {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-}
-
-/* Make sure the fresh Audio panel appears properly inside PDA Preferences. */
-#settingsTab .settings-category-body-v416 > #audioSettingsPanelV418 {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: relative !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-}
-
-/* Hide known panels only if they are dumped in the root hub, not inside drawers. */
-#settingsTab #settingsHubV405 > #audioSettingsPanelV418,
-#settingsTab #settingsHubV405 > #presencePanelV411,
-#settingsTab #settingsHubV405 > #installAppPanelV402,
-#settingsTab #settingsHubV405 > #cacheToolsPanelV3998,
-#settingsTab #settingsHubV405 > #backupPanelV412,
-#settingsTab #settingsHubV405 > #systemStatusPanelV413,
-#settingsTab #settingsHubV405 > #errorLogPanelV414 {
-  display: none !important;
-}
-
-/* Drawers should not show stray bullet-like layout artifacts. */
-#settingsTab .settings-category-body-v416 {
-  padding-left: 10px !important;
-  margin-left: 0 !important;
-}
-
-#settingsTab .settings-category-body-v416 > * {
-  list-style: none !important;
-}
-
-#settingsTab .settings-categorized-panel-polished-v419 {
-  margin: 0 !important;
-  transform: none !important;
-}
-
-/* v4.2.1 Safe Settings Drawer Fix */
-.settings-category-safe-v421 summary {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  cursor: pointer;
-}
-
-.settings-category-safe-v421,
-.settings-category-safe-v421 summary,
-.settings-category-safe-v421 .settings-category-body-v416 {
-  transition: none !important;
-  animation: none !important;
-}
-
-.settings-category-safe-v421[open] > .settings-category-body-v416 {
-  display: grid !important;
-}
-
-.settings-category-safe-v421:not([open]) > .settings-category-body-v416 {
-  display: none !important;
+  .settings-category-btn-v422 {
+    font-size: 11px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
 }
