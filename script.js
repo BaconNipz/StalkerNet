@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v433_map_marker_click_fix";
+const STORAGE_KEY = "stalkernet_pda_v434_archive_search_filter";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "433");
+    url.searchParams.set("v", "434");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.3.3. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.3.4. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6882,7 +6882,7 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.3 Cache panel spacing fix
+// v4.3.4 Cache panel spacing fix
 function tightenCachePanelSpacingV4000() {
   const panel = document.getElementById("cacheToolsPanelV3998");
   if (!panel) return;
@@ -6929,7 +6929,7 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.3 Put Cache Maintenance inside Comms tab and keep it above bottom nav
+// v4.3.4 Put Cache Maintenance inside Comms tab and keep it above bottom nav
 function placeCachePanelInsideCommsV4001() {
   const panel = document.getElementById("cacheToolsPanelV3998");
   const comms = document.getElementById("messagesTab");
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.3.3. Settings ready.";
+    status.textContent = "Current build: v4.3.4. Settings ready.";
   }
 }
 
@@ -6971,8 +6971,8 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.3 App Install / PWA Polish
-const STALKERNET_BUILD_V402 = "v4.3.3";
+// v4.3.4 App Install / PWA Polish
+const STALKERNET_BUILD_V402 = "v4.3.4";
 let deferredInstallPromptV402 = null;
 
 function isStandaloneV402() {
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
   }
 }
 
@@ -7124,7 +7124,7 @@ window.installStalkerNetV402 = installStalkerNetV402;
 
 
 
-// v4.3.3 Audio Cue Settings
+// v4.3.4 Audio Cue Settings
 const AUDIO_SETTINGS_KEY_V403 = "stalkernet_audio_settings_v403";
 const AUDIO_DEFAULTS_V403 = {
   enabled: true,
@@ -7393,7 +7393,7 @@ window.testAudioCueV403 = testAudioCueV403;
 
 
 
-// v4.3.3 Force-visible Audio Cues panel
+// v4.3.4 Force-visible Audio Cues panel
 function ensureAudioPanelVisibleV404() {
   let panel = document.getElementById("audioSettingsPanelV403");
   const cachePanel = document.getElementById("cacheToolsPanelV3998");
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
   }
 
   try {
@@ -7526,9 +7526,9 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.3 Settings Area
+// v4.3.4 Settings Area
 // Moves Audio Cues, App Install, and Cache Maintenance into a proper Settings tab.
-const STALKERNET_BUILD_V405 = "v4.3.3";
+const STALKERNET_BUILD_V405 = "v4.3.4";
 
 function settingsStatusV405(message) {
   console.log(message);
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.3.3. Settings ready.";
+    status.textContent = "Current build: v4.3.4. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7724,7 +7724,7 @@ window.activateTabV405 = activateTabV405;
 
 
 
-// v4.3.3 Settings tab layout fix
+// v4.3.4 Settings tab layout fix
 function getPdaMainV406() {
   return (
     document.querySelector(".pda-screen") ||
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.3.3. Settings ready.";
+    status.textContent = "Current build: v4.3.4. Settings ready.";
   }
 }
 
@@ -7871,7 +7871,7 @@ window.activateTabFixedV406 = activateTabFixedV406;
 
 
 
-// v4.3.3 Settings/Comms split: Audio only in Settings, Cache in both.
+// v4.3.4 Settings/Comms split: Audio only in Settings, Cache in both.
 function commsTabV407(){ return document.getElementById("messagesTab") || document.getElementById("commsTab"); }
 function settingsHubV407(){
   if (typeof ensureSettingsTabV405 === "function") { try { return ensureSettingsTabV405().hub; } catch(e){} }
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.3.3. Settings ready.";
+    if(st) st.textContent="Current build: v4.3.4. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -7985,7 +7985,7 @@ window.setupSettingsCacheSplitV407=setupSettingsCacheSplitV407;
 
 
 
-// v4.3.3 Strict Settings/Comms cleanup
+// v4.3.4 Strict Settings/Comms cleanup
 // Comms keeps only the small quick cache panel.
 // Settings keeps Audio Cues, App Install, and full Cache Maintenance.
 
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "433");
+        url.searchParams.set("v", "434");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.3.3. Settings ready.";
+    if (status) status.textContent = "Current build: v4.3.4. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8188,7 +8188,7 @@ window.strictSettingsCommsCleanupV408 = strictSettingsCommsCleanupV408;
 
 
 
-// v4.3.3 Stop full Cache/Audio from reappearing in Comms
+// v4.3.4 Stop full Cache/Audio from reappearing in Comms
 function getCommsTabV409() {
   return document.getElementById("messagesTab") || document.getElementById("commsTab");
 }
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "433");
+        url.searchParams.set("v", "434");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.3.3. Settings ready.";
+    if (status) status.textContent = "Current build: v4.3.4. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -8420,7 +8420,7 @@ window.finalSettingsCommsCleanupV409 = finalSettingsCommsCleanupV409;
 
 
 
-// v4.3.3 Restore Audio Controls inside Settings only
+// v4.3.4 Restore Audio Controls inside Settings only
 const AUDIO_SETTINGS_KEY_V410 = "stalkernet_audio_settings_v403";
 
 function getSettingsHubV410() {
@@ -8640,7 +8640,7 @@ function bindAudioControlsV410() {
   patchAudioPlaybackV410();
 }
 
-// Override the v4.3.3 muted helper with a safe version that creates Settings audio.
+// Override the v4.3.4 muted helper with a safe version that creates Settings audio.
 window.ensureAudioPanelVisibleV404 = function() {
   ensureAudioControlsInSettingsV410();
 };
@@ -8670,8 +8670,8 @@ window.testAudioCueV410 = testAudioCueV410;
 
 
 
-// v4.3.3 Online / Last Seen Presence
-const STALKERNET_BUILD_V411 = "v4.3.3";
+// v4.3.4 Online / Last Seen Presence
+const STALKERNET_BUILD_V411 = "v4.3.4";
 window.__presenceHeartbeatV411 = null;
 window.__lastPresenceWriteV411 = 0;
 
@@ -9000,8 +9000,8 @@ window.installPresencePanelV411 = installPresencePanelV411;
 
 
 
-// v4.3.3 Data Backup / Restore
-const STALKERNET_BUILD_V412 = "v4.3.3";
+// v4.3.4 Data Backup / Restore
+const STALKERNET_BUILD_V412 = "v4.3.4";
 
 function settingsHubV412() {
   let hub = document.getElementById("settingsHubV405");
@@ -9104,7 +9104,7 @@ function collectLocalBackupV412() {
 
   return {
     app: "StalkerNet",
-    backupVersion: "v4.3.3",
+    backupVersion: "v4.3.4",
     createdAt: new Date().toISOString(),
     origin: location.origin,
     path: location.pathname,
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "433");
+      url.searchParams.set("v", "434");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9284,8 +9284,8 @@ window.restoreBackupV412 = restoreBackupV412;
 
 
 
-// v4.3.3 System Status / Diagnostics
-const STALKERNET_BUILD_V413 = "v4.3.3";
+// v4.3.4 System Status / Diagnostics
+const STALKERNET_BUILD_V413 = "v4.3.4";
 
 function settingsHubV413() {
   let hub = document.getElementById("settingsHubV405");
@@ -9333,7 +9333,7 @@ function createSystemStatusPanelV413() {
     <div class="module-label">SYSTEM STATUS</div>
     <p id="systemStatusMessageV413" class="message-text system-status-message-v413">Diagnostics ready.</p>
     <div class="system-status-grid-v413">
-      <div><span>Build</span><strong id="sysBuildV413">v4.3.3</strong></div>
+      <div><span>Build</span><strong id="sysBuildV413">v4.3.4</strong></div>
       <div><span>Login</span><strong id="sysLoginV413">Checking</strong></div>
       <div><span>Firebase</span><strong id="sysFirebaseV413">Checking</strong></div>
       <div><span>Service Worker</span><strong id="sysWorkerV413">Checking</strong></div>
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
   }
 }
 
@@ -9548,8 +9548,8 @@ window.copySystemStatusV413 = copySystemStatusV413;
 
 
 
-// v4.3.3 Error Log / Bug Report
-const STALKERNET_BUILD_V414 = "v4.3.3";
+// v4.3.4 Error Log / Bug Report
+const STALKERNET_BUILD_V414 = "v4.3.4";
 const ERROR_LOG_KEY_V414 = "stalkernet_error_log_v414";
 const ERROR_LOG_LIMIT_V414 = 40;
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
   }
 }
 
@@ -9850,8 +9850,8 @@ window.copyErrorLogV414 = copyErrorLogV414;
 
 
 
-// v4.3.3 Error Log Noise Filter
-const STALKERNET_BUILD_V415 = "v4.3.3";
+// v4.3.4 Error Log Noise Filter
+const STALKERNET_BUILD_V415 = "v4.3.4";
 const FIRESTORE_NOISE_STATS_KEY_V415 = "stalkernet_firestore_noise_stats_v415";
 
 function firestoreNoiseRegexV415(message) {
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10047,10 +10047,10 @@ window.readFirestoreNoiseStatsV415 = readFirestoreNoiseStatsV415;
 
 
 
-// v4.3.3 Settings Category Tabs
-// Clean rebuild from v4.3.3. No drawer/details system.
+// v4.3.4 Settings Category Tabs
+// Clean rebuild from v4.3.4. No drawer/details system.
 
-const STALKERNET_BUILD_V422 = "v4.3.3";
+const STALKERNET_BUILD_V422 = "v4.3.4";
 const SETTINGS_TAB_STATE_KEY_V422 = "stalkernet_settings_category_tab_v422";
 
 const SETTINGS_CATEGORIES_V422 = [
@@ -10276,7 +10276,7 @@ function activateSettingsCategoryV422(categoryId, save = true) {
 
 function patchBuildLabelsV422() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
 
   const sysBuild = document.getElementById("sysBuildV413");
   if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V422;
@@ -10349,11 +10349,11 @@ window.activateSettingsCategoryV422 = activateSettingsCategoryV422;
 
 
 
-// v4.3.3 Settings Tabs Content Fix
+// v4.3.4 Settings Tabs Content Fix
 // Stable self-contained content panels for Settings category tabs.
 // This avoids relying on older panels being moved around correctly.
 
-const STALKERNET_BUILD_V423 = "v4.3.3";
+const STALKERNET_BUILD_V423 = "v4.3.4";
 const SETTINGS_TAB_STATE_KEY_V423 = "stalkernet_settings_category_tab_v422";
 const AUDIO_KEY_V423 = "stalkernet_audio_settings_v403";
 const ERROR_LOG_KEY_V423 = "stalkernet_error_log_v414";
@@ -10462,7 +10462,7 @@ function getCategoryBodyV423(id) {
 }
 
 function clearOldAutoMovedContentV423() {
-  // Hide old/moved settings modules so only the stable v4.3.3 panels show in tabs.
+  // Hide old/moved settings modules so only the stable v4.3.4 panels show in tabs.
   const oldIds = [
     "audioSettingsPanelV403",
     "presencePanelV411",
@@ -10741,7 +10741,7 @@ function installAppCacheContentV423() {
     cache.className = "settings-lite-panel-v423";
     cache.innerHTML = `
       <div class="module-label">CACHE MAINTENANCE</div>
-      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.3.3. Settings ready.</p>
+      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.3.4. Settings ready.</p>
       <div class="settings-two-buttons-v423">
         <button id="settingsRefreshAppV423" class="small-btn">Refresh App</button>
         <button id="settingsClearCachesV423" class="small-btn">Clear Old Caches</button>
@@ -10799,7 +10799,7 @@ function bindCacheV423() {
     refresh.addEventListener("click", event => {
       event.preventDefault();
       const url = new URL(location.href);
-      url.searchParams.set("v", "433");
+      url.searchParams.set("v", "434");
       url.searchParams.set("refresh", Date.now().toString(36));
       location.href = url.toString();
     });
@@ -10924,7 +10924,7 @@ function installDiagnosticsContentV423() {
     status.innerHTML = `
       <div class="module-label">SYSTEM STATUS</div>
       <div class="settings-status-grid-v423">
-        <div><span>Build</span><strong>v4.3.3</strong></div>
+        <div><span>Build</span><strong>v4.3.4</strong></div>
         <div><span>Login</span><strong id="settingsDiagLoginV423">Checking</strong></div>
         <div><span>Firebase</span><strong id="settingsDiagFirebaseV423">Checking</strong></div>
         <div><span>Screen</span><strong>${window.innerWidth}x${window.innerHeight}</strong></div>
@@ -11060,7 +11060,7 @@ function installStableSettingsContentV423() {
   activateSettingsTabV423(activeSettingsTabV423());
 }
 
-// Override v4.3.3 setup functions to use the robust v4.3.3 content.
+// Override v4.3.4 setup functions to use the robust v4.3.4 content.
 window.activateSettingsCategoryV422 = activateSettingsTabV423;
 window.setupSettingsCategoryTabsV422 = installStableSettingsContentV423;
 window.moveSettingsPanelsIntoTabsV422 = installStableSettingsContentV423;
@@ -11094,8 +11094,8 @@ window.activateSettingsTabV423 = activateSettingsTabV423;
 
 
 
-// v4.3.3 Display Preferences
-const STALKERNET_BUILD_V424 = "v4.3.3";
+// v4.3.4 Display Preferences
+const STALKERNET_BUILD_V424 = "v4.3.4";
 const DISPLAY_PREFS_KEY_V424 = "stalkernet_display_preferences_v424";
 
 function readDisplayPrefsV424() {
@@ -11263,7 +11263,7 @@ function bindDisplayPrefsV424() {
 
 function patchBuildLabelsV424() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V424;
@@ -11313,10 +11313,10 @@ window.installDisplayPrefsPanelV424 = installDisplayPrefsPanelV424;
 
 
 
-// v4.3.3 Comms Draft Lite SAFE
+// v4.3.4 Comms Draft Lite SAFE
 // Small patch only. Does not touch Settings category tabs.
 
-const STALKERNET_BUILD_V426 = "v4.3.3";
+const STALKERNET_BUILD_V426 = "v4.3.4";
 const COMMS_DRAFT_KEY_V426 = "stalkernet_comms_draft_lite_v426";
 
 function getCommsInputV426() {
@@ -11454,7 +11454,7 @@ function bindCommsDraftLiteV426() {
 
 function patchBuildLabelsV426() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V426;
@@ -11490,9 +11490,9 @@ window.clearCommsDraftLiteV426 = clearCommsDraftLiteV426;
 
 
 
-// v4.3.3 Build Display Sync
+// v4.3.4 Build Display Sync
 // One central build label, synced across visible panels and reports.
-const STALKERNET_BUILD_V427 = "v4.3.3";
+const STALKERNET_BUILD_V427 = "v4.3.4";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V427;
 
 function stalkerNetBuildV427() {
@@ -11543,7 +11543,7 @@ function syncKnownBuildFieldsV427() {
     }
   });
 
-  // Presence panel build field from v4.3.3/v4.3.3 settings tabs.
+  // Presence panel build field from v4.3.4/v4.3.4 settings tabs.
   document.querySelectorAll(
     "#settingsPresencePanelV423 .settings-status-grid-v423 strong, " +
     "#presencePanelV411 .presence-grid-v411 strong, " +
@@ -11636,10 +11636,10 @@ window.syncBuildDisplayV427 = syncBuildDisplayV427;
 
 
 
-// v4.3.3 Build Display HARD LOCK
+// v4.3.4 Build Display HARD LOCK
 // Stops older helpers from flipping visible build labels back and forth.
 
-const STALKERNET_BUILD_V428 = "v4.3.3";
+const STALKERNET_BUILD_V428 = "v4.3.4";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V428;
 
 function currentBuildV428() {
@@ -11810,8 +11810,8 @@ window.setupBuildHardLockV428 = setupBuildHardLockV428;
 
 
 
-// v4.3.3 Comms Search / Filter Polish
-const STALKERNET_BUILD_V430 = "v4.3.3";
+// v4.3.4 Comms Search / Filter Polish
+const STALKERNET_BUILD_V430 = "v4.3.4";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V430;
 
 const COMMS_SEARCH_STATE_KEY_V430 = "stalkernet_comms_search_state_v430";
@@ -12056,7 +12056,7 @@ function patchBuildLabelsV430() {
   }
 
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
 
   document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #messagesTab strong, #commsTab strong").forEach(el => {
     const text = el.textContent || "";
@@ -12108,8 +12108,8 @@ window.applyCommsSearchV430 = applyCommsSearchV430;
 
 
 
-// v4.3.3 Jobs Board Filter / Sort
-const STALKERNET_BUILD_V431 = "v4.3.3";
+// v4.3.4 Jobs Board Filter / Sort
+const STALKERNET_BUILD_V431 = "v4.3.4";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V431;
 
 const JOBS_FILTER_STATE_KEY_V431 = "stalkernet_jobs_filter_state_v431";
@@ -12450,7 +12450,7 @@ function patchBuildLabelsV431() {
   }
 
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
 
   document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #jobsTab strong, #jobsTab span, #jobsTab p").forEach(el => {
     const text = el.textContent || "";
@@ -12502,8 +12502,8 @@ window.applyJobsFilterV431 = applyJobsFilterV431;
 
 
 
-// v4.3.3 Map Marker Filter / Visibility Polish
-const STALKERNET_BUILD_V432 = "v4.3.3";
+// v4.3.4 Map Marker Filter / Visibility Polish
+const STALKERNET_BUILD_V432 = "v4.3.4";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V432;
 
 const MAP_FILTER_STATE_KEY_V432 = "stalkernet_map_marker_filter_state_v432";
@@ -12855,7 +12855,7 @@ function patchBuildLabelsV432() {
   }
 
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
 
   document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #mapTab strong, #mapTab span, #mapTab p").forEach(el => {
     const text = el.textContent || "";
@@ -12907,8 +12907,8 @@ window.applyMapMarkerFilterV432 = applyMapMarkerFilterV432;
 
 
 
-// v4.3.3 Map Marker Click / Description Fix
-const STALKERNET_BUILD_V433 = "v4.3.3";
+// v4.3.4 Map Marker Click / Description Fix
+const STALKERNET_BUILD_V433 = "v4.3.4";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V433;
 
 function activeMapNameV433(point) {
@@ -13120,7 +13120,7 @@ function patchMapBuildLabelsV433() {
   }
 
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.3. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
 
   document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #mapTab strong, #mapTab span, #mapTab p").forEach(el => {
     const text = el.textContent || "";
@@ -13164,3 +13164,319 @@ document.addEventListener("click", event => {
 
 window.setupMapMarkerClickFixV433 = setupMapMarkerClickFixV433;
 window.setSelectedMarkerClassV433 = setSelectedMarkerClassV433;
+
+
+
+// v4.3.4 Archive Search / Category Polish
+const STALKERNET_BUILD_V434 = "v4.3.4";
+window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V434;
+
+const ARCHIVE_FILTER_STATE_KEY_V434 = "stalkernet_archive_filter_state_v434";
+const ARCHIVE_CATEGORIES_V434 = ["all","factions","mutants","anomalies","artifacts","locations","labs","survival"];
+
+function archiveRootV434() {
+  return document.getElementById("archiveTab") || document.getElementById("arcTab") || document.getElementById("recordsTab");
+}
+
+function readArchiveFilterStateV434() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(ARCHIVE_FILTER_STATE_KEY_V434) || "null");
+    return {
+      query: typeof saved?.query === "string" ? saved.query : "",
+      category: ARCHIVE_CATEGORIES_V434.includes(saved?.category) ? saved.category : "all"
+    };
+  } catch (error) {
+    return { query: "", category: "all" };
+  }
+}
+
+function saveArchiveFilterStateV434(state) {
+  const clean = {
+    query: String(state.query || ""),
+    category: ARCHIVE_CATEGORIES_V434.includes(state.category) ? state.category : "all"
+  };
+  try { localStorage.setItem(ARCHIVE_FILTER_STATE_KEY_V434, JSON.stringify(clean)); } catch (error) {}
+  return clean;
+}
+
+function categoryButtonLabelV434(category) {
+  return ({
+    all: "All",
+    factions: "Factions",
+    mutants: "Mutants",
+    anomalies: "Anomalies",
+    artifacts: "Artifacts",
+    locations: "Locations",
+    labs: "Labs",
+    survival: "Survival"
+  })[category] || category;
+}
+
+function ensureArchiveFilterPanelV434() {
+  const root = archiveRootV434();
+  if (!root) return null;
+
+  let panel = document.getElementById("archiveFilterPanelV434");
+  if (!panel) {
+    panel = document.createElement("section");
+    panel.id = "archiveFilterPanelV434";
+    panel.className = "archive-filter-panel-v434 module-panel";
+    panel.innerHTML = `
+      <div class="module-label">ARCHIVE SEARCH</div>
+      <div class="archive-filter-search-row-v434">
+        <input id="archiveSearchInputV434" type="search" placeholder="Search records, factions, mutants, locations..." autocomplete="off" />
+        <button id="archiveClearSearchV434" class="small-btn">Clear</button>
+      </div>
+      <div id="archiveCategoryButtonsV434" class="archive-category-buttons-v434">
+        ${ARCHIVE_CATEGORIES_V434.map(category => `<button class="small-btn archive-category-btn-v434" data-archive-category-v434="${category}">${categoryButtonLabelV434(category)}</button>`).join("")}
+      </div>
+      <p id="archiveFilterStatusV434" class="message-text archive-filter-status-v434">Archive search ready.</p>
+    `;
+  }
+
+  if (!panel.parentElement) {
+    const anchor =
+      root.querySelector(".archive-guide") ||
+      root.querySelector(".archive-toolbar") ||
+      root.querySelector(".archive-search") ||
+      root.querySelector(".section-top") ||
+      root.querySelector("h1,h2,h3") ||
+      root.firstElementChild;
+
+    if (anchor && anchor.parentElement === root) anchor.insertAdjacentElement("afterend", panel);
+    else root.insertBefore(panel, root.firstElementChild?.nextElementSibling || root.firstElementChild);
+  }
+
+  bindArchiveFilterPanelV434();
+  applyArchiveFilterStateToUiV434();
+  return panel;
+}
+
+function archiveRecordCandidatesV434() {
+  const root = archiveRootV434();
+  if (!root) return [];
+
+  const selectors = [
+    ".archive-card",
+    ".archive-record",
+    ".archive-entry",
+    ".record-card",
+    ".codex-card",
+    ".faction-card",
+    ".mutant-card",
+    ".anomaly-card",
+    ".artifact-card",
+    ".location-card",
+    ".lab-card",
+    "[data-archive-id]",
+    "[data-record-id]",
+    "[data-archive-category]",
+    "[data-category]"
+  ];
+
+  const cards = new Set();
+
+  selectors.forEach(selector => {
+    root.querySelectorAll(selector).forEach(el => {
+      if (el.closest("#archiveFilterPanelV434")) return;
+      if (el.id === "archiveFilterPanelV434") return;
+      cards.add(el);
+    });
+  });
+
+  if (!cards.size) {
+    root.querySelectorAll("article, .module-panel, .card, .panel, details").forEach(el => {
+      if (el.closest("#archiveFilterPanelV434")) return;
+      const text = (el.innerText || "").trim();
+      if (!text || text.length < 24) return;
+      if (/archive search|archive guide|search archive|source note|open records/i.test(text)) return;
+      if (/faction|mutant|anomaly|artifact|location|laboratory|survival|lab|zone|threat|behaviour|weakness|notes/i.test(text)) {
+        cards.add(el);
+      }
+    });
+  }
+
+  return Array.from(cards);
+}
+
+function archiveTextV434(card) {
+  return [
+    card.innerText,
+    card.textContent,
+    card.dataset?.archiveCategory,
+    card.dataset?.category,
+    card.dataset?.type,
+    card.className
+  ].filter(Boolean).join(" ").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function archiveCategoryV434(card) {
+  const raw = archiveTextV434(card);
+
+  if (/faction|loner|mercenary|duty|freedom|bandit|clear sky|monolith|military|ecologist|renegade|sin|isg/.test(raw)) return "factions";
+  if (/mutant|boar|flesh|dog|pseudodog|bloodsucker|controller|snork|chimera|burer|pseudogiant|rat/.test(raw)) return "mutants";
+  if (/anomaly|burner|whirligig|springboard|electro|fruit punch|gravi|vortex|chemical/.test(raw)) return "anomalies";
+  if (/artifact|artefact|moonlight|jellyfish|stone blood|flash|crystal|night star|battery/.test(raw)) return "artifacts";
+  if (/lab|x-16|x-18|x-19|x-8|underground|sarcophagus|war lab|control center/.test(raw)) return "labs";
+  if (/survival|medicine|medkit|bandage|radiation|bleed|food|water|sleep|repair|note|tip/.test(raw)) return "survival";
+  if (/location|cordon|swamp|meadow|darkscape|garbage|rostok|yantar|jupiter|zaton|pripyat|red forest|army warehouses|dead city|limansk|outskirts/.test(raw)) return "locations";
+
+  return "locations";
+}
+
+function applyArchiveFilterV434() {
+  const state = readArchiveFilterStateV434();
+  const query = state.query.trim().toLowerCase();
+  const records = archiveRecordCandidatesV434();
+  let shown = 0;
+
+  records.forEach(card => {
+    const text = archiveTextV434(card);
+    const category = archiveCategoryV434(card);
+
+    const matchQuery = !query || text.includes(query);
+    const matchCategory = state.category === "all" || category === state.category;
+    const match = matchQuery && matchCategory;
+
+    card.classList.toggle("archive-filter-hidden-v434", !match);
+    card.style.display = match ? "" : "none";
+
+    if (match) shown++;
+  });
+
+  const status = document.getElementById("archiveFilterStatusV434");
+  if (status) {
+    if (!records.length) {
+      status.textContent = "No archive records detected yet.";
+    } else if (!query && state.category === "all") {
+      status.textContent = `Showing ${shown} archive record${shown === 1 ? "" : "s"}.`;
+    } else {
+      status.textContent = `Showing ${shown} of ${records.length} archive record${records.length === 1 ? "" : "s"}.`;
+    }
+  }
+
+  updateArchiveCategoryButtonsV434();
+}
+
+function updateArchiveCategoryButtonsV434() {
+  const state = readArchiveFilterStateV434();
+
+  document.querySelectorAll(".archive-category-btn-v434").forEach(btn => {
+    const active = btn.dataset.archiveCategoryV434 === state.category;
+    btn.classList.toggle("active", active);
+    btn.classList.toggle("setting-on-v424", active);
+    btn.setAttribute("aria-pressed", active ? "true" : "false");
+  });
+}
+
+function applyArchiveFilterStateToUiV434() {
+  const state = readArchiveFilterStateV434();
+  const input = document.getElementById("archiveSearchInputV434");
+
+  if (input && input.value !== state.query) input.value = state.query;
+
+  updateArchiveCategoryButtonsV434();
+  applyArchiveFilterV434();
+}
+
+function clearArchiveFilterV434() {
+  const state = readArchiveFilterStateV434();
+  saveArchiveFilterStateV434({ ...state, query: "" });
+
+  const input = document.getElementById("archiveSearchInputV434");
+  if (input) input.value = "";
+
+  applyArchiveFilterV434();
+}
+
+function bindArchiveFilterPanelV434() {
+  const input = document.getElementById("archiveSearchInputV434");
+  const clear = document.getElementById("archiveClearSearchV434");
+
+  if (input && !input.dataset.v434Bound) {
+    input.dataset.v434Bound = "true";
+    input.addEventListener("input", () => {
+      const state = readArchiveFilterStateV434();
+      saveArchiveFilterStateV434({ ...state, query: input.value || "" });
+      applyArchiveFilterV434();
+    });
+  }
+
+  if (clear && !clear.dataset.v434Bound) {
+    clear.dataset.v434Bound = "true";
+    clear.addEventListener("click", event => {
+      event.preventDefault();
+      clearArchiveFilterV434();
+    });
+  }
+
+  document.querySelectorAll(".archive-category-btn-v434").forEach(btn => {
+    if (btn.dataset.v434Bound) return;
+    btn.dataset.v434Bound = "true";
+
+    btn.addEventListener("click", event => {
+      event.preventDefault();
+      const state = readArchiveFilterStateV434();
+      saveArchiveFilterStateV434({ ...state, category: btn.dataset.archiveCategoryV434 || "all" });
+      applyArchiveFilterV434();
+    });
+  });
+}
+
+function patchBuildLabelsV434() {
+  window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V434;
+
+  if (typeof syncBuildFieldsV428 === "function") {
+    try { syncBuildFieldsV428(); } catch (error) {}
+  }
+
+  const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.4. Settings ready.";
+
+  document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #archiveTab strong, #archiveTab span, #archiveTab p").forEach(el => {
+    const text = el.textContent || "";
+    if (/^v4\.\d+\.\d+$/.test(text.trim())) el.textContent = STALKERNET_BUILD_V434;
+    else if (/Current build: v4\.\d+\.\d+/.test(text)) {
+      el.textContent = text.replace(/Current build: v4\.\d+\.\d+\. Settings ready\./, `Current build: ${STALKERNET_BUILD_V434}. Settings ready.`);
+    }
+  });
+}
+
+let archiveFilterObserverV434 = null;
+
+function startArchiveFilterObserverV434() {
+  const root = archiveRootV434();
+  if (!root || archiveFilterObserverV434) return;
+
+  archiveFilterObserverV434 = new MutationObserver(() => {
+    clearTimeout(window.__archiveFilterTimerV434);
+    window.__archiveFilterTimerV434 = setTimeout(() => {
+      ensureArchiveFilterPanelV434();
+      applyArchiveFilterV434();
+    }, 160);
+  });
+
+  archiveFilterObserverV434.observe(root, { childList: true, subtree: true });
+}
+
+function setupArchiveFilterV434() {
+  ensureArchiveFilterPanelV434();
+  applyArchiveFilterV434();
+  startArchiveFilterObserverV434();
+  patchBuildLabelsV434();
+}
+
+window.addEventListener("load", () => {
+  [160, 600, 1400, 2800].forEach(delay => setTimeout(setupArchiveFilterV434, delay));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#archiveTab, #arcTab, [data-tab='archiveTab'], [data-tab='arcTab'], .nav-btn, #archiveFilterPanelV434")) {
+    setTimeout(setupArchiveFilterV434, 140);
+    setTimeout(applyArchiveFilterV434, 500);
+  }
+}, true);
+
+window.setupArchiveFilterV434 = setupArchiveFilterV434;
+window.applyArchiveFilterV434 = applyArchiveFilterV434;

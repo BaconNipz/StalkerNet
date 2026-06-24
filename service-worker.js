@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v433-map-marker-click-fix";
+const CACHE_NAME = "stalkernet-cache-v434-archive-search-filter";
 
 const FILES_TO_CACHE = [
   "./",
