@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v425_comms_draft_autosave";
+const STORAGE_KEY = "stalkernet_pda_v426_comms_draft_lite";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "425");
+    url.searchParams.set("v", "426");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.2.5. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.2.6. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.5. Settings ready.";
+    status.textContent = "Current build: v4.2.6. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.5. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.5. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.5. Settings ready.";
+    status.textContent = "Current build: v4.2.6. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.5. Settings ready.";
+    status.textContent = "Current build: v4.2.6. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.2.5. Settings ready.";
+    if(st) st.textContent="Current build: v4.2.6. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "425");
+        url.searchParams.set("v", "426");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.2.5. Settings ready.";
+    if (status) status.textContent = "Current build: v4.2.6. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "425");
+        url.searchParams.set("v", "426");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.2.5. Settings ready.";
+    if (status) status.textContent = "Current build: v4.2.6. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "425");
+      url.searchParams.set("v", "426");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.5. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
   }
 }
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.5. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
   }
 }
 
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.5. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10276,7 +10276,7 @@ function activateSettingsCategoryV422(categoryId, save = true) {
 
 function patchBuildLabelsV422() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.5. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
 
   const sysBuild = document.getElementById("sysBuildV413");
   if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V422;
@@ -10741,7 +10741,7 @@ function installAppCacheContentV423() {
     cache.className = "settings-lite-panel-v423";
     cache.innerHTML = `
       <div class="module-label">CACHE MAINTENANCE</div>
-      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.2.5. Settings ready.</p>
+      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.2.6. Settings ready.</p>
       <div class="settings-two-buttons-v423">
         <button id="settingsRefreshAppV423" class="small-btn">Refresh App</button>
         <button id="settingsClearCachesV423" class="small-btn">Clear Old Caches</button>
@@ -10799,7 +10799,7 @@ function bindCacheV423() {
     refresh.addEventListener("click", event => {
       event.preventDefault();
       const url = new URL(location.href);
-      url.searchParams.set("v", "425");
+      url.searchParams.set("v", "426");
       url.searchParams.set("refresh", Date.now().toString(36));
       location.href = url.toString();
     });
@@ -11263,7 +11263,7 @@ function bindDisplayPrefsV424() {
 
 function patchBuildLabelsV424() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.5. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V424;
@@ -11313,55 +11313,32 @@ window.installDisplayPrefsPanelV424 = installDisplayPrefsPanelV424;
 
 
 
-// v4.2.5 Comms Draft Autosave
-const STALKERNET_BUILD_V425 = "v4.2.5";
-const COMMS_DRAFT_KEY_V425 = "stalkernet_comms_draft_v425";
-const COMMS_DRAFT_SETTINGS_KEY_V425 = "stalkernet_comms_draft_settings_v425";
+// v4.2.6 Comms Draft Lite SAFE
+// Small patch only. Does not touch Settings category tabs.
 
-function readCommsDraftSettingsV425() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(COMMS_DRAFT_SETTINGS_KEY_V425) || "null");
-    return {
-      autosave: saved?.autosave !== false,
-      characterCount: saved?.characterCount !== false
-    };
-  } catch (error) {
-    return { autosave: true, characterCount: true };
-  }
-}
+const STALKERNET_BUILD_V426 = "v4.2.6";
+const COMMS_DRAFT_KEY_V426 = "stalkernet_comms_draft_lite_v426";
 
-function saveCommsDraftSettingsV425(settings) {
-  const clean = {
-    autosave: settings.autosave !== false,
-    characterCount: settings.characterCount !== false
-  };
-  localStorage.setItem(COMMS_DRAFT_SETTINGS_KEY_V425, JSON.stringify(clean));
-  return clean;
-}
-
-function getMessageInputV425() {
+function getCommsInputV426() {
   return document.getElementById("messageInput");
 }
 
-function getSendButtonV425() {
+function getCommsSendBtnV426() {
   return document.getElementById("sendBtn");
 }
 
-function ensureDraftPanelV425() {
-  const input = getMessageInputV425();
+function ensureCommsDraftLitePanelV426() {
+  const input = getCommsInputV426();
   if (!input) return null;
 
-  let panel = document.getElementById("commsDraftPanelV425");
+  let panel = document.getElementById("commsDraftLitePanelV426");
   if (!panel) {
-    panel = document.createElement("section");
-    panel.id = "commsDraftPanelV425";
-    panel.className = "comms-draft-panel-v425";
+    panel = document.createElement("div");
+    panel.id = "commsDraftLitePanelV426";
+    panel.className = "comms-draft-lite-panel-v426";
     panel.innerHTML = `
-      <div>
-        <span id="commsDraftStatusV425">Draft autosave ready.</span>
-        <strong id="commsDraftCountV425">0 chars</strong>
-      </div>
-      <button id="clearCommsDraftBtnV425" class="small-btn">Clear Draft</button>
+      <span id="commsDraftLiteStatusV426">Draft autosave ready.</span>
+      <button id="clearCommsDraftLiteBtnV426" class="small-btn">Clear Draft</button>
     `;
   }
 
@@ -11370,66 +11347,58 @@ function ensureDraftPanelV425() {
     inputRow.insertAdjacentElement("afterend", panel);
   }
 
-  bindDraftPanelV425();
-  updateDraftPanelV425();
+  bindCommsDraftLiteV426();
+  updateCommsDraftLiteStatusV426();
   return panel;
 }
 
-function updateDraftPanelV425() {
-  const settings = readCommsDraftSettingsV425();
-  const input = getMessageInputV425();
-  const status = document.getElementById("commsDraftStatusV425");
-  const count = document.getElementById("commsDraftCountV425");
-  const panel = document.getElementById("commsDraftPanelV425");
-
-  if (!input || !panel) return;
-
-  panel.classList.toggle("draft-count-hidden-v425", !settings.characterCount);
+function updateCommsDraftLiteStatusV426() {
+  const input = getCommsInputV426();
+  const status = document.getElementById("commsDraftLiteStatusV426");
+  if (!input || !status) return;
 
   const text = input.value || "";
-  const saved = localStorage.getItem(COMMS_DRAFT_KEY_V425) || "";
+  const saved = localStorage.getItem(COMMS_DRAFT_KEY_V426) || "";
 
-  if (count) count.textContent = `${text.length} char${text.length === 1 ? "" : "s"}`;
-
-  if (status) {
-    if (!settings.autosave) status.textContent = "Draft autosave disabled.";
-    else if (!text.trim()) status.textContent = "No draft currently saved.";
-    else if (text === saved) status.textContent = "Draft saved locally.";
-    else status.textContent = "Saving draft...";
+  if (!text.trim()) {
+    status.textContent = "No draft currently saved.";
+  } else if (text === saved) {
+    status.textContent = `Draft saved locally (${text.length} char${text.length === 1 ? "" : "s"}).`;
+  } else {
+    status.textContent = `Draft ready (${text.length} char${text.length === 1 ? "" : "s"}).`;
   }
 }
 
-function saveCurrentDraftV425() {
-  const settings = readCommsDraftSettingsV425();
-  const input = getMessageInputV425();
-  if (!input || !settings.autosave) return;
+function saveCommsDraftLiteV426() {
+  const input = getCommsInputV426();
+  if (!input) return;
 
   const text = input.value || "";
   try {
-    if (text.trim()) localStorage.setItem(COMMS_DRAFT_KEY_V425, text);
-    else localStorage.removeItem(COMMS_DRAFT_KEY_V425);
+    if (text.trim()) localStorage.setItem(COMMS_DRAFT_KEY_V426, text);
+    else localStorage.removeItem(COMMS_DRAFT_KEY_V426);
   } catch (error) {}
 
-  updateDraftPanelV425();
+  updateCommsDraftLiteStatusV426();
 }
 
-function restoreDraftV425() {
-  const settings = readCommsDraftSettingsV425();
-  const input = getMessageInputV425();
-  if (!input || !settings.autosave) return;
+function restoreCommsDraftLiteV426() {
+  const input = getCommsInputV426();
+  if (!input) return;
 
-  const saved = localStorage.getItem(COMMS_DRAFT_KEY_V425) || "";
+  const saved = localStorage.getItem(COMMS_DRAFT_KEY_V426) || "";
   if (saved && !input.value) {
     input.value = saved;
     input.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
-  updateDraftPanelV425();
+  updateCommsDraftLiteStatusV426();
 }
 
-function clearDraftV425() {
-  const input = getMessageInputV425();
-  try { localStorage.removeItem(COMMS_DRAFT_KEY_V425); } catch (error) {}
+function clearCommsDraftLiteV426() {
+  const input = getCommsInputV426();
+
+  try { localStorage.removeItem(COMMS_DRAFT_KEY_V426); } catch (error) {}
 
   if (input) {
     input.value = "";
@@ -11437,187 +11406,84 @@ function clearDraftV425() {
     input.focus?.();
   }
 
-  updateDraftPanelV425();
+  updateCommsDraftLiteStatusV426();
 }
 
-function bindDraftPanelV425() {
-  const input = getMessageInputV425();
-  const send = getSendButtonV425();
-  const clear = document.getElementById("clearCommsDraftBtnV425");
+function bindCommsDraftLiteV426() {
+  const input = getCommsInputV426();
+  const send = getCommsSendBtnV426();
+  const clear = document.getElementById("clearCommsDraftLiteBtnV426");
 
-  if (input && !input.dataset.v425DraftBound) {
-    input.dataset.v425DraftBound = "true";
+  if (input && !input.dataset.v426DraftBound) {
+    input.dataset.v426DraftBound = "true";
+
     input.addEventListener("input", () => {
-      clearTimeout(window.__commsDraftTimerV425);
-      updateDraftPanelV425();
-      window.__commsDraftTimerV425 = setTimeout(saveCurrentDraftV425, 350);
+      clearTimeout(window.__commsDraftLiteTimerV426);
+      updateCommsDraftLiteStatusV426();
+      window.__commsDraftLiteTimerV426 = setTimeout(saveCommsDraftLiteV426, 450);
     });
 
-    input.addEventListener("blur", saveCurrentDraftV425);
+    input.addEventListener("blur", saveCommsDraftLiteV426);
   }
 
-  if (send && !send.dataset.v425DraftBound) {
-    send.dataset.v425DraftBound = "true";
+  if (send && !send.dataset.v426DraftBound) {
+    send.dataset.v426DraftBound = "true";
+
     send.addEventListener("click", () => {
-      // Give the original send handler a beat to run, then clear if the input was emptied.
+      // Original send handler should clear the input if send succeeds.
       setTimeout(() => {
-        const next = getMessageInputV425();
+        const next = getCommsInputV426();
         if (!next || !next.value.trim()) {
-          try { localStorage.removeItem(COMMS_DRAFT_KEY_V425); } catch (error) {}
-          updateDraftPanelV425();
+          try { localStorage.removeItem(COMMS_DRAFT_KEY_V426); } catch (error) {}
+          updateCommsDraftLiteStatusV426();
+        } else {
+          saveCommsDraftLiteV426();
         }
-      }, 450);
+      }, 600);
     }, true);
   }
 
-  if (clear && !clear.dataset.v425DraftBound) {
-    clear.dataset.v425DraftBound = "true";
+  if (clear && !clear.dataset.v426DraftBound) {
+    clear.dataset.v426DraftBound = "true";
     clear.addEventListener("click", event => {
       event.preventDefault();
-      clearDraftV425();
+      clearCommsDraftLiteV426();
     });
   }
 }
 
-function createCommsPrefsPanelV425() {
-  let panel = document.getElementById("settingsCommsPrefsPanelV425");
-  if (panel) return panel;
-
-  panel = document.createElement("div");
-  panel.id = "settingsCommsPrefsPanelV425";
-  panel.className = "settings-lite-panel-v423 settings-comms-prefs-panel-v425";
-  panel.innerHTML = `
-    <div class="module-label">COMMS PREFERENCES</div>
-    <p id="settingsCommsPrefsStatusV425" class="message-text">Draft tools are local to this device.</p>
-    <div class="settings-two-buttons-v423">
-      <button id="settingsDraftAutosaveBtnV425" class="small-btn">Draft Autosave: On</button>
-      <button id="settingsCharCountBtnV425" class="small-btn">Character Count: On</button>
-    </div>
-  `;
-
-  return panel;
-}
-
-function installCommsPrefsPanelV425() {
-  if (typeof installStableSettingsContentV423 === "function") {
-    try { installStableSettingsContentV423(); } catch (error) {}
-  }
-
-  const body = document.getElementById("settingsCategoryBodyV422_preferences");
-  if (!body) return;
-
-  const panel = createCommsPrefsPanelV425();
-  const displayPanel = document.getElementById("settingsDisplayPanelV424");
-  const presencePanel = document.getElementById("settingsPresencePanelV423");
-
-  if (displayPanel && displayPanel.parentElement === body) {
-    displayPanel.insertAdjacentElement("afterend", panel);
-  } else if (presencePanel && presencePanel.parentElement === body) {
-    body.insertBefore(panel, presencePanel);
-  } else if (panel.parentElement !== body) {
-    body.appendChild(panel);
-  }
-
-  bindCommsPrefsV425();
-  updateCommsPrefsUiV425();
-}
-
-function updateCommsPrefsUiV425() {
-  const settings = readCommsDraftSettingsV425();
-  const autosave = document.getElementById("settingsDraftAutosaveBtnV425");
-  const count = document.getElementById("settingsCharCountBtnV425");
-  const status = document.getElementById("settingsCommsPrefsStatusV425");
-
-  if (autosave) {
-    autosave.textContent = settings.autosave ? "Draft Autosave: On" : "Draft Autosave: Off";
-    autosave.classList.toggle("setting-on-v424", settings.autosave);
-  }
-
-  if (count) {
-    count.textContent = settings.characterCount ? "Character Count: On" : "Character Count: Off";
-    count.classList.toggle("setting-on-v424", settings.characterCount);
-  }
-
-  if (status) {
-    const parts = [];
-    if (settings.autosave) parts.push("drafts saved locally");
-    if (settings.characterCount) parts.push("character count visible");
-    status.textContent = parts.length ? `Comms preferences active: ${parts.join(", ")}.` : "Comms draft tools disabled.";
-  }
-
-  ensureDraftPanelV425();
-}
-
-function bindCommsPrefsV425() {
-  const autosave = document.getElementById("settingsDraftAutosaveBtnV425");
-  const count = document.getElementById("settingsCharCountBtnV425");
-
-  if (autosave && !autosave.dataset.v425Bound) {
-    autosave.dataset.v425Bound = "true";
-    autosave.addEventListener("click", event => {
-      event.preventDefault();
-      const settings = readCommsDraftSettingsV425();
-      saveCommsDraftSettingsV425({ ...settings, autosave: !settings.autosave });
-      updateCommsPrefsUiV425();
-      if (settings.autosave) {
-        // It was on and is now off.
-        try { localStorage.removeItem(COMMS_DRAFT_KEY_V425); } catch (error) {}
-      }
-    });
-  }
-
-  if (count && !count.dataset.v425Bound) {
-    count.dataset.v425Bound = "true";
-    count.addEventListener("click", event => {
-      event.preventDefault();
-      const settings = readCommsDraftSettingsV425();
-      saveCommsDraftSettingsV425({ ...settings, characterCount: !settings.characterCount });
-      updateCommsPrefsUiV425();
-    });
-  }
-}
-
-function patchBuildLabelsV425() {
+function patchBuildLabelsV426() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.5. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.6. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
-    if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V425;
+    if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V426;
   });
 
   const presenceBuild = document.querySelector("#settingsPresencePanelV423 .settings-status-grid-v423 div:nth-child(2) strong");
-  if (presenceBuild && /^v4\./.test(presenceBuild.textContent || "")) presenceBuild.textContent = STALKERNET_BUILD_V425;
+  if (presenceBuild && /^v4\./.test(presenceBuild.textContent || "")) presenceBuild.textContent = STALKERNET_BUILD_V426;
 }
 
-const oldInstallStableSettingsContentV423_V425 = window.installStableSettingsContentV423;
-if (typeof oldInstallStableSettingsContentV423_V425 === "function" && !window.__commsDraftPatchedV425) {
-  window.__commsDraftPatchedV425 = true;
-  window.installStableSettingsContentV423 = function(...args) {
-    const result = oldInstallStableSettingsContentV423_V425.apply(this, args);
-    setTimeout(installCommsPrefsPanelV425, 60);
-    setTimeout(patchBuildLabelsV425, 80);
-    return result;
-  };
-  try { installStableSettingsContentV423 = window.installStableSettingsContentV423; } catch (error) {}
-}
-
-function setupCommsDraftAutosaveV425() {
-  ensureDraftPanelV425();
-  restoreDraftV425();
-  installCommsPrefsPanelV425();
-  patchBuildLabelsV425();
+function setupCommsDraftLiteV426() {
+  ensureCommsDraftLitePanelV426();
+  restoreCommsDraftLiteV426();
+  patchBuildLabelsV426();
 }
 
 window.addEventListener("load", () => {
-  [100, 420, 1000, 2200].forEach(delay => setTimeout(setupCommsDraftAutosaveV425, delay));
+  [120, 500, 1200, 2400].forEach(delay => setTimeout(setupCommsDraftLiteV426, delay));
+});
+
+window.addEventListener("beforeunload", () => {
+  try { saveCommsDraftLiteV426(); } catch (error) {}
 });
 
 document.addEventListener("click", event => {
   const target = event.target;
-  if (target?.closest?.("#messagesTab, #commsTab, [data-tab='messagesTab'], [data-tab='commsTab'], #settingsTab, .settings-category-btn-v422, .nav-btn")) {
-    setTimeout(setupCommsDraftAutosaveV425, 120);
+  if (target?.closest?.("#messagesTab, #commsTab, [data-tab='messagesTab'], [data-tab='commsTab'], .nav-btn")) {
+    setTimeout(setupCommsDraftLiteV426, 140);
   }
 }, true);
 
-window.setupCommsDraftAutosaveV425 = setupCommsDraftAutosaveV425;
-window.clearDraftV425 = clearDraftV425;
+window.setupCommsDraftLiteV426 = setupCommsDraftLiteV426;
+window.clearCommsDraftLiteV426 = clearCommsDraftLiteV426;

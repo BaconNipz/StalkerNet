@@ -4393,8 +4393,8 @@ body.display-reduced-motion-v424 *::after {
   }
 }
 
-/* v4.2.5 Comms Draft Autosave */
-#commsDraftPanelV425 {
+/* v4.2.6 Comms Draft Lite SAFE */
+#commsDraftLitePanelV426 {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) auto !important;
   gap: 8px !important;
@@ -4408,42 +4408,26 @@ body.display-reduced-motion-v424 *::after {
   background: rgba(0,0,0,0.18) !important;
 }
 
-#commsDraftPanelV425 span {
+#commsDraftLiteStatusV426 {
   display: block;
   color: var(--text-soft);
   font-size: 11px;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
-#commsDraftPanelV425 strong {
-  display: block;
-  color: var(--amber-bright);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.10em;
-  margin-top: 2px;
-}
-
-#clearCommsDraftBtnV425 {
+#clearCommsDraftLiteBtnV426 {
   white-space: nowrap !important;
   padding-left: 10px !important;
   padding-right: 10px !important;
 }
 
-#commsDraftPanelV425.draft-count-hidden-v425 strong {
-  display: none !important;
-}
-
-.settings-comms-prefs-panel-v425 {
-  display: block !important;
-}
-
 @media (max-width: 460px) {
-  #commsDraftPanelV425 {
+  #commsDraftLitePanelV426 {
     grid-template-columns: 1fr !important;
   }
 
-  #clearCommsDraftBtnV425 {
+  #clearCommsDraftLiteBtnV426 {
     width: 100% !important;
   }
 }
