@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v423_settings_tabs_content_fix";
+const STORAGE_KEY = "stalkernet_pda_v424_display_preferences";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "423");
+    url.searchParams.set("v", "424");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.2.3. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.2.4. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.3. Settings ready.";
+    status.textContent = "Current build: v4.2.4. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.4. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.4. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.3. Settings ready.";
+    status.textContent = "Current build: v4.2.4. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.2.3. Settings ready.";
+    status.textContent = "Current build: v4.2.4. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.2.3. Settings ready.";
+    if(st) st.textContent="Current build: v4.2.4. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "423");
+        url.searchParams.set("v", "424");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.2.3. Settings ready.";
+    if (status) status.textContent = "Current build: v4.2.4. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "423");
+        url.searchParams.set("v", "424");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.2.3. Settings ready.";
+    if (status) status.textContent = "Current build: v4.2.4. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "423");
+      url.searchParams.set("v", "424");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.4. Settings ready.";
   }
 }
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.4. Settings ready.";
   }
 }
 
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.2.3. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.2.4. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10276,7 +10276,7 @@ function activateSettingsCategoryV422(categoryId, save = true) {
 
 function patchBuildLabelsV422() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.3. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.4. Settings ready.";
 
   const sysBuild = document.getElementById("sysBuildV413");
   if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V422;
@@ -10741,7 +10741,7 @@ function installAppCacheContentV423() {
     cache.className = "settings-lite-panel-v423";
     cache.innerHTML = `
       <div class="module-label">CACHE MAINTENANCE</div>
-      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.2.3. Settings ready.</p>
+      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.2.4. Settings ready.</p>
       <div class="settings-two-buttons-v423">
         <button id="settingsRefreshAppV423" class="small-btn">Refresh App</button>
         <button id="settingsClearCachesV423" class="small-btn">Clear Old Caches</button>
@@ -10799,7 +10799,7 @@ function bindCacheV423() {
     refresh.addEventListener("click", event => {
       event.preventDefault();
       const url = new URL(location.href);
-      url.searchParams.set("v", "423");
+      url.searchParams.set("v", "424");
       url.searchParams.set("refresh", Date.now().toString(36));
       location.href = url.toString();
     });
@@ -11091,3 +11091,222 @@ document.addEventListener("click", event => {
 
 window.installStableSettingsContentV423 = installStableSettingsContentV423;
 window.activateSettingsTabV423 = activateSettingsTabV423;
+
+
+
+// v4.2.4 Display Preferences
+const STALKERNET_BUILD_V424 = "v4.2.4";
+const DISPLAY_PREFS_KEY_V424 = "stalkernet_display_preferences_v424";
+
+function readDisplayPrefsV424() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(DISPLAY_PREFS_KEY_V424) || "null");
+    return {
+      compact: saved?.compact === true,
+      largeText: saved?.largeText === true,
+      scanlines: saved?.scanlines !== false,
+      reducedMotion: saved?.reducedMotion === true
+    };
+  } catch (error) {
+    return { compact: false, largeText: false, scanlines: true, reducedMotion: false };
+  }
+}
+
+function saveDisplayPrefsV424(prefs) {
+  const clean = {
+    compact: !!prefs.compact,
+    largeText: !!prefs.largeText,
+    scanlines: prefs.scanlines !== false,
+    reducedMotion: !!prefs.reducedMotion
+  };
+  localStorage.setItem(DISPLAY_PREFS_KEY_V424, JSON.stringify(clean));
+  return clean;
+}
+
+function applyDisplayPrefsV424() {
+  const prefs = readDisplayPrefsV424();
+
+  document.body.classList.toggle("display-compact-v424", prefs.compact);
+  document.body.classList.toggle("display-large-text-v424", prefs.largeText);
+  document.body.classList.toggle("display-no-scanlines-v424", !prefs.scanlines);
+  document.body.classList.toggle("display-reduced-motion-v424", prefs.reducedMotion);
+
+  const compactBtn = document.getElementById("displayCompactBtnV424");
+  const textBtn = document.getElementById("displayTextBtnV424");
+  const scanBtn = document.getElementById("displayScanlinesBtnV424");
+  const motionBtn = document.getElementById("displayMotionBtnV424");
+  const status = document.getElementById("displayPrefsStatusV424");
+
+  if (compactBtn) compactBtn.textContent = prefs.compact ? "Compact: On" : "Compact: Off";
+  if (textBtn) textBtn.textContent = prefs.largeText ? "Large Text: On" : "Large Text: Off";
+  if (scanBtn) scanBtn.textContent = prefs.scanlines ? "Scanlines: On" : "Scanlines: Off";
+  if (motionBtn) motionBtn.textContent = prefs.reducedMotion ? "Reduced Motion: On" : "Reduced Motion: Off";
+
+  [compactBtn, textBtn, scanBtn, motionBtn].forEach(btn => {
+    if (!btn) return;
+    const on = /: On$/.test(btn.textContent || "");
+    btn.classList.toggle("setting-on-v424", on);
+  });
+
+  if (status) {
+    const parts = [];
+    if (prefs.compact) parts.push("compact");
+    if (prefs.largeText) parts.push("large text");
+    if (!prefs.scanlines) parts.push("scanlines off");
+    if (prefs.reducedMotion) parts.push("reduced motion");
+    status.textContent = parts.length ? `Display preferences active: ${parts.join(", ")}.` : "Default display settings active.";
+  }
+}
+
+function createDisplayPrefsPanelV424() {
+  let panel = document.getElementById("settingsDisplayPanelV424");
+  if (panel) return panel;
+
+  panel = document.createElement("div");
+  panel.id = "settingsDisplayPanelV424";
+  panel.className = "settings-lite-panel-v423 settings-display-panel-v424";
+  panel.innerHTML = `
+    <div class="module-label">DISPLAY PREFERENCES</div>
+    <p id="displayPrefsStatusV424" class="message-text">Default display settings active.</p>
+    <div class="display-prefs-grid-v424">
+      <button id="displayCompactBtnV424" class="small-btn">Compact: Off</button>
+      <button id="displayTextBtnV424" class="small-btn">Large Text: Off</button>
+      <button id="displayScanlinesBtnV424" class="small-btn">Scanlines: On</button>
+      <button id="displayMotionBtnV424" class="small-btn">Reduced Motion: Off</button>
+    </div>
+    <button id="displayResetBtnV424" class="small-btn display-reset-v424">Reset Display Preferences</button>
+  `;
+
+  return panel;
+}
+
+function installDisplayPrefsPanelV424() {
+  if (typeof installStableSettingsContentV423 === "function") {
+    try { installStableSettingsContentV423(); } catch (error) {}
+  }
+
+  const body =
+    document.getElementById("settingsCategoryBodyV422_preferences") ||
+    document.getElementById("settingsCategoryBodyV422_preferences".replace("preferences", "preferences"));
+
+  if (!body) return;
+
+  const panel = createDisplayPrefsPanelV424();
+
+  const presence = document.getElementById("settingsPresencePanelV423");
+  if (presence && presence.parentElement === body) {
+    body.insertBefore(panel, presence);
+  } else if (panel.parentElement !== body) {
+    body.appendChild(panel);
+  }
+
+  bindDisplayPrefsV424();
+  applyDisplayPrefsV424();
+}
+
+function bindDisplayPrefsV424() {
+  const compactBtn = document.getElementById("displayCompactBtnV424");
+  const textBtn = document.getElementById("displayTextBtnV424");
+  const scanBtn = document.getElementById("displayScanlinesBtnV424");
+  const motionBtn = document.getElementById("displayMotionBtnV424");
+  const resetBtn = document.getElementById("displayResetBtnV424");
+
+  if (compactBtn && !compactBtn.dataset.v424Bound) {
+    compactBtn.dataset.v424Bound = "true";
+    compactBtn.addEventListener("click", event => {
+      event.preventDefault();
+      const prefs = readDisplayPrefsV424();
+      saveDisplayPrefsV424({ ...prefs, compact: !prefs.compact });
+      applyDisplayPrefsV424();
+    });
+  }
+
+  if (textBtn && !textBtn.dataset.v424Bound) {
+    textBtn.dataset.v424Bound = "true";
+    textBtn.addEventListener("click", event => {
+      event.preventDefault();
+      const prefs = readDisplayPrefsV424();
+      saveDisplayPrefsV424({ ...prefs, largeText: !prefs.largeText });
+      applyDisplayPrefsV424();
+    });
+  }
+
+  if (scanBtn && !scanBtn.dataset.v424Bound) {
+    scanBtn.dataset.v424Bound = "true";
+    scanBtn.addEventListener("click", event => {
+      event.preventDefault();
+      const prefs = readDisplayPrefsV424();
+      saveDisplayPrefsV424({ ...prefs, scanlines: !prefs.scanlines });
+      applyDisplayPrefsV424();
+    });
+  }
+
+  if (motionBtn && !motionBtn.dataset.v424Bound) {
+    motionBtn.dataset.v424Bound = "true";
+    motionBtn.addEventListener("click", event => {
+      event.preventDefault();
+      const prefs = readDisplayPrefsV424();
+      saveDisplayPrefsV424({ ...prefs, reducedMotion: !prefs.reducedMotion });
+      applyDisplayPrefsV424();
+    });
+  }
+
+  if (resetBtn && !resetBtn.dataset.v424Bound) {
+    resetBtn.dataset.v424Bound = "true";
+    resetBtn.addEventListener("click", event => {
+      event.preventDefault();
+      saveDisplayPrefsV424({ compact: false, largeText: false, scanlines: true, reducedMotion: false });
+      applyDisplayPrefsV424();
+    });
+  }
+}
+
+function patchBuildLabelsV424() {
+  const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.2.4. Settings ready.";
+
+  document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
+    if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V424;
+  });
+
+  const presenceBuild = document.querySelector("#settingsPresencePanelV423 .settings-status-grid-v423 div:nth-child(2) strong");
+  if (presenceBuild && /^v4\./.test(presenceBuild.textContent || "")) presenceBuild.textContent = STALKERNET_BUILD_V424;
+}
+
+const oldInstallStableSettingsContentV423_V424 = window.installStableSettingsContentV423;
+if (typeof oldInstallStableSettingsContentV423_V424 === "function" && !window.__displayPrefsPatchedV424) {
+  window.__displayPrefsPatchedV424 = true;
+  window.installStableSettingsContentV423 = function(...args) {
+    const result = oldInstallStableSettingsContentV423_V424.apply(this, args);
+    setTimeout(installDisplayPrefsPanelV424, 60);
+    setTimeout(patchBuildLabelsV424, 80);
+    return result;
+  };
+  try { installStableSettingsContentV423 = window.installStableSettingsContentV423; } catch (error) {}
+}
+
+window.addEventListener("load", () => {
+  applyDisplayPrefsV424();
+  [100, 400, 1000, 2200].forEach(delay => {
+    setTimeout(() => {
+      installDisplayPrefsPanelV424();
+      patchBuildLabelsV424();
+      applyDisplayPrefsV424();
+    }, delay);
+  });
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, [data-tab='settingsTab'], .settings-category-btn-v422, .nav-btn")) {
+    setTimeout(() => {
+      installDisplayPrefsPanelV424();
+      patchBuildLabelsV424();
+      applyDisplayPrefsV424();
+    }, 120);
+  }
+}, true);
+
+window.readDisplayPrefsV424 = readDisplayPrefsV424;
+window.applyDisplayPrefsV424 = applyDisplayPrefsV424;
+window.installDisplayPrefsPanelV424 = installDisplayPrefsPanelV424;

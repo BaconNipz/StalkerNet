@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v423-settings-tabs-content-fix";
+const CACHE_NAME = "stalkernet-cache-v424-display-preferences";
 
 const FILES_TO_CACHE = [
   "./",

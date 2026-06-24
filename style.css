@@ -4318,3 +4318,77 @@ main > #settingsTab,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.2.4 Display Preferences */
+.settings-display-panel-v424 {
+  display: block !important;
+}
+
+.display-prefs-grid-v424 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  margin-top: 8px !important;
+}
+
+.display-prefs-grid-v424 .small-btn,
+.display-reset-v424 {
+  width: 100% !important;
+}
+
+.display-reset-v424 {
+  margin-top: 8px !important;
+}
+
+.setting-on-v424 {
+  border-color: rgba(215,171,107,0.55) !important;
+  background: linear-gradient(180deg, rgba(215,171,107,0.22), rgba(215,171,107,0.08)) !important;
+  color: var(--amber-bright) !important;
+}
+
+body.display-compact-v424 .settings-lite-panel-v423,
+body.display-compact-v424 .message-card,
+body.display-compact-v424 .module-panel {
+  padding: 8px !important;
+}
+
+body.display-compact-v424 .settings-status-grid-v423,
+body.display-compact-v424 .settings-two-buttons-v423,
+body.display-compact-v424 .display-prefs-grid-v424 {
+  gap: 6px !important;
+}
+
+body.display-large-text-v424 {
+  font-size: 1.06em !important;
+}
+
+body.display-large-text-v424 .message-text,
+body.display-large-text-v424 p,
+body.display-large-text-v424 input,
+body.display-large-text-v424 textarea,
+body.display-large-text-v424 button {
+  font-size: 1.06em !important;
+}
+
+body.display-no-scanlines-v424::before,
+body.display-no-scanlines-v424::after,
+body.display-no-scanlines-v424 .scanline,
+body.display-no-scanlines-v424 .scanlines,
+body.display-no-scanlines-v424 [class*="scanline"] {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+body.display-reduced-motion-v424 *,
+body.display-reduced-motion-v424 *::before,
+body.display-reduced-motion-v424 *::after {
+  animation: none !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (max-width: 460px) {
+  .display-prefs-grid-v424 {
+    grid-template-columns: 1fr !important;
+  }
+}
