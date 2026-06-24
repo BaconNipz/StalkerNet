@@ -4304,3 +4304,87 @@ body.settings-active-v418 [class*="warning-toast"] {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.1.9 Settings Category Polish */
+
+/* Remove the odd left-side marker/arrow artifacts. */
+#settingsTab .settings-category-v416,
+#settingsTab .settings-category-v416 summary {
+  list-style: none !important;
+}
+
+#settingsTab .settings-category-v416 summary::-webkit-details-marker {
+  display: none !important;
+}
+
+#settingsTab .settings-category-v416 summary::before,
+#settingsTab .settings-category-v416 summary::after {
+  display: none !important;
+  content: none !important;
+}
+
+#settingsTab .settings-category-v416 summary > span {
+  padding-left: 0 !important;
+}
+
+/* Cleaner header layout. */
+#settingsTab .settings-category-polished-v419 summary {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  padding: 12px !important;
+}
+
+#settingsTab .settings-category-polished-v419 summary strong::before {
+  content: "▸ ";
+  color: var(--amber-bright);
+  opacity: 0.75;
+}
+
+#settingsTab .settings-category-polished-v419[open] summary strong::before {
+  content: "▾ ";
+}
+
+/* Hide any old ghost audio panel from prior builds. */
+#settingsTab #audioSettingsPanelV403,
+#messagesTab #audioSettingsPanelV403,
+#commsTab #audioSettingsPanelV403 {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Make sure the fresh Audio panel appears properly inside PDA Preferences. */
+#settingsTab .settings-category-body-v416 > #audioSettingsPanelV418 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+/* Hide known panels only if they are dumped in the root hub, not inside drawers. */
+#settingsTab #settingsHubV405 > #audioSettingsPanelV418,
+#settingsTab #settingsHubV405 > #presencePanelV411,
+#settingsTab #settingsHubV405 > #installAppPanelV402,
+#settingsTab #settingsHubV405 > #cacheToolsPanelV3998,
+#settingsTab #settingsHubV405 > #backupPanelV412,
+#settingsTab #settingsHubV405 > #systemStatusPanelV413,
+#settingsTab #settingsHubV405 > #errorLogPanelV414 {
+  display: none !important;
+}
+
+/* Drawers should not show stray bullet-like layout artifacts. */
+#settingsTab .settings-category-body-v416 {
+  padding-left: 10px !important;
+  margin-left: 0 !important;
+}
+
+#settingsTab .settings-category-body-v416 > * {
+  list-style: none !important;
+}
+
+#settingsTab .settings-categorized-panel-polished-v419 {
+  margin: 0 !important;
+  transform: none !important;
+}

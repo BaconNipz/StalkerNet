@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v418_settings_display_fix";
+const STORAGE_KEY = "stalkernet_pda_v419_settings_category_polish";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "418");
+    url.searchParams.set("v", "419");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.1.8. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.1.9. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.8. Settings ready.";
+    status.textContent = "Current build: v4.1.9. Settings ready.";
   }
 }
 
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
   }
 }
 
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
   }
 
   try {
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.8. Settings ready.";
+    status.textContent = "Current build: v4.1.9. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.1.8. Settings ready.";
+    status.textContent = "Current build: v4.1.9. Settings ready.";
   }
 }
 
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.1.8. Settings ready.";
+    if(st) st.textContent="Current build: v4.1.9. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "418");
+        url.searchParams.set("v", "419");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.8. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.9. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "418");
+        url.searchParams.set("v", "419");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.1.8. Settings ready.";
+    if (status) status.textContent = "Current build: v4.1.9. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "418");
+      url.searchParams.set("v", "419");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
   }
 }
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
   }
 }
 
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10278,7 +10278,7 @@ function moveSettingsPanelsIntoCategoriesV416() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.5|v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
   }
 
   // Rebind controls after moving DOM.
@@ -10573,7 +10573,7 @@ function moveSettingsPanelsIntoCategoriesStableV417() {
 
     const cacheStatus = document.getElementById("cacheStatusV3998");
     if (cacheStatus && /v4\.1\.6|v4\.1\.5|v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-      cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
+      cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
     }
   } finally {
     window.__settingsCategoryMovingV417 = false;
@@ -10903,7 +10903,7 @@ function updatePrefsCountV418() {
 
 function patchBuildLabelsV418() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.1.8. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
 
   const buildFields = [
     document.getElementById("sysBuildV413"),
@@ -10953,3 +10953,350 @@ document.addEventListener("click", event => {
 window.installAudioPanelV418 = installAudioPanelV418;
 window.fixSettingsDisplayV418 = fixSettingsDisplayV418;
 window.testAudioCueV418 = testAudioCueV418;
+
+
+
+// v4.1.9 Settings Category Polish
+// Cleans category headers, fixes panel counts, and prevents the old hidden audio panel from confusing drawers.
+const STALKERNET_BUILD_V419 = "v4.1.9";
+
+const CATEGORY_MAP_V419 = [
+  { id: "prefs", title: "PDA Preferences", subtitle: "Audio cues and presence", panelIds: ["audioSettingsPanelV418", "presencePanelV411"], order: 5 },
+  { id: "app", title: "App & Cache", subtitle: "Install tools and cache maintenance", panelIds: ["installAppPanelV402", "cacheToolsPanelV3998"], order: 15 },
+  { id: "backup", title: "Backup & Safety", subtitle: "Local backup and restore tools", panelIds: ["backupPanelV412"], order: 35 },
+  { id: "diagnostics", title: "Diagnostics", subtitle: "System status and bug reports", panelIds: ["systemStatusPanelV413", "errorLogPanelV414"], order: 45 }
+];
+
+function hubV419() {
+  let hub = document.getElementById("settingsHubV405");
+  if (hub) return hub;
+
+  let settings = document.getElementById("settingsTab");
+  if (!settings) {
+    settings = document.createElement("section");
+    settings.id = "settingsTab";
+    settings.className = "tab-panel hidden settings-tab-v405 settings-tab-fixed-v406";
+    settings.innerHTML = `
+      <div class="section-top"><h2>Settings</h2></div>
+      <article class="module-panel settings-hub-card-v405">
+        <div class="module-label">PDA SETTINGS</div>
+        <p class="message-text">Device tools and local preferences live here.</p>
+      </article>
+      <div id="settingsHubV405" class="settings-hub-v405"></div>
+    `;
+    const main = document.querySelector("main") || document.body;
+    const nav = document.querySelector(".bottom-nav") || document.querySelector(".tab-nav") || document.querySelector("nav");
+    if (nav && nav.parentElement === main) main.insertBefore(settings, nav);
+    else main.appendChild(settings);
+  }
+
+  hub = document.getElementById("settingsHubV405");
+  if (!hub) {
+    hub = document.createElement("div");
+    hub.id = "settingsHubV405";
+    hub.className = "settings-hub-v405";
+    settings.appendChild(hub);
+  }
+
+  return hub;
+}
+
+function stopCategoryJitterV419() {
+  clearTimeout(window.__settingsCategoryTimerV416);
+  clearTimeout(window.__stableSettingsCategoryTimerV417);
+
+  try {
+    if (typeof settingsCategoryObserverV416 !== "undefined" && settingsCategoryObserverV416) {
+      settingsCategoryObserverV416.disconnect();
+      settingsCategoryObserverV416 = null;
+    }
+  } catch (error) {}
+
+  try {
+    if (typeof stableCategoryObserverV417 !== "undefined" && stableCategoryObserverV417) {
+      stableCategoryObserverV417.disconnect();
+      stableCategoryObserverV417 = null;
+    }
+  } catch (error) {}
+}
+
+function ensureCategoryShellV419() {
+  const hub = hubV419();
+
+  let intro = document.getElementById("settingsCategoriesIntroV416");
+  if (!intro) {
+    intro = document.createElement("article");
+    intro.id = "settingsCategoriesIntroV416";
+    intro.className = "settings-categories-intro-v416 module-panel";
+    intro.dataset.settingsCategorySystemV416 = "true";
+    intro.dataset.settingsOrderV405 = "1";
+    intro.innerHTML = `
+      <div class="module-label">SETTINGS CATEGORIES</div>
+      <p class="message-text">Open only the drawer you need. Future settings will be filed into these sections instead of crowding the page.</p>
+      <div class="settings-category-actions-v416">
+        <button id="openAllSettingsCatsV416" class="small-btn">Open All</button>
+        <button id="closeAllSettingsCatsV416" class="small-btn">Close All</button>
+      </div>
+    `;
+    hub.appendChild(intro);
+  }
+
+  CATEGORY_MAP_V419.forEach(category => {
+    let details = document.getElementById(`settingsCategoryV416_${category.id}`);
+    if (!details) {
+      details = document.createElement("details");
+      details.id = `settingsCategoryV416_${category.id}`;
+      details.className = "settings-category-v416 settings-category-stable-v417 settings-category-polished-v419";
+      details.dataset.settingsCategorySystemV416 = "true";
+      details.dataset.settingsOrderV405 = String(category.order);
+      details.dataset.categoryIdV416 = category.id;
+      details.innerHTML = `
+        <summary>
+          <span>
+            <strong>${category.title}</strong>
+            <em>${category.subtitle}</em>
+          </span>
+          <b id="settingsCategoryCountV416_${category.id}">0</b>
+        </summary>
+        <div id="settingsCategoryBodyV416_${category.id}" class="settings-category-body-v416"></div>
+      `;
+      hub.appendChild(details);
+    } else {
+      details.classList.add("settings-category-polished-v419");
+      const strong = details.querySelector("summary strong");
+      const em = details.querySelector("summary em");
+      if (strong) strong.textContent = category.title;
+      if (em) em.textContent = category.subtitle;
+    }
+  });
+
+  bindCategoryButtonsV419();
+}
+
+function bindCategoryButtonsV419() {
+  const openAll = document.getElementById("openAllSettingsCatsV416");
+  const closeAll = document.getElementById("closeAllSettingsCatsV416");
+
+  if (openAll && !openAll.dataset.v419Bound) {
+    openAll.dataset.v419Bound = "true";
+    openAll.addEventListener("click", event => {
+      event.preventDefault();
+      CATEGORY_MAP_V419.forEach(category => {
+        const d = document.getElementById(`settingsCategoryV416_${category.id}`);
+        if (d) d.open = true;
+      });
+    });
+  }
+
+  if (closeAll && !closeAll.dataset.v419Bound) {
+    closeAll.dataset.v419Bound = "true";
+    closeAll.addEventListener("click", event => {
+      event.preventDefault();
+      CATEGORY_MAP_V419.forEach(category => {
+        const d = document.getElementById(`settingsCategoryV416_${category.id}`);
+        if (d) d.open = false;
+      });
+    });
+  }
+}
+
+function ensureAudioPanelV419() {
+  // Use v4.1.8 fresh panel if present or create one if not.
+  let panel = document.getElementById("audioSettingsPanelV418");
+  if (!panel) {
+    panel = document.createElement("div");
+    panel.id = "audioSettingsPanelV418";
+    panel.className = "audio-settings-panel-v418 settings-module-v405 settings-categorized-panel-v416 settings-categorized-panel-stable-v417";
+    panel.dataset.settingsCategoryV416 = "prefs";
+    panel.innerHTML = `
+      <div class="module-label">AUDIO CUES</div>
+      <p id="audioStatusV418" class="message-text audio-status-v418">Audio cues are local to this device.</p>
+      <div class="audio-actions-v418">
+        <button id="toggleAudioBtnV418" class="small-btn">Audio Cues: On</button>
+        <button id="testAudioBtnV418" class="small-btn">Test Cue</button>
+      </div>
+      <label class="audio-volume-row-v418" for="audioVolumeSliderV418">
+        <span>Volume</span>
+        <input id="audioVolumeSliderV418" type="range" min="0" max="100" value="50" />
+        <strong id="audioVolumeValueV418">50%</strong>
+      </label>
+    `;
+  }
+
+  panel.style.display = "";
+  panel.classList.remove("hidden");
+  panel.classList.add("audio-settings-panel-v419");
+  return panel;
+}
+
+function removeOldAudioGhostsV419() {
+  document.querySelectorAll("#audioSettingsPanelV403").forEach(old => old.remove());
+}
+
+function createMissingKnownPanelsV419() {
+  try { if (typeof installPresencePanelV411 === "function") installPresencePanelV411(); } catch (error) {}
+  try { if (typeof bindPwaInstallV402 === "function") bindPwaInstallV402(); } catch (error) {}
+  try { if (typeof installBackupPanelV412 === "function") installBackupPanelV412(); } catch (error) {}
+  try { if (typeof installSystemStatusPanelV413 === "function") installSystemStatusPanelV413(); } catch (error) {}
+  try { if (typeof installErrorLogPanelV414 === "function") installErrorLogPanelV414(); } catch (error) {}
+  try { if (typeof installFirestoreNoiseFilterV415 === "function") installFirestoreNoiseFilterV415(); } catch (error) {}
+  ensureAudioPanelV419();
+}
+
+function placeCategoryPanelsV419() {
+  stopCategoryJitterV419();
+  ensureCategoryShellV419();
+  createMissingKnownPanelsV419();
+  removeOldAudioGhostsV419();
+
+  window.__settingsCategoryMovingV417 = true;
+  try {
+    CATEGORY_MAP_V419.forEach(category => {
+      const body = document.getElementById(`settingsCategoryBodyV416_${category.id}`);
+      if (!body) return;
+
+      category.panelIds.forEach(panelId => {
+        const panel = document.getElementById(panelId);
+        if (!panel) return;
+
+        panel.classList.add("settings-categorized-panel-v416", "settings-categorized-panel-stable-v417", "settings-categorized-panel-polished-v419");
+        panel.dataset.settingsCategoryV416 = category.id;
+
+        if (panel.parentElement !== body) {
+          body.appendChild(panel);
+        }
+      });
+    });
+
+    const hub = hubV419();
+    Array.from(hub.children)
+      .filter(child => child.dataset.settingsCategorySystemV416 === "true" || child.id === "settingsCategoriesIntroV416")
+      .sort((a, b) => Number(a.dataset.settingsOrderV405 || 99) - Number(b.dataset.settingsOrderV405 || 99))
+      .forEach(child => hub.appendChild(child));
+  } finally {
+    window.__settingsCategoryMovingV417 = false;
+  }
+
+  updateCategoryCountsV419();
+  bindMovedPanelsV419();
+  patchBuildLabelsV419();
+}
+
+function isPanelVisibleForCountV419(panel) {
+  if (!panel || !(panel instanceof HTMLElement)) return false;
+  if (panel.id === "audioSettingsPanelV403") return false;
+  if (panel.closest("#settingsHubV405") && panel.parentElement?.id === "settingsHubV405") return false;
+  const style = getComputedStyle(panel);
+  return style.display !== "none" && style.visibility !== "hidden" && style.opacity !== "0";
+}
+
+function updateCategoryCountsV419() {
+  CATEGORY_MAP_V419.forEach(category => {
+    const count = document.getElementById(`settingsCategoryCountV416_${category.id}`);
+    const details = document.getElementById(`settingsCategoryV416_${category.id}`);
+    const body = document.getElementById(`settingsCategoryBodyV416_${category.id}`);
+
+    let n = 0;
+    category.panelIds.forEach(panelId => {
+      const panel = document.getElementById(panelId);
+      if (panel && panel.closest(`#settingsCategoryBodyV416_${category.id}`) && isPanelVisibleForCountV419(panel)) n += 1;
+    });
+
+    if (count) count.textContent = String(n);
+    if (details) details.classList.toggle("settings-category-empty-v416", n === 0);
+
+    // A category body should not show stray text or old ghost nodes.
+    if (body) {
+      Array.from(body.children).forEach(child => {
+        if (!(child instanceof HTMLElement)) return;
+        if (category.panelIds.includes(child.id)) return;
+        if (child.id === "audioSettingsPanelV403") child.remove();
+      });
+    }
+  });
+}
+
+function bindMovedPanelsV419() {
+  try { if (typeof bindAudioPanelV418 === "function") bindAudioPanelV418(); } catch (error) {}
+  try { if (typeof bindPresencePanelV411 === "function") bindPresencePanelV411(); } catch (error) {}
+  try { if (typeof bindPwaInstallV402 === "function") bindPwaInstallV402(); } catch (error) {}
+  try { if (typeof bindCacheToolsV3998 === "function") bindCacheToolsV3998(); } catch (error) {}
+  try { if (typeof bindBackupPanelV412 === "function") bindBackupPanelV412(); } catch (error) {}
+  try { if (typeof bindSystemStatusPanelV413 === "function") bindSystemStatusPanelV413(); } catch (error) {}
+  try { if (typeof bindErrorLogPanelV414 === "function") bindErrorLogPanelV414(); } catch (error) {}
+}
+
+function patchBuildLabelsV419() {
+  const cacheStatus = document.getElementById("cacheStatusV3998");
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.1.9. Settings ready.";
+
+  const sysBuild = document.getElementById("sysBuildV413");
+  if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V419;
+
+  const presenceBuild = document.querySelector("#presencePanelV411 .presence-grid-v411 div:nth-child(3) strong");
+  if (presenceBuild && /^v4\./.test(presenceBuild.textContent || "")) presenceBuild.textContent = STALKERNET_BUILD_V419;
+}
+
+function startCategoryPolishObserverV419() {
+  const hub = hubV419();
+  if (window.__categoryPolishObserverV419) {
+    try { window.__categoryPolishObserverV419.disconnect(); } catch (error) {}
+  }
+
+  window.__categoryPolishObserverV419 = new MutationObserver(mutations => {
+    if (window.__settingsCategoryMovingV417) return;
+
+    const needsFix = mutations.some(mutation => {
+      return Array.from(mutation.addedNodes || []).some(node => {
+        if (!(node instanceof HTMLElement)) return false;
+        return node.id === "audioSettingsPanelV403" ||
+          CATEGORY_MAP_V419.some(category => category.panelIds.includes(node.id)) ||
+          node.classList?.contains("settings-module-v405");
+      });
+    });
+
+    if (!needsFix) return;
+    clearTimeout(window.__categoryPolishTimerV419);
+    window.__categoryPolishTimerV419 = setTimeout(placeCategoryPanelsV419, 160);
+  });
+
+  window.__categoryPolishObserverV419.observe(hub, { childList: true, subtree: true });
+}
+
+function setupCategoryPolishV419() {
+  placeCategoryPanelsV419();
+  startCategoryPolishObserverV419();
+}
+
+// Override older category functions to use polished logic.
+window.setupSettingsCategoriesV416 = setupCategoryPolishV419;
+window.moveSettingsPanelsIntoCategoriesV416 = placeCategoryPanelsV419;
+window.setupSettingsCategoriesStableV417 = setupCategoryPolishV419;
+window.moveSettingsPanelsIntoCategoriesStableV417 = placeCategoryPanelsV419;
+window.fixSettingsDisplayV418 = setupCategoryPolishV419;
+window.installAudioPanelV418 = ensureAudioPanelV419;
+
+try {
+  setupSettingsCategoriesV416 = setupCategoryPolishV419;
+  moveSettingsPanelsIntoCategoriesV416 = placeCategoryPanelsV419;
+  setupSettingsCategoriesStableV417 = setupCategoryPolishV419;
+  moveSettingsPanelsIntoCategoriesStableV417 = placeCategoryPanelsV419;
+  fixSettingsDisplayV418 = setupCategoryPolishV419;
+  installAudioPanelV418 = ensureAudioPanelV419;
+} catch (error) {}
+
+window.addEventListener("load", () => {
+  [60, 300, 900, 1800, 3200].forEach(t => setTimeout(setupCategoryPolishV419, t));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#settingsTab, [data-tab='settingsTab'], .settings-nav-v405, .settings-nav-fixed-v406, .nav-btn, .settings-category-v416")) {
+    setTimeout(setupCategoryPolishV419, 80);
+    setTimeout(updateCategoryCountsV419, 280);
+    setTimeout(setupCategoryPolishV419, 650);
+  }
+}, true);
+
+window.setupCategoryPolishV419 = setupCategoryPolishV419;
+window.updateCategoryCountsV419 = updateCategoryCountsV419;
