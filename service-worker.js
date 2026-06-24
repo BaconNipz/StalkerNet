@@ -1,4 +1,4 @@
-const CACHE_NAME = "stalkernet-cache-v436-cloud-sync-status";
+const CACHE_NAME = "stalkernet-cache-v437-activity-log";
 
 const FILES_TO_CACHE = [
   "./",
