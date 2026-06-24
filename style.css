@@ -4592,3 +4592,88 @@ body.display-reduced-motion-v424 *::after {
     width: 100% !important;
   }
 }
+
+/* v4.3.2 Map Marker Filter / Visibility Polish */
+#mapMarkerFilterPanelV432 {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 10px 0 !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+.map-filter-search-row-v432 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  margin-bottom: 8px !important;
+}
+
+#mapMarkerSearchV432,
+#mapMarkerTypeFilterV432 {
+  width: 100% !important;
+  min-width: 0 !important;
+  border: 1px solid rgba(215,171,107,0.20) !important;
+  border-radius: 9px !important;
+  background: rgba(0,0,0,0.34) !important;
+  color: var(--text-soft) !important;
+  padding: 9px !important;
+  box-sizing: border-box !important;
+}
+
+.map-filter-controls-v432 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, .9fr)) !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+  align-items: end !important;
+}
+
+.map-filter-controls-v432 label {
+  display: grid !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+}
+
+.map-filter-controls-v432 label span {
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  font-size: 9px;
+}
+
+.map-filter-controls-v432 .small-btn {
+  width: 100% !important;
+}
+
+.map-filter-status-v432 {
+  margin: 0 !important;
+  color: var(--text-dim) !important;
+  font-size: 11px !important;
+}
+
+.map-marker-filter-hidden-v432 {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .map-filter-controls-v432 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .map-filter-search-row-v432,
+  .map-filter-controls-v432 {
+    grid-template-columns: 1fr !important;
+  }
+
+  #mapMarkerClearFilterV432 {
+    width: 100% !important;
+  }
+}
