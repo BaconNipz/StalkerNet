@@ -4389,29 +4389,24 @@ body.settings-active-v418 [class*="warning-toast"] {
   transform: none !important;
 }
 
-/* v4.2.0 Settings Drawer Toggle Lock */
-.settings-category-toggle-lock-v420 summary {
+/* v4.2.1 Safe Settings Drawer Fix */
+.settings-category-safe-v421 summary {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  cursor: pointer;
 }
 
-.settings-category-toggle-lock-v420[open] > .settings-category-body-v416 {
-  display: grid !important;
-}
-
-.settings-category-toggle-lock-v420:not([open]) > .settings-category-body-v416 {
-  display: none !important;
-}
-
-/* Remove flicker animations/transitions during native details toggle. */
-.settings-category-toggle-lock-v420,
-.settings-category-toggle-lock-v420 summary,
-.settings-category-toggle-lock-v420 .settings-category-body-v416 {
+.settings-category-safe-v421,
+.settings-category-safe-v421 summary,
+.settings-category-safe-v421 .settings-category-body-v416 {
   transition: none !important;
   animation: none !important;
 }
 
-/* Make the tapped drawer feel solid on mobile. */
-.settings-category-toggle-lock-v420 summary:active {
-  background: rgba(215,171,107,0.08);
+.settings-category-safe-v421[open] > .settings-category-body-v416 {
+  display: grid !important;
+}
+
+.settings-category-safe-v421:not([open]) > .settings-category-body-v416 {
+  display: none !important;
 }
