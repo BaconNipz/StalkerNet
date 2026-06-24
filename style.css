@@ -4169,3 +4169,152 @@ main > #settingsTab,
     padding-right: 6px !important;
   }
 }
+
+/* v4.2.3 Settings Tabs Content Fix */
+.settings-tabs-fixed-v423 {
+  display: block !important;
+}
+
+.settings-category-pane-v422 {
+  display: none !important;
+}
+
+.settings-category-pane-v422.active {
+  display: block !important;
+}
+
+.settings-category-btn-v422 {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+.settings-category-btn-v422.active {
+  border-color: rgba(215,171,107,0.55) !important;
+  background: linear-gradient(180deg, rgba(215,171,107,0.24), rgba(215,171,107,0.10)) !important;
+  color: var(--amber-bright) !important;
+}
+
+.settings-lite-panel-v423 {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 10px !important;
+  padding: 12px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+.settings-two-buttons-v423 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+  margin-top: 8px !important;
+}
+
+.settings-two-buttons-v423 .small-btn,
+.settings-lite-panel-v423 .small-btn {
+  width: 100% !important;
+}
+
+.settings-range-v423 {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) 52px !important;
+  gap: 8px !important;
+  align-items: center !important;
+  margin-top: 10px !important;
+}
+
+.settings-range-v423 span {
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 10px;
+}
+
+.settings-range-v423 input[type="range"] {
+  width: 100% !important;
+  accent-color: #d7ab6b;
+}
+
+.settings-range-v423 strong {
+  color: var(--amber-bright);
+  font-size: 12px;
+}
+
+.settings-status-grid-v423 {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin: 8px 0 !important;
+}
+
+.settings-status-grid-v423 div {
+  min-width: 0;
+  padding: 9px 8px;
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 9px;
+  background: rgba(0,0,0,0.22);
+}
+
+.settings-status-grid-v423 span {
+  display: block;
+  color: var(--text-dim);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+
+.settings-status-grid-v423 strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.settings-textarea-v423 {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  border: 1px solid rgba(215,171,107,0.22);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.35);
+  color: var(--text-soft);
+  padding: 10px;
+  box-sizing: border-box;
+  font-family: monospace;
+  font-size: 12px;
+  margin: 8px 0;
+}
+
+.legacy-settings-hidden-v423,
+#settingsTab #settingsHubV405 > #audioSettingsPanelV403,
+#settingsTab #settingsHubV405 > #presencePanelV411,
+#settingsTab #settingsHubV405 > #installAppPanelV402,
+#settingsTab #settingsHubV405 > #cacheToolsPanelV3998,
+#settingsTab #settingsHubV405 > #backupPanelV412,
+#settingsTab #settingsHubV405 > #systemStatusPanelV413,
+#settingsTab #settingsHubV405 > #errorLogPanelV414 {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Old failed drawer UI must stay gone. */
+#settingsTab .settings-category-v416,
+#settingsTab #settingsCategoriesIntroV416,
+#settingsTab .settings-category-body-v416 {
+  display: none !important;
+}
+
+@media (max-width: 460px) {
+  .settings-two-buttons-v423,
+  .settings-status-grid-v423,
+  .settings-range-v423 {
+    grid-template-columns: 1fr !important;
+  }
+}
