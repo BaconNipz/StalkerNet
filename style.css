@@ -4512,3 +4512,83 @@ body.display-reduced-motion-v424 *::after {
     width: 100% !important;
   }
 }
+
+/* v4.3.1 Jobs Board Filter / Sort */
+#jobsFilterPanelV431 {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 10px 0 !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(215,171,107,0.18) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg,rgba(255,255,255,.018),transparent),rgba(0,0,0,.18) !important;
+}
+
+.jobs-filter-search-row-v431 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  margin-bottom: 8px !important;
+}
+
+#jobsFilterSearchV431,
+.jobs-filter-grid-v431 select {
+  width: 100% !important;
+  min-width: 0 !important;
+  border: 1px solid rgba(215,171,107,0.20) !important;
+  border-radius: 9px !important;
+  background: rgba(0,0,0,0.34) !important;
+  color: var(--text-soft) !important;
+  padding: 9px !important;
+  box-sizing: border-box !important;
+}
+
+.jobs-filter-grid-v431 {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.jobs-filter-grid-v431 label {
+  display: grid !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+}
+
+.jobs-filter-grid-v431 label span {
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  font-size: 9px;
+}
+
+.jobs-filter-status-v431 {
+  margin: 0 !important;
+  color: var(--text-dim) !important;
+  font-size: 11px !important;
+}
+
+.jobs-filter-hidden-v431 {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .jobs-filter-grid-v431 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .jobs-filter-search-row-v431,
+  .jobs-filter-grid-v431 {
+    grid-template-columns: 1fr !important;
+  }
+
+  #jobsFilterClearV431 {
+    width: 100% !important;
+  }
+}

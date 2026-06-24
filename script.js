@@ -1,4 +1,4 @@
-const STORAGE_KEY = "stalkernet_pda_v430_comms_search_filter";
+const STORAGE_KEY = "stalkernet_pda_v431_jobs_filter_sort";
 
 const defaultMessages = [
   { id: id(), channel: "Public Chat", sender: "Wolf", faction: "Loner", text: "Rookie Village is quiet for now. Keep your bolts handy.", time: "07:12" },
@@ -6761,7 +6761,7 @@ async function refreshStalkerNetAppV3998() {
     await clearOldStalkerNetCachesV3998();
 
     const url = new URL(window.location.href);
-    url.searchParams.set("v", "430");
+    url.searchParams.set("v", "431");
     url.searchParams.set("refresh", Date.now().toString(36));
     window.location.href = url.toString();
 
@@ -6814,7 +6814,7 @@ async function claimFreshServiceWorkerV3998() {
 window.addEventListener("load", () => {
   setTimeout(bindCacheToolsV3998, 400);
   setTimeout(claimFreshServiceWorkerV3998, 900);
-  setTimeout(() => cacheStatusV3998("Current build: v4.3.0. Settings ready."), 1200);
+  setTimeout(() => cacheStatusV3998("Current build: v4.3.1. Settings ready."), 1200);
 });
 
 document.addEventListener("click", event => {
@@ -6882,7 +6882,7 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.0 Cache panel spacing fix
+// v4.3.1 Cache panel spacing fix
 function tightenCachePanelSpacingV4000() {
   const panel = document.getElementById("cacheToolsPanelV3998");
   if (!panel) return;
@@ -6929,7 +6929,7 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.0 Put Cache Maintenance inside Comms tab and keep it above bottom nav
+// v4.3.1 Put Cache Maintenance inside Comms tab and keep it above bottom nav
 function placeCachePanelInsideCommsV4001() {
   const panel = document.getElementById("cacheToolsPanelV3998");
   const comms = document.getElementById("messagesTab");
@@ -6949,7 +6949,7 @@ function placeCachePanelInsideCommsV4001() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.3.0. Settings ready.";
+    status.textContent = "Current build: v4.3.1. Settings ready.";
   }
 }
 
@@ -6971,8 +6971,8 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.0 App Install / PWA Polish
-const STALKERNET_BUILD_V402 = "v4.3.0";
+// v4.3.1 App Install / PWA Polish
+const STALKERNET_BUILD_V402 = "v4.3.1";
 let deferredInstallPromptV402 = null;
 
 function isStandaloneV402() {
@@ -7102,7 +7102,7 @@ function bindPwaInstallV402() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
   }
 }
 
@@ -7124,7 +7124,7 @@ window.installStalkerNetV402 = installStalkerNetV402;
 
 
 
-// v4.3.0 Audio Cue Settings
+// v4.3.1 Audio Cue Settings
 const AUDIO_SETTINGS_KEY_V403 = "stalkernet_audio_settings_v403";
 const AUDIO_DEFAULTS_V403 = {
   enabled: true,
@@ -7393,7 +7393,7 @@ window.testAudioCueV403 = testAudioCueV403;
 
 
 
-// v4.3.0 Force-visible Audio Cues panel
+// v4.3.1 Force-visible Audio Cues panel
 function ensureAudioPanelVisibleV404() {
   let panel = document.getElementById("audioSettingsPanelV403");
   const cachePanel = document.getElementById("cacheToolsPanelV3998");
@@ -7435,7 +7435,7 @@ function ensureAudioPanelVisibleV404() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
   }
 
   try {
@@ -7526,9 +7526,9 @@ document.addEventListener("click", event => {
 
 
 
-// v4.3.0 Settings Area
+// v4.3.1 Settings Area
 // Moves Audio Cues, App Install, and Cache Maintenance into a proper Settings tab.
-const STALKERNET_BUILD_V405 = "v4.3.0";
+const STALKERNET_BUILD_V405 = "v4.3.1";
 
 function settingsStatusV405(message) {
   console.log(message);
@@ -7645,7 +7645,7 @@ function moveCurrentToolsIntoSettingsV405() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1|v3\.9\.9\.8/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.3.0. Settings ready.";
+    status.textContent = "Current build: v4.3.1. Settings ready.";
   }
 
   // Keep old binders alive after moving DOM.
@@ -7724,7 +7724,7 @@ window.activateTabV405 = activateTabV405;
 
 
 
-// v4.3.0 Settings tab layout fix
+// v4.3.1 Settings tab layout fix
 function getPdaMainV406() {
   return (
     document.querySelector(".pda-screen") ||
@@ -7791,7 +7791,7 @@ function fixSettingsLayoutV406() {
 
   const status = document.getElementById("cacheStatusV3998");
   if (status && /v4\.0\.5|v4\.0\.4|v4\.0\.3|v4\.0\.2|v4\.0\.1/.test(status.textContent || "")) {
-    status.textContent = "Current build: v4.3.0. Settings ready.";
+    status.textContent = "Current build: v4.3.1. Settings ready.";
   }
 }
 
@@ -7871,7 +7871,7 @@ window.activateTabFixedV406 = activateTabFixedV406;
 
 
 
-// v4.3.0 Settings/Comms split: Audio only in Settings, Cache in both.
+// v4.3.1 Settings/Comms split: Audio only in Settings, Cache in both.
 function commsTabV407(){ return document.getElementById("messagesTab") || document.getElementById("commsTab"); }
 function settingsHubV407(){
   if (typeof ensureSettingsTabV405 === "function") { try { return ensureSettingsTabV405().hub; } catch(e){} }
@@ -7964,7 +7964,7 @@ function keepSettingsPanelsV407(){
     cache.dataset.settingsOrderV405="30";
     if(cache.parentElement!==hub) hub.appendChild(cache);
     const st=document.getElementById("cacheStatusV3998");
-    if(st) st.textContent="Current build: v4.3.0. Settings ready.";
+    if(st) st.textContent="Current build: v4.3.1. Settings ready.";
   }
   Array.from(hub.children).sort((a,b)=>Number(a.dataset.settingsOrderV405||99)-Number(b.dataset.settingsOrderV405||99)).forEach(x=>hub.appendChild(x));
   try{ if(typeof bindPwaInstallV402==="function") bindPwaInstallV402(); }catch(e){}
@@ -7985,7 +7985,7 @@ window.setupSettingsCacheSplitV407=setupSettingsCacheSplitV407;
 
 
 
-// v4.3.0 Strict Settings/Comms cleanup
+// v4.3.1 Strict Settings/Comms cleanup
 // Comms keeps only the small quick cache panel.
 // Settings keeps Audio Cues, App Install, and full Cache Maintenance.
 
@@ -8063,7 +8063,7 @@ function ensureCommsQuickCacheV408() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "430");
+        url.searchParams.set("v", "431");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8106,7 +8106,7 @@ function moveSettingsModulesV408() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.3.0. Settings ready.";
+    if (status) status.textContent = "Current build: v4.3.1. Settings ready.";
   }
 
   // Audio belongs in Settings only and should NOT be nested inside cache panel.
@@ -8188,7 +8188,7 @@ window.strictSettingsCommsCleanupV408 = strictSettingsCommsCleanupV408;
 
 
 
-// v4.3.0 Stop full Cache/Audio from reappearing in Comms
+// v4.3.1 Stop full Cache/Audio from reappearing in Comms
 function getCommsTabV409() {
   return document.getElementById("messagesTab") || document.getElementById("commsTab");
 }
@@ -8264,7 +8264,7 @@ function ensureQuickCommsCacheV409() {
       if (typeof refreshCommsAppV407 === "function") refreshCommsAppV407();
       else {
         const url = new URL(location.href);
-        url.searchParams.set("v", "430");
+        url.searchParams.set("v", "431");
         url.searchParams.set("refresh", Date.now().toString(36));
         location.href = url.toString();
       }
@@ -8322,7 +8322,7 @@ function exileFullSettingsPanelsFromCommsV409() {
     if (fullCache.parentElement !== hub) hub.appendChild(fullCache);
 
     const status = document.getElementById("cacheStatusV3998");
-    if (status) status.textContent = "Current build: v4.3.0. Settings ready.";
+    if (status) status.textContent = "Current build: v4.3.1. Settings ready.";
   }
 
   // Remove cloned/duplicate audio panels if an old function created another inside Comms.
@@ -8420,7 +8420,7 @@ window.finalSettingsCommsCleanupV409 = finalSettingsCommsCleanupV409;
 
 
 
-// v4.3.0 Restore Audio Controls inside Settings only
+// v4.3.1 Restore Audio Controls inside Settings only
 const AUDIO_SETTINGS_KEY_V410 = "stalkernet_audio_settings_v403";
 
 function getSettingsHubV410() {
@@ -8640,7 +8640,7 @@ function bindAudioControlsV410() {
   patchAudioPlaybackV410();
 }
 
-// Override the v4.3.0 muted helper with a safe version that creates Settings audio.
+// Override the v4.3.1 muted helper with a safe version that creates Settings audio.
 window.ensureAudioPanelVisibleV404 = function() {
   ensureAudioControlsInSettingsV410();
 };
@@ -8670,8 +8670,8 @@ window.testAudioCueV410 = testAudioCueV410;
 
 
 
-// v4.3.0 Online / Last Seen Presence
-const STALKERNET_BUILD_V411 = "v4.3.0";
+// v4.3.1 Online / Last Seen Presence
+const STALKERNET_BUILD_V411 = "v4.3.1";
 window.__presenceHeartbeatV411 = null;
 window.__lastPresenceWriteV411 = 0;
 
@@ -9000,8 +9000,8 @@ window.installPresencePanelV411 = installPresencePanelV411;
 
 
 
-// v4.3.0 Data Backup / Restore
-const STALKERNET_BUILD_V412 = "v4.3.0";
+// v4.3.1 Data Backup / Restore
+const STALKERNET_BUILD_V412 = "v4.3.1";
 
 function settingsHubV412() {
   let hub = document.getElementById("settingsHubV405");
@@ -9104,7 +9104,7 @@ function collectLocalBackupV412() {
 
   return {
     app: "StalkerNet",
-    backupVersion: "v4.3.0",
+    backupVersion: "v4.3.1",
     createdAt: new Date().toISOString(),
     origin: location.origin,
     path: location.pathname,
@@ -9210,7 +9210,7 @@ function restoreBackupV412() {
     backupStatusV412("Backup restored. Reloading...");
     setTimeout(() => {
       const url = new URL(location.href);
-      url.searchParams.set("v", "430");
+      url.searchParams.set("v", "431");
       url.searchParams.set("restore", Date.now().toString(36));
       location.href = url.toString();
     }, 700);
@@ -9284,8 +9284,8 @@ window.restoreBackupV412 = restoreBackupV412;
 
 
 
-// v4.3.0 System Status / Diagnostics
-const STALKERNET_BUILD_V413 = "v4.3.0";
+// v4.3.1 System Status / Diagnostics
+const STALKERNET_BUILD_V413 = "v4.3.1";
 
 function settingsHubV413() {
   let hub = document.getElementById("settingsHubV405");
@@ -9333,7 +9333,7 @@ function createSystemStatusPanelV413() {
     <div class="module-label">SYSTEM STATUS</div>
     <p id="systemStatusMessageV413" class="message-text system-status-message-v413">Diagnostics ready.</p>
     <div class="system-status-grid-v413">
-      <div><span>Build</span><strong id="sysBuildV413">v4.3.0</strong></div>
+      <div><span>Build</span><strong id="sysBuildV413">v4.3.1</strong></div>
       <div><span>Login</span><strong id="sysLoginV413">Checking</strong></div>
       <div><span>Firebase</span><strong id="sysFirebaseV413">Checking</strong></div>
       <div><span>Service Worker</span><strong id="sysWorkerV413">Checking</strong></div>
@@ -9500,7 +9500,7 @@ function installSystemStatusPanelV413() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
   }
 }
 
@@ -9548,8 +9548,8 @@ window.copySystemStatusV413 = copySystemStatusV413;
 
 
 
-// v4.3.0 Error Log / Bug Report
-const STALKERNET_BUILD_V414 = "v4.3.0";
+// v4.3.1 Error Log / Bug Report
+const STALKERNET_BUILD_V414 = "v4.3.1";
 const ERROR_LOG_KEY_V414 = "stalkernet_error_log_v414";
 const ERROR_LOG_LIMIT_V414 = 40;
 
@@ -9658,7 +9658,7 @@ function installErrorLogPanelV414() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
   }
 }
 
@@ -9850,8 +9850,8 @@ window.copyErrorLogV414 = copyErrorLogV414;
 
 
 
-// v4.3.0 Error Log Noise Filter
-const STALKERNET_BUILD_V415 = "v4.3.0";
+// v4.3.1 Error Log Noise Filter
+const STALKERNET_BUILD_V415 = "v4.3.1";
 const FIRESTORE_NOISE_STATS_KEY_V415 = "stalkernet_firestore_noise_stats_v415";
 
 function firestoreNoiseRegexV415(message) {
@@ -10024,7 +10024,7 @@ function installFirestoreNoiseFilterV415() {
 
   const cacheStatus = document.getElementById("cacheStatusV3998");
   if (cacheStatus && /v4\.1\.4|v4\.1\.3|v4\.1\.2|v4\.1\.1|v4\.1\.0|v4\.0\./.test(cacheStatus.textContent || "")) {
-    cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+    cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
   }
 
   try { if (typeof renderErrorLogV414 === "function") renderErrorLogV414(); } catch (error) {}
@@ -10047,10 +10047,10 @@ window.readFirestoreNoiseStatsV415 = readFirestoreNoiseStatsV415;
 
 
 
-// v4.3.0 Settings Category Tabs
-// Clean rebuild from v4.3.0. No drawer/details system.
+// v4.3.1 Settings Category Tabs
+// Clean rebuild from v4.3.1. No drawer/details system.
 
-const STALKERNET_BUILD_V422 = "v4.3.0";
+const STALKERNET_BUILD_V422 = "v4.3.1";
 const SETTINGS_TAB_STATE_KEY_V422 = "stalkernet_settings_category_tab_v422";
 
 const SETTINGS_CATEGORIES_V422 = [
@@ -10276,7 +10276,7 @@ function activateSettingsCategoryV422(categoryId, save = true) {
 
 function patchBuildLabelsV422() {
   const cacheStatus = document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
 
   const sysBuild = document.getElementById("sysBuildV413");
   if (sysBuild) sysBuild.textContent = STALKERNET_BUILD_V422;
@@ -10349,11 +10349,11 @@ window.activateSettingsCategoryV422 = activateSettingsCategoryV422;
 
 
 
-// v4.3.0 Settings Tabs Content Fix
+// v4.3.1 Settings Tabs Content Fix
 // Stable self-contained content panels for Settings category tabs.
 // This avoids relying on older panels being moved around correctly.
 
-const STALKERNET_BUILD_V423 = "v4.3.0";
+const STALKERNET_BUILD_V423 = "v4.3.1";
 const SETTINGS_TAB_STATE_KEY_V423 = "stalkernet_settings_category_tab_v422";
 const AUDIO_KEY_V423 = "stalkernet_audio_settings_v403";
 const ERROR_LOG_KEY_V423 = "stalkernet_error_log_v414";
@@ -10462,7 +10462,7 @@ function getCategoryBodyV423(id) {
 }
 
 function clearOldAutoMovedContentV423() {
-  // Hide old/moved settings modules so only the stable v4.3.0 panels show in tabs.
+  // Hide old/moved settings modules so only the stable v4.3.1 panels show in tabs.
   const oldIds = [
     "audioSettingsPanelV403",
     "presencePanelV411",
@@ -10741,7 +10741,7 @@ function installAppCacheContentV423() {
     cache.className = "settings-lite-panel-v423";
     cache.innerHTML = `
       <div class="module-label">CACHE MAINTENANCE</div>
-      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.3.0. Settings ready.</p>
+      <p id="settingsCacheStatusV423" class="message-text">Current build: v4.3.1. Settings ready.</p>
       <div class="settings-two-buttons-v423">
         <button id="settingsRefreshAppV423" class="small-btn">Refresh App</button>
         <button id="settingsClearCachesV423" class="small-btn">Clear Old Caches</button>
@@ -10799,7 +10799,7 @@ function bindCacheV423() {
     refresh.addEventListener("click", event => {
       event.preventDefault();
       const url = new URL(location.href);
-      url.searchParams.set("v", "430");
+      url.searchParams.set("v", "431");
       url.searchParams.set("refresh", Date.now().toString(36));
       location.href = url.toString();
     });
@@ -10924,7 +10924,7 @@ function installDiagnosticsContentV423() {
     status.innerHTML = `
       <div class="module-label">SYSTEM STATUS</div>
       <div class="settings-status-grid-v423">
-        <div><span>Build</span><strong>v4.3.0</strong></div>
+        <div><span>Build</span><strong>v4.3.1</strong></div>
         <div><span>Login</span><strong id="settingsDiagLoginV423">Checking</strong></div>
         <div><span>Firebase</span><strong id="settingsDiagFirebaseV423">Checking</strong></div>
         <div><span>Screen</span><strong>${window.innerWidth}x${window.innerHeight}</strong></div>
@@ -11060,7 +11060,7 @@ function installStableSettingsContentV423() {
   activateSettingsTabV423(activeSettingsTabV423());
 }
 
-// Override v4.3.0 setup functions to use the robust v4.3.0 content.
+// Override v4.3.1 setup functions to use the robust v4.3.1 content.
 window.activateSettingsCategoryV422 = activateSettingsTabV423;
 window.setupSettingsCategoryTabsV422 = installStableSettingsContentV423;
 window.moveSettingsPanelsIntoTabsV422 = installStableSettingsContentV423;
@@ -11094,8 +11094,8 @@ window.activateSettingsTabV423 = activateSettingsTabV423;
 
 
 
-// v4.3.0 Display Preferences
-const STALKERNET_BUILD_V424 = "v4.3.0";
+// v4.3.1 Display Preferences
+const STALKERNET_BUILD_V424 = "v4.3.1";
 const DISPLAY_PREFS_KEY_V424 = "stalkernet_display_preferences_v424";
 
 function readDisplayPrefsV424() {
@@ -11263,7 +11263,7 @@ function bindDisplayPrefsV424() {
 
 function patchBuildLabelsV424() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V424;
@@ -11313,10 +11313,10 @@ window.installDisplayPrefsPanelV424 = installDisplayPrefsPanelV424;
 
 
 
-// v4.3.0 Comms Draft Lite SAFE
+// v4.3.1 Comms Draft Lite SAFE
 // Small patch only. Does not touch Settings category tabs.
 
-const STALKERNET_BUILD_V426 = "v4.3.0";
+const STALKERNET_BUILD_V426 = "v4.3.1";
 const COMMS_DRAFT_KEY_V426 = "stalkernet_comms_draft_lite_v426";
 
 function getCommsInputV426() {
@@ -11454,7 +11454,7 @@ function bindCommsDraftLiteV426() {
 
 function patchBuildLabelsV426() {
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
 
   document.querySelectorAll("#settingsDiagnosticsPanelV423 strong, #sysBuildV413").forEach(el => {
     if (/^v4\./.test(el.textContent || "")) el.textContent = STALKERNET_BUILD_V426;
@@ -11490,9 +11490,9 @@ window.clearCommsDraftLiteV426 = clearCommsDraftLiteV426;
 
 
 
-// v4.3.0 Build Display Sync
+// v4.3.1 Build Display Sync
 // One central build label, synced across visible panels and reports.
-const STALKERNET_BUILD_V427 = "v4.3.0";
+const STALKERNET_BUILD_V427 = "v4.3.1";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V427;
 
 function stalkerNetBuildV427() {
@@ -11543,7 +11543,7 @@ function syncKnownBuildFieldsV427() {
     }
   });
 
-  // Presence panel build field from v4.3.0/v4.3.0 settings tabs.
+  // Presence panel build field from v4.3.1/v4.3.1 settings tabs.
   document.querySelectorAll(
     "#settingsPresencePanelV423 .settings-status-grid-v423 strong, " +
     "#presencePanelV411 .presence-grid-v411 strong, " +
@@ -11636,10 +11636,10 @@ window.syncBuildDisplayV427 = syncBuildDisplayV427;
 
 
 
-// v4.3.0 Build Display HARD LOCK
+// v4.3.1 Build Display HARD LOCK
 // Stops older helpers from flipping visible build labels back and forth.
 
-const STALKERNET_BUILD_V428 = "v4.3.0";
+const STALKERNET_BUILD_V428 = "v4.3.1";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V428;
 
 function currentBuildV428() {
@@ -11810,8 +11810,8 @@ window.setupBuildHardLockV428 = setupBuildHardLockV428;
 
 
 
-// v4.3.0 Comms Search / Filter Polish
-const STALKERNET_BUILD_V430 = "v4.3.0";
+// v4.3.1 Comms Search / Filter Polish
+const STALKERNET_BUILD_V430 = "v4.3.1";
 window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V430;
 
 const COMMS_SEARCH_STATE_KEY_V430 = "stalkernet_comms_search_state_v430";
@@ -12056,7 +12056,7 @@ function patchBuildLabelsV430() {
   }
 
   const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
-  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.0. Settings ready.";
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
 
   document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #messagesTab strong, #commsTab strong").forEach(el => {
     const text = el.textContent || "";
@@ -12105,3 +12105,397 @@ document.addEventListener("click", event => {
 
 window.setupCommsSearchV430 = setupCommsSearchV430;
 window.applyCommsSearchV430 = applyCommsSearchV430;
+
+
+
+// v4.3.1 Jobs Board Filter / Sort
+const STALKERNET_BUILD_V431 = "v4.3.1";
+window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V431;
+
+const JOBS_FILTER_STATE_KEY_V431 = "stalkernet_jobs_filter_state_v431";
+
+const JOB_TYPES_V431 = [
+  "any",
+  "mutant hunt",
+  "artifact recovery",
+  "delivery",
+  "escort",
+  "scout area",
+  "clear area",
+  "stash reminder",
+  "personal note"
+];
+
+const JOB_STATUSES_V431 = [
+  "any",
+  "open",
+  "active",
+  "accepted",
+  "in progress",
+  "completed",
+  "failed",
+  "cancelled"
+];
+
+const JOB_RISKS_V431 = [
+  "any",
+  "low",
+  "medium",
+  "high",
+  "extreme",
+  "suicide"
+];
+
+function jobsRootV431() {
+  return document.getElementById("jobsTab") ||
+    document.getElementById("contractsTab") ||
+    document.getElementById("jobBoardTab") ||
+    document.getElementById("jobsBoardTab");
+}
+
+function readJobsFilterStateV431() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(JOBS_FILTER_STATE_KEY_V431) || "null");
+    return {
+      query: typeof saved?.query === "string" ? saved.query : "",
+      type: JOB_TYPES_V431.includes(saved?.type) ? saved.type : "any",
+      status: JOB_STATUSES_V431.includes(saved?.status) ? saved.status : "any",
+      risk: JOB_RISKS_V431.includes(saved?.risk) ? saved.risk : "any",
+      sort: ["newest", "title", "risk", "status"].includes(saved?.sort) ? saved.sort : "newest"
+    };
+  } catch (error) {
+    return { query: "", type: "any", status: "any", risk: "any", sort: "newest" };
+  }
+}
+
+function saveJobsFilterStateV431(state) {
+  const clean = {
+    query: String(state.query || ""),
+    type: JOB_TYPES_V431.includes(state.type) ? state.type : "any",
+    status: JOB_STATUSES_V431.includes(state.status) ? state.status : "any",
+    risk: JOB_RISKS_V431.includes(state.risk) ? state.risk : "any",
+    sort: ["newest", "title", "risk", "status"].includes(state.sort) ? state.sort : "newest"
+  };
+  try { localStorage.setItem(JOBS_FILTER_STATE_KEY_V431, JSON.stringify(clean)); } catch (error) {}
+  return clean;
+}
+
+function optionHtmlV431(options, labels = {}) {
+  return options.map(value => {
+    const label = labels[value] || value.replace(/\b\w/g, c => c.toUpperCase());
+    return `<option value="${value}">${label}</option>`;
+  }).join("");
+}
+
+function ensureJobsFilterPanelV431() {
+  const root = jobsRootV431();
+  if (!root) return null;
+
+  let panel = document.getElementById("jobsFilterPanelV431");
+  if (!panel) {
+    panel = document.createElement("section");
+    panel.id = "jobsFilterPanelV431";
+    panel.className = "jobs-filter-panel-v431 module-panel";
+    panel.innerHTML = `
+      <div class="module-label">JOBS FILTER</div>
+      <div class="jobs-filter-search-row-v431">
+        <input id="jobsFilterSearchV431" type="search" placeholder="Search jobs, location, reward, objective..." autocomplete="off" />
+        <button id="jobsFilterClearV431" class="small-btn">Clear</button>
+      </div>
+      <div class="jobs-filter-grid-v431">
+        <label>
+          <span>Type</span>
+          <select id="jobsFilterTypeV431">
+            ${optionHtmlV431(JOB_TYPES_V431, {"any":"Any Type"})}
+          </select>
+        </label>
+        <label>
+          <span>Status</span>
+          <select id="jobsFilterStatusV431">
+            ${optionHtmlV431(JOB_STATUSES_V431, {"any":"Any Status"})}
+          </select>
+        </label>
+        <label>
+          <span>Risk</span>
+          <select id="jobsFilterRiskV431">
+            ${optionHtmlV431(JOB_RISKS_V431, {"any":"Any Risk"})}
+          </select>
+        </label>
+        <label>
+          <span>Sort</span>
+          <select id="jobsSortV431">
+            <option value="newest">Newest / Current</option>
+            <option value="title">Title A-Z</option>
+            <option value="risk">Risk Level</option>
+            <option value="status">Status</option>
+          </select>
+        </label>
+      </div>
+      <p id="jobsFilterStatusTextV431" class="message-text jobs-filter-status-v431">Jobs filter ready.</p>
+    `;
+  }
+
+  const heading =
+    root.querySelector(".jobs-board-header") ||
+    root.querySelector(".section-top") ||
+    root.querySelector("h1,h2,h3") ||
+    root.firstElementChild;
+
+  if (!panel.parentElement) {
+    if (heading && heading.parentElement === root) heading.insertAdjacentElement("afterend", panel);
+    else root.insertBefore(panel, root.firstElementChild?.nextElementSibling || root.firstElementChild);
+  }
+
+  bindJobsFilterPanelV431();
+  applyJobsFilterStateToUiV431();
+  return panel;
+}
+
+function jobCardsV431() {
+  const root = jobsRootV431();
+  if (!root) return [];
+
+  const selectors = [
+    ".job-card",
+    ".job-item",
+    ".contract-card",
+    ".contract-item",
+    "[data-job-id]",
+    "[data-contract-id]",
+    ".jobs-card",
+    ".mission-card"
+  ];
+
+  const cards = new Set();
+  selectors.forEach(selector => {
+    root.querySelectorAll(selector).forEach(el => {
+      if (el.id === "jobsFilterPanelV431" || el.closest("#jobsFilterPanelV431")) return;
+      cards.add(el);
+    });
+  });
+
+  // Fallback: detect job-ish panels by content without grabbing the filter panel.
+  if (!cards.size) {
+    root.querySelectorAll("article, .module-panel, .card, .panel").forEach(el => {
+      if (el.id === "jobsFilterPanelV431" || el.closest("#jobsFilterPanelV431")) return;
+      const text = (el.innerText || "").trim();
+      if (!text || text.length < 18) return;
+      if (/jobs filter|job template|create job|new job|clear starter jobs|cloud/i.test(text)) return;
+      if (/risk|reward|status|objective|contract|location|mutant|artifact|delivery|escort|stash/i.test(text)) cards.add(el);
+    });
+  }
+
+  return Array.from(cards);
+}
+
+function normalizedJobTextV431(card) {
+  return (card.innerText || card.textContent || "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function jobTitleV431(card) {
+  const heading = card.querySelector("h1,h2,h3,h4,strong,.job-title,.contract-title,.title");
+  const text = (heading?.textContent || card.innerText || "").trim();
+  return text.split("\n")[0].toLowerCase();
+}
+
+function includesJobValueV431(card, value) {
+  if (!value || value === "any") return true;
+  const text = normalizedJobTextV431(card);
+  return text.includes(value);
+}
+
+function jobRiskRankV431(card) {
+  const text = normalizedJobTextV431(card);
+  if (/suicide/.test(text)) return 5;
+  if (/extreme/.test(text)) return 4;
+  if (/high/.test(text)) return 3;
+  if (/medium|moderate/.test(text)) return 2;
+  if (/low/.test(text)) return 1;
+  return 0;
+}
+
+function jobStatusRankV431(card) {
+  const text = normalizedJobTextV431(card);
+  if (/open/.test(text)) return 1;
+  if (/accepted|active|in progress/.test(text)) return 2;
+  if (/completed/.test(text)) return 3;
+  if (/failed|cancelled/.test(text)) return 4;
+  return 0;
+}
+
+function applyJobsFilterV431() {
+  const root = jobsRootV431();
+  if (!root) return;
+
+  const state = readJobsFilterStateV431();
+  const query = state.query.trim().toLowerCase();
+  const cards = jobCardsV431();
+
+  let shown = 0;
+
+  cards.forEach(card => {
+    const text = normalizedJobTextV431(card);
+    const matchQuery = !query || text.includes(query);
+    const matchType = includesJobValueV431(card, state.type);
+    const matchStatus = includesJobValueV431(card, state.status);
+    const matchRisk = includesJobValueV431(card, state.risk);
+
+    const match = matchQuery && matchType && matchStatus && matchRisk;
+
+    card.classList.toggle("jobs-filter-hidden-v431", !match);
+    card.style.display = match ? "" : "none";
+
+    if (match) shown++;
+  });
+
+  sortJobCardsV431(cards, state.sort);
+
+  const status = document.getElementById("jobsFilterStatusTextV431");
+  if (status) {
+    if (!cards.length) status.textContent = "No job cards detected yet.";
+    else if (!query && state.type === "any" && state.status === "any" && state.risk === "any") {
+      status.textContent = `Showing ${shown} job${shown === 1 ? "" : "s"}.`;
+    } else {
+      status.textContent = `Showing ${shown} of ${cards.length} job${cards.length === 1 ? "" : "s"}.`;
+    }
+  }
+}
+
+function sortJobCardsV431(cards, sortMode) {
+  if (!cards.length || sortMode === "newest") return;
+
+  const root = jobsRootV431();
+  if (!root) return;
+
+  // Only sort if all cards share one parent. Otherwise, sorting risks moving layout sections.
+  const parents = Array.from(new Set(cards.map(card => card.parentElement).filter(Boolean)));
+  if (parents.length !== 1) return;
+
+  const parent = parents[0];
+  const sorted = cards.slice().sort((a, b) => {
+    if (sortMode === "title") return jobTitleV431(a).localeCompare(jobTitleV431(b));
+    if (sortMode === "risk") return jobRiskRankV431(b) - jobRiskRankV431(a) || jobTitleV431(a).localeCompare(jobTitleV431(b));
+    if (sortMode === "status") return jobStatusRankV431(a) - jobStatusRankV431(b) || jobTitleV431(a).localeCompare(jobTitleV431(b));
+    return 0;
+  });
+
+  sorted.forEach(card => parent.appendChild(card));
+}
+
+function applyJobsFilterStateToUiV431() {
+  const state = readJobsFilterStateV431();
+
+  const search = document.getElementById("jobsFilterSearchV431");
+  const type = document.getElementById("jobsFilterTypeV431");
+  const status = document.getElementById("jobsFilterStatusV431");
+  const risk = document.getElementById("jobsFilterRiskV431");
+  const sort = document.getElementById("jobsSortV431");
+
+  if (search && search.value !== state.query) search.value = state.query;
+  if (type) type.value = state.type;
+  if (status) status.value = state.status;
+  if (risk) risk.value = state.risk;
+  if (sort) sort.value = state.sort;
+
+  applyJobsFilterV431();
+}
+
+function bindJobsFilterPanelV431() {
+  const search = document.getElementById("jobsFilterSearchV431");
+  const clear = document.getElementById("jobsFilterClearV431");
+  const type = document.getElementById("jobsFilterTypeV431");
+  const status = document.getElementById("jobsFilterStatusV431");
+  const risk = document.getElementById("jobsFilterRiskV431");
+  const sort = document.getElementById("jobsSortV431");
+
+  if (search && !search.dataset.v431Bound) {
+    search.dataset.v431Bound = "true";
+    search.addEventListener("input", () => {
+      const state = readJobsFilterStateV431();
+      saveJobsFilterStateV431({ ...state, query: search.value || "" });
+      applyJobsFilterV431();
+    });
+  }
+
+  [
+    [type, "type"],
+    [status, "status"],
+    [risk, "risk"],
+    [sort, "sort"]
+  ].forEach(([el, key]) => {
+    if (!el || el.dataset.v431Bound) return;
+    el.dataset.v431Bound = "true";
+    el.addEventListener("change", () => {
+      const state = readJobsFilterStateV431();
+      saveJobsFilterStateV431({ ...state, [key]: el.value });
+      applyJobsFilterV431();
+    });
+  });
+
+  if (clear && !clear.dataset.v431Bound) {
+    clear.dataset.v431Bound = "true";
+    clear.addEventListener("click", event => {
+      event.preventDefault();
+      saveJobsFilterStateV431({ query: "", type: "any", status: "any", risk: "any", sort: "newest" });
+      applyJobsFilterStateToUiV431();
+    });
+  }
+}
+
+function patchBuildLabelsV431() {
+  window.STALKERNET_CURRENT_BUILD = STALKERNET_BUILD_V431;
+
+  if (typeof syncBuildFieldsV428 === "function") {
+    try { syncBuildFieldsV428(); } catch (error) {}
+  }
+
+  const cacheStatus = document.getElementById("settingsCacheStatusV423") || document.getElementById("cacheStatusV3998");
+  if (cacheStatus) cacheStatus.textContent = "Current build: v4.3.1. Settings ready.";
+
+  document.querySelectorAll("#settingsTab strong, #settingsTab span, #settingsTab p, #jobsTab strong, #jobsTab span, #jobsTab p").forEach(el => {
+    const text = el.textContent || "";
+    if (/^v4\.\d+\.\d+$/.test(text.trim())) el.textContent = STALKERNET_BUILD_V431;
+    else if (/Current build: v4\.\d+\.\d+/.test(text)) {
+      el.textContent = text.replace(/Current build: v4\.\d+\.\d+\. Settings ready\./, `Current build: ${STALKERNET_BUILD_V431}. Settings ready.`);
+    }
+  });
+}
+
+let jobsFilterObserverV431 = null;
+
+function startJobsFilterObserverV431() {
+  const root = jobsRootV431();
+  if (!root || jobsFilterObserverV431) return;
+
+  jobsFilterObserverV431 = new MutationObserver(() => {
+    clearTimeout(window.__jobsFilterTimerV431);
+    window.__jobsFilterTimerV431 = setTimeout(() => {
+      ensureJobsFilterPanelV431();
+      applyJobsFilterV431();
+    }, 140);
+  });
+
+  jobsFilterObserverV431.observe(root, { childList: true, subtree: true });
+}
+
+function setupJobsFilterV431() {
+  ensureJobsFilterPanelV431();
+  applyJobsFilterV431();
+  startJobsFilterObserverV431();
+  patchBuildLabelsV431();
+}
+
+window.addEventListener("load", () => {
+  [120, 500, 1200, 2400].forEach(delay => setTimeout(setupJobsFilterV431, delay));
+});
+
+document.addEventListener("click", event => {
+  const target = event.target;
+  if (target?.closest?.("#jobsTab, #contractsTab, [data-tab='jobsTab'], [data-tab='contractsTab'], .nav-btn, #jobsFilterPanelV431")) {
+    setTimeout(setupJobsFilterV431, 120);
+    setTimeout(applyJobsFilterV431, 450);
+  }
+}, true);
+
+window.setupJobsFilterV431 = setupJobsFilterV431;
+window.applyJobsFilterV431 = applyJobsFilterV431;
