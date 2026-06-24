@@ -4904,3 +4904,72 @@ body.display-reduced-motion-v424 *::after {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* v4.3.6 Cloud Sync Status */
+#cloudSyncStatusPanelV436 {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 10px 0 !important;
+}
+
+.cloud-sync-grid-v436 {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin: 8px 0 !important;
+}
+
+.cloud-sync-grid-v436 div {
+  min-width: 0;
+  padding: 9px 8px;
+  border: 1px solid rgba(212,221,195,0.10);
+  border-radius: 9px;
+  background: rgba(0,0,0,0.22);
+}
+
+.cloud-sync-grid-v436 span {
+  display: block;
+  color: var(--text-dim);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+
+.cloud-sync-grid-v436 strong {
+  display: block;
+  color: var(--amber-bright);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.cloud-sync-grid-v436 strong[data-tone-v436="good"] {
+  color: #b7df9a !important;
+}
+
+.cloud-sync-grid-v436 strong[data-tone-v436="warn"] {
+  color: var(--amber-bright) !important;
+}
+
+.cloud-sync-grid-v436 strong[data-tone-v436="bad"] {
+  color: #ef9a8a !important;
+}
+
+.cloud-sync-actions-v436 {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin-top: 8px !important;
+}
+
+.cloud-sync-actions-v436 .small-btn {
+  width: 100% !important;
+}
+
+@media (max-width: 520px) {
+  .cloud-sync-grid-v436,
+  .cloud-sync-actions-v436 {
+    grid-template-columns: 1fr !important;
+  }
+}
